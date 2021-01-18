@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
+import 'dart:developer' as dbg;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -21,14 +21,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Size size = Size(0, 0);
   Rect boxSize = Rect.zero;
 
-  List<Bullet> bullets = [];
+  List<Bullet> playerBullets = [];
   Timer timerBulletMove, timerBulletmaker;
-
   final fps = 1 / 24;
-
   Bullet b = Bullet();
 
   final Random random = Random();
+
+  ///`Enemy`
+  Player enemy = Player(dx: 10, dy: 10);
+  Timer timerEnemyMovement, timerEnemyMaker, timerEnemyShootOut;
+  List<Player> enemies = [];
+  List<Bullet> enemyBullets = [];
+  Timer timerEBulletM;
+
   @override
   void initState() {
     super.initState();
@@ -44,22 +50,91 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       //
       boxSize = Rect.fromLTRB(0, 0, size.width, size.height);
-      timerBulletmaker =
-          Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
-      timerBulletMove = Timer.periodic(
-          Duration(milliseconds: (100 * fps).floor()), frameBuild);
+
+      ///` bullet per second`
+      // timerBulletmaker =
+      //     Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
+      // timerBulletMove = Timer.periodic(
+      //     Duration(milliseconds: (100 * fps).floor()), frameBuild);
+
+      ///`Enemy`
+
+      //Enemy maker sheduler
+      timerEnemyMaker = Timer.periodic(Duration(seconds: 3), enemyGenarator);
+
+      timerEnemyMovement = Timer.periodic(
+          Duration(milliseconds: (fps * 500).floor()),
+          enemyFrameBuilde); //fps*bigNum = slower
+
+      ///`enemies shootOut`
+      timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
+      timerEBulletM = Timer.periodic(
+          Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
     });
   }
 
+  ///`Ènemies maker`
+  enemyGenarator(Timer timer) {
+    /// `number of enemy per schedule`
+    for (int i = 0; i < 1; i++) {
+      var x = random.nextDouble().clamp(.1, .9) * (size.width);
+      var y = random.nextDouble() * (-300.0);
+      Player player = Player(dx: x, dy: y);
+      enemies.add(player);
+    }
+  }
+
+  ///`Enemy moveMent`
+  enemyFrameBuilde(Timer timer) {
+    if (enemies.length > 40) {
+      dbg.log("CleanUp enemy");
+      enemies.removeRange(0, 20);
+    }
+
+    enemies.forEach((enemy) {
+      enemy.dy += 1;
+    });
+    dbg.log(enemies.length.toString());
+    setState(() {});
+  }
+
+  /// `enemies bullets`
+  enemiesBullet(Timer timer) {
+    enemies.forEach((e) {
+      // dbg.log(e.dy.toString());
+      if (e.dy > 0 && e.dy < size.height - 10) {
+        /// shoot
+        Bullet b = Bullet();
+        b.position = BVector(e.dx, e.dy);
+        b.radius = 5;
+        b.mass = 10; //later workOn
+        enemyBullets.add(b);
+      }
+    });
+  }
+
+  //enemies bullets movement
+  eneBulletsMov(Timer timer) {
+    if (enemyBullets.length > 100) {
+      enemyBullets.removeRange(0, 30);
+      dbg.log(" E bullets cleanUP");
+    }
+    enemyBullets.forEach((bl) {
+      bl.position = BVector(bl.position.x, bl.position.y + 1);
+    });
+    setState(() {});
+  }
+
+////`For Player`
   preOdicBulletThrow(Timer timer) {
     bulletMaker();
   }
 
-  //tester
+  ////`For Player`
   frameBuild(Timer timer) {
-    // b.position.x += 10;
-    if (bullets.length > 20) bullets.removeRange(0, 5);
-    bullets.forEach((element) {
+    b.position.x += 10;
+    if (playerBullets.length > 20) playerBullets.removeRange(0, 5);
+    playerBullets.forEach((element) {
       element.position.y += 10;
 
       // if (element.position.y > size.height - 10) timer.cancel();
@@ -72,6 +147,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     timerBulletMove.cancel();
     timerBulletmaker.cancel();
+    timerEnemyMaker.cancel();
+    timerEnemyMovement.cancel();
     super.dispose();
   }
 
@@ -82,18 +159,19 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+// player Bullet
   void bulletMaker() {
-    if (bullets.length > 20) {
-      bullets.removeRange(0, 10);
+    if (playerBullets.length > 20) {
+      playerBullets.removeRange(0, 10);
     }
     Bullet b = Bullet();
     // b.position = BVector(random.nextDouble() * 360, 0);
     b.position = BVector(player.dx, player.dy == size.height ? 10 : player.dy);
     print(b.position.x);
     b.radius = random.nextInt(20).clamp(4, 20).ceilToDouble();
-    bullets.add(b);
+    playerBullets.add(b);
 
-    print(" bullets ${bullets.length}");
+    print(" bullets ${playerBullets.length}");
   }
 
   @override
@@ -133,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _rootSCRnKey,
       child: Stack(
         children: <Widget>[
+          ///`Player`
           Positioned(
             bottom: player.dy == size.height ? 10 : player.dy,
             left: player.dx,
@@ -141,8 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // bullet List
-          ...bullets
+          ///`Player` `bullet List`
+          ...playerBullets
               .map(
                 (bl) => Positioned(
                   bottom: bl.position.y,
@@ -155,6 +234,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               )
+              .toList(),
+
+          ////`Enemies`
+          ...enemies
+              .map(
+                (e) => Positioned(
+                  top: e.dy,
+                  left: e.dx,
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.blue),
+                  ),
+                ),
+              )
+              .toList(),
+
+          ...enemyBullets
+              .map((eblt) => Positioned(
+                    top: eblt.position.y,
+                    left: eblt.position.x,
+                    child: Container(
+                      width: eblt.radius*2,
+                      height: eblt.radius*2,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.red),
+                    ),
+                  ))
               .toList(),
         ],
       ),

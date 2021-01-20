@@ -34,6 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Player> enemies = [];
   List<Bullet> enemyBullets = [];
   Timer timerEBulletM;
+  int numOfBullet = 1;
+  var prevB_ID = 0;
+  Bullet eTestBullet = Bullet(id: 2, position: BVector(123, 123), radius: 30);
 
   @override
   void initState() {
@@ -60,16 +63,16 @@ class _HomeScreenState extends State<HomeScreen> {
       ///`Enemy`
 
       //Enemy maker sheduler
-      timerEnemyMaker = Timer.periodic(Duration(seconds: 3), enemyGenarator);
+      // timerEnemyMaker = Timer.periodic(Duration(seconds: 3), enemyGenarator);
 
-      timerEnemyMovement = Timer.periodic(
-          Duration(milliseconds: (fps * 500).floor()),
-          enemyFrameBuilde); //fps*bigNum = slower
+      // timerEnemyMovement = Timer.periodic(
+      //     Duration(milliseconds: (fps * 500).floor()),
+      //     enemyFrameBuilde); //fps*bigNum = slower
 
       ///`enemies shootOut`
-      timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
-      timerEBulletM = Timer.periodic(
-          Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
+      // timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
+      // timerEBulletM = Timer.periodic(
+      //     Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
     });
   }
 
@@ -94,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     enemies.forEach((enemy) {
       enemy.dy += 1;
     });
-    dbg.log(enemies.length.toString());
+    // dbg.log(enemies.length.toString());
     setState(() {});
   }
 
@@ -105,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (e.dy > 0 && e.dy < size.height - 10) {
         /// shoot
         Bullet b = Bullet();
+        b.id = numOfBullet++;
         b.position = BVector(e.dx, e.dy);
         b.radius = 5;
         b.mass = 10; //later workOn
@@ -121,8 +125,24 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     enemyBullets.forEach((bl) {
       bl.position = BVector(bl.position.x, bl.position.y + 1);
+      playerHit(bl);
     });
     setState(() {});
+  }
+
+  playerHit(Bullet b) {
+    print(
+        " bx: ${b.position.x} bY: ${b.position.y} ${player.dx} bY: ${player.dy} ");
+    if (b.id != prevB_ID &&
+        b.position.x < player.dx + player.width &&
+        b.position.x > player.dx - player.width &&
+        b.position.y < player.dy + player.height &&
+        b.position.y > player.dy - player.height) {
+      print("player Damage: bullet prev: $prevB_ID C: ${b.id}");
+      setState(() {
+        prevB_ID = b.id;
+      });
+    }
   }
 
 ////`For Player`
@@ -156,6 +176,9 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       player.dx = dx;
       player.dy = dy;
+
+      print(
+          "P: ${dx.ceil()} ${dy.ceil()} B: ${eTestBullet.position.x} ${eTestBullet.position.y}");
     });
   }
 
@@ -179,8 +202,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // log("Player dx : ${player.dx}  dy : ${player.dy}");
     return GestureDetector(
       onPanUpdate: (details) {
-        // log("dx: ${details.globalPosition.dx.toString()} dy: ${details.globalPosition.dy.toString()} ");
-
         /// tuch possition
         var posX = details.globalPosition.dx;
         var posY = details.globalPosition.dy;
@@ -257,13 +278,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     top: eblt.position.y,
                     left: eblt.position.x,
                     child: Container(
-                      width: eblt.radius*2,
-                      height: eblt.radius*2,
+                      width: eblt.radius * 2,
+                      height: eblt.radius * 2,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle, color: Colors.red),
                     ),
                   ))
               .toList(),
+
+          Positioned(
+            top: eTestBullet.position.y,
+            left: eTestBullet.position.x,
+            child: Container(
+              width: eTestBullet.radius * 2,
+              height: eTestBullet.radius * 2,
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+            ),
+          )
         ],
       ),
     );

@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //
       boxSize = Rect.fromLTRB(0, 0, size.width, size.height);
 
-      ///` bullet per second`
+      ///` bullet per second player`
       // timerBulletmaker =
       //     Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
       // timerBulletMove = Timer.periodic(
@@ -62,17 +62,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ///`Enemy`
 
-      //Enemy maker sheduler
-      // timerEnemyMaker = Timer.periodic(Duration(seconds: 3), enemyGenarator);
+      // Enemy maker sheduler
+      timerEnemyMaker = Timer.periodic(Duration(seconds: 5), enemyGenarator);
 
-      // timerEnemyMovement = Timer.periodic(
-      //     Duration(milliseconds: (fps * 500).floor()),
-      //     enemyFrameBuilde); //fps*bigNum = slower
+      timerEnemyMovement = Timer.periodic(
+          Duration(milliseconds: (fps * 500).floor()),
+          enemyFrameBuilde); //fps*bigNum = slower
 
       ///`enemies shootOut`
-      // timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
-      // timerEBulletM = Timer.periodic(
-      //     Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
+      timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
+      timerEBulletM = Timer.periodic(
+          Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
     });
   }
 
@@ -130,17 +130,20 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
+  ///`Take damage Player`
   playerHit(Bullet b) {
-    print(
-        " bx: ${b.position.x} bY: ${b.position.y} ${player.dx} bY: ${player.dy} ");
+    // print(
+    // " bx: ${b.position.x} bY: ${b.position.y} ${player.dx} bY: ${player.dy} ");
     if (b.id != prevB_ID &&
         b.position.x < player.dx + player.width &&
         b.position.x > player.dx - player.width &&
-        b.position.y < player.dy + player.height &&
-        b.position.y > player.dy - player.height) {
+        size.height - b.position.y < player.dy + player.height &&
+        size.height - b.position.y > player.dy - player.height) {
+      /// remove bullet and take damage
       print("player Damage: bullet prev: $prevB_ID C: ${b.id}");
       setState(() {
         prevB_ID = b.id;
+        enemies.remove(b);
       });
     }
   }
@@ -177,10 +180,14 @@ class _HomeScreenState extends State<HomeScreen> {
       player.dx = dx;
       player.dy = dy;
 
-      print(
-          "P: ${dx.ceil()} ${dy.ceil()} B: ${eTestBullet.position.x} ${eTestBullet.position.y}");
+      // print(
+      //     "P: ${dx.ceil()} ${dy.ceil()} B: ${eTestBullet.position.x} ${eTestBullet.position.y}");
     });
   }
+
+  /// `Bullet collision approch`
+  /// enemies bullets going top to bottm but player and its bullets travel bottom to top
+  /// Better approce to make it in same flow
 
 // player Bullet
   void bulletMaker() {
@@ -194,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
     b.radius = random.nextInt(20).clamp(4, 20).ceilToDouble();
     playerBullets.add(b);
 
-    print(" bullets ${playerBullets.length}");
+    // print(" bullets ${playerBullets.length}");
   }
 
   @override

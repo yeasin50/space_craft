@@ -3,6 +3,8 @@ import 'dart:developer' as dbg;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+// import 'package:spaceCraft/provider/enemyProvider.dart';
 import 'package:spaceCraft/widget/bullet.dart';
 import 'package:spaceCraft/widget/playerShip.dart';
 
@@ -25,8 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer timerBulletMove, timerBulletmaker;
   final fps = 1 / 24;
   Bullet b = Bullet();
-
   final Random random = Random();
+
+  /// enemy destroyer
+
+  var prevPlayerBulletId = 0;
+  int pBC = 1;
 
   ///`Enemy`
   Player enemy = Player(dx: 10, dy: 10);
@@ -38,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
   var prevB_ID = 0;
   Bullet eTestBullet = Bullet(id: 2, position: BVector(123, 123), radius: 30);
 
+  /// `Provider`
+  // var eProvider;
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
     b.radius = 10;
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      /// init provider
+      // eProvider = Provider.of<EnemyProvider>(context);
+
       size = _rootSCRnKey.currentContext.size;
       print("size  $size");
       setState(() {
@@ -55,24 +67,24 @@ class _HomeScreenState extends State<HomeScreen> {
       boxSize = Rect.fromLTRB(0, 0, size.width, size.height);
 
       ///` bullet per second player`
-      // timerBulletmaker =
-      //     Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
-      // timerBulletMove = Timer.periodic(
-      //     Duration(milliseconds: (100 * fps).floor()), frameBuild);
+      timerBulletmaker =
+          Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
+      timerBulletMove = Timer.periodic(
+          Duration(milliseconds: (100 * fps).floor()), frameBuild);
 
       ///`Enemy`
 
       // Enemy maker sheduler
-      timerEnemyMaker = Timer.periodic(Duration(seconds: 5), enemyGenarator);
+      // timerEnemyMaker = Timer.periodic(Duration(seconds: 5), enemyGenarator);
 
-      timerEnemyMovement = Timer.periodic(
-          Duration(milliseconds: (fps * 500).floor()),
-          enemyFrameBuilde); //fps*bigNum = slower
+      // timerEnemyMovement = Timer.periodic(
+      //     Duration(milliseconds: (fps * 500).floor()),
+      //     enemyFrameBuilde); //fps*bigNum = slower
 
       ///`enemies shootOut`
-      timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
-      timerEBulletM = Timer.periodic(
-          Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
+      // timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
+      // timerEBulletM = Timer.periodic(
+      //     Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
     });
   }
 
@@ -83,7 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
       var x = random.nextDouble().clamp(.1, .9) * (size.width);
       var y = random.nextDouble() * (-300.0);
       Player player = Player(dx: x, dy: y);
+
       enemies.add(player);
+
+      ///TODO:: using provider
+      // eProvider.addEnemy(player);
     }
   }
 
@@ -101,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-  /// `enemies bullets`
+  /// `enemies bullets Maker`
   enemiesBullet(Timer timer) {
     enemies.forEach((e) {
       // dbg.log(e.dy.toString());
@@ -113,6 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
         b.radius = 5;
         b.mass = 10; //later workOn
         enemyBullets.add(b);
+
+        ///TODO:: using provider
+        // Provider.of<EnemyProvider>(context).addEBullet(b);
       }
     });
   }
@@ -143,7 +162,9 @@ class _HomeScreenState extends State<HomeScreen> {
       print("player Damage: bullet prev: $prevB_ID C: ${b.id}");
       setState(() {
         prevB_ID = b.id;
-        enemies.remove(b);
+        enemyBullets.remove(b);
+
+        ///Provider
       });
     }
   }
@@ -153,17 +174,56 @@ class _HomeScreenState extends State<HomeScreen> {
     bulletMaker();
   }
 
-  ////`For Player`
+  ////`For Player `
+  ///Bullets move
   frameBuild(Timer timer) {
-    b.position.x += 10;
-    if (playerBullets.length > 20) playerBullets.removeRange(0, 5);
-    playerBullets.forEach((element) {
-      element.position.y += 10;
+    // b.position.x += 10;
 
+    if (playerBullets.length > 20) playerBullets.removeRange(0, 5);
+
+    playerBullets.forEach((pBullet) {
+      setState(() {
+        pBullet.position.y += 1;
+        print(pBullet.position.y);
+        // if(pBullet.position.d)
+        if (pBullet.position.y > size.height) {
+          playerBullets.remove(pBullet);
+        }
+
+        ///`Destroy Enemy`
+        if (prevPlayerBulletId != pBullet.id) {
+          checkEnemyPoss(pBullet);
+          prevPlayerBulletId = pBullet.id;
+        }
+      });
       // if (element.position.y > size.height - 10) timer.cancel();
     });
-    setState(() {});
-    print(b.position.y);
+  }
+
+  /// need to find an optimize way
+  /// `destroy Enemy`
+  checkEnemyPoss(Bullet pb) {
+    dbg.log(
+        "${pb.position.x.toString()}  ${pb.position.y.toString()} $prevPlayerBulletId");
+    if (size.height - pb.position.y <
+            eTestBullet.position.y + eTestBullet.radius &&
+        size.height - pb.position.y >
+            eTestBullet.position.y - eTestBullet.radius &&
+        b.position.x < eTestBullet.position.x + eTestBullet.radius &&
+        b.position.x > eTestBullet.position.x - eTestBullet.radius) {
+      dbg.log("Hit");
+    }
+    enemies.forEach((enemy) {
+      if (size.height - pb.position.y < enemy.dy + enemy.height &&
+          size.height - pb.position.y > enemy.dy - enemy.height &&
+          b.position.x < enemy.dx + enemy.width &&
+          b.position.x > enemy.dx - enemy.width) {
+        dbg.log("same poss Destroy Enemy");
+        setState(() {
+          enemies.remove(enemy);
+        });
+      }
+    });
   }
 
   @override
@@ -189,18 +249,26 @@ class _HomeScreenState extends State<HomeScreen> {
   /// enemies bullets going top to bottm but player and its bullets travel bottom to top
   /// Better approce to make it in same flow
 
-// player Bullet
+  /// `player Bullet`
   void bulletMaker() {
+    // if (playerBullets==null) return;
     if (playerBullets.length > 20) {
       playerBullets.removeRange(0, 10);
     }
     Bullet b = Bullet();
     // b.position = BVector(random.nextDouble() * 360, 0);
     b.position = BVector(player.dx, player.dy == size.height ? 10 : player.dy);
-    print(b.position.x);
-    b.radius = random.nextInt(20).clamp(4, 20).ceilToDouble();
-    playerBullets.add(b);
+    // print(b.position.x);
+    // b.radius = random.nextInt(20).clamp(4, 20).ceilToDouble();
+    b.radius = 5;
 
+    setState(() {
+      b.id = pBC++;
+      playerBullets.add(b);
+    });
+
+    //provider
+    // Provider.of<EnemyProvider>(context).addPlayerBullet(b);
     // print(" bullets ${playerBullets.length}");
   }
 
@@ -279,6 +347,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               )
               .toList(),
+
+          ///impliment provider
 
           ...enemyBullets
               .map((eblt) => Positioned(

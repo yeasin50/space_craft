@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer timerEBulletM;
   int numOfBullet = 1;
   var prevB_ID = 0;
-  Bullet eTestBullet = Bullet(id: 2, position: BVector(123, 123), radius: 30);
+  Bullet eTestBullet = Bullet(id: 2, position: BVector(166, 123), radius: 30);
 
   /// `Provider`
   // var eProvider;
@@ -75,16 +75,16 @@ class _HomeScreenState extends State<HomeScreen> {
       ///`Enemy`
 
       // Enemy maker sheduler
-      // timerEnemyMaker = Timer.periodic(Duration(seconds: 5), enemyGenarator);
+      timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
 
-      // timerEnemyMovement = Timer.periodic(
-      //     Duration(milliseconds: (fps * 500).floor()),
-      //     enemyFrameBuilde); //fps*bigNum = slower
+      timerEnemyMovement = Timer.periodic(
+          Duration(milliseconds: (fps * 500).floor()),
+          enemyFrameBuilde); //fps*bigNum = slower
 
       ///`enemies shootOut`
-      // timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
-      // timerEBulletM = Timer.periodic(
-      //     Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
+      timerEnemyShootOut = Timer.periodic(Duration(seconds: 3), enemiesBullet);
+      timerEBulletM = Timer.periodic(
+          Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
     });
   }
 
@@ -184,43 +184,49 @@ class _HomeScreenState extends State<HomeScreen> {
     playerBullets.forEach((pBullet) {
       setState(() {
         pBullet.position.y += 1;
-        print(pBullet.position.y);
-        // if(pBullet.position.d)
-        if (pBullet.position.y > size.height) {
-          playerBullets.remove(pBullet);
-        }
-
-        ///`Destroy Enemy`
-        if (prevPlayerBulletId != pBullet.id) {
-          checkEnemyPoss(pBullet);
-          prevPlayerBulletId = pBullet.id;
-        }
       });
+      print(pBullet.position.y);
+      // if(pBullet.position.d)
+      if (pBullet.position.y > size.height) {
+        playerBullets.remove(pBullet);
+      }
+
+      ///`Destroy Enemy`
+      checkEnemyPoss(pBullet);
+      //   if (prevPlayerBulletId != pBullet.id) {
+      //     checkEnemyPoss(pBullet);
+      //     prevPlayerBulletId = pBullet.id;
+      //   }
+
       // if (element.position.y > size.height - 10) timer.cancel();
     });
   }
 
   /// need to find an optimize way
   /// `destroy Enemy`
+  /// TODO:: Little shape/radius bugs here
   checkEnemyPoss(Bullet pb) {
-    dbg.log(
-        "${pb.position.x.toString()}  ${pb.position.y.toString()} $prevPlayerBulletId");
-    if (size.height - pb.position.y <
-            eTestBullet.position.y + eTestBullet.radius &&
-        size.height - pb.position.y >
-            eTestBullet.position.y - eTestBullet.radius &&
-        b.position.x < eTestBullet.position.x + eTestBullet.radius &&
-        b.position.x > eTestBullet.position.x - eTestBullet.radius) {
-      dbg.log("Hit");
-    }
+    // dbg.log(
+    //     "Epos: ${eTestBullet.position.y.toString()} B: ${(size.height - pb.position.y).ceil().toString()} $prevPlayerBulletId");
+    // if (size.height - pb.position.y <
+    //         eTestBullet.position.y + eTestBullet.radius/2 &&
+    //     size.height - pb.position.y >
+    //         eTestBullet.position.y - eTestBullet.radius/2 &&
+    //     pb.position.x < eTestBullet.position.x + eTestBullet.radius/2 &&
+    //     pb.position.x > eTestBullet.position.x - eTestBullet.radius/2
+    //     ) {
+    //   dbg.log("Hit");
+    //   setState(() => playerBullets.remove(pb));
+    // }
     enemies.forEach((enemy) {
-      if (size.height - pb.position.y < enemy.dy + enemy.height &&
-          size.height - pb.position.y > enemy.dy - enemy.height &&
-          b.position.x < enemy.dx + enemy.width &&
-          b.position.x > enemy.dx - enemy.width) {
+      if (size.height - pb.position.y < enemy.dy + enemy.height/2 &&
+          size.height - pb.position.y > enemy.dy - enemy.height/2 &&
+          pb.position.x < enemy.dx + enemy.width/2 &&
+          pb.position.x > enemy.dx - enemy.width/2) {
         dbg.log("same poss Destroy Enemy");
         setState(() {
           enemies.remove(enemy);
+          playerBullets.remove(pb);
         });
       }
     });
@@ -363,16 +369,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ))
               .toList(),
 
-          Positioned(
-            top: eTestBullet.position.y,
-            left: eTestBullet.position.x,
-            child: Container(
-              width: eTestBullet.radius * 2,
-              height: eTestBullet.radius * 2,
-              decoration:
-                  BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-            ),
-          )
+          // Positioned(
+          //   top: eTestBullet.position.y,
+          //   left: eTestBullet.position.x,
+          //   child: Container(
+          //     width: eTestBullet.radius,
+          //     height: eTestBullet.radius,
+          //     decoration:
+          //         BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+          //   ),
+          // )
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spaceCraft/home.dart';
+import 'package:spaceCraft/riveTest.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
-          body: HomeScreen(),
+          // body: HomeScreen(),
+          body: RiveTest(),
         
         ));
   }

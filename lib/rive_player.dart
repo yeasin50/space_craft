@@ -1,16 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
-class RiveTest extends StatefulWidget {
-  RiveTest({Key key}) : super(key: key);
+class PlayerRive extends StatefulWidget {
+  PlayerRive({Key key}) : super(key: key);
 
   @override
-  _RiveTestState createState() => _RiveTestState();
+  _PlayerRiveState createState() => _PlayerRiveState();
 }
 
-class _RiveTestState extends State<RiveTest>
+class _PlayerRiveState extends State<PlayerRive>
     with SingleTickerProviderStateMixin {
+  ///animation OnOFF
   void _togglePlay() {
     setState(() => _controller.isActive = !_controller.isActive);
   }
@@ -24,7 +27,7 @@ class _RiveTestState extends State<RiveTest>
   @override
   void initState() {
     super.initState();
-
+    log("Importing ship.....");
     rootBundle.load("assets/rive/aircraft.riv").then((data) async {
       final file = RiveFile();
       if (file.import(data)) {
@@ -40,22 +43,13 @@ class _RiveTestState extends State<RiveTest>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: Container(
-            height: 300,
-            child: _riveArtboard == null
-                ? const Text("Didn't found")
-                : AspectRatio(
-                    aspectRatio: 1, child: Rive(artboard: _riveArtboard)),
-          ),
-        ),
-        RaisedButton(
-          onPressed: _togglePlay,
-          child: isPlaying ? Text("Pause") : Text("PLay"),
-        )
-      ],
+    return Center(
+      child: _riveArtboard == null
+          ? const Text("Didn't found")
+          : AspectRatio(
+              aspectRatio: 1,
+              child: Rive(artboard: _riveArtboard),
+            ),
     );
   }
 }

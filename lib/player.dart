@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 class Player {
   double dx = 0, dy = 0;
-  double x = 0, y = 0;
+  double x = 0, y = 0;// temp 
+  //player body for custom paint
   double height = 50, width = 50;
 
   double bulletY = -10;

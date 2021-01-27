@@ -3,8 +3,7 @@ import 'dart:developer' as dbg;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:spaceCraft/provider/enemyProvider.dart';
+import 'package:spaceCraft/rive_player.dart';
 import 'package:spaceCraft/widget/bullet.dart';
 import 'package:spaceCraft/widget/playerShip.dart';
 
@@ -197,8 +196,6 @@ class _HomeScreenState extends State<HomeScreen> {
       //     checkEnemyPoss(pBullet);
       //     prevPlayerBulletId = pBullet.id;
       //   }
-
-      // if (element.position.y > size.height - 10) timer.cancel();
     });
   }
 
@@ -219,10 +216,10 @@ class _HomeScreenState extends State<HomeScreen> {
     //   setState(() => playerBullets.remove(pb));
     // }
     enemies.forEach((enemy) {
-      if (size.height - pb.position.y < enemy.dy + enemy.height/2 &&
-          size.height - pb.position.y > enemy.dy - enemy.height/2 &&
-          pb.position.x < enemy.dx + enemy.width/2 &&
-          pb.position.x > enemy.dx - enemy.width/2) {
+      if (size.height - pb.position.y < enemy.dy + enemy.height / 2 &&
+          size.height - pb.position.y > enemy.dy - enemy.height / 2 &&
+          pb.position.x < enemy.dx + enemy.width / 2 &&
+          pb.position.x > enemy.dx - enemy.width / 2) {
         dbg.log("same poss Destroy Enemy");
         setState(() {
           enemies.remove(enemy);
@@ -263,10 +260,12 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     Bullet b = Bullet();
     // b.position = BVector(random.nextDouble() * 360, 0);
-    b.position = BVector(player.dx, player.dy == size.height ? 10 : player.dy);
+    b.position =
+        BVector(player.dx + 32, player.dy == size.height ? 50 : player.dy + 50);
     // print(b.position.x);
     // b.radius = random.nextInt(20).clamp(4, 20).ceilToDouble();
     b.radius = 5;
+    b.color = Colors.yellow;
 
     setState(() {
       b.id = pBC++;
@@ -309,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Container buildContainer() {
     return Container(
-      color: Colors.blue.shade100,
+      color: Colors.black38,
       key: _rootSCRnKey,
       child: Stack(
         children: <Widget>[
@@ -317,8 +316,13 @@ class _HomeScreenState extends State<HomeScreen> {
           Positioned(
             bottom: player.dy == size.height ? 10 : player.dy,
             left: player.dx,
-            child: CustomPaint(
-              painter: PlayerShip(player),
+            // child: CustomPaint(
+            //   painter: PlayerShip(player),
+            // ),
+            child: Container(
+              height: 70,
+              width: 70,
+              child: PlayerRive(),
             ),
           ),
 
@@ -329,11 +333,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottom: bl.position.y,
                   left: bl.position.x,
                   child: Container(
-                    width: bl.radius,
-                    height: bl.radius,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.black),
-                  ),
+                      width: bl.radius,
+                      height: bl.radius,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: bl.color,
+                      )),
                 ),
               )
               .toList(),

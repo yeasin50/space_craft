@@ -7,7 +7,9 @@ import 'package:spaceCraft/rive_player.dart';
 import 'package:spaceCraft/widget/bullet.dart';
 import 'package:spaceCraft/widget/playerShip.dart';
 
-import 'player.dart';
+import 'widget/player.dart';
+
+import './widget/sound_manager.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -73,17 +75,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
       ///`Enemy`
 
-      // Enemy maker sheduler
-      timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
+      // // Enemy maker sheduler
+      // timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
 
-      timerEnemyMovement = Timer.periodic(
-          Duration(milliseconds: (fps * 500).floor()),
-          enemyFrameBuilde); //fps*bigNum = slower
-
-      ///`enemies shootOut`
-      timerEnemyShootOut = Timer.periodic(Duration(seconds: 3), enemiesBullet);
-      timerEBulletM = Timer.periodic(
-          Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
+      // timerEnemyMovement = Timer.periodic(
+      //     Duration(milliseconds: (fps * 500).floor()),
+      //     enemyFrameBuilde); //fps*bigNum = slower
+      // ///`enemies shootOut`
+      // timerEnemyShootOut = Timer.periodic(Duration(seconds: 3), enemiesBullet);
+      // timerEBulletM = Timer.periodic(
+      //     Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
     });
   }
 
@@ -135,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  //enemies bullets movement
+  ///`enemies bullets movement`
   eneBulletsMov(Timer timer) {
     if (enemyBullets.length > 100) {
       enemyBullets.removeRange(0, 30);
@@ -203,6 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// `destroy Enemy`
   /// TODO:: Little shape/radius bugs here
   checkEnemyPoss(Bullet pb) {
+    ///`Test Object`
     // dbg.log(
     //     "Epos: ${eTestBullet.position.y.toString()} B: ${(size.height - pb.position.y).ceil().toString()} $prevPlayerBulletId");
     // if (size.height - pb.position.y <
@@ -253,11 +255,13 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Better approce to make it in same flow
 
   /// `player Bullet`
-  void bulletMaker() {
+  void bulletMaker() async {
     // if (playerBullets==null) return;
     if (playerBullets.length > 20) {
       playerBullets.removeRange(0, 10);
     }
+
+    ///TODO:: `player Bullet properties`
     Bullet b = Bullet();
     // b.position = BVector(random.nextDouble() * 360, 0);
     b.position =
@@ -272,9 +276,8 @@ class _HomeScreenState extends State<HomeScreen> {
       playerBullets.add(b);
     });
 
-    //provider
-    // Provider.of<EnemyProvider>(context).addPlayerBullet(b);
-    // print(" bullets ${playerBullets.length}");
+    /// player bullet sound
+    SoundManager.playLuger();
   }
 
   @override
@@ -292,12 +295,12 @@ class _HomeScreenState extends State<HomeScreen> {
             posY <= player.height / 2) {
           ///`we cant move in Y axix` outScreen
         } else {
-          updatePlayerPosition(player.dx, size.height - posY);
+          updatePlayerPosition(player.dx, size.height - posY- player.height/2);
         }
         if (posX >= size.width - player.width / 2 || posX <= player.width / 2) {
           ///`we cant move in X axix` outScreen
         } else {
-          updatePlayerPosition(posX, player.dy);
+          updatePlayerPosition(posX-player.width/2, player.dy);
         }
 
         // if (inScreen) updatePlayer(posX, size.height - posY);
@@ -308,6 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Container buildContainer() {
     return Container(
+      ///TODO:: Background
       color: Colors.black38,
       key: _rootSCRnKey,
       child: Stack(

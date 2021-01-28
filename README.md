@@ -3,6 +3,8 @@
  A simple game, wanna impliment in flutter. 
  
 
+[Audio manager usung assets_audio_player](https://pub.dev/packages/assets_audio_player/example)
+
 ## Getting Started
 
 [FireBase dep. ](https://firebase.flutter.dev/docs/migration/)

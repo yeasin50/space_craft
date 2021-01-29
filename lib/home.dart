@@ -3,13 +3,15 @@ import 'dart:developer' as dbg;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spaceCraft/GameManager/ScoreManager.dart';
 import 'package:spaceCraft/rive_player.dart';
 import 'package:spaceCraft/widget/bullet.dart';
 import 'package:spaceCraft/widget/playerShip.dart';
 
 import 'widget/player.dart';
 
-import './widget/sound_manager.dart';
+import 'GameManager/sound_manager.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -222,11 +224,13 @@ class _HomeScreenState extends State<HomeScreen> {
           size.height - pb.position.y > enemy.dy - enemy.height / 2 &&
           pb.position.x < enemy.dx + enemy.width / 2 &&
           pb.position.x > enemy.dx - enemy.width / 2) {
-        dbg.log("same poss Destroy Enemy");
+        dbg.log(" Destroy Enemy On bullet");
         setState(() {
           enemies.remove(enemy);
           playerBullets.remove(pb);
         });
+
+        Provider.of<ScoreManager>(context).incrementScore();
       }
     });
   }
@@ -295,12 +299,13 @@ class _HomeScreenState extends State<HomeScreen> {
             posY <= player.height / 2) {
           ///`we cant move in Y axix` outScreen
         } else {
-          updatePlayerPosition(player.dx, size.height - posY- player.height/2);
+          updatePlayerPosition(
+              player.dx, size.height - posY - player.height / 2);
         }
         if (posX >= size.width - player.width / 2 || posX <= player.width / 2) {
           ///`we cant move in X axix` outScreen
         } else {
-          updatePlayerPosition(posX-player.width/2, player.dy);
+          updatePlayerPosition(posX - player.width / 2, player.dy);
         }
 
         // if (inScreen) updatePlayer(posX, size.height - posY);

@@ -3,6 +3,8 @@
  A simple game, wanna impliment in flutter. 
  
 
+should I implement provider for this simple like this manager
+
 [Audio manager usung assets_audio_player](https://pub.dev/packages/assets_audio_player/example)
 
 ## Getting Started

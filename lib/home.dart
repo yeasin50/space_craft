@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spaceCraft/GameManager/ScoreManager.dart';
+import 'package:spaceCraft/GameManager/playerManager.dart';
 import 'package:spaceCraft/rive_player.dart';
 import 'package:spaceCraft/widget/bullet.dart';
 import 'package:spaceCraft/widget/playerShip.dart';
@@ -165,9 +165,11 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         prevB_ID = b.id;
         enemyBullets.remove(b);
-
-        ///Provider
       });
+      
+      ///Provider
+      Provider.of<PlayerManager>(context)
+          .damageHealth(DamageOnCollision.bullet);
     }
   }
 
@@ -229,8 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
           enemies.remove(enemy);
           playerBullets.remove(pb);
         });
-
-        Provider.of<ScoreManager>(context).incrementScore();
+        Provider.of<PlayerManager>(context).incrementScore();
       }
     });
   }

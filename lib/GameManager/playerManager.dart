@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 enum DamageOnCollision {
@@ -22,10 +24,11 @@ class PlayerManager with ChangeNotifier {
   get live => _live;
   get maxLive => _maxLive;
 
-  
   //Normal ship destroy
+  //FIXME:: fixe score update 
   incrementScore() {
     _score += _shipPerDestroy;
+    log(_score.toString());
     notifyListeners();
   }
 

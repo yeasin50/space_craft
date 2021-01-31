@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:spaceCraft/home.dart';
 import 'package:spaceCraft/rive_player.dart';
 import 'package:spaceCraft/widget/explosion.dart';
-import 'package:spaceCraft/widget/header.dart';
+import 'package:spaceCraft/widget/headerLive.dart';
+import 'package:spaceCraft/widget/headerScore.dart';
 
 import 'configs/size.dart';
 
@@ -21,9 +22,11 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
-          // body: HomeScreen(),
-          // body: Header(),
-          body: Explosion(),
+          
+          body: HomeScreen(),
+          // body: HeaderScore(),
+          // body: HeaderLive(),
+          // body: Explosion(),
           // body: PlayerRive(),
           // body: Tester(),
         ));

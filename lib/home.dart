@@ -7,10 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
 import 'package:spaceCraft/configs/size.dart';
 import 'package:spaceCraft/rive_player.dart';
-import 'package:spaceCraft/widget/bullet.dart';
+import 'package:spaceCraft/widget/headerLive.dart';
+import 'package:spaceCraft/widget/headerScore.dart';
+import 'package:spaceCraft/widget/models/bullet.dart';
 import 'package:spaceCraft/widget/playerShip.dart';
 
-import 'widget/player.dart';
+import 'widget/models/player.dart';
 
 import 'GameManager/sound_manager.dart';
 
@@ -22,8 +24,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   final GlobalKey _rootSCRnKey = GlobalKey();
   Player player = Player(dx: 0, dy: 0);
   Size size = Size(0, 0);
@@ -81,15 +81,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ///`Enemy`
 
       // // Enemy maker sheduler
-      // timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
+      timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
 
-      // timerEnemyMovement = Timer.periodic(
-      //     Duration(milliseconds: (fps * 500).floor()),
-      //     enemyFrameBuilde); //fps*bigNum = slower
+      timerEnemyMovement = Timer.periodic(
+          Duration(milliseconds: (fps * 500).floor()),
+          enemyFrameBuilde); //fps*bigNum = slower
       // ///`enemies shootOut`
-      // timerEnemyShootOut = Timer.periodic(Duration(seconds: 3), enemiesBullet);
-      // timerEBulletM = Timer.periodic(
-      //     Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
+      timerEnemyShootOut = Timer.periodic(Duration(seconds: 3), enemiesBullet);
+      timerEBulletM = Timer.periodic(
+          Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
     });
   }
 
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
         prevB_ID = b.id;
         enemyBullets.remove(b);
       });
-      
+
       ///Provider
       Provider.of<PlayerManager>(context)
           .damageHealth(DamageOnCollision.bullet);
@@ -187,12 +187,11 @@ class _HomeScreenState extends State<HomeScreen> {
     // b.position.x += 10;
 
     if (playerBullets.length > 20) playerBullets.removeRange(0, 5);
-
+    setState(() {});
     playerBullets.forEach((pBullet) {
-      setState(() {
-        pBullet.position.y += 1;
-      });
-      print(pBullet.position.y);
+      if (pBullet != null) pBullet.position.y += 1;
+
+      // print(pBullet.position.y);
       // if(pBullet.position.d)
       if (pBullet.position.y > size.height) {
         playerBullets.remove(pBullet);
@@ -234,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
           enemies.remove(enemy);
           playerBullets.remove(pb);
         });
-        Provider.of<PlayerManager>(context).incrementScore();
+        Provider.of<PlayerManager>(context, listen: true).incrementScore();
       }
     });
   }
@@ -290,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+    SizeConfig().init(context);
     // log("Player dx : ${player.dx}  dy : ${player.dy}");
     return GestureDetector(
       onPanUpdate: (details) {
@@ -326,6 +325,16 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _rootSCRnKey,
       child: Stack(
         children: <Widget>[
+          /// score and live
+          Positioned(
+            top: 10,
+            child: HeaderScore(),
+          ),
+          Positioned(
+            right: 10,
+            child: HeaderLive(),
+          ),
+
           ///`Player`
           Positioned(
             bottom: player.dy == size.height ? 10 : player.dy,

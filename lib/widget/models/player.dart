@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class Player {
   double dx = 0, dy = 0;
-  double x = 0, y = 0;// temp 
+  double _x = 0, _y = 0;// temp forOffset
   //player body for custom paint
   double height = 50, width = 50;
 
@@ -10,7 +10,7 @@ class Player {
   Player({this.dx, this.dy});
 
   get ship => Rect.fromCenter(
-        center: Offset(x, y),
+        center: Offset(_x, _y),
         height: height,
         width: width,
       );

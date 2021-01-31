@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'player.dart';
+import 'models/player.dart';
 
 class PlayerShip extends CustomPainter {
   final Player player;

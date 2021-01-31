@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
+import 'package:spaceCraft/configs/size.dart';
 import 'package:spaceCraft/rive_player.dart';
 import 'package:spaceCraft/widget/bullet.dart';
 import 'package:spaceCraft/widget/playerShip.dart';
@@ -21,6 +22,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
   final GlobalKey _rootSCRnKey = GlobalKey();
   Player player = Player(dx: 0, dy: 0);
   Size size = Size(0, 0);
@@ -287,6 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     // log("Player dx : ${player.dx}  dy : ${player.dy}");
     return GestureDetector(
       onPanUpdate: (details) {

@@ -6,10 +6,10 @@ enum DamageOnCollision {
 }
 
 class PlayerManager with ChangeNotifier {
-  
   int _score = 0;
   int _health = 100;
-  int _live = 3;
+  int _live = 2;
+  int _maxLive = 3;
 
   final _shipPerDestroy = 1;
   final _bossShipDestroy = 5;
@@ -17,11 +17,12 @@ class PlayerManager with ChangeNotifier {
   final _damagePerBullet = 10;
   final _damagePerShip = 30;
 
-
   get score => _score;
   get health => _health;
   get live => _live;
+  get maxLive => _maxLive;
 
+  
   //Normal ship destroy
   incrementScore() {
     _score += _shipPerDestroy;

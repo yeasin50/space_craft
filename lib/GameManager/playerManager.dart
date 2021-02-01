@@ -9,7 +9,7 @@ enum DamageOnCollision {
 
 class PlayerManager with ChangeNotifier {
   int _score = 0;
-  int _health = 100;
+  int _health = 80;
   int _live = 2;
   int _maxLive = 3;
 
@@ -25,10 +25,30 @@ class PlayerManager with ChangeNotifier {
   get maxLive => _maxLive;
 
   //Normal ship destroy
-  //FIXME:: fixe score update 
+  //FIXME:: fixe score update
   incrementScore() {
     _score += _shipPerDestroy;
     log(_score.toString());
+    notifyListeners();
+  }
+
+  decrementScore() {
+    _score -= _shipPerDestroy;
+    notifyListeners();
+  }
+
+  increaseLive() {
+    _live += 1;
+    notifyListeners();
+  }
+
+  increaseHealth() {
+    _health += 1;
+    if (_health > 100 && _live < _maxLive) {
+      _live += 1;
+      _health = 0;
+    }
+    log(" health: ${_health.toString()}");
     notifyListeners();
   }
 

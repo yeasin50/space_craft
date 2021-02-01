@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
 import 'package:spaceCraft/configs/size.dart';
-import 'package:spaceCraft/rive_player.dart';
+import 'package:spaceCraft/widget/rive_player.dart';
 import 'package:spaceCraft/widget/headerLive.dart';
 import 'package:spaceCraft/widget/headerScore.dart';
+import 'package:spaceCraft/widget/health_meter.dart';
 import 'package:spaceCraft/widget/models/bullet.dart';
-import 'package:spaceCraft/widget/playerShip.dart';
 
 import 'widget/models/player.dart';
 
@@ -170,9 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
         enemyBullets.remove(b);
       });
 
-      ///Provider
-      Provider.of<PlayerManager>(context)
-          .damageHealth(DamageOnCollision.bullet);
+      damageHealth();
     }
   }
 
@@ -233,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
           enemies.remove(enemy);
           playerBullets.remove(pb);
         });
-        Provider.of<PlayerManager>(context, listen: true).incrementScore();
+        addScore();
       }
     });
   }
@@ -287,6 +285,24 @@ class _HomeScreenState extends State<HomeScreen> {
     SoundManager.playLuger();
   }
 
+  /// `Score Managment`
+  addScore() {
+    Provider.of<PlayerManager>(context, listen: false).incrementScore();
+  }
+
+  minScore() {
+    Provider.of<PlayerManager>(context, listen: false).decrementScore();
+  }
+
+  increaseHealth() {
+    Provider.of<PlayerManager>(context, listen: false).increaseHealth();
+  }
+
+  damageHealth() {
+    Provider.of<PlayerManager>(context, listen: false)
+        .damageHealth(DamageOnCollision.bullet);
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -328,8 +344,16 @@ class _HomeScreenState extends State<HomeScreen> {
           /// score and live
           Positioned(
             top: 10,
+            left: 10,
             child: HeaderScore(),
           ),
+          Positioned(
+            top: getProportionateScreenHeight(20),
+            left: getProportionateScreenWidth(80),
+            right: getProportionateScreenHeight(120),
+            child: HealthMeter(),
+          ),
+
           Positioned(
             right: 10,
             child: HeaderLive(),

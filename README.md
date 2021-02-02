@@ -7,6 +7,8 @@ should I implement provider for this simple like this manager
 
 [Audio manager usung assets_audio_player](https://pub.dev/packages/assets_audio_player/example)
 
+
+## ⚠ For game you should use [Flame package](https://pub.dev/packages/flame)
 ## Getting Started
 
 [FireBase dep. ](https://firebase.flutter.dev/docs/migration/)

@@ -1,11 +1,19 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:spaceCraft/widget/models/particle.dart';
 
 class Explosion extends StatefulWidget {
   final Color color;
-  Explosion({Key key, this.color}) : super(key: key);
+  final PVector initPosition;
+  static bool isExpl = false;
+  static Timer timer;
+  Explosion({
+    Key key,
+    this.color,
+    this.initPosition,
+  }) : super(key: key);
 
   @override
   _ExplosionState createState() => _ExplosionState();
@@ -14,11 +22,10 @@ class Explosion extends StatefulWidget {
 class _ExplosionState extends State<Explosion> {
   var _key = GlobalKey();
   Size _size = Size.zero;
-
   double heigth = kheigth;
   double width = kwidth;
   double _brustMovement = kbrustMovement;
-  int _brustSpeed = kbrustSpeed; // frameBuilder
+  int _brustDuarationMili = kbrustDuration; // frameBuilder
 
   int _amountOfParticle = kamountOfParticle;
   List<Particle> particles = [];
@@ -42,8 +49,10 @@ class _ExplosionState extends State<Explosion> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
     createParticles();
-    Timer.periodic(Duration(milliseconds: _brustSpeed), frameBuilder);
+     Timer.periodic(
+        Duration(milliseconds: _brustDuarationMili), frameBuilder);
   }
+
 
   _afterLayout(_) {
     _getSizes();
@@ -79,41 +88,39 @@ class _ExplosionState extends State<Explosion> {
     if (particles[7] != null) particles[7].position.y += _brustMovement * .7;
 
     //target the corner particle to stop Timer
-    if (particles[4].position.x > 55) {
+    if (particles[4].position.x > 45) {
       log("Stop and rm particles");
       timer.cancel();
       particles.removeRange(0, _amountOfParticle);
+      Explosion.isExpl = false;
     }
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      height: heigth,
+      width: width,
+      child: Stack(
+        key: _key,
         children: <Widget>[
-          Container(
-              height: heigth,
-              width: width,
-              child: Stack(
-                key: _key,
-                children: <Widget>[
-                  ...particles
-                      .map(
-                        (pt) => Positioned(
-                          top: _size.height / 2 - pt.position.y,
-                          right: _size.width / 2 - pt.position.x,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: widget.color),
-                            height: pt.radius,
-                            width: pt.radius,
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ],
-              )),
-        ]);
+          ...particles
+              .map(
+                (pt) => Positioned(
+                  top: _size.height / 2 - pt.position.y,
+                  right: _size.width / 2 - pt.position.x,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: widget.color),
+                    height: pt.radius,
+                    width: pt.radius,
+                  ),
+                ),
+              )
+              .toList(),
+        ],
+      ),
+    );
   }
 }

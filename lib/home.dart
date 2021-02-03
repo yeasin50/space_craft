@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
 import 'package:spaceCraft/configs/size.dart';
+import 'package:spaceCraft/widget/explosion.dart';
+import 'package:spaceCraft/widget/models/demo.dart';
+import 'package:spaceCraft/widget/models/particle.dart';
 import 'package:spaceCraft/widget/rive_player.dart';
 import 'package:spaceCraft/widget/headerLive.dart';
 import 'package:spaceCraft/widget/headerScore.dart';
@@ -18,6 +21,9 @@ import 'GameManager/sound_manager.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
+
+  /// `Explosion on Collision`
+  List<Demo> explosions = [];
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -48,11 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer timerEBulletM;
   int numOfBullet = 1;
   var prevB_ID = 0;
-  Bullet eTestBullet = Bullet(id: 2, position: BVector(166, 123), radius: 30);
+  Bullet eTestBullet = Bullet(id: 2, position: BVector(166, 123), radius: 40);
+  Bullet eTestBullet2 = Bullet(id: 4, position: BVector(286, 143), radius: 30);
 
-  /// `Provider`
-  // var eProvider;
+  // Demo demoEx = Demo(
+  //   text: Text('C'),
+  // );
 
+  Explosion ex;
+
+  ///`Game engine`
   @override
   void initState() {
     super.initState();
@@ -79,18 +90,21 @@ class _HomeScreenState extends State<HomeScreen> {
           Duration(milliseconds: (100 * fps).floor()), frameBuild);
 
       ///`Enemy`
-
-      // // Enemy maker sheduler
-      timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
-
-      timerEnemyMovement = Timer.periodic(
-          Duration(milliseconds: (fps * 500).floor()),
-          enemyFrameBuilde); //fps*bigNum = slower
-      // ///`enemies shootOut`
-      timerEnemyShootOut = Timer.periodic(Duration(seconds: 3), enemiesBullet);
-      timerEBulletM = Timer.periodic(
-          Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
+      // enemySchedular();
     });
+  }
+
+  /// `Enemy maker sheduler`
+  enemySchedular() {
+    timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
+
+    timerEnemyMovement = Timer.periodic(
+        Duration(milliseconds: (fps * 500).floor()),
+        enemyFrameBuilde); //fps*bigNum = slower
+    // ///`enemies shootOut`
+    timerEnemyShootOut = Timer.periodic(Duration(seconds: 3), enemiesBullet);
+    timerEBulletM = Timer.periodic(
+        Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
   }
 
   ///`Ènemies maker`
@@ -205,22 +219,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// need to find an optimize way
-  /// `destroy Enemy`
+  /// `destroy Enemy and Make explosions`
   /// TODO:: Little shape/radius bugs here
   checkEnemyPoss(Bullet pb) {
     ///`Test Object`
-    // dbg.log(
-    //     "Epos: ${eTestBullet.position.y.toString()} B: ${(size.height - pb.position.y).ceil().toString()} $prevPlayerBulletId");
-    // if (size.height - pb.position.y <
-    //         eTestBullet.position.y + eTestBullet.radius/2 &&
-    //     size.height - pb.position.y >
-    //         eTestBullet.position.y - eTestBullet.radius/2 &&
-    //     pb.position.x < eTestBullet.position.x + eTestBullet.radius/2 &&
-    //     pb.position.x > eTestBullet.position.x - eTestBullet.radius/2
-    //     ) {
-    //   dbg.log("Hit");
-    //   setState(() => playerBullets.remove(pb));
-    // }
+    testObj(pb);
+
     enemies.forEach((enemy) {
       if (size.height - pb.position.y < enemy.dy + enemy.height / 2 &&
           size.height - pb.position.y > enemy.dy - enemy.height / 2 &&
@@ -230,10 +234,54 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           enemies.remove(enemy);
           playerBullets.remove(pb);
+
+          ///`Explosion` list makes laggy
+          brust(PVector(enemy.dx, enemy.dy));
+
+          // if (widget.explosions.isNotEmpty && widget.explosions.length > 4)
+          //   widget.explosions.removeRange(0, 2);
+          // dbg.log(" ex: ${widget.explosions.length}");
         });
         addScore();
       }
     });
+  }
+
+  ///`Explosion` list makes laggy
+  brust(PVector pVector) {
+    ex = null;
+    ex = Explosion(
+      color: Colors.yellow,
+      initPosition: pVector,
+    );
+    Explosion.isExpl = true;
+  }
+
+  testObj(Bullet pb) {
+    ///`Test Object`
+    // dbg.log(
+    //     "Epos: ${eTestBullet.position.y.toString()} B: ${(size.height - pb.position.y).ceil().toString()} $prevPlayerBulletId");
+    if (size.height - pb.position.y <
+            eTestBullet.position.y + eTestBullet.radius / 2 &&
+        size.height - pb.position.y >
+            eTestBullet.position.y - eTestBullet.radius / 2 &&
+        pb.position.x < eTestBullet.position.x + eTestBullet.radius / 2 &&
+        pb.position.x > eTestBullet.position.x - eTestBullet.radius / 2) {
+      dbg.log("Hit 1");
+      brust(PVector( eTestBullet.position.x,  eTestBullet.position.y));
+      setState(() => playerBullets.remove(pb));
+    }
+
+    if (size.height - pb.position.y <
+            eTestBullet2.position.y + eTestBullet2.radius / 2 &&
+        size.height - pb.position.y >
+            eTestBullet2.position.y - eTestBullet2.radius / 2 &&
+        pb.position.x < eTestBullet2.position.x + eTestBullet2.radius / 2 &&
+        pb.position.x > eTestBullet2.position.x - eTestBullet2.radius / 2) {
+      dbg.log("Hit 2");
+      brust(PVector( eTestBullet2.position.x,  eTestBullet2.position.y));
+      setState(() => playerBullets.remove(pb));
+    }
   }
 
   @override
@@ -421,16 +469,46 @@ class _HomeScreenState extends State<HomeScreen> {
                   ))
               .toList(),
 
-          // Positioned(
-          //   top: eTestBullet.position.y,
-          //   left: eTestBullet.position.x,
-          //   child: Container(
-          //     width: eTestBullet.radius,
-          //     height: eTestBullet.radius,
-          //     decoration:
-          //         BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-          //   ),
-          // )
+          /// explosion on enemy destroy
+          // if (widget.explosions != null)
+          //   ...widget.explosions
+          //       .map(
+          //         (e) => Positioned(
+          //           top: e.initPosition.y,
+          //           left: e.initPosition.x,
+          //           child: e,
+          //         ),
+          //       )
+          //       .toList(),
+
+          /// `Single Explosion`
+          if (Explosion.isExpl)
+            Positioned(
+              top: ex.initPosition.y,
+              left: ex.initPosition.x,
+              child: ex,
+            ),
+
+          Positioned(
+            top: eTestBullet.position.y,
+            left: eTestBullet.position.x,
+            child: Container(
+              width: eTestBullet.radius,
+              height: eTestBullet.radius,
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+            ),
+          ),
+          Positioned(
+            top: eTestBullet2.position.y,
+            left: eTestBullet2.position.x,
+            child: Container(
+              width: eTestBullet2.radius,
+              height: eTestBullet2.radius,
+              decoration:
+                  BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+            ),
+          ),
         ],
       ),
     );

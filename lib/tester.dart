@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
+import 'package:spaceCraft/widget/explosion.dart';
 import 'package:spaceCraft/widget/headerLive.dart';
 import 'package:spaceCraft/widget/headerScore.dart';
 import 'package:spaceCraft/widget/health_meter.dart';
+import 'package:spaceCraft/widget/models/particle.dart';
+
+import 'widget/models/demo.dart';
 
 class Tester extends StatefulWidget {
   Tester({Key key}) : super(key: key);
@@ -34,38 +38,49 @@ class _TesterState extends State<Tester> {
     Provider.of<PlayerManager>(context, listen: false).increaseHealth();
   }
 
+  initCollide() {}
+
+  List<Explosion> explosions = [];
+  List<Demo> demo = [];
+
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: [
-            HeaderScore(),
-            HealthMeter(),
-            HeaderLive(),
-          ],
+  void initState() {
+    super.initState();
+    setState(
+      () => demo = [
+        Demo(
+          text: Text("A"),
+          initPosition: PVector(200, 200),
         ),
-        RaisedButton(
-          onPressed: addScore,
-          child: Text("Add Score"),
+        Demo(
+          text: Text("b"),
+          initPosition: PVector(100, 140),
         ),
-        RaisedButton(
-          onPressed: minScore,
-          child: Text("del Score"),
+         Demo(
+          text: Text("C"),
+          initPosition: PVector(10, 140),
         ),
-        RaisedButton(
-          onPressed: addLive,
-          child: Text("Add live"),
+         Demo(
+          text: Text("D"),
+          initPosition: PVector(0, 140),
         ),
-        RaisedButton(
-          onPressed: rmLive,
-          child: Text("rm live"),
-        ),
-         RaisedButton(
-          onPressed: addHealth,
-          child: Text("add health"),
-        )
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+      ...explosions
+          .map(
+            (exp) => Positioned(
+              top: exp.initPosition.y,
+              right: exp.initPosition.x,
+              child:  exp ,
+            ),
+          )
+          .toList(),
+    ]);
   }
 }

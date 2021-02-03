@@ -7,8 +7,8 @@ class PVector {
 
 const double kheigth = 100;
 const double kwidth = 100;
-const double kbrustMovement = 1;
-const int kbrustSpeed = 100; // frameBuilder
+const double kbrustMovement = 5;
+const int kbrustDuration = 100; // frameBuilder
 const int kamountOfParticle = 8; // dont change it or edit frameBuilder
 
 

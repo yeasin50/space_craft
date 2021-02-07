@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
 import 'package:spaceCraft/home.dart';
 import 'package:spaceCraft/tester.dart';
+import 'package:spaceCraft/widget/rive_player.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
           ),
           home: Scaffold(
             body: HomeScreen(),
-            // body: Tester(),
+            // body: PlayerRive(),
             // body: HeaderLive(),
             // body: Explosion(),
             // body: PlayerRive(),

@@ -3,13 +3,27 @@
 // import 'dart:math';
 
 // import 'package:flutter/material.dart';
-// import 'package:spaceCraft/widget/bullet.dart';
-// import 'package:spaceCraft/widget/playerShip.dart';
+// import 'package:provider/provider.dart';
+// import 'package:spaceCraft/GameManager/playerManager.dart';
+// import 'package:spaceCraft/configs/size.dart';
+// import 'package:spaceCraft/widget/explosion.dart';
+// import 'package:spaceCraft/widget/models/demo.dart';
+// import 'package:spaceCraft/widget/models/particle.dart';
+// import 'package:spaceCraft/widget/rive_player.dart';
+// import 'package:spaceCraft/widget/headerLive.dart';
+// import 'package:spaceCraft/widget/headerScore.dart';
+// import 'package:spaceCraft/widget/health_meter.dart';
+// import 'package:spaceCraft/widget/models/bullet.dart';
 
-// import 'player.dart';
+// import 'widget/models/player.dart';
+
+// import 'GameManager/sound_manager.dart';
 
 // class HomeScreen extends StatefulWidget {
 //   HomeScreen({Key key}) : super(key: key);
+
+//   /// `Explosion on Collision`
+//   List<Demo> explosions = [];
 
 //   @override
 //   _HomeScreenState createState() => _HomeScreenState();
@@ -25,8 +39,12 @@
 //   Timer timerBulletMove, timerBulletmaker;
 //   final fps = 1 / 24;
 //   Bullet b = Bullet();
-
 //   final Random random = Random();
+
+//   /// enemy destroyer
+
+//   var prevPlayerBulletId = 0;
+//   int pBC = 1;
 
 //   ///`Enemy`
 //   Player enemy = Player(dx: 10, dy: 10);
@@ -36,8 +54,16 @@
 //   Timer timerEBulletM;
 //   int numOfBullet = 1;
 //   var prevB_ID = 0;
-//   Bullet eTestBullet = Bullet(id: 2, position: BVector(123, 123), radius: 30);
+//   Bullet eTestBullet = Bullet(id: 2, position: BVector(166, 123), radius: 40);
+//   Bullet eTestBullet2 = Bullet(id: 4, position: BVector(286, 143), radius: 30);
 
+//   // Demo demoEx = Demo(
+//   //   text: Text('C'),
+//   // );
+
+//   Explosion ex;
+
+//   ///`Game engine`
 //   @override
 //   void initState() {
 //     super.initState();
@@ -45,6 +71,9 @@
 //     b.radius = 10;
 
 //     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+//       /// init provider
+//       // eProvider = Provider.of<EnemyProvider>(context);
+
 //       size = _rootSCRnKey.currentContext.size;
 //       print("size  $size");
 //       setState(() {
@@ -55,25 +84,27 @@
 //       boxSize = Rect.fromLTRB(0, 0, size.width, size.height);
 
 //       ///` bullet per second player`
-//       // timerBulletmaker =
-//       //     Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
-//       // timerBulletMove = Timer.periodic(
-//       //     Duration(milliseconds: (100 * fps).floor()), frameBuild);
+//       timerBulletmaker =
+//           Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
+//       timerBulletMove = Timer.periodic(
+//           Duration(milliseconds: (100 * fps).floor()), frameBuild);
 
 //       ///`Enemy`
-
-//       // Enemy maker sheduler
-//       timerEnemyMaker = Timer.periodic(Duration(seconds: 5), enemyGenarator);
-
-//       timerEnemyMovement = Timer.periodic(
-//           Duration(milliseconds: (fps * 500).floor()),
-//           enemyFrameBuilde); //fps*bigNum = slower
-
-//       ///`enemies shootOut`
-//       timerEnemyShootOut = Timer.periodic(Duration(seconds: 4), enemiesBullet);
-//       timerEBulletM = Timer.periodic(
-//           Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
+//       // enemySchedular();
 //     });
+//   }
+
+//   /// `Enemy maker sheduler`
+//   enemySchedular() {
+//     timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
+
+//     timerEnemyMovement = Timer.periodic(
+//         Duration(milliseconds: (fps * 500).floor()),
+//         enemyFrameBuilde); //fps*bigNum = slower
+//     // ///`enemies shootOut`
+//     timerEnemyShootOut = Timer.periodic(Duration(seconds: 3), enemiesBullet);
+//     timerEBulletM = Timer.periodic(
+//         Duration(milliseconds: (fps * 200).floor()), eneBulletsMov);
 //   }
 
 //   ///`Ènemies maker`
@@ -83,7 +114,11 @@
 //       var x = random.nextDouble().clamp(.1, .9) * (size.width);
 //       var y = random.nextDouble() * (-300.0);
 //       Player player = Player(dx: x, dy: y);
+
 //       enemies.add(player);
+
+//       ///TODO:: using provider
+//       // eProvider.addEnemy(player);
 //     }
 //   }
 
@@ -101,7 +136,7 @@
 //     setState(() {});
 //   }
 
-//   /// `enemies bullets`
+//   /// `enemies bullets Maker`
 //   enemiesBullet(Timer timer) {
 //     enemies.forEach((e) {
 //       // dbg.log(e.dy.toString());
@@ -113,11 +148,14 @@
 //         b.radius = 5;
 //         b.mass = 10; //later workOn
 //         enemyBullets.add(b);
+
+//         ///TODO:: using provider
+//         // Provider.of<EnemyProvider>(context).addEBullet(b);
 //       }
 //     });
 //   }
 
-//   //enemies bullets movement
+//   ///`enemies bullets movement`
 //   eneBulletsMov(Timer timer) {
 //     if (enemyBullets.length > 100) {
 //       enemyBullets.removeRange(0, 30);
@@ -143,8 +181,10 @@
 //       print("player Damage: bullet prev: $prevB_ID C: ${b.id}");
 //       setState(() {
 //         prevB_ID = b.id;
-//         enemies.remove(b);
+//         enemyBullets.remove(b);
 //       });
+
+//       damageHealth();
 //     }
 //   }
 
@@ -153,17 +193,95 @@
 //     bulletMaker();
 //   }
 
-//   ////`For Player`
+//   ////`For Player `
+//   ///Bullets move
 //   frameBuild(Timer timer) {
-//     b.position.x += 10;
-//     if (playerBullets.length > 20) playerBullets.removeRange(0, 5);
-//     playerBullets.forEach((element) {
-//       element.position.y += 10;
+//     // b.position.x += 10;
 
-//       // if (element.position.y > size.height - 10) timer.cancel();
-//     });
+//     if (playerBullets.length > 20) playerBullets.removeRange(0, 5);
 //     setState(() {});
-//     print(b.position.y);
+//     playerBullets.forEach((pBullet) {
+//       if (pBullet != null) pBullet.position.y += 1;
+
+//       // print(pBullet.position.y);
+//       // if(pBullet.position.d)
+//       if (pBullet.position.y > size.height) {
+//         playerBullets.remove(pBullet);
+//       }
+
+//       ///`Destroy Enemy`
+//       checkEnemyPoss(pBullet);
+//       //   if (prevPlayerBulletId != pBullet.id) {
+//       //     checkEnemyPoss(pBullet);
+//       //     prevPlayerBulletId = pBullet.id;
+//       //   }
+//     });
+//   }
+
+//   /// need to find an optimize way
+//   /// `destroy Enemy and Make explosions`
+//   /// TODO:: Little shape/radius bugs here
+//   checkEnemyPoss(Bullet pb) {
+//     ///`Test Object`
+//     testObj(pb);
+
+//     enemies.forEach((enemy) {
+//       if (size.height - pb.position.y < enemy.dy + enemy.height / 2 &&
+//           size.height - pb.position.y > enemy.dy - enemy.height / 2 &&
+//           pb.position.x < enemy.dx + enemy.width / 2 &&
+//           pb.position.x > enemy.dx - enemy.width / 2) {
+//         dbg.log(" Destroy Enemy On bullet");
+//         setState(() {
+//           enemies.remove(enemy);
+//           playerBullets.remove(pb);
+
+//           ///`Explosion` list makes laggy
+//           brust(PVector(enemy.dx, enemy.dy));
+
+//           // if (widget.explosions.isNotEmpty && widget.explosions.length > 4)
+//           //   widget.explosions.removeRange(0, 2);
+//           // dbg.log(" ex: ${widget.explosions.length}");
+//         });
+//         addScore();
+//       }
+//     });
+//   }
+
+//   ///`Explosion` list makes laggy
+//   brust(PVector pVector) {
+//     ex = null;
+//     ex = Explosion(
+//       color: Colors.yellow,
+//       initPosition: pVector,
+//     );
+//     Explosion.isExpl = true;
+//   }
+
+//   testObj(Bullet pb) {
+//     ///`Test Object`
+//     // dbg.log(
+//     //     "Epos: ${eTestBullet.position.y.toString()} B: ${(size.height - pb.position.y).ceil().toString()} $prevPlayerBulletId");
+//     if (size.height - pb.position.y <
+//             eTestBullet.position.y + eTestBullet.radius / 2 &&
+//         size.height - pb.position.y >
+//             eTestBullet.position.y - eTestBullet.radius / 2 &&
+//         pb.position.x < eTestBullet.position.x + eTestBullet.radius / 2 &&
+//         pb.position.x > eTestBullet.position.x - eTestBullet.radius / 2) {
+//       dbg.log("Hit 1");
+//       brust(PVector( eTestBullet.position.x,  eTestBullet.position.y));
+//       setState(() => playerBullets.remove(pb));
+//     }
+
+//     if (size.height - pb.position.y <
+//             eTestBullet2.position.y + eTestBullet2.radius / 2 &&
+//         size.height - pb.position.y >
+//             eTestBullet2.position.y - eTestBullet2.radius / 2 &&
+//         pb.position.x < eTestBullet2.position.x + eTestBullet2.radius / 2 &&
+//         pb.position.x > eTestBullet2.position.x - eTestBullet2.radius / 2) {
+//       dbg.log("Hit 2");
+//       brust(PVector( eTestBullet2.position.x,  eTestBullet2.position.y));
+//       setState(() => playerBullets.remove(pb));
+//     }
 //   }
 
 //   @override
@@ -189,23 +307,53 @@
 //   /// enemies bullets going top to bottm but player and its bullets travel bottom to top
 //   /// Better approce to make it in same flow
 
-// // player Bullet
-//   void bulletMaker() {
+//   /// `player Bullet`
+//   void bulletMaker() async {
+//     // if (playerBullets==null) return;
 //     if (playerBullets.length > 20) {
 //       playerBullets.removeRange(0, 10);
 //     }
+
+//     ///TODO:: `player Bullet properties`
 //     Bullet b = Bullet();
 //     // b.position = BVector(random.nextDouble() * 360, 0);
-//     b.position = BVector(player.dx, player.dy == size.height ? 10 : player.dy);
-//     print(b.position.x);
-//     b.radius = random.nextInt(20).clamp(4, 20).ceilToDouble();
-//     playerBullets.add(b);
+//     b.position =
+//         BVector(player.dx + 32, player.dy == size.height ? 50 : player.dy + 50);
+//     // print(b.position.x);
+//     // b.radius = random.nextInt(20).clamp(4, 20).ceilToDouble();
+//     b.radius = 5;
+//     b.color = Colors.yellow;
 
-//     // print(" bullets ${playerBullets.length}");
+//     setState(() {
+//       b.id = pBC++;
+//       playerBullets.add(b);
+//     });
+
+//     /// player bullet sound
+//     SoundManager.playLuger();
+//   }
+
+//   /// `Score Managment`
+//   addScore() {
+//     Provider.of<PlayerManager>(context, listen: false).incrementScore();
+//   }
+
+//   minScore() {
+//     Provider.of<PlayerManager>(context, listen: false).decrementScore();
+//   }
+
+//   increaseHealth() {
+//     Provider.of<PlayerManager>(context, listen: false).increaseHealth();
+//   }
+
+//   damageHealth() {
+//     Provider.of<PlayerManager>(context, listen: false)
+//         .damageHealth(DamageOnCollision.bullet);
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
+//     SizeConfig().init(context);
 //     // log("Player dx : ${player.dx}  dy : ${player.dy}");
 //     return GestureDetector(
 //       onPanUpdate: (details) {
@@ -219,12 +367,13 @@
 //             posY <= player.height / 2) {
 //           ///`we cant move in Y axix` outScreen
 //         } else {
-//           updatePlayerPosition(player.dx, size.height - posY);
+//           updatePlayerPosition(
+//               player.dx, size.height - posY - player.height / 2);
 //         }
 //         if (posX >= size.width - player.width / 2 || posX <= player.width / 2) {
 //           ///`we cant move in X axix` outScreen
 //         } else {
-//           updatePlayerPosition(posX, player.dy);
+//           updatePlayerPosition(posX - player.width / 2, player.dy);
 //         }
 
 //         // if (inScreen) updatePlayer(posX, size.height - posY);
@@ -235,16 +384,40 @@
 
 //   Container buildContainer() {
 //     return Container(
-//       color: Colors.blue.shade100,
+//       ///TODO:: Background
+//       color: Colors.black38,
 //       key: _rootSCRnKey,
 //       child: Stack(
 //         children: <Widget>[
+//           /// score and live
+//           Positioned(
+//             top: 10,
+//             left: 10,
+//             child: HeaderScore(),
+//           ),
+//           Positioned(
+//             top: getProportionateScreenHeight(20),
+//             left: getProportionateScreenWidth(80),
+//             right: getProportionateScreenHeight(120),
+//             child: HealthMeter(),
+//           ),
+
+//           Positioned(
+//             right: 10,
+//             child: HeaderLive(),
+//           ),
+
 //           ///`Player`
 //           Positioned(
 //             bottom: player.dy == size.height ? 10 : player.dy,
 //             left: player.dx,
-//             child: CustomPaint(
-//               painter: PlayerShip(player),
+//             // child: CustomPaint(
+//             //   painter: PlayerShip(player),
+//             // ),
+//             child: Container(
+//               height: 70,
+//               width: 70,
+//               child: PlayerRive(),
 //             ),
 //           ),
 
@@ -255,11 +428,12 @@
 //                   bottom: bl.position.y,
 //                   left: bl.position.x,
 //                   child: Container(
-//                     width: bl.radius,
-//                     height: bl.radius,
-//                     decoration: BoxDecoration(
-//                         shape: BoxShape.circle, color: Colors.black),
-//                   ),
+//                       width: bl.radius,
+//                       height: bl.radius,
+//                       decoration: BoxDecoration(
+//                         shape: BoxShape.circle,
+//                         color: bl.color,
+//                       )),
 //                 ),
 //               )
 //               .toList(),
@@ -280,6 +454,8 @@
 //               )
 //               .toList(),
 
+//           ///impliment provider
+
 //           ...enemyBullets
 //               .map((eblt) => Positioned(
 //                     top: eblt.position.y,
@@ -293,16 +469,46 @@
 //                   ))
 //               .toList(),
 
+//           /// explosion on enemy destroy
+//           // if (widget.explosions != null)
+//           //   ...widget.explosions
+//           //       .map(
+//           //         (e) => Positioned(
+//           //           top: e.initPosition.y,
+//           //           left: e.initPosition.x,
+//           //           child: e,
+//           //         ),
+//           //       )
+//           //       .toList(),
+
+//           /// `Single Explosion`
+//           if (Explosion.isExpl)
+//             Positioned(
+//               top: ex.initPosition.y,
+//               left: ex.initPosition.x,
+//               child: ex,
+//             ),
+
 //           Positioned(
 //             top: eTestBullet.position.y,
 //             left: eTestBullet.position.x,
 //             child: Container(
-//               width: eTestBullet.radius * 2,
-//               height: eTestBullet.radius * 2,
+//               width: eTestBullet.radius,
+//               height: eTestBullet.radius,
 //               decoration:
 //                   BoxDecoration(shape: BoxShape.circle, color: Colors.red),
 //             ),
-//           )
+//           ),
+//           Positioned(
+//             top: eTestBullet2.position.y,
+//             left: eTestBullet2.position.x,
+//             child: Container(
+//               width: eTestBullet2.radius,
+//               height: eTestBullet2.radius,
+//               decoration:
+//                   BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+//             ),
+//           ),
 //         ],
 //       ),
 //     );

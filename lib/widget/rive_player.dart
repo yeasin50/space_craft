@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
+import 'package:spaceCraft/GameManager/playerManager.dart';
+import 'package:spaceCraft/configs/size.dart';
 
 class PlayerRive extends StatefulWidget {
   PlayerRive({Key key}) : super(key: key);
@@ -21,35 +24,34 @@ class _PlayerRiveState extends State<PlayerRive>
   /// Tracks if the animation is playing by whether controller is running.
   bool get isPlaying => _controller?.isActive ?? false;
 
+ 
   Artboard _riveArtboard;
   RiveAnimationController _controller;
+
 
   @override
   void initState() {
     super.initState();
-    log("Importing ship.....");
+
     rootBundle.load("assets/rive/aircraft.riv").then((data) async {
       final file = RiveFile();
       if (file.import(data)) {
         final artboard = file.artboardByName("shipBoard");
-
         artboard.addController(_controller = SimpleAnimation("playing"));
         setState(() {
           _riveArtboard = artboard;
         });
       }
     });
+    log("Importing ship.....");
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: _riveArtboard == null
-          ? const Text("Didn't found")
-          : AspectRatio(
-              aspectRatio: 1,
-              child: Rive(artboard: _riveArtboard),
-            ),
-    );
+    return _riveArtboard == null
+        ? SizedBox()
+        : Rive(
+            artboard: _riveArtboard,
+          );
   }
 }

@@ -24,6 +24,16 @@ class PlayerManager with ChangeNotifier {
   get live => _live;
   get maxLive => _maxLive;
 
+  // startGame() {
+  //   _isPlaying = true;
+  //   notifyListeners();
+  // }
+
+  // stopGame() {
+  //   _isPlaying = false;
+  //   notifyListeners();
+  // }
+
   //Normal ship destroy
   //FIXME:: fixe score update
   incrementScore() {

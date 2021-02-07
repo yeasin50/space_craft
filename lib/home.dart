@@ -29,11 +29,37 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  bool _isPlaying = false;
+  bool _tempMoveable = false;
+
   final GlobalKey _rootSCRnKey = GlobalKey();
   Player player = Player(dx: 0, dy: 0);
   Size size = Size(0, 0);
   Rect boxSize = Rect.zero;
+
+  ///startUp player Size
+  double _playerSize;
+  bool _large = true;
+  double maxSize;
+  double minSize;
+
+  void _updateSize() {
+    setState(() {
+      _large = !_large;
+      _playerSize = _large ? maxSize : minSize;
+      _tempMoveable = !_tempMoveable;
+      // player.dx = SizeConfig.screenWidth / 2 - minSize / 2;
+      player.dy = 10;
+
+      // startGame();
+    });
+  }
+
+  startGame() {
+    _isPlaying = true;
+    playerEngine();
+  }
 
   List<Bullet> playerBullets = [];
   Timer timerBulletMove, timerBulletmaker;
@@ -42,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final Random random = Random();
 
   /// enemy destroyer
-
   var prevPlayerBulletId = 0;
   int pBC = 1;
 
@@ -71,31 +96,40 @@ class _HomeScreenState extends State<HomeScreen> {
     b.radius = 10;
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      /// init provider
-      // eProvider = Provider.of<EnemyProvider>(context);
+      maxSize = getProportionateScreenWidth(400.0);
+      minSize = getProportionateScreenWidth(150.0);
+      _playerSize = maxSize;
+
+      //center of x axis
 
       size = _rootSCRnKey.currentContext.size;
       print("size  $size");
       setState(() {
+        maxSize = getProportionateScreenWidth(400.0);
+        minSize = getProportionateScreenWidth(150.0);
+
+        _playerSize = maxSize;
         player.dx = size.width / 2;
-        player.dy = size.height;
+        player.dy = size.height / 2;
       });
       //
       boxSize = Rect.fromLTRB(0, 0, size.width, size.height);
 
-      ///` bullet per second player`
-      timerBulletmaker =
-          Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
-      timerBulletMove = Timer.periodic(
-          Duration(milliseconds: (100 * fps).floor()), frameBuild);
-
-      ///`Enemy`
+      ///`Start Game engine`
+      // playerEngine();
       // enemySchedular();
     });
   }
 
-  /// `Enemy maker sheduler`
-  enemySchedular() {
+  playerEngine() {
+    ///` bullet per second player`
+    timerBulletmaker = Timer.periodic(Duration(seconds: 1), preOdicBulletThrow);
+    timerBulletMove =
+        Timer.periodic(Duration(milliseconds: (100 * fps).floor()), frameBuild);
+  }
+
+  /// `Enemy  maker sheduler`
+  enemyEngine() {
     timerEnemyMaker = Timer.periodic(Duration(seconds: 2), enemyGenarator);
 
     timerEnemyMovement = Timer.periodic(
@@ -268,7 +302,8 @@ class _HomeScreenState extends State<HomeScreen> {
         pb.position.x < eTestBullet.position.x + eTestBullet.radius / 2 &&
         pb.position.x > eTestBullet.position.x - eTestBullet.radius / 2) {
       dbg.log("Hit 1");
-      brust(PVector( eTestBullet.position.x,  eTestBullet.position.y));
+      // TODO:: make brust radius then sub hope it gonna work
+      brust(PVector(eTestBullet.position.x, eTestBullet.position.y));
       setState(() => playerBullets.remove(pb));
     }
 
@@ -279,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
         pb.position.x < eTestBullet2.position.x + eTestBullet2.radius / 2 &&
         pb.position.x > eTestBullet2.position.x - eTestBullet2.radius / 2) {
       dbg.log("Hit 2");
-      brust(PVector( eTestBullet2.position.x,  eTestBullet2.position.y));
+      brust(PVector(eTestBullet2.position.x, eTestBullet2.position.y));
       setState(() => playerBullets.remove(pb));
     }
   }
@@ -309,6 +344,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// `player Bullet`
   void bulletMaker() async {
+    // print("PB maker");
     // if (playerBullets==null) return;
     if (playerBullets.length > 20) {
       playerBullets.removeRange(0, 10);
@@ -318,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Bullet b = Bullet();
     // b.position = BVector(random.nextDouble() * 360, 0);
     b.position =
-        BVector(player.dx + 32, player.dy == size.height ? 50 : player.dy + 50);
+        BVector(player.dx + player.height / 2, player.dy + player.height - 28);
     // print(b.position.x);
     // b.radius = random.nextInt(20).clamp(4, 20).ceilToDouble();
     b.radius = 5;
@@ -355,6 +391,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     // log("Player dx : ${player.dx}  dy : ${player.dy}");
+    player.height = _playerSize;
+    player.width = _playerSize;
+
     return GestureDetector(
       onPanUpdate: (details) {
         /// tuch possition
@@ -363,7 +402,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         /// we are separating in two section, it'll help to move though another axis stuck
         /// it'll make sure that even One axis will work even other axis stuc
-        if (posY >= size.height - player.height / 2 ||
+        if (posY >= size.height - _playerSize / 2 ||
             posY <= player.height / 2) {
           ///`we cant move in Y axix` outScreen
         } else {
@@ -390,84 +429,111 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Stack(
         children: <Widget>[
           /// score and live
-          Positioned(
-            top: 10,
-            left: 10,
-            child: HeaderScore(),
-          ),
-          Positioned(
-            top: getProportionateScreenHeight(20),
-            left: getProportionateScreenWidth(80),
-            right: getProportionateScreenHeight(120),
-            child: HealthMeter(),
-          ),
+          if (_isPlaying)
+            Positioned(
+              top: 10,
+              left: 10,
+              child: HeaderScore(),
+            ),
+          if (_isPlaying)
+            Positioned(
+              top: getProportionateScreenHeight(20),
+              left: getProportionateScreenWidth(80),
+              right: getProportionateScreenHeight(120),
+              child: HealthMeter(),
+            ),
+          if (_isPlaying)
+            Positioned(
+              right: 10,
+              child: HeaderLive(),
+            ),
 
+          /// `Start Button`
+          /// TODO:: fix anime
           Positioned(
+            bottom: 10,
             right: 10,
-            child: HeaderLive(),
+            left: 10,
+            child: RaisedButton(
+              child: Text("ps"),
+              onPressed: _updateSize,
+            ),
           ),
 
           ///`Player`
           Positioned(
-            bottom: player.dy == size.height ? 10 : player.dy,
-            left: player.dx,
+            bottom: _tempMoveable
+                ? player.dy
+                : 150,
+            left: _tempMoveable ? player.dx : 10,
             // child: CustomPaint(
             //   painter: PlayerShip(player),
             // ),
-            child: Container(
-              height: 70,
-              width: 70,
-              child: PlayerRive(),
+            child: AnimatedSize(
+              curve: Curves.easeInOutBack,
+              duration: Duration(seconds: 1),
+              vsync: this,
+              child: Container(
+                width: _playerSize,
+                height: _playerSize,
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: PlayerRive(),
+                ),
+              ),
             ),
           ),
 
           ///`Player` `bullet List`
-          ...playerBullets
-              .map(
-                (bl) => Positioned(
-                  bottom: bl.position.y,
-                  left: bl.position.x,
-                  child: Container(
-                      width: bl.radius,
-                      height: bl.radius,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: bl.color,
-                      )),
-                ),
-              )
-              .toList(),
+          if (_isPlaying)
+            ...playerBullets
+                .map(
+                  (bl) => Positioned(
+                    bottom: bl.position.y,
+                    left: bl.position.x,
+                    child: Container(
+                        width: bl.radius,
+                        height: bl.radius,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: bl.color,
+                        )),
+                  ),
+                )
+                .toList(),
 
           ////`Enemies`
-          ...enemies
-              .map(
-                (e) => Positioned(
-                  top: e.dy,
-                  left: e.dx,
-                  child: Container(
-                    width: 20,
-                    height: 20,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.blue),
+          if (_isPlaying)
+            ...enemies
+                .map(
+                  (e) => Positioned(
+                    top: e.dy,
+                    left: e.dx,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.blue),
+                    ),
                   ),
-                ),
-              )
-              .toList(),
+                )
+                .toList(),
 
           ///impliment provider
 
-          ...enemyBullets
-              .map((eblt) => Positioned(
-                    top: eblt.position.y,
-                    left: eblt.position.x,
-                    child: Container(
-                      width: eblt.radius * 2,
-                      height: eblt.radius * 2,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.red),
-                    ),
-                  ))
-              .toList(),
+          if (_isPlaying)
+            ...enemyBullets
+                .map((eblt) => Positioned(
+                      top: eblt.position.y,
+                      left: eblt.position.x,
+                      child: Container(
+                        width: eblt.radius * 2,
+                        height: eblt.radius * 2,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.red),
+                      ),
+                    ))
+                .toList(),
 
           /// explosion on enemy destroy
           // if (widget.explosions != null)
@@ -489,26 +555,28 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ex,
             ),
 
-          Positioned(
-            top: eTestBullet.position.y,
-            left: eTestBullet.position.x,
-            child: Container(
-              width: eTestBullet.radius,
-              height: eTestBullet.radius,
-              decoration:
-                  BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+          if (_isPlaying)
+            Positioned(
+              top: eTestBullet.position.y,
+              left: eTestBullet.position.x,
+              child: Container(
+                width: eTestBullet.radius,
+                height: eTestBullet.radius,
+                decoration:
+                    BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+              ),
             ),
-          ),
-          Positioned(
-            top: eTestBullet2.position.y,
-            left: eTestBullet2.position.x,
-            child: Container(
-              width: eTestBullet2.radius,
-              height: eTestBullet2.radius,
-              decoration:
-                  BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+          if (_isPlaying)
+            Positioned(
+              top: eTestBullet2.position.y,
+              left: eTestBullet2.position.x,
+              child: Container(
+                width: eTestBullet2.radius,
+                height: eTestBullet2.radius,
+                decoration:
+                    BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+              ),
             ),
-          ),
         ],
       ),
     );

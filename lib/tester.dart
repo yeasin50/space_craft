@@ -81,7 +81,7 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
           color: Colors.black,
         ),
         Positioned(
-          bottom: 10,
+          bottom: 150,
           left: 0,
           right: 0,
           child: AnimatedSize(

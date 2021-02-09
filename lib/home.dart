@@ -99,17 +99,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       maxSize = getProportionateScreenWidth(400.0);
       minSize = getProportionateScreenWidth(150.0);
       _playerSize = maxSize;
-
       //center of x axis
 
       size = _rootSCRnKey.currentContext.size;
       print("size  $size");
       setState(() {
         maxSize = getProportionateScreenWidth(400.0);
-        minSize = getProportionateScreenWidth(150.0);
+        minSize = getProportionateScreenWidth(100.0);
 
         _playerSize = maxSize;
-        player.dx = size.width / 2;
+        player.width = minSize;
+        player.height = minSize;
+
+        player.dx = size.width / 2 - player.width / 2;
         player.dy = size.height / 2;
       });
       //
@@ -422,6 +424,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Container buildContainer() {
+    var pdXL = player.dx;
+    var scrw = size.width;
+    var pdXR = scrw - player.dx;
+    var w = pdXR + pdXL ;
+    print("left: $pdXL  Right:$pdXR ${SizeConfig.screenWidth}==$w");
     return Container(
       ///TODO:: Background
       color: Colors.black38,
@@ -462,10 +469,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
           ///`Player`
           Positioned(
-            bottom: _tempMoveable
-                ? player.dy
-                : 150,
-            left: _tempMoveable ? player.dx : 10,
+            bottom: _tempMoveable ? player.dy : 150,
+            left: _tempMoveable ? pdXL : 0,
+            right: _tempMoveable ? pdXR - player.width : null,
             // child: CustomPaint(
             //   painter: PlayerShip(player),
             // ),

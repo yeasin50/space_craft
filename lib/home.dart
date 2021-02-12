@@ -32,6 +32,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   bool _isPlaying = false;
   bool _tempMoveable = false;
+  bool _testModeStartG = false;
 
   final GlobalKey _rootSCRnKey = GlobalKey();
   Player player = Player(dx: 0, dy: 0);
@@ -52,12 +53,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       // player.dx = SizeConfig.screenWidth / 2 - minSize / 2;
       player.dy = 10;
 
-      // startGame();
+      startGame();
     });
   }
 
+  ///`Engine Manager`
   startGame() {
-    _isPlaying = true;
+    // _isPlaying = true;
+    _testModeStartG = true;
+    playerEngine();
     playerEngine();
   }
 
@@ -427,7 +431,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     var pdXL = player.dx;
     var scrw = size.width;
     var pdXR = scrw - player.dx;
-    var w = pdXR + pdXL ;
+    var w = pdXR + pdXL;
     print("left: $pdXL  Right:$pdXR ${SizeConfig.screenWidth}==$w");
     return Container(
       ///TODO:: Background
@@ -491,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
 
           ///`Player` `bullet List`
-          if (_isPlaying)
+          if (_isPlaying|| _testModeStartG)
             ...playerBullets
                 .map(
                   (bl) => Positioned(
@@ -557,14 +561,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           if (Explosion.isExpl)
             Positioned(
               top: ex.initPosition.y,
-              left: ex.initPosition.x,
+              left: ex.initPosition.x - eTestBullet.radius,
               child: ex,
             ),
 
-          if (_isPlaying)
+          if (_testModeStartG)
             Positioned(
               top: eTestBullet.position.y,
-              left: eTestBullet.position.x,
+              left: eTestBullet.position.x ,
               child: Container(
                 width: eTestBullet.radius,
                 height: eTestBullet.radius,
@@ -572,7 +576,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     BoxDecoration(shape: BoxShape.circle, color: Colors.red),
               ),
             ),
-          if (_isPlaying)
+          if (_testModeStartG)
             Positioned(
               top: eTestBullet2.position.y,
               left: eTestBullet2.position.x,

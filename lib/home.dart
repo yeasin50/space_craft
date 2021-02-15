@@ -9,7 +9,7 @@ import 'package:spaceCraft/configs/size.dart';
 import 'package:spaceCraft/widget/explosion.dart';
 import 'package:spaceCraft/widget/models/demo.dart';
 import 'package:spaceCraft/widget/models/particle.dart';
-import 'package:spaceCraft/widget/rive_player.dart';
+import 'package:spaceCraft/widget/rives/rive_player.dart';
 import 'package:spaceCraft/widget/headerLive.dart';
 import 'package:spaceCraft/widget/headerScore.dart';
 import 'package:spaceCraft/widget/health_meter.dart';

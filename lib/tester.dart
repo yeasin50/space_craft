@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -9,9 +10,17 @@ import 'package:spaceCraft/widget/headerLive.dart';
 import 'package:spaceCraft/widget/headerScore.dart';
 import 'package:spaceCraft/widget/health_meter.dart';
 import 'package:spaceCraft/widget/models/particle.dart';
-import 'package:spaceCraft/widget/rive_player.dart';
+import 'package:spaceCraft/widget/rives/rive_explosion1.dart';
+import 'package:spaceCraft/widget/rives/rive_explosion2.dart';
+import 'package:spaceCraft/widget/rives/rive_player.dart';
 
 import 'widget/models/demo.dart';
+
+class ExplosionManager {
+  PVector initPoss;
+  Widget child;
+  ExplosionManager(this.initPoss, this.child);
+}
 
 class Tester extends StatefulWidget {
   Tester({Key key}) : super(key: key);
@@ -20,98 +29,61 @@ class Tester extends StatefulWidget {
   _TesterState createState() => _TesterState();
 }
 
+//FIXME:: clear rive
 class _TesterState extends State<Tester> with TickerProviderStateMixin {
-  addScore() {
-    Provider.of<PlayerManager>(context, listen: false).incrementScore();
-  }
+  List<ExplosionManager> explosions = [];
 
-  minScore() {
-    Provider.of<PlayerManager>(context, listen: false).decrementScore();
-  }
 
-  addLive() {
-    Provider.of<PlayerManager>(context, listen: false).increaseLive();
-  }
-
-  rmLive() {
-    Provider.of<PlayerManager>(context, listen: false)
-        .damageHealth(DamageOnCollision.bullet);
-  }
-
-  addHealth() {
-    Provider.of<PlayerManager>(context, listen: false).increaseHealth();
-  }
-
-  initCollide() {}
-
-  List<Explosion> explosions = [];
-  List<Demo> demo = [];
-
-  double _size;
-  bool _large = true;
-  double maxSize;
-  double minSize;
-
-  void _updateSize() {
+  void _updateSize(PVector position) {
     setState(() {
-      _large = !_large;
-      _size = _large ? maxSize : minSize;
+      explosions.add(ExplosionManager(position, RiveExplosion1()));
     });
+    if (explosions.length > 5) {
+      setState(() {
+        explosions.removeRange(0, 2);
+      });
+    }
+
+    log(explosions.length.toString());
   }
 
   @override
   void initState() {
     super.initState();
-
-    log("refreshed..");
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      maxSize = getProportionateScreenWidth(400.0);
-      minSize = getProportionateScreenWidth(150.0);
-      _size = maxSize;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return Stack(
-      children: <Widget>[
-        Container(
-          color: Colors.black,
-        ),
-        Positioned(
-          bottom: 150,
-          left: 0,
-          right: 0,
-          child: AnimatedSize(
-            curve: Curves.easeInOutBack,
-            duration: Duration(seconds: 1),
-            vsync: this,
-            child: Container(
-              width: _size,
-              height: _size,
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: PlayerRive(),
-              ),
-            ),
+    return GestureDetector(
+      onPanDown: (details) {
+        var posX = details.globalPosition.dx;
+        var posY = details.globalPosition.dy;
+        _updateSize(PVector(posX, posY));
+      },
+      child: Stack(
+        children: <Widget>[
+          Container(
+            color: Colors.black,
           ),
-        ),
-        RaisedButton(
-          onPressed: _updateSize,
-          child: Text("Update"),
-        ),
-        ...explosions
-            .map(
-              (exp) => Positioned(
-                top: exp.initPosition.y,
-                right: exp.initPosition.x,
-                child: exp,
-              ),
-            )
-            .toList(),
-      ],
+
+          //Explosions
+          ...explosions
+              .map(
+                (e) => Positioned(
+                  top: e.initPoss.y - 100,
+                  left: e.initPoss.x - 100,
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    child: e.child,
+                  ),
+                ),
+              )
+              .toList(),
+        ],
+      ),
     );
   }
 }

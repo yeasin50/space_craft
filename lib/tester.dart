@@ -4,23 +4,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
+
 import 'package:spaceCraft/configs/size.dart';
-import 'package:spaceCraft/widget/explosion.dart';
-import 'package:spaceCraft/widget/headerLive.dart';
-import 'package:spaceCraft/widget/headerScore.dart';
-import 'package:spaceCraft/widget/health_meter.dart';
 import 'package:spaceCraft/widget/models/particle.dart';
 import 'package:spaceCraft/widget/rives/rive_explosion1.dart';
-import 'package:spaceCraft/widget/rives/rive_explosion2.dart';
-import 'package:spaceCraft/widget/rives/rive_player.dart';
-
-import 'widget/models/demo.dart';
-
-class ExplosionManager {
-  PVector initPoss;
-  Widget child;
-  ExplosionManager(this.initPoss, this.child);
-}
 
 class Tester extends StatefulWidget {
   Tester({Key key}) : super(key: key);
@@ -29,61 +16,57 @@ class Tester extends StatefulWidget {
   _TesterState createState() => _TesterState();
 }
 
-//FIXME:: clear rive
+//FIXMED:: clear rive by extending and size/scale 0
 class _TesterState extends State<Tester> with TickerProviderStateMixin {
   List<ExplosionManager> explosions = [];
 
-
-  void _updateSize(PVector position) {
-    setState(() {
-      explosions.add(ExplosionManager(position, RiveExplosion1()));
-    });
-    if (explosions.length > 5) {
-      setState(() {
-        explosions.removeRange(0, 2);
-      });
-    }
-
-    log(explosions.length.toString());
-  }
-
-  @override
-  void initState() {
-    super.initState();
+  void _updateSize(PVector position) async {
+    Provider.of<PlayerManager>(context, listen: false)
+        .addExplosion(ExplosionType.neonBrust, position);
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return GestureDetector(
-      onPanDown: (details) {
-        var posX = details.globalPosition.dx;
-        var posY = details.globalPosition.dy;
-        _updateSize(PVector(posX, posY));
-      },
-      child: Stack(
-        children: <Widget>[
-          Container(
-            color: Colors.black,
-          ),
-
-          //Explosions
-          ...explosions
-              .map(
-                (e) => Positioned(
-                  top: e.initPoss.y - 100,
-                  left: e.initPoss.x - 100,
-                  child: Container(
-                    width: 200,
-                    height: 200,
-                    child: e.child,
+    return Consumer<PlayerManager>(
+        builder: (ctx, data, child) => GestureDetector(
+              onPanDown: (details) {
+                var posX = details.globalPosition.dx;
+                var posY = details.globalPosition.dy;
+                _updateSize(PVector(posX, posY));
+              },
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    color: Colors.black,
                   ),
-                ),
-              )
-              .toList(),
-        ],
-      ),
-    );
+
+                  Positioned(
+                    top: 100,
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      child: RiveExplosion1(),
+                    ),
+                  ),
+                  //Explosions
+
+                  ...data
+                      .explosion.map(
+                        (e) => Positioned(
+                          top: e.initPoss.y - 100,
+                          left: e.initPoss.x - 100,
+                          child: Container(
+                            width: 200,
+                            height: 200,
+                            child: e.child,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ],
+              ),
+            ));
   }
 }

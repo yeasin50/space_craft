@@ -1,10 +1,22 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:spaceCraft/widget/explosion.dart';
+import 'package:spaceCraft/widget/models/particle.dart';
+import 'package:spaceCraft/widget/rives/rive_explosion1.dart';
+import 'package:spaceCraft/widget/rives/rive_explosion2.dart';
 
 enum DamageOnCollision {
   bullet,
   ship,
+}
+
+enum ExplosionType { rounded, neonBrust }
+
+class ExplosionManager {
+  PVector initPoss;
+  Widget child;
+  ExplosionManager(this.initPoss, this.child);
 }
 
 class PlayerManager with ChangeNotifier {
@@ -12,6 +24,7 @@ class PlayerManager with ChangeNotifier {
   int _health = 80;
   int _live = 2;
   int _maxLive = 3;
+  int _maxExplosionOnStorage = 5;
 
   final _shipPerDestroy = 1;
   final _bossShipDestroy = 5;
@@ -19,10 +32,28 @@ class PlayerManager with ChangeNotifier {
   final _damagePerBullet = 10;
   final _damagePerShip = 30;
 
+  final List<ExplosionManager> _explosions = [];
+
   get score => _score;
   get health => _health;
   get live => _live;
   get maxLive => _maxLive;
+  get explosion => _explosions;
+
+  Future<void> addExplosion(ExplosionType type, PVector pos) async {
+    if (_explosions.length > _maxExplosionOnStorage) {
+      print("Overule");
+      _explosions.clear();
+      notifyListeners();
+    }
+    var widget =
+        type == ExplosionType.neonBrust ? RiveExplosion2() : RiveExplosion1();
+
+    _explosions.add(ExplosionManager(pos, widget));
+
+    print(_explosions.length);
+    notifyListeners();
+  }
 
   // startGame() {
   //   _isPlaying = true;

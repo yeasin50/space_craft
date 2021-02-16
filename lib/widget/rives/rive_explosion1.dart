@@ -11,9 +11,11 @@ class RiveExplosion1 extends StatefulWidget {
   _RiveExplosion1State createState() => _RiveExplosion1State();
 }
 
-class _RiveExplosion1State extends State<RiveExplosion1> {
-  Artboard _riveArtboard;
+class _RiveExplosion1State extends State<RiveExplosion1>
+    with SingleTickerProviderStateMixin {
+      
   RiveAnimationController _controller;
+  Artboard _riveArtboard;
 
   bool get isPlaying => _controller?.isActive ?? false;
 
@@ -21,11 +23,11 @@ class _RiveExplosion1State extends State<RiveExplosion1> {
   void initState() {
     super.initState();
 
-    rootBundle.load("assets/rive/explosion.riv").then((data) async {
+    rootBundle.load("assets/rive/explosion1.riv").then((data) async {
       final file = RiveFile();
       if (file.import(data)) {
         final artboard = file.mainArtboard;
-        artboard.addController(_controller = SimpleAnimation("explosion"));
+        artboard.addController(_controller = SimpleAnimation("brust"));
         setState(() {
           _riveArtboard = artboard;
         });

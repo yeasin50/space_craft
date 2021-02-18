@@ -24,7 +24,7 @@ class PlayerManager with ChangeNotifier {
   int _health = 80;
   int _live = 2;
   int _maxLive = 3;
-  int _maxExplosionOnStorage = 5;
+  int _maxExplosionOnStorage = 3;
 
   final _shipPerDestroy = 1;
   final _bossShipDestroy = 5;
@@ -33,23 +33,32 @@ class PlayerManager with ChangeNotifier {
   final _damagePerShip = 30;
 
   final List<ExplosionManager> _explosions = [];
+  var _handleExplosionBug = false;
+  ExplosionManager explosionBug;
 
+  get handleExpolosionBug => _handleExplosionBug;
   get score => _score;
   get health => _health;
   get live => _live;
   get maxLive => _maxLive;
   get explosion => _explosions;
 
+  explosionBugs() {}
+
   Future<void> addExplosion(ExplosionType type, PVector pos) async {
-    if (_explosions.length > _maxExplosionOnStorage) {
-      print("Overule");
-      _explosions.clear();
-      notifyListeners();
-    }
     var widget =
         type == ExplosionType.neonBrust ? RiveExplosion2() : RiveExplosion1();
 
-    _explosions.add(ExplosionManager(pos, widget));
+    if (_explosions.length >= _maxExplosionOnStorage) {
+      print("Overule");
+      _explosions.clear();
+      _handleExplosionBug = true;
+      explosionBug = ExplosionManager(pos, RiveExplosion2());
+    } else {
+      _handleExplosionBug = false;
+
+      _explosions.add(ExplosionManager(pos, widget));
+    }
 
     print(_explosions.length);
     notifyListeners();

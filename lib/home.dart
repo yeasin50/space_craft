@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
+import 'package:spaceCraft/GameManager/uiManager.dart';
 import 'package:spaceCraft/configs/size.dart';
 import 'package:spaceCraft/widget/explosion.dart';
 import 'package:spaceCraft/widget/models/demo.dart';
@@ -21,9 +22,6 @@ import 'GameManager/sound_manager.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
-
-  /// `Explosion on Collision`
-  List<Demo> explosions = [];
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -65,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     playerEngine();
   }
 
-  List<Bullet> playerBullets = [];
+  // List<Bullet> playerBullets = [];
   Timer timerBulletMove, timerBulletmaker;
   final fps = 1 / 24;
   Bullet b = Bullet();
@@ -78,8 +76,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ///`Enemy`
   Player enemy = Player(dx: 10, dy: 10);
   Timer timerEnemyMovement, timerEnemyMaker, timerEnemyShootOut;
-  List<Player> enemies = [];
-  List<Bullet> enemyBullets = [];
+  // List<Player> enemies = [];
+  // List<Bullet> enemyBullets = [];
   Timer timerEBulletM;
   int numOfBullet = 1;
   var prevB_ID = 0;
@@ -153,17 +151,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     for (int i = 0; i < 1; i++) {
       var x = random.nextDouble().clamp(.1, .9) * (size.width);
       var y = random.nextDouble() * (-300.0);
-      Player player = Player(dx: x, dy: y);
+      Player enemy = Player(dx: x, dy: y);
 
-      enemies.add(player);
+      enemies.add(enemy);
 
       ///TODO:: using provider
-      // eProvider.addEnemy(player);
+      Provider.of<UIManager>(context).addEnemy(enemy);
     }
   }
 
   ///`Enemy moveMent`
   enemyFrameBuilde(Timer timer) {
+    var enemies = Provider.of<UIManager>(context).enemies;
     if (enemies.length > 40) {
       dbg.log("CleanUp enemy");
       enemies.removeRange(0, 20);
@@ -190,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         enemyBullets.add(b);
 
         ///TODO:: using provider
-        // Provider.of<EnemyProvider>(context).addEBullet(b);
+        Provider.of<UIManager>(context).addEnemyBullet(b);
       }
     });
   }
@@ -371,6 +370,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       playerBullets.add(b);
     });
 
+    /// TODO:: provider
+
+    Provider.of<UIManager>(context).addPlayerBullet(b);
+
     /// player bullet sound
     SoundManager.playLuger();
   }
@@ -435,159 +438,143 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     print("left: $pdXL  Right:$pdXR ${SizeConfig.screenWidth}==$w");
     return Container(
       ///TODO:: Background
-      color: Colors.black38,
+      color: Colors.black,
       key: _rootSCRnKey,
-      child: Stack(
-        children: <Widget>[
-          /// score and live
-          if (_isPlaying)
+      child: Consumer<UIManager>(
+        builder: (context, data, child) => Stack(
+          children: <Widget>[
+            /// score and live
+            if (_isPlaying)
+              Positioned(
+                top: 10,
+                left: 10,
+                child: HeaderScore(),
+              ),
+            if (_isPlaying)
+              Positioned(
+                top: getProportionateScreenHeight(20),
+                left: getProportionateScreenWidth(80),
+                right: getProportionateScreenHeight(120),
+                child: HealthMeter(),
+              ),
+            if (_isPlaying)
+              Positioned(
+                right: 10,
+                child: HeaderLive(),
+              ),
+
+            /// `Start Button`
+            /// TODO:: fix anime
             Positioned(
-              top: 10,
-              left: 10,
-              child: HeaderScore(),
-            ),
-          if (_isPlaying)
-            Positioned(
-              top: getProportionateScreenHeight(20),
-              left: getProportionateScreenWidth(80),
-              right: getProportionateScreenHeight(120),
-              child: HealthMeter(),
-            ),
-          if (_isPlaying)
-            Positioned(
+              bottom: 10,
               right: 10,
-              child: HeaderLive(),
+              left: 10,
+              child: RaisedButton(
+                child: Text("ps"),
+                onPressed: _updateSize,
+              ),
             ),
 
-          /// `Start Button`
-          /// TODO:: fix anime
-          Positioned(
-            bottom: 10,
-            right: 10,
-            left: 10,
-            child: RaisedButton(
-              child: Text("ps"),
-              onPressed: _updateSize,
-            ),
-          ),
-
-          ///`Player`
-          Positioned(
-            bottom: _tempMoveable ? player.dy : 150,
-            left: _tempMoveable ? pdXL : 0,
-            right: _tempMoveable ? pdXR - player.width : null,
-            // child: CustomPaint(
-            //   painter: PlayerShip(player),
-            // ),
-            child: AnimatedSize(
-              curve: Curves.easeInOutBack,
-              duration: Duration(seconds: 1),
-              vsync: this,
-              child: Container(
-                width: _playerSize,
-                height: _playerSize,
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: PlayerRive(),
+            ///`Player`
+            Positioned(
+              bottom: _tempMoveable ? player.dy : 150,
+              left: _tempMoveable ? pdXL : 0,
+              right: _tempMoveable ? pdXR - player.width : null,
+              // child: CustomPaint(
+              //   painter: PlayerShip(player),
+              // ),
+              child: AnimatedSize(
+                curve: Curves.easeInOutBack,
+                duration: Duration(seconds: 1),
+                vsync: this,
+                child: Container(
+                  width: _playerSize,
+                  height: _playerSize,
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: PlayerRive(),
+                  ),
                 ),
               ),
             ),
-          ),
 
-          ///`Player` `bullet List`
-          if (_isPlaying|| _testModeStartG)
-            ...playerBullets
-                .map(
-                  (bl) => Positioned(
-                    bottom: bl.position.y,
-                    left: bl.position.x,
-                    child: Container(
-                        width: bl.radius,
-                        height: bl.radius,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: bl.color,
-                        )),
-                  ),
-                )
-                .toList(),
-
-          ////`Enemies`
-          if (_isPlaying)
-            ...enemies
-                .map(
-                  (e) => Positioned(
-                    top: e.dy,
-                    left: e.dx,
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.blue),
-                    ),
-                  ),
-                )
-                .toList(),
-
-          ///impliment provider
-
-          if (_isPlaying)
-            ...enemyBullets
-                .map((eblt) => Positioned(
-                      top: eblt.position.y,
-                      left: eblt.position.x,
+            ///`Player` `bullet List`
+            if (_isPlaying || _testModeStartG)
+              ...data.playerBullets
+                  .map(
+                    (bl) => Positioned(
+                      bottom: bl.position.y,
+                      left: bl.position.x,
                       child: Container(
-                        width: eblt.radius * 2,
-                        height: eblt.radius * 2,
+                          width: bl.radius,
+                          height: bl.radius,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: bl.color,
+                          )),
+                    ),
+                  )
+                  .toList(),
+
+            ////`Enemies`
+            if (_isPlaying)
+              ...data.enemies
+                  .map(
+                    (e) => Positioned(
+                      top: e.dy,
+                      left: e.dx,
+                      child: Container(
+                        width: 20,
+                        height: 20,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.red),
+                            shape: BoxShape.circle, color: Colors.blue),
                       ),
-                    ))
-                .toList(),
+                    ),
+                  )
+                  .toList(),
 
-          /// explosion on enemy destroy
-          // if (widget.explosions != null)
-          //   ...widget.explosions
-          //       .map(
-          //         (e) => Positioned(
-          //           top: e.initPosition.y,
-          //           left: e.initPosition.x,
-          //           child: e,
-          //         ),
-          //       )
-          //       .toList(),
+            ///impliment provider
 
-          /// `Single Explosion`
-          if (Explosion.isExpl)
-            Positioned(
-              top: ex.initPosition.y,
-              left: ex.initPosition.x - eTestBullet.radius,
-              child: ex,
-            ),
+            if (_isPlaying)
+              ...data.enemyBullets
+                  .map((eblt) => Positioned(
+                        top: eblt.position.y,
+                        left: eblt.position.x,
+                        child: Container(
+                          width: eblt.radius * 2,
+                          height: eblt.radius * 2,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.red),
+                        ),
+                      ))
+                  .toList(),
 
-          if (_testModeStartG)
-            Positioned(
-              top: eTestBullet.position.y,
-              left: eTestBullet.position.x ,
-              child: Container(
-                width: eTestBullet.radius,
-                height: eTestBullet.radius,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+            /// `Single Explosion`
+
+            if (_testModeStartG)
+              Positioned(
+                top: eTestBullet.position.y,
+                left: eTestBullet.position.x,
+                child: Container(
+                  width: eTestBullet.radius,
+                  height: eTestBullet.radius,
+                  decoration:
+                      BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                ),
               ),
-            ),
-          if (_testModeStartG)
-            Positioned(
-              top: eTestBullet2.position.y,
-              left: eTestBullet2.position.x,
-              child: Container(
-                width: eTestBullet2.radius,
-                height: eTestBullet2.radius,
-                decoration:
-                    BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+            if (_testModeStartG)
+              Positioned(
+                top: eTestBullet2.position.y,
+                left: eTestBullet2.position.x,
+                child: Container(
+                  width: eTestBullet2.radius,
+                  height: eTestBullet2.radius,
+                  decoration:
+                      BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

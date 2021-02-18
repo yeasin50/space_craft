@@ -13,7 +13,6 @@ class RiveExplosion1 extends StatefulWidget {
 
 class _RiveExplosion1State extends State<RiveExplosion1>
     with SingleTickerProviderStateMixin {
-      
   RiveAnimationController _controller;
   Artboard _riveArtboard;
 

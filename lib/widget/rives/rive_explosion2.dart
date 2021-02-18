@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
-
 ///`Neon Brust`
 class RiveExplosion2 extends StatefulWidget {
   RiveExplosion2({Key key}) : super(key: key);

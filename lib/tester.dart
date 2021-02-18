@@ -52,8 +52,8 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
                   ),
                   //Explosions
 
-                  ...data
-                      .explosion.map(
+                  ...data.explosion
+                      .map(
                         (e) => Positioned(
                           top: e.initPoss.y - 100,
                           left: e.initPoss.x - 100,
@@ -65,6 +65,18 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
                         ),
                       )
                       .toList(),
+
+                  //Explosion Bugs Handling
+                  if (data.handleExpolosionBug)
+                    Positioned(
+                      left: data.explosionBug.initPoss.x - 100,
+                      top: data.explosionBug.initPoss.y - 100,
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        child: RiveExplosion1(),
+                      ),
+                    )
                 ],
               ),
             ));

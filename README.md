@@ -11,6 +11,9 @@ should I implement provider for this simple like this manager
 ## ⚠ For game you should use [Flame package](https://pub.dev/packages/flame)
 ## Getting Started
 
+Implementation Explosion on gets laggy, So lets try on Start Ui, because there will be less operation.   
+I may also changed rive animation type. 
+
 [FireBase dep. ](https://firebase.flutter.dev/docs/migration/)
 A few resources to get you started if this is your first Flutter project:
 

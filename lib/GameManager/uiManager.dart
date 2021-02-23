@@ -1,4 +1,5 @@
-import 'dart:developer';
+import 'dart:async';
+import 'dart:developer' as dbg;
 
 import 'package:flutter/cupertino.dart';
 import 'package:spaceCraft/widget/models/bullet.dart';
@@ -38,10 +39,9 @@ class UIManager with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addEnemyBullet(Bullet bullet) async {
-    _enemyBullets.add(bullet);
-    notifyListeners();
-  }
+  // Future<void> addEnemyBullet(Bullet bullet) async {
+  //   _enemyBullets.add(bullet);
+  // }
 
   remEnemyBullet(Bullet b, {int range = 0}) {
     if (range == 0)
@@ -56,7 +56,7 @@ class UIManager with ChangeNotifier {
   Future<void> addPlayerBullet(Bullet bullet) async {
     _playerBullets.add(bullet);
     notifyListeners();
-    log(_playerBullets.length.toString());
+    dbg.log(_playerBullets.length.toString());
   }
 
   remPlayerBullet({Bullet b, int range = 0}) async {
@@ -68,10 +68,5 @@ class UIManager with ChangeNotifier {
     notifyListeners();
   }
 
-  ///Update player bullet poss
-  updatePlayerBulletPoss() async {
-    _playerBullets = _playerBullets.forEach((element) {
-      element.position.y += 1;
-    }) as List;
-  }
+  
 }

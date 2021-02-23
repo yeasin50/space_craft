@@ -4,8 +4,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spaceCraft/GameManager/playerManager.dart';
+import 'package:spaceCraft/GameManager/uiManager.dart';
 
 import 'package:spaceCraft/configs/size.dart';
+import 'package:spaceCraft/widget/models/bullet.dart';
 import 'package:spaceCraft/widget/models/particle.dart';
 import 'package:spaceCraft/widget/rives/rive_explosion1.dart';
 

@@ -43,7 +43,6 @@ class PlayerManager with ChangeNotifier {
   get maxLive => _maxLive;
   get explosion => _explosions;
 
-  explosionBugs() {}
 
   Future<void> addExplosion(ExplosionType type, PVector pos) async {
     var widget =

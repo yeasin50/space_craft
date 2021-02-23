@@ -24,6 +24,9 @@ import 'widget/rives/rive_explosion1.dart';
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
 
+  /// `Explosion on Collision`
+  List<Demo> explosions = [];
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -64,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     playerEngine();
   }
 
-  ///TODO:: add provider
+  List<Bullet> playerBullets = [];
   Timer timerBulletMove, timerBulletmaker;
   final fps = 1 / 24;
   Bullet b = Bullet();
@@ -77,23 +80,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ///`Enemy`
   Player enemy = Player(dx: 10, dy: 10);
   Timer timerEnemyMovement, timerEnemyMaker, timerEnemyShootOut;
-
-  ///TODO:: add provider
-  // List<Player> enemies = [];
-  // List<Bullet> enemyBullets = [];
-
-  // List<ExplosionManager> _explosions = [];
-
+  List<Player> enemies = [];
+  List<Bullet> enemyBullets = [];
   Timer timerEBulletM;
   int numOfBullet = 1;
   var prevB_ID = 0;
-
   Bullet eTestBullet = Bullet(id: 2, position: BVector(166, 123), radius: 40);
   Bullet eTestBullet2 = Bullet(id: 4, position: BVector(286, 143), radius: 30);
 
   // Demo demoEx = Demo(
   //   text: Text('C'),
   // );
+
+  Explosion ex;
 
   ///`Game engine`
   @override
@@ -125,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       boxSize = Rect.fromLTRB(0, 0, size.width, size.height);
 
       ///`Start Game engine`
-      playerEngine();
+      // playerEngine();
       // enemySchedular();
     });
   }
@@ -156,16 +155,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     for (int i = 0; i < 1; i++) {
       var x = random.nextDouble().clamp(.1, .9) * (size.width);
       var y = random.nextDouble() * (-300.0);
-      Player enemy = Player(dx: x, dy: y);
+      Player player = Player(dx: x, dy: y);
+
+      enemies.add(player);
 
       ///TODO:: using provider
-      Provider.of<UIManager>(context).addEnemy(enemy);
+      // eProvider.addEnemy(player);
     }
   }
 
   ///`Enemy moveMent`
   enemyFrameBuilde(Timer timer) {
-    var enemies = Provider.of<UIManager>(context).enemies;
     if (enemies.length > 40) {
       dbg.log("CleanUp enemy");
       enemies.removeRange(0, 20);
@@ -180,8 +180,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   /// `enemies bullets Maker`
   enemiesBullet(Timer timer) {
-    final provider = Provider.of<UIManager>(context);
-    provider.enemies.forEach((e) {
+    enemies.forEach((e) {
       // dbg.log(e.dy.toString());
       if (e.dy > 0 && e.dy < size.height - 10) {
         /// shoot
@@ -190,23 +189,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         b.position = BVector(e.dx, e.dy);
         b.radius = 5;
         b.mass = 10; //later workOn
-        provider.enemyBullets.add(b);
+        enemyBullets.add(b);
 
         ///TODO:: using provider
-        Provider.of<UIManager>(context).addEnemyBullet(b);
+        // Provider.of<EnemyProvider>(context).addEBullet(b);
       }
     });
   }
 
   ///`enemies bullets movement`
   eneBulletsMov(Timer timer) {
-    final provider = Provider.of<UIManager>(context);
-
-    if (provider.enemyBullets.length > 100) {
-      provider.enemyBullets.removeRange(0, 30);
+    if (enemyBullets.length > 100) {
+      enemyBullets.removeRange(0, 30);
       dbg.log(" E bullets cleanUP");
     }
-    provider.enemyBullets.forEach((bl) {
+    enemyBullets.forEach((bl) {
       bl.position = BVector(bl.position.x, bl.position.y + 1);
       playerHit(bl);
     });
@@ -217,8 +214,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   playerHit(Bullet b) {
     // print(
     // " bx: ${b.position.x} bY: ${b.position.y} ${player.dx} bY: ${player.dy} ");
-
-    final provider = Provider.of<UIManager>(context);
     if (b.id != prevB_ID &&
         b.position.x < player.dx + player.width &&
         b.position.x > player.dx - player.width &&
@@ -228,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       print("player Damage: bullet prev: $prevB_ID C: ${b.id}");
       setState(() {
         prevB_ID = b.id;
-        provider.enemyBullets.remove(b);
+        enemyBullets.remove(b);
       });
 
       damageHealth();
@@ -242,24 +237,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   ////`For Player `
   ///Bullets move
-  ///FIXME:: Player bullets movement
   frameBuild(Timer timer) {
     // b.position.x += 10;
-    final provider = Provider.of<UIManager>(context);
 
-    if (provider.playerBullets.length > 20)
-      provider.remPlayerBullet(range: provider.playerBullets.length - 5);
-
+    if (playerBullets.length > 20) playerBullets.removeRange(0, 5);
     setState(() {});
-    provider.playerBullets.forEach((pBullet) {
+    playerBullets.forEach((pBullet) {
       if (pBullet != null) pBullet.position.y += 1;
 
       // print(pBullet.position.y);
       // if(pBullet.position.d)
       if (pBullet.position.y > size.height) {
-        provider.remPlayerBullet(b: pBullet);
+        playerBullets.remove(pBullet);
       }
-      setState(() {});
 
       ///`Destroy Enemy`
       checkEnemyPoss(pBullet);
@@ -276,10 +266,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   checkEnemyPoss(Bullet pb) {
     ///`Test Object`
     testObj(pb);
-
-    final uiProvider = Provider.of<UIManager>(context);
-    final enemies = uiProvider.enemies;
-    final playerBullets = uiProvider.playerBullets;
 
     enemies.forEach((enemy) {
       if (size.height - pb.position.y < enemy.dy + enemy.height / 2 &&
@@ -305,19 +291,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   ///`Explosion` list makes laggy
   brust(PVector pVector) {
-    Explosion ex = Explosion(
-      color: Colors.yellow,
-      initPosition: pVector,
-    );
-
-    Provider.of<PlayerManager>(context)
+    Provider.of<PlayerManager>(context, listen: false)
         .addExplosion(ExplosionType.neonBrust, pVector);
-    dbg.log("boom..");
   }
 
   testObj(Bullet pb) {
-    final provider = Provider.of<UIManager>(context);
-
     ///`Test Object`
     // dbg.log(
     //     "Epos: ${eTestBullet.position.y.toString()} B: ${(size.height - pb.position.y).ceil().toString()} $prevPlayerBulletId");
@@ -330,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       dbg.log("Hit 1");
       // TODO:: make brust radius then sub hope it gonna work
       brust(PVector(eTestBullet.position.x, eTestBullet.position.y));
-      setState(() => provider.playerBullets.remove(pb));
+      setState(() => playerBullets.remove(pb));
     }
 
     if (size.height - pb.position.y <
@@ -341,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         pb.position.x > eTestBullet2.position.x - eTestBullet2.radius / 2) {
       dbg.log("Hit 2");
       brust(PVector(eTestBullet2.position.x, eTestBullet2.position.y));
-      setState(() => provider.playerBullets.remove(pb));
+      setState(() => playerBullets.remove(pb));
     }
   }
 
@@ -372,9 +350,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void bulletMaker() async {
     // print("PB maker");
     // if (playerBullets==null) return;
-    final providerUI = Provider.of<UIManager>(context, listen: false);
-    if (providerUI.playerBullets.length > 20) {
-      providerUI.remPlayerBullet(range: 15);
+    if (playerBullets.length > 20) {
+      playerBullets.removeRange(0, 10);
     }
 
     ///TODO:: `player Bullet properties`
@@ -389,12 +366,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     setState(() {
       b.id = pBC++;
-      // providerUI.playerBullets.add(b);
+      playerBullets.add(b);
     });
-
-    /// TODO:: provider
-
-    providerUI.addPlayerBullet(b);
 
     /// player bullet sound
     SoundManager.playLuger();
@@ -457,173 +430,173 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     var scrw = size.width;
     var pdXR = scrw - player.dx;
     var w = pdXR + pdXL;
-    // print("left: $pdXL  Right:$pdXR ${SizeConfig.screenWidth}==$w");
+    print("left: $pdXL  Right:$pdXR ${SizeConfig.screenWidth}==$w");
     return Container(
-      ///TODO:: Background
-      color: Colors.black,
-      key: _rootSCRnKey,
-      child: Consumer2<UIManager, PlayerManager>(
-        builder: (context, data, playerData, child) => Stack(
-          children: <Widget>[
-            /// score and live
-            if (_isPlaying)
+
+        ///TODO:: Background
+        color: Colors.black38,
+        key: _rootSCRnKey,
+        child: Consumer<PlayerManager>(
+          builder: (ctx, data, child) => Stack(
+            children: <Widget>[
+              /// score and live
+              if (_isPlaying)
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: HeaderScore(),
+                ),
+              if (_isPlaying)
+                Positioned(
+                  top: getProportionateScreenHeight(20),
+                  left: getProportionateScreenWidth(80),
+                  right: getProportionateScreenHeight(120),
+                  child: HealthMeter(),
+                ),
+              if (_isPlaying)
+                Positioned(
+                  right: 10,
+                  child: HeaderLive(),
+                ),
+
+              /// `Start Button`
+              /// TODO:: fix anime
               Positioned(
-                top: 10,
-                left: 10,
-                child: HeaderScore(),
-              ),
-            if (_isPlaying)
-              Positioned(
-                top: getProportionateScreenHeight(20),
-                left: getProportionateScreenWidth(80),
-                right: getProportionateScreenHeight(120),
-                child: HealthMeter(),
-              ),
-            if (_isPlaying)
-              Positioned(
+                bottom: 10,
                 right: 10,
-                child: HeaderLive(),
+                left: 10,
+                child: RaisedButton(
+                  child: Text("ps"),
+                  onPressed: _updateSize,
+                ),
               ),
 
-            /// `Start Button`
-            /// TODO:: fix anime
-            Positioned(
-              bottom: 10,
-              right: 10,
-              left: 10,
-              child: RaisedButton(
-                child: Text("ps"),
-                onPressed: _updateSize,
-              ),
-            ),
-
-            ///`Player`
-            Positioned(
-              bottom: _tempMoveable ? player.dy : 150,
-              left: _tempMoveable ? pdXL : 0,
-              right: _tempMoveable ? pdXR - player.width : null,
-              // child: CustomPaint(
-              //   painter: PlayerShip(player),
-              // ),
-              child: AnimatedSize(
-                curve: Curves.easeInOutBack,
-                duration: Duration(seconds: 1),
-                vsync: this,
-                child: Container(
-                  width: _playerSize,
-                  height: _playerSize,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: PlayerRive(),
+              ///`Player`
+              Positioned(
+                bottom: _tempMoveable ? player.dy : 150,
+                left: _tempMoveable ? pdXL : 0,
+                right: _tempMoveable ? pdXR - player.width : null,
+                // child: CustomPaint(
+                //   painter: PlayerShip(player),
+                // ),
+                child: AnimatedSize(
+                  curve: Curves.easeInOutBack,
+                  duration: Duration(seconds: 1),
+                  vsync: this,
+                  child: Container(
+                    width: _playerSize,
+                    height: _playerSize,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: PlayerRive(),
+                    ),
                   ),
                 ),
               ),
-            ),
 
-            ///`Player` `bullet List`
-            // if (_isPlaying || _testModeStartG)
-            ...data.playerBullets
-                .map(
-                  (bl) => Positioned(
-                    bottom: bl.position.y,
-                    left: bl.position.x,
-                    child: Container(
-                        width: bl.radius,
-                        height: bl.radius,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: bl.color,
-                        )),
-                  ),
-                )
-                .toList(),
+              ///`Player` `bullet List`
+              if (_isPlaying || _testModeStartG)
+                ...playerBullets
+                    .map(
+                      (bl) => Positioned(
+                        bottom: bl.position.y,
+                        left: bl.position.x,
+                        child: Container(
+                            width: bl.radius,
+                            height: bl.radius,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: bl.color,
+                            )),
+                      ),
+                    )
+                    .toList(),
 
-            ////`Enemies`
-            if (_isPlaying)
-              ...data.enemies
+              ////`Enemies`
+              if (_isPlaying)
+                ...enemies
+                    .map(
+                      (e) => Positioned(
+                        top: e.dy,
+                        left: e.dx,
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.blue),
+                        ),
+                      ),
+                    )
+                    .toList(),
+
+              ///impliment provider
+
+              if (_isPlaying)
+                ...enemyBullets
+                    .map((eblt) => Positioned(
+                          top: eblt.position.y,
+                          left: eblt.position.x,
+                          child: Container(
+                            width: eblt.radius * 2,
+                            height: eblt.radius * 2,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.red),
+                          ),
+                        ))
+                    .toList(),
+
+              ///TODO:: on Explosion UI gets laggy
+              /// `Single Explosion bug handler`
+              /// Im changing rive to use explosion on game startUP UI
+              // if (data.handleExpolosionBug)
+              //   Positioned(
+              //     left: data.explosionBug.initPoss.x - 100,
+              //     top: data.explosionBug.initPoss.y - 100,
+              //     child: Container(
+              //       width: 200,
+              //       height: 200,
+              //       child: RiveExplosion1(),
+              //     ),
+              //   ),
+
+              ...data.explosion
                   .map(
                     (e) => Positioned(
-                      top: e.dy,
-                      left: e.dx,
+                      top: e.initPoss.y - 100,
+                      left: e.initPoss.x - 100,
                       child: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.blue),
+                        width: 200,
+                        height: 200,
+                        child: e.child,
                       ),
                     ),
                   )
                   .toList(),
 
-            ///impliment provider
-
-            if (_isPlaying)
-              ...data.enemyBullets
-                  .map((eblt) => Positioned(
-                        top: eblt.position.y,
-                        left: eblt.position.x,
-                        child: Container(
-                          width: eblt.radius * 2,
-                          height: eblt.radius * 2,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.red),
-                        ),
-                      ))
-                  .toList(),
-
-            /// `Single Explosion`
-
-            if (_testModeStartG)
-              Positioned(
-                top: eTestBullet.position.y,
-                left: eTestBullet.position.x,
-                child: Container(
-                  width: eTestBullet.radius,
-                  height: eTestBullet.radius,
-                  decoration:
-                      BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-                ),
-              ),
-            if (_testModeStartG)
-              Positioned(
-                top: eTestBullet2.position.y,
-                left: eTestBullet2.position.x,
-                child: Container(
-                  width: eTestBullet2.radius,
-                  height: eTestBullet2.radius,
-                  decoration:
-                      BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-                ),
-              ),
-
-            ///Explosion manager
-            ...playerData.explosion
-                .map(
-                  (e) => Positioned(
-                    top: e.initPoss.y - 100,
-                    left: e.initPoss.x - 100,
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      child: e.child,
-                    ),
+              if (_testModeStartG)
+                Positioned(
+                  top: eTestBullet.position.y,
+                  left: eTestBullet.position.x,
+                  child: Container(
+                    width: eTestBullet.radius,
+                    height: eTestBullet.radius,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.red),
                   ),
-                )
-                .toList(),
-            //Explosion Bugs Handling
-            if (playerData.handleExpolosionBug)
-              Positioned(
-                left: playerData.explosionBug.initPoss.x - 100,
-                top: playerData.explosionBug.initPoss.y - 100,
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  child: RiveExplosion1(),
                 ),
-              )
-          ],
-        ),
-      ),
-    );
+              if (_testModeStartG)
+                Positioned(
+                  top: eTestBullet2.position.y,
+                  left: eTestBullet2.position.x,
+                  child: Container(
+                    width: eTestBullet2.radius,
+                    height: eTestBullet2.radius,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.red),
+                  ),
+                ),
+            ],
+          ),
+        ));
   }
 }

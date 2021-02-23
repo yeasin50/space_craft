@@ -60,7 +60,7 @@ class PlayerManager with ChangeNotifier {
       _explosions.add(ExplosionManager(pos, widget));
     }
 
-    print(_explosions.length);
+    log(_explosions.length.toString());
     notifyListeners();
   }
 

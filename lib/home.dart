@@ -19,6 +19,7 @@ import 'package:spaceCraft/widget/models/bullet.dart';
 import 'widget/models/player.dart';
 
 import 'GameManager/sound_manager.dart';
+import 'widget/rives/rive_explosion1.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     playerEngine();
   }
 
-  // List<Bullet> playerBullets = [];
+  ///TODO:: add provider
   Timer timerBulletMove, timerBulletmaker;
   final fps = 1 / 24;
   Bullet b = Bullet();
@@ -76,19 +77,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   ///`Enemy`
   Player enemy = Player(dx: 10, dy: 10);
   Timer timerEnemyMovement, timerEnemyMaker, timerEnemyShootOut;
+
+  ///TODO:: add provider
   // List<Player> enemies = [];
   // List<Bullet> enemyBullets = [];
+
+  // List<ExplosionManager> _explosions = [];
+
   Timer timerEBulletM;
   int numOfBullet = 1;
   var prevB_ID = 0;
+
   Bullet eTestBullet = Bullet(id: 2, position: BVector(166, 123), radius: 40);
   Bullet eTestBullet2 = Bullet(id: 4, position: BVector(286, 143), radius: 30);
 
   // Demo demoEx = Demo(
   //   text: Text('C'),
   // );
-
-  Explosion ex;
 
   ///`Game engine`
   @override
@@ -120,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       boxSize = Rect.fromLTRB(0, 0, size.width, size.height);
 
       ///`Start Game engine`
-      // playerEngine();
+      playerEngine();
       // enemySchedular();
     });
   }
@@ -153,8 +158,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       var y = random.nextDouble() * (-300.0);
       Player enemy = Player(dx: x, dy: y);
 
-      enemies.add(enemy);
-
       ///TODO:: using provider
       Provider.of<UIManager>(context).addEnemy(enemy);
     }
@@ -177,7 +180,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   /// `enemies bullets Maker`
   enemiesBullet(Timer timer) {
-    enemies.forEach((e) {
+    final provider = Provider.of<UIManager>(context);
+    provider.enemies.forEach((e) {
       // dbg.log(e.dy.toString());
       if (e.dy > 0 && e.dy < size.height - 10) {
         /// shoot
@@ -186,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         b.position = BVector(e.dx, e.dy);
         b.radius = 5;
         b.mass = 10; //later workOn
-        enemyBullets.add(b);
+        provider.enemyBullets.add(b);
 
         ///TODO:: using provider
         Provider.of<UIManager>(context).addEnemyBullet(b);
@@ -196,11 +200,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   ///`enemies bullets movement`
   eneBulletsMov(Timer timer) {
-    if (enemyBullets.length > 100) {
-      enemyBullets.removeRange(0, 30);
+    final provider = Provider.of<UIManager>(context);
+
+    if (provider.enemyBullets.length > 100) {
+      provider.enemyBullets.removeRange(0, 30);
       dbg.log(" E bullets cleanUP");
     }
-    enemyBullets.forEach((bl) {
+    provider.enemyBullets.forEach((bl) {
       bl.position = BVector(bl.position.x, bl.position.y + 1);
       playerHit(bl);
     });
@@ -211,6 +217,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   playerHit(Bullet b) {
     // print(
     // " bx: ${b.position.x} bY: ${b.position.y} ${player.dx} bY: ${player.dy} ");
+
+    final provider = Provider.of<UIManager>(context);
     if (b.id != prevB_ID &&
         b.position.x < player.dx + player.width &&
         b.position.x > player.dx - player.width &&
@@ -220,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       print("player Damage: bullet prev: $prevB_ID C: ${b.id}");
       setState(() {
         prevB_ID = b.id;
-        enemyBullets.remove(b);
+        provider.enemyBullets.remove(b);
       });
 
       damageHealth();
@@ -234,19 +242,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   ////`For Player `
   ///Bullets move
+  ///FIXME:: Player bullets movement
   frameBuild(Timer timer) {
     // b.position.x += 10;
+    final provider = Provider.of<UIManager>(context);
 
-    if (playerBullets.length > 20) playerBullets.removeRange(0, 5);
+    if (provider.playerBullets.length > 20)
+      provider.remPlayerBullet(range: provider.playerBullets.length - 5);
+
     setState(() {});
-    playerBullets.forEach((pBullet) {
+    provider.playerBullets.forEach((pBullet) {
       if (pBullet != null) pBullet.position.y += 1;
 
       // print(pBullet.position.y);
       // if(pBullet.position.d)
       if (pBullet.position.y > size.height) {
-        playerBullets.remove(pBullet);
+        provider.remPlayerBullet(b: pBullet);
       }
+      setState(() {});
 
       ///`Destroy Enemy`
       checkEnemyPoss(pBullet);
@@ -263,6 +276,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   checkEnemyPoss(Bullet pb) {
     ///`Test Object`
     testObj(pb);
+
+    final uiProvider = Provider.of<UIManager>(context);
+    final enemies = uiProvider.enemies;
+    final playerBullets = uiProvider.playerBullets;
 
     enemies.forEach((enemy) {
       if (size.height - pb.position.y < enemy.dy + enemy.height / 2 &&
@@ -288,15 +305,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   ///`Explosion` list makes laggy
   brust(PVector pVector) {
-    ex = null;
-    ex = Explosion(
+    Explosion ex = Explosion(
       color: Colors.yellow,
       initPosition: pVector,
     );
-    Explosion.isExpl = true;
+
+    Provider.of<PlayerManager>(context)
+        .addExplosion(ExplosionType.neonBrust, pVector);
+    dbg.log("boom..");
   }
 
   testObj(Bullet pb) {
+    final provider = Provider.of<UIManager>(context);
+
     ///`Test Object`
     // dbg.log(
     //     "Epos: ${eTestBullet.position.y.toString()} B: ${(size.height - pb.position.y).ceil().toString()} $prevPlayerBulletId");
@@ -309,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       dbg.log("Hit 1");
       // TODO:: make brust radius then sub hope it gonna work
       brust(PVector(eTestBullet.position.x, eTestBullet.position.y));
-      setState(() => playerBullets.remove(pb));
+      setState(() => provider.playerBullets.remove(pb));
     }
 
     if (size.height - pb.position.y <
@@ -320,7 +341,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         pb.position.x > eTestBullet2.position.x - eTestBullet2.radius / 2) {
       dbg.log("Hit 2");
       brust(PVector(eTestBullet2.position.x, eTestBullet2.position.y));
-      setState(() => playerBullets.remove(pb));
+      setState(() => provider.playerBullets.remove(pb));
     }
   }
 
@@ -351,8 +372,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void bulletMaker() async {
     // print("PB maker");
     // if (playerBullets==null) return;
-    if (playerBullets.length > 20) {
-      playerBullets.removeRange(0, 10);
+    final providerUI = Provider.of<UIManager>(context, listen: false);
+    if (providerUI.playerBullets.length > 20) {
+      providerUI.remPlayerBullet(range: 15);
     }
 
     ///TODO:: `player Bullet properties`
@@ -367,12 +389,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     setState(() {
       b.id = pBC++;
-      playerBullets.add(b);
+      // providerUI.playerBullets.add(b);
     });
 
     /// TODO:: provider
 
-    Provider.of<UIManager>(context).addPlayerBullet(b);
+    providerUI.addPlayerBullet(b);
 
     /// player bullet sound
     SoundManager.playLuger();
@@ -435,13 +457,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     var scrw = size.width;
     var pdXR = scrw - player.dx;
     var w = pdXR + pdXL;
-    print("left: $pdXL  Right:$pdXR ${SizeConfig.screenWidth}==$w");
+    // print("left: $pdXL  Right:$pdXR ${SizeConfig.screenWidth}==$w");
     return Container(
       ///TODO:: Background
       color: Colors.black,
       key: _rootSCRnKey,
-      child: Consumer<UIManager>(
-        builder: (context, data, child) => Stack(
+      child: Consumer2<UIManager, PlayerManager>(
+        builder: (context, data, playerData, child) => Stack(
           children: <Widget>[
             /// score and live
             if (_isPlaying)
@@ -499,22 +521,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
 
             ///`Player` `bullet List`
-            if (_isPlaying || _testModeStartG)
-              ...data.playerBullets
-                  .map(
-                    (bl) => Positioned(
-                      bottom: bl.position.y,
-                      left: bl.position.x,
-                      child: Container(
-                          width: bl.radius,
-                          height: bl.radius,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: bl.color,
-                          )),
-                    ),
-                  )
-                  .toList(),
+            // if (_isPlaying || _testModeStartG)
+            ...data.playerBullets
+                .map(
+                  (bl) => Positioned(
+                    bottom: bl.position.y,
+                    left: bl.position.x,
+                    child: Container(
+                        width: bl.radius,
+                        height: bl.radius,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: bl.color,
+                        )),
+                  ),
+                )
+                .toList(),
 
             ////`Enemies`
             if (_isPlaying)
@@ -573,6 +595,32 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       BoxDecoration(shape: BoxShape.circle, color: Colors.red),
                 ),
               ),
+
+            ///Explosion manager
+            ...playerData.explosion
+                .map(
+                  (e) => Positioned(
+                    top: e.initPoss.y - 100,
+                    left: e.initPoss.x - 100,
+                    child: Container(
+                      width: 200,
+                      height: 200,
+                      child: e.child,
+                    ),
+                  ),
+                )
+                .toList(),
+            //Explosion Bugs Handling
+            if (playerData.handleExpolosionBug)
+              Positioned(
+                left: playerData.explosionBug.initPoss.x - 100,
+                top: playerData.explosionBug.initPoss.y - 100,
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  child: RiveExplosion1(),
+                ),
+              )
           ],
         ),
       ),

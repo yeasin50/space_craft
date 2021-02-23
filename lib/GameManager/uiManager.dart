@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:spaceCraft/widget/models/bullet.dart';
 import 'package:spaceCraft/widget/models/player.dart';
 
-
 ///TODO:: test it
 class UIManager with ChangeNotifier {
   ///`Max Storage`
@@ -17,12 +16,17 @@ class UIManager with ChangeNotifier {
 
   List<Bullet> _playerBullets = [];
 
+  get maxPlayerBullet => _maxPlayerBullet;
+  get maxEnemyBullet => _maxEnemyBullets;
+  get maxEnemySize => _maxEnemyStore;
+
   get enemies => _enemies;
   get enemyBullets => _enemyBullets;
   get playerBullets => _playerBullets;
 
   Future<void> addEnemy(Player enemy) async {
     _enemies.add(enemy);
+    print(_enemies.length);
     notifyListeners();
   }
 
@@ -39,7 +43,7 @@ class UIManager with ChangeNotifier {
     notifyListeners();
   }
 
-  remEnemyBullet(Bullet b, [int range = 0]) {
+  remEnemyBullet(Bullet b, {int range = 0}) {
     if (range == 0)
       _enemyBullets.remove(b);
     else {
@@ -55,12 +59,19 @@ class UIManager with ChangeNotifier {
     log(_playerBullets.length.toString());
   }
 
-  remPlayerBullet(Bullet b, [int range = 0]) async {
+  remPlayerBullet({Bullet b, int range = 0}) async {
     if (range == 0)
       _playerBullets.remove(b);
     else {
       _playerBullets.removeRange(0, _playerBullets.length ~/ 2);
     }
     notifyListeners();
+  }
+
+  ///Update player bullet poss
+  updatePlayerBulletPoss() async {
+    _playerBullets = _playerBullets.forEach((element) {
+      element.position.y += 1;
+    }) as List;
   }
 }

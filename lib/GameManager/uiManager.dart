@@ -17,25 +17,31 @@ class UIManager with ChangeNotifier {
 
   List<Bullet> _playerBullets = [];
 
-  get maxPlayerBullet => _maxPlayerBullet;
-  get maxEnemyBullet => _maxEnemyBullets;
-  get maxEnemySize => _maxEnemyStore;
+  // get maxPlayerBullet => _maxPlayerBullet;
+  // get maxEnemyBullet => _maxEnemyBullets;
+  // get maxEnemySize => _maxEnemyStore;
 
   get enemies => _enemies;
   get enemyBullets => _enemyBullets;
   get playerBullets => _playerBullets;
 
   Future<void> addEnemy(Player enemy) async {
+    if (_enemies.length > _maxEnemyStore)
+      _enemies.removeRange(0, _maxEnemyStore ~/ 2);
+      
     _enemies.add(enemy);
     print(_enemies.length);
     notifyListeners();
   }
 
-  remEnemy(Player enemy, [int removeRange = 0]) async {
-    if (removeRange > 0) {
-      _enemies.removeRange(0, _maxEnemyStore ~/ 2);
-    } else
-      _enemies.remove(enemy);
+  remEnemy({Player enemy, int removeRange = 0, List<Player> enemies}) async {
+    if (removeRange > 0) _enemies.removeRange(0, _maxEnemyStore ~/ 2);
+
+    if (removeRange > 0) _enemies.remove(enemy);
+
+    if (enemies.length > 0)
+      _enemies.removeWhere((element) => enemies.contains(element));
+
     notifyListeners();
   }
 
@@ -43,7 +49,7 @@ class UIManager with ChangeNotifier {
   //   _enemyBullets.add(bullet);
   // }
 
-  remEnemyBullet(Bullet b, {int range = 0}) {
+  remEnemyBullet(Bullet b, {int range = 0})  {
     if (range == 0)
       _enemyBullets.remove(b);
     else {
@@ -54,19 +60,19 @@ class UIManager with ChangeNotifier {
   }
 
   Future<void> addPlayerBullet(Bullet bullet) async {
-    _playerBullets.add(bullet);
+     _playerBullets.add(bullet);
     notifyListeners();
     dbg.log(_playerBullets.length.toString());
   }
 
-  remPlayerBullet({Bullet b, int range = 0}) async {
+  remPlayerBullet({Bullet b, int range = 0, List<Bullet> bullets}) async {
     if (range == 0)
       _playerBullets.remove(b);
-    else {
+    else if (range != 0) {
       _playerBullets.removeRange(0, _playerBullets.length ~/ 2);
+    } else if (bullets.length > 0) {
+      _playerBullets.removeWhere((bl) => bullets.contains(bl));
     }
     notifyListeners();
   }
-
-  
 }

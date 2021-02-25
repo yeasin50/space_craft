@@ -13,6 +13,7 @@ should I implement provider for this simple like this manager
 
 Implementation Explosion on gets laggy, So lets try on Start Ui, because there will be less operation.   
 I may also changed rive animation type. Maybe check without provider or using custom paint 
+for shoot and Possition , lets use provider
 
 [FireBase dep. ](https://firebase.flutter.dev/docs/migration/)
 A few resources to get you started if this is your first Flutter project:

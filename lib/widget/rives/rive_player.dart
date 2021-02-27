@@ -43,7 +43,7 @@ class _PlayerRiveState extends State<PlayerRive>
         });
       }
     });
-    log("Importing ship.....");
+    // log("Importing ship.....");
   }
 
   @override

@@ -11,20 +11,12 @@ enum DamageOnCollision {
   ship,
 }
 
-enum ExplosionType { rounded, neonBrust }
-
-class ExplosionManager {
-  PVector initPoss;
-  Widget child;
-  ExplosionManager(this.initPoss, this.child);
-}
 
 class PlayerManager with ChangeNotifier {
   int _score = 0;
   int _health = 80;
   int _live = 2;
   int _maxLive = 3;
-  int _maxExplosionOnStorage = 3;
 
   final _shipPerDestroy = 1;
   final _bossShipDestroy = 5;
@@ -32,37 +24,14 @@ class PlayerManager with ChangeNotifier {
   final _damagePerBullet = 10;
   final _damagePerShip = 30;
 
-  final List<ExplosionManager> _explosions = [];
-  var _handleExplosionBug = false;
-  ExplosionManager explosionBug;
 
-  get handleExpolosionBug => _handleExplosionBug;
   get score => _score;
   get health => _health;
   get live => _live;
   get maxLive => _maxLive;
-  get explosion => _explosions;
 
 
-  Future<void> addExplosion(ExplosionType type, PVector pos) async {
-    var widget =
-        type == ExplosionType.neonBrust ? RiveExplosion2() : RiveExplosion1();
-
-    if (_explosions.length >= _maxExplosionOnStorage) {
-      print("Overule");
-      _explosions.clear();
-      _handleExplosionBug = true;
-      explosionBug = ExplosionManager(pos, RiveExplosion2());
-    } else {
-      _handleExplosionBug = false;
-
-      _explosions.add(ExplosionManager(pos, widget));
-    }
-
-    log(_explosions.length.toString());
-    notifyListeners();
-  }
-
+  
   // startGame() {
   //   _isPlaying = true;
   //   notifyListeners();
@@ -77,7 +46,7 @@ class PlayerManager with ChangeNotifier {
   //FIXME:: fixe score update
   incrementScore() {
     _score += _shipPerDestroy;
-    log(_score.toString());
+    // log(_score.toString());
     notifyListeners();
   }
 
@@ -97,7 +66,7 @@ class PlayerManager with ChangeNotifier {
       _live += 1;
       _health = 0;
     }
-    log(" health: ${_health.toString()}");
+    // log(" health: ${_health.toString()}");
     notifyListeners();
   }
 

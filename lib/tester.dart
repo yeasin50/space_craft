@@ -23,7 +23,7 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
   List<ExplosionManager> explosions = [];
 
   void _updateSize(PVector position) async {
-    Provider.of<PlayerManager>(context, listen: false)
+    Provider.of<UIManager>(context, listen: false)
         .addExplosion(ExplosionType.neonBrust, position);
   }
 
@@ -31,7 +31,7 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return Consumer<PlayerManager>(
+    return Consumer<UIManager>(
         builder: (ctx, data, child) => GestureDetector(
               onPanDown: (details) {
                 var posX = details.globalPosition.dx;
@@ -49,7 +49,7 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
                     child: Container(
                       width: 100,
                       height: 100,
-                      child: RiveExplosion1(),
+                      child: RiveExplosion1(23),
                     ),
                   ),
                   //Explosions
@@ -67,18 +67,6 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
                         ),
                       )
                       .toList(),
-
-                  //Explosion Bugs Handling
-                  if (data.handleExpolosionBug)
-                    Positioned(
-                      left: data.explosionBug.initPoss.x - 100,
-                      top: data.explosionBug.initPoss.y - 100,
-                      child: Container(
-                        width: 200,
-                        height: 200,
-                        child: RiveExplosion1(),
-                      ),
-                    )
                 ],
               ),
             ));

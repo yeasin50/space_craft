@@ -19,6 +19,7 @@ class Explosion extends StatefulWidget {
   _ExplosionState createState() => _ExplosionState();
 }
 
+///`Particles Explosion`
 class _ExplosionState extends State<Explosion> {
   var _key = GlobalKey();
   Size _size = Size.zero;
@@ -33,7 +34,7 @@ class _ExplosionState extends State<Explosion> {
   _getSizes() {
     final RenderBox renderBox = _key.currentContext.findRenderObject();
     final size = renderBox.size;
-    print("Size : ${size}");
+    // print("Size : ${size}");
     setState(() => _size = size);
     // setState(() => slideSize = size);
   }
@@ -41,7 +42,7 @@ class _ExplosionState extends State<Explosion> {
   _getPositions() {
     final RenderBox renderBoxRed = _key.currentContext.findRenderObject();
     final position = renderBoxRed.localToGlobal(Offset.zero);
-    print("POSITION of widget: $position ");
+    // print("POSITION of widget: $position ");
   }
 
   @override
@@ -89,7 +90,7 @@ class _ExplosionState extends State<Explosion> {
 
     //target the corner particle to stop Timer
     if (particles[4].position.x > 45) {
-      log("Stop and rm particles");
+      // log("Stop and rm particles");
       timer.cancel();
       particles.removeRange(0, _amountOfParticle);
       Explosion.isExpl = false;

@@ -2,11 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
+import 'package:spaceCraft/GameManager/uiManager.dart';
 
 ///`Neon Brust`
 class RiveExplosion2 extends StatefulWidget {
-  RiveExplosion2({Key key}) : super(key: key);
+  final id;
+  RiveExplosion2(this.id);
 
   @override
   _RiveExplosion2State createState() => _RiveExplosion2State();
@@ -15,6 +18,7 @@ class RiveExplosion2 extends StatefulWidget {
 class _RiveExplosion2State extends State<RiveExplosion2> {
   Artboard _riveArtboard;
   RiveAnimationController _controller;
+  bool checked = false;
 
   /// Tracks if the animation is playing by whether controller is running.
   bool get isPlaying => _controller?.isActive ?? false;
@@ -33,11 +37,16 @@ class _RiveExplosion2State extends State<RiveExplosion2> {
         });
       }
     });
-    log("Importing Explosion2.....");
+    // log("Importing Explosion2.....");
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!checked && isPlaying) {
+      Provider.of<UIManager>(context)
+          .runTimeExplosionChecker(widgetId: widget.id);
+      setState(() => checked = true);
+    }
     return _riveArtboard == null
         ? SizedBox()
         : Rive(

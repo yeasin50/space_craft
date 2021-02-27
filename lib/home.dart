@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   ///`enemies bullets movement`
-  ///It's making laggy, FIXME:: laggy 
+  ///It's making laggy, FIXMED:: because of printing on console
   eneBulletsMov(Timer timer) {
     List<Bullet> tempB = [];
 
@@ -285,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           size.height - pb.position.y > enemy.dy - enemy.height / 2 &&
           pb.position.x < enemy.dx + enemy.width / 2 &&
           pb.position.x > enemy.dx - enemy.width / 2) {
-        dbg.log(" Destroy Enemy On bullet");
+        // dbg.log(" Destroy Enemy On bullet");
 
         tempEnemy.add(enemy);
         tempPb.add(pb);
@@ -311,10 +311,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   ///`Explosion` list makes laggy
   brust(PVector pVector) {
-    // Provider.of<PlayerManager>(context, listen: false)
-    //     .addExplosion(ExplosionType.neonBrust, pVector);
+    provider.addExplosion(ExplosionType.neonBrust, pVector);
 
-    dbg.log("Brust");
+    // dbg.log("Brust");
   }
 
   testObj(Bullet pb) {
@@ -327,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             eTestBullet.position.y - eTestBullet.radius / 2 &&
         pb.position.x < eTestBullet.position.x + eTestBullet.radius / 2 &&
         pb.position.x > eTestBullet.position.x - eTestBullet.radius / 2) {
-      dbg.log("Hit 1");
+      // dbg.log("Hit 1");
       // TODO:: make brust radius then sub hope it gonna work
       brust(PVector(eTestBullet.position.x, eTestBullet.position.y));
       // setState(() => playerBullets.remove(pb));
@@ -340,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             eTestBullet2.position.y - eTestBullet2.radius / 2 &&
         pb.position.x < eTestBullet2.position.x + eTestBullet2.radius / 2 &&
         pb.position.x > eTestBullet2.position.x - eTestBullet2.radius / 2) {
-      dbg.log("Hit 2");
+      // dbg.log("Hit 2");
       brust(PVector(eTestBullet2.position.x, eTestBullet2.position.y));
       // setState(() => playerBullets.remove(pb));
       provider.remPlayerBullet(b: pb);
@@ -476,7 +475,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
 
             /// `Start Button`
-            /// TODO:: fix anime
+            /// DONE:: fix anime
             Positioned(
               bottom: 10,
               right: 10,
@@ -575,19 +574,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             //     ),
             //   ),
 
-            // ...data.explosion
-            //     .map(
-            //       (e) => Positioned(
-            //         top: e.initPoss.y - 100,
-            //         left: e.initPoss.x - 100,
-            //         child: Container(
-            //           width: 200,
-            //           height: 200,
-            //           child: e.child,
-            //         ),
-            //       ),
-            //     )
-            //     .toList(),
+            ...dataUI.explosion
+                .map(
+                  (e) => Positioned(
+                    top: e.initPoss.y - 100,
+                    left: e.initPoss.x - 100,
+                    child: Container(
+                      width: 200,
+                      height: 200,
+                      child:  e.child,
+                    ),
+                  ),
+                )
+                .toList(),
 
             if (_testModeStartG)
               Positioned(

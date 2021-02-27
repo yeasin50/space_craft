@@ -28,7 +28,7 @@ class UIManager with ChangeNotifier {
   Future<void> addEnemy(Player enemy) async {
     if (_enemies.length > _maxEnemyStore)
       _enemies.removeRange(0, _maxEnemyStore ~/ 2);
-      
+
     _enemies.add(enemy);
     print(_enemies.length);
     notifyListeners();
@@ -49,20 +49,27 @@ class UIManager with ChangeNotifier {
   //   _enemyBullets.add(bullet);
   // }
 
-  remEnemyBullet(Bullet b, {int range = 0})  {
-    if (range == 0)
-      _enemyBullets.remove(b);
-    else {
+  remEnemyBullet({Bullet b, int range = 0, List<Bullet> bullets}) {
+    if (range == 0) _enemyBullets.remove(b);
+    if (range > 0) {
       _enemyBullets.removeRange(0, _maxEnemyBullets ~/ 2);
     }
+    if (bullets.length > 0)
+      _enemyBullets.removeWhere((element) => bullets.contains(element));
 
     notifyListeners();
   }
 
   Future<void> addPlayerBullet(Bullet bullet) async {
-     _playerBullets.add(bullet);
+    _playerBullets.add(bullet);
     notifyListeners();
-    dbg.log(_playerBullets.length.toString());
+    // dbg.log(_playerBullets.length.toString());
+  }
+
+  Future<void> addEnemyBullet(Bullet bullet) async {
+    _enemyBullets.add(bullet);
+    notifyListeners();
+    // dbg.log(_enemyBullets.length.toString());
   }
 
   remPlayerBullet({Bullet b, int range = 0, List<Bullet> bullets}) async {

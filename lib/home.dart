@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         // enemyBullets.add(b);
 
         ///TODO:: using provider Add EnemyBullets here
-        // provider.addEBullet(b);
+        provider.addEnemyBullet(b);
       }
     });
   }
@@ -232,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               .damageHealth(DamageOnCollision.bullet);
         }
       });
-    if (tempB.length > 0) provider.remPlayerBullet(bullets: tempB);
+    if (tempB.length > 0) provider.remEnemyBullet(bullets: tempB);
   }
 
 ////`For Player`
@@ -547,7 +547,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
             ///impliment provider
 
-            if (_isPlaying && 1 == 0)
+            if (_isPlaying)
               ...dataUI.enemyBullets
                   .map((eblt) => Positioned(
                         top: eblt.position.y,

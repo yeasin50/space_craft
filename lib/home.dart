@@ -563,16 +563,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ///TODO:: on Explosion UI gets laggy
             /// `Single Explosion bug handler`
             /// Im changing rive to use explosion on game startUP UI
-            // if (data.handleExpolosionBug)
-            //   Positioned(
-            //     left: data.explosionBug.initPoss.x - 100,
-            //     top: data.explosionBug.initPoss.y - 100,
-            //     child: Container(
-            //       width: 200,
-            //       height: 200,
-            //       child: RiveExplosion1(),
-            //     ),
-            //   ),
+            if (dataUI.handleExpolosionBug)
+              Positioned(
+                left: dataUI.explosionBug.initPoss.x - 100,
+                top: dataUI.explosionBug.initPoss.y - 100,
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  child: RiveExplosion1(2),
+                ),
+              ),
 
             ...dataUI.explosion
                 .map(
@@ -582,7 +582,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: Container(
                       width: 200,
                       height: 200,
-                      child:  e.child,
+                      child: e.child,
                     ),
                   ),
                 )

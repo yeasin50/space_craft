@@ -27,6 +27,12 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
         .addExplosion(ExplosionType.neonBrust, position);
   }
 
+  info(List<ExplosionManager> explosions) {
+    explosions.forEach((element) {
+      print("${element.id}  ${element.isRunnig}");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -45,13 +51,11 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
                   ),
 
                   Positioned(
-                    top: 100,
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      child: RiveExplosion1(23),
-                    ),
-                  ),
+                      top: 100,
+                      child: RaisedButton(
+                        onPressed: () => info(data.explosion),
+                        child: Text("Get Info"),
+                      )),
                   //Explosions
 
                   ///TODO:: on Explosion UI gets laggy

@@ -127,14 +127,25 @@ class UIManager with ChangeNotifier {
     if (_explosions.length >= _maxExplosionOnStorage) {
       _handleExplosionBug = true;
       _explosions.clear();
+
       explosionBug = (ExplosionManager(exid, pos, widget));
     } else {
       _explosions.add(ExplosionManager(exid, pos, widget));
       _handleExplosionBug = false;
     }
-
+    // removeAnimation();
     exid += 1; // we may reduce >big num
     // log(_explosions.length.toString());
     notifyListeners();
+  }
+
+  ///`Not working, remove completed Animation`
+  removeAnimation() {
+    List<ExplosionManager> tempList = [];
+    _explosions.forEach((element) {
+      if (element.isRunnig) tempList.add(element);
+    });
+
+    _explosions.removeWhere((element) => tempList.contains(element));
   }
 }

@@ -54,6 +54,20 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
                   ),
                   //Explosions
 
+                  ///TODO:: on Explosion UI gets laggy
+                  /// `Single Explosion bug handler`
+                  /// Im changing rive to use explosion on game startUP UI
+                  if (data.handleExpolosionBug)
+                    Positioned(
+                      left: data.explosionBug.initPoss.x - 100,
+                      top: data.explosionBug.initPoss.y - 100,
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        child: RiveExplosion1(2),
+                      ),
+                    ),
+
                   ...data.explosion
                       .map(
                         (e) => Positioned(

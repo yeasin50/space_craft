@@ -124,8 +124,14 @@ class UIManager with ChangeNotifier {
     var widget = type == ExplosionType.neonBrust
         ? RiveExplosion2(exid)
         : RiveExplosion1(exid);
-
-    _explosions.add(ExplosionManager(exid, pos, widget));
+    if (_explosions.length >= _maxExplosionOnStorage) {
+      _handleExplosionBug = true;
+      _explosions.clear();
+      explosionBug = (ExplosionManager(exid, pos, widget));
+    } else {
+      _explosions.add(ExplosionManager(exid, pos, widget));
+      _handleExplosionBug = false;
+    }
 
     exid += 1; // we may reduce >big num
     // log(_explosions.length.toString());

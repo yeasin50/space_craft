@@ -23,12 +23,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  assets_audio_player: ^2.0.13+1
-  cupertino_icons: ^1.0.0
-  easy_rich_text: ^0.5.3
-  path_provider: ^1.6.27
-  provider: ^4.3.3
-  rive: ^0.6.7
+  assets_audio_player: ^3.0.3+3
+  cupertino_icons: ^1.0.3
+  easy_rich_text: ^0.5.4
+  path_provider: ^2.0.1
+  provider: ^5.0.0
+  rive: ^0.7.9
+  change_app_package_name: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -50,12 +50,12 @@ class _TesterState extends State<Tester> with TickerProviderStateMixin {
                     color: Colors.black,
                   ),
 
-                  Positioned(
-                      top: 100,
-                      child: RaisedButton(
-                        onPressed: () => info(data.explosion),
-                        child: Text("Get Info"),
-                      )),
+                  // Positioned(
+                  //     top: 100,
+                  //     child: RaisedButton(
+                  //       onPressed: () => info(data.explosion),
+                  //       child: Text("Get Info"),
+                  //     )),
                   //Explosions
 
                   ///TODO:: on Explosion UI gets laggy

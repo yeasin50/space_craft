@@ -34,14 +34,13 @@ class _PlayerRiveState extends State<PlayerRive>
     super.initState();
 
     rootBundle.load("assets/rive/aircraft.riv").then((data) async {
-      final file = RiveFile();
-      if (file.import(data)) {
+          final file = RiveFile.import(data);
         final artboard = file.artboardByName("shipBoard");
         artboard.addController(_controller = SimpleAnimation("playing"));
         setState(() {
           _riveArtboard = artboard;
         });
-      }
+      
     });
     // log("Importing ship.....");
   }

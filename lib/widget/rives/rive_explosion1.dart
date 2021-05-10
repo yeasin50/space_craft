@@ -28,14 +28,13 @@ class _RiveExplosion1State extends State<RiveExplosion1>
     super.initState();
 
     rootBundle.load("assets/rive/explosion1.riv").then((data) async {
-      final file = RiveFile();
-      if (file.import(data)) {
-        final artboard = file.mainArtboard;
-        artboard.addController(_controller = SimpleAnimation("brust"));
-        setState(() {
-          _riveArtboard = artboard;
-        });
-      }
+      final file = RiveFile.import(data);
+
+      final artboard = file.mainArtboard;
+      artboard.addController(_controller = SimpleAnimation("brust"));
+      setState(() {
+        _riveArtboard = artboard;
+      });
     });
     // log("Importing Explosion1.....");
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spaceCraft/GameManager/playerManager.dart';
-import 'package:spaceCraft/GameManager/uiManager.dart';
-import 'package:spaceCraft/home.dart';
-import 'package:spaceCraft/tester.dart';
-import 'package:spaceCraft/widget/rives/rive_player.dart';
+import './GameManager/playerManager.dart';
+import './GameManager/uiManager.dart';
+import './home.dart';
+import './tester.dart';
+import './widget/rives/rive_player.dart';
 
 void main() {
   runApp(MyApp());

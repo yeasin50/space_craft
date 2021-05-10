@@ -4,17 +4,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spaceCraft/GameManager/playerManager.dart';
-import 'package:spaceCraft/GameManager/uiManager.dart';
-import 'package:spaceCraft/configs/size.dart';
-import 'package:spaceCraft/widget/explosion.dart';
-import 'package:spaceCraft/widget/models/demo.dart';
-import 'package:spaceCraft/widget/models/particle.dart';
-import 'package:spaceCraft/widget/rives/rive_player.dart';
-import 'package:spaceCraft/widget/headerLive.dart';
-import 'package:spaceCraft/widget/headerScore.dart';
-import 'package:spaceCraft/widget/health_meter.dart';
-import 'package:spaceCraft/widget/models/bullet.dart';
+import './GameManager/playerManager.dart';
+import './GameManager/uiManager.dart';
+import './configs/size.dart';
+import './widget/explosion.dart';
+import './widget/models/demo.dart';
+import './widget/models/particle.dart';
+import './widget/rives/rive_player.dart';
+import './widget/headerLive.dart';
+import './widget/headerScore.dart';
+import './widget/health_meter.dart';
+import './widget/models/bullet.dart';
 
 import 'widget/models/player.dart';
 

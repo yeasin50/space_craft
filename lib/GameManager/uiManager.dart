@@ -119,27 +119,31 @@ class UIManager with ChangeNotifier {
   }
 
   ///`Explosion Rives`
+  ///we will clear list if length>=3,
+  ///then add a single rive to the list and show on UI
+  /// but the problem is Rive(4th) doesnt show up after clearing the list
 
   Future<void> addExplosion(ExplosionType type, PVector pos) async {
     var widget = type == ExplosionType.neonBrust
         ? RiveExplosion2(exid)
         : RiveExplosion1(exid);
+
     if (_explosions.length >= _maxExplosionOnStorage) {
       _handleExplosionBug = true;
       _explosions.clear();
-
       explosionBug = (ExplosionManager(exid, pos, widget));
-    } else {
+    }
+     else {
       _explosions.add(ExplosionManager(exid, pos, widget));
       _handleExplosionBug = false;
     }
-    // removeAnimation();
     exid += 1; // we may reduce >big num
     // log(_explosions.length.toString());
     notifyListeners();
+    
   }
 
-  ///`Not working, remove completed Animation`
+  ///`Not working, remove completed Animation`, text1
   removeAnimation() {
     List<ExplosionManager> tempList = [];
     _explosions.forEach((element) {

@@ -1,40 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import './GameManager/playerManager.dart';
-import './GameManager/uiManager.dart';
-import './home.dart';
-import './tester.dart';
-import './widget/rives/rive_player.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'body.dart';
+
+/// [Let's Build From Scratch] using RiverPod
 void main() {
-  runApp(MyApp());
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: PlayerManager()),
-        ChangeNotifierProvider.value(value: UIManager()),
-      ],
-      child: Consumer<PlayerManager>(
-        builder: (ctx, data, ch) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          home: Scaffold(
-            // body: HomeScreen(),
-            // body: PlayerRive(),
-            // body: HeaderLive(),
-            // body: Explosion(),
-            // body: PlayerRive(),
-            body: Tester(),
-          ),
-        ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter 80s Games',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: Scaffold(
+        body: Body(),
       ),
     );
   }

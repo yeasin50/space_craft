@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:developer' as dbg;
 
 import 'package:flutter/cupertino.dart';
-import 'package:spaceCraft/widget/models/bullet.dart';
-import 'package:spaceCraft/widget/models/particle.dart';
-import 'package:spaceCraft/widget/models/player.dart';
-import 'package:spaceCraft/widget/rives/rive_explosion1.dart';
-import 'package:spaceCraft/widget/rives/rive_explosion2.dart';
+
+import '../widget/models/bullet.dart';
+import '../widget/models/particle.dart';
+import '../widget/models/player.dart';
 
 enum ExplosionType { rounded, neonBrust }
 
@@ -123,25 +121,7 @@ class UIManager with ChangeNotifier {
   ///then add a single rive to the list and show on UI
   /// but the problem is Rive(4th) doesnt show up after clearing the list
 
-  Future<void> addExplosion(ExplosionType type, PVector pos) async {
-    var widget = type == ExplosionType.neonBrust
-        ? RiveExplosion2(exid)
-        : RiveExplosion1(exid);
-
-    if (_explosions.length >= _maxExplosionOnStorage) {
-      _handleExplosionBug = true;
-      _explosions.clear();
-      explosionBug = (ExplosionManager(exid, pos, widget));
-    }
-     else {
-      _explosions.add(ExplosionManager(exid, pos, widget));
-      _handleExplosionBug = false;
-    }
-    exid += 1; // we may reduce >big num
-    // log(_explosions.length.toString());
-    notifyListeners();
-    
-  }
+  Future<void> addExplosion(ExplosionType type, PVector pos) async {}
 
   ///`Not working, remove completed Animation`, text1
   removeAnimation() {

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spaceCraft/SpaceCraft/provider/global_value_provider.dart';
 
 //this widget gonna handle UI Touch Position
 class TouchPositionDetector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, child) {
-      final playerPositionNotifier = watch(playeInfoProvider);
-
       return LayoutBuilder(
         builder: (context, constraints) => GestureDetector(
           // onTap: () => print("taped"),
@@ -19,25 +16,25 @@ class TouchPositionDetector extends StatelessWidget {
 
             /// we are separating in two section, it'll help to move though another axis stuck
             /// it'll make sure that even One axis will work even other axis stuc
-            if (posY >=
-                    constraints.maxHeight -
-                        playerPositionNotifier.player.height / 2 ||
-                posY <= playerPositionNotifier.player.height / 2) {
-              ///`we cant move in Y axix` outScreen
-              ///may Add some effect like wave
-            } else {
-              playerPositionNotifier.updateTopPosition(
-                  posY - (playerPositionNotifier.player.height / 2));
-            }
-            if (posX >=
-                    constraints.maxWidth -
-                        playerPositionNotifier.player.width / 2 ||
-                posX <= playerPositionNotifier.player.width / 2) {
-              ///`we cant move in X axix` outScreen
-            } else {
-              playerPositionNotifier.updateLeftPosition(
-                  posX - (playerPositionNotifier.player.width / 2));
-            }
+            // if (posY >=
+            //         constraints.maxHeight -
+            //             playerPositionNotifier.player.height / 2 ||
+            //     posY <= playerPositionNotifier.player.height / 2) {
+            //   ///`we cant move in Y axix` outScreen
+            //   ///may Add some effect like wave
+            // } else {
+            //   playerPositionNotifier.updateTopPosition(
+            //       posY - (playerPositionNotifier.player.height / 2));
+            // }
+            // if (posX >=
+            //         constraints.maxWidth -
+            //             playerPositionNotifier.player.width / 2 ||
+            //     posX <= playerPositionNotifier.player.width / 2) {
+            //   ///`we cant move in X axix` outScreen
+            // } else {
+            //   playerPositionNotifier.updateLeftPosition(
+            //       posX - (playerPositionNotifier.player.width / 2));
+            // }
           },
           child: Container(
             height: constraints.maxHeight,

@@ -1,16 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:spaceCraft/widget/explosion.dart';
-import 'package:spaceCraft/widget/models/particle.dart';
-import 'package:spaceCraft/widget/rives/rive_explosion1.dart';
-import 'package:spaceCraft/widget/rives/rive_explosion2.dart';
 
 enum DamageOnCollision {
   bullet,
   ship,
 }
-
 
 class PlayerManager with ChangeNotifier {
   int _score = 0;
@@ -24,14 +17,11 @@ class PlayerManager with ChangeNotifier {
   final _damagePerBullet = 10;
   final _damagePerShip = 30;
 
-
   get score => _score;
   get health => _health;
   get live => _live;
   get maxLive => _maxLive;
 
-
-  
   // startGame() {
   //   _isPlaying = true;
   //   notifyListeners();

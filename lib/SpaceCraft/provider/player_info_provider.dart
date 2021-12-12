@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:spaceCraft/SpaceCraft/model/vector2.dart';
+import '../model/vector2.dart';
 
 class Player {
   int _score = 0;
@@ -29,7 +29,7 @@ class Player {
   Position2D position2d = Position2D(dX: 0, dY: 0);
 
   Player({
-    required position2d,
+    position2d,
   });
 }
 

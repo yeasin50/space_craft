@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../GameManager/playerManager.dart';
-
 class HealthMeter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

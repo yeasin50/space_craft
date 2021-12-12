@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:space_craft/app.dart';
+import 'app.dart';
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }

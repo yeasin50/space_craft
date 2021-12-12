@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../GameManager/playerManager.dart';
 
 class HeaderScore extends StatelessWidget {
-  HeaderScore({Key key}) : super(key: key);
+  HeaderScore({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class HeaderScore extends StatelessWidget {
                   matchWordBoundaries: false,
                   style: TextStyle(
                       color: Colors.blue,
-                      fontSize: Theme.of(context).textTheme.bodyText1.fontSize),
+                      fontSize: Theme.of(context).textTheme.bodyText1!.fontSize),
                 ),
                 EasyRichTextPattern(
                   targetString: "{data.score}",
@@ -31,7 +31,7 @@ class HeaderScore extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
-                    fontSize: Theme.of(context).textTheme.headline6.fontSize,
+                    fontSize: Theme.of(context).textTheme.headline6!.fontSize,
                   ),
                 ),
               ],

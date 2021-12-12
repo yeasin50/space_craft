@@ -35,7 +35,7 @@ class UIManager with ChangeNotifier {
   List<Bullet> _playerBullets = [];
 
   var _handleExplosionBug = false;
-  ExplosionManager explosionBug;
+  ExplosionManager? explosionBug;
 
   get handleExpolosionBug => _handleExplosionBug;
 
@@ -51,7 +51,7 @@ class UIManager with ChangeNotifier {
   //Check if already Running
   // we need to set runnable=flase while it's already running or completed the cycle
   // we have already assign same id to ExplosionManager(Explosion) and RiveWidget.
-  runTimeExplosionChecker({int widgetId}) {
+  runTimeExplosionChecker({int? widgetId}) {
     // _explosions.where((element) => widgetId == element.id);
     // or letme check if both are same and perform.
     _explosions.forEach((element) {
@@ -71,7 +71,7 @@ class UIManager with ChangeNotifier {
     notifyListeners();
   }
 
-  remEnemy({Player enemy, int removeRange = 0, List<Player> enemies}) async {
+  remEnemy({Player? enemy, int removeRange = 0, required List<Player> enemies}) async {
     if (removeRange > 0) _enemies.removeRange(0, _maxEnemyStore ~/ 2);
 
     if (removeRange > 0) _enemies.remove(enemy);
@@ -82,7 +82,7 @@ class UIManager with ChangeNotifier {
     notifyListeners();
   }
 
-  remEnemyBullet({Bullet b, int range = 0, List<Bullet> bullets}) {
+  remEnemyBullet({Bullet? b, int range = 0, required List<Bullet> bullets}) {
     if (range == 0) _enemyBullets.remove(b);
     if (range > 0) {
       _enemyBullets.removeRange(0, _maxEnemyBullets ~/ 2);
@@ -105,12 +105,12 @@ class UIManager with ChangeNotifier {
     // dbg.log(_enemyBullets.length.toString());
   }
 
-  remPlayerBullet({Bullet b, int range = 0, List<Bullet> bullets}) async {
+  remPlayerBullet({Bullet? b, int range = 0, List<Bullet>? bullets}) async {
     if (range == 0)
       _playerBullets.remove(b);
     else if (range != 0) {
       _playerBullets.removeRange(0, _playerBullets.length ~/ 2);
-    } else if (bullets.length > 0) {
+    } else if (bullets!.length > 0) {
       _playerBullets.removeWhere((bl) => bullets.contains(bl));
     }
     notifyListeners();

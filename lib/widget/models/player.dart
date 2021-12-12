@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Player {
-  double dx = 0, dy = 0;
+  double? dx = 0, dy = 0;
   double _x = 0, _y = 0; // temp forOffset
   //player body for custom paint
   double height = 50, width = 50;

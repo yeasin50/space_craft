@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'models/particle.dart';
 
 class Explosion extends StatefulWidget {
-  final Color color;
-  final PVector initPosition;
+  final Color? color;
+  final PVector? initPosition;
   static bool isExpl = false;
-  static Timer timer;
+  static Timer? timer;
   Explosion({
-    Key key,
+    Key? key,
     this.color,
     this.initPosition,
   }) : super(key: key);
@@ -32,7 +32,7 @@ class _ExplosionState extends State<Explosion> {
   List<Particle> particles = [];
 
   _getSizes() {
-    final RenderBox renderBox = _key.currentContext.findRenderObject();
+    final RenderBox renderBox = _key.currentContext!.findRenderObject() as RenderBox;
     final size = renderBox.size;
     // print("Size : ${size}");
     setState(() => _size = size);
@@ -40,7 +40,7 @@ class _ExplosionState extends State<Explosion> {
   }
 
   _getPositions() {
-    final RenderBox renderBoxRed = _key.currentContext.findRenderObject();
+    final RenderBox renderBoxRed = _key.currentContext!.findRenderObject() as RenderBox;
     final position = renderBoxRed.localToGlobal(Offset.zero);
     // print("POSITION of widget: $position ");
   }
@@ -48,7 +48,7 @@ class _ExplosionState extends State<Explosion> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+    WidgetsBinding.instance!.addPostFrameCallback(_afterLayout);
     createParticles();
      Timer.periodic(
         Duration(milliseconds: _brustDuarationMili), frameBuilder);

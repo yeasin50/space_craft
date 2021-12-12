@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import '../model/vector2.dart';
+
+import '../../model/model.dart';
+
+ 
 
 class Player {
   int _score = 0;

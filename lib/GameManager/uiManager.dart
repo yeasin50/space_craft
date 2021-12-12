@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 
-import '../widget/models/bullet.dart';
-import '../widget/models/particle.dart';
-import '../widget/models/player.dart';
+import '../model/model.dart';
 
 enum ExplosionType { rounded, neonBrust }
 
@@ -71,7 +69,10 @@ class UIManager with ChangeNotifier {
     notifyListeners();
   }
 
-  remEnemy({Player? enemy, int removeRange = 0, required List<Player> enemies}) async {
+  remEnemy(
+      {Player? enemy,
+      int removeRange = 0,
+      required List<Player> enemies}) async {
     if (removeRange > 0) _enemies.removeRange(0, _maxEnemyStore ~/ 2);
 
     if (removeRange > 0) _enemies.remove(enemy);

@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'models/particle.dart';
+import 'package:space_craft/model/model.dart';
+ 
 
 class Explosion extends StatefulWidget {
   final Color? color;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'model/ship.dart';
+import '../model/model.dart';
+ 
 
 class SpaceCraftBody extends StatefulWidget {
   @override

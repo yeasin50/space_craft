@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../GameManager/playerManager.dart';
+  
 
 class HeaderLive extends StatelessWidget {
   @override

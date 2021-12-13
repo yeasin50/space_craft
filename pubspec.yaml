@@ -31,6 +31,7 @@ dependencies:
   rive: ^0.7.9
   change_app_package_name: ^1.0.0
   flutter_riverpod: ^1.0.2
+  flutter_lints: ^1.0.4
 
 dev_dependencies:
   flutter_test:

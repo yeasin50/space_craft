@@ -1,34 +1,53 @@
+import 'dart:convert';
 
 import 'model.dart';
 
 class Player {
-  int _score = 0;
-  int _health = 100;
-  int _maxLive = 5;
-
-  /// fire while player is alive and game is runnign
-  bool shoot = false;
-
   ///current score of Player
-  get score => _score;
+  final int score;
 
   ///Player Health per life
-  get health => _health;
+  final int health;
 
   ///max number of time player can live
-  get maxLive => _maxLive;
+  final int maxLive;
 
-  double _height = 50;
-  double _width = 50;
+  /// fire while player is alive and game is runnign
+  final bool shoot;
 
   //ship height =50
-  get height => _height;
+  final double height;
   //ship height =50
-  get width => _width;
+  final double width;
 
-  Position2D position2d = Position2D(dX: 0, dY: 0);
-
+  final Vector2 position2d;
   Player({
-    position2d,
+    this.score = 0,
+    this.health = 100,
+    this.maxLive = 3,
+    this.height = 50,
+    this.width = 50,
+    this.shoot = false,
+    this.position2d = const Vector2(dX: 50, dY: 50),
   });
+
+  Player copyWith({
+    int? score,
+    int? health,
+    int? maxLive,
+    bool? shoot,
+    double? height,
+    double? width,
+    Vector2? position2d,
+  }) {
+    return Player(
+      score: score ?? this.score,
+      health: health ?? this.health,
+      maxLive: maxLive ?? this.maxLive,
+      shoot: shoot ?? this.shoot,
+      height: height ?? this.height,
+      width: width ?? this.width,
+      position2d: position2d ?? this.position2d,
+    );
+  }
 }

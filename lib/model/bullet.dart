@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
 
-class BVector {
-  double x, y;
-  BVector(this.x, this.y);
-}
+import 'model.dart';
 
 class Bullet {
-  BVector? position = BVector(0.0, 0.0);
-  // BVector velocity = BVector(0, 0);
-  int? id;
-  double mass = 10.0; //Kg
-  double? radius = 10 / 100; // 1m = 100 pt or px
-  // double area = 0.0314; //PI x R x R;
-  // double jumpFactor = -0.6;
-  Color color = Colors.green;
+  final Vector2 position;
+  final int? id;
+  final double radius;
 
-  Bullet({this.id, this.position, this.radius});
+  final Color color;
+
+  Bullet({
+    required this.position,
+    this.id,
+    this.radius = 10,
+    this.color = Colors.green,
+  });
+
+  Bullet copyWith({
+    Vector2? position,
+    int? id,
+    double? radius,
+  }) {
+    return Bullet(
+      position: position ?? this.position,
+      id: id ?? this.id,
+      radius: radius ?? this.radius,
+    );
+  }
 }

@@ -13,19 +13,36 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 class PlayerInfoNotifier extends ChangeNotifier {
   /// create player instance
   Player player = Player(
-    position2d: Position2D(dX: 50, dY: 50),
+    position2d: const Vector2(dX: 50, dY: 50),
   );
 
   /// update player vertical position
   void updateTopPosition(double dY) {
-    player.position2d.dY = dY;
-    print(player.position2d.dY);
+    player = player.copyWith(
+      position2d: player.position2d.copyWith(
+        dY: dY,
+      ),
+    );
     notifyListeners();
   }
 
   ///update player horizontal position
   void updateLeftPosition(double dX) {
-    player.position2d.dX = dX;
+    player = player.copyWith(
+      position2d: player.position2d.copyWith(
+        dX: dX,
+      ),
+    );
+    notifyListeners();
+  }
+
+  void startShooting() {
+    player.copyWith(shoot: true);
+    notifyListeners();
+  }
+
+  void stopShooting() {
+    player.copyWith(shoot: false);
     notifyListeners();
   }
 

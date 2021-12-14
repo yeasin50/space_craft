@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../model/model.dart';
 import '../../../provider/provider.dart';
 
 //this widget gonna handle UI Touch Position
@@ -14,7 +15,17 @@ class TouchPositionDetector extends StatelessWidget {
         final playerInfo = watch.read(playerInfoProvider);
         return LayoutBuilder(
           builder: (context, constraints) => GestureDetector(
-            // onTap: () => print("taped"),
+            onPanDown: (details) {
+              playerInfo.startShooting();
+            },
+            onTapUp: (details) {
+              // handle quick tap up
+              playerInfo.stopShooting();
+            },
+            onPanEnd: (details) {
+              //halde drag tapUp
+              playerInfo.stopShooting();
+            },
             onPanUpdate: (details) {
               /// touch possition
               var posX = details.localPosition.dx;

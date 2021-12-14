@@ -17,6 +17,9 @@ class OnPlayScreen extends ConsumerWidget {
           left: playerInfo.player.position2d.dX,
           child: playerShip(),
         ),
+        const PlayerBulletsOverlay(
+          key: ValueKey("Player bullets UI"),
+        ),
 
         /// detect touch on bottom
         const TouchPositionDetector(),

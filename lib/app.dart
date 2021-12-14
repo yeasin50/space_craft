@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Screens/start/start.screen.dart';
+import 'screens/on_play/on_play.screen.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -8,7 +8,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: StartScreen(),
+      home: OnPlayScreen(),
     );
   }
 }

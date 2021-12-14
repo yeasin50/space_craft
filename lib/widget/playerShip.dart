@@ -12,7 +12,7 @@ class PlayerShip extends CustomPainter {
       ..color = Colors.red
       ..strokeCap = StrokeCap.round;
 
-    canvas.drawRect(player.ship, paint);
+    // canvas.drawRect(player.ship, paint);
   }
 
   @override

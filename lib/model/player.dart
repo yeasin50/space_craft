@@ -1,21 +1,34 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+
+import 'model.dart';
 
 class Player {
-  double? dx = 0, dy = 0;
-  double _x = 0, _y = 0; // temp forOffset
-  //player body for custom paint
-  double height = 50, width = 50;
-  Color color;
+  int _score = 0;
+  int _health = 100;
+  int _maxLive = 5;
 
-  double bulletY = -10;
-  Player({this.dx, this.dy, this.color = Colors.red});
+  /// fire while player is alive and game is runnign
+  bool shoot = false;
 
-  get ship => Rect.fromCenter(
-        center: Offset(_x, _y),
-        height: height,
-        width: width,
-      );
+  ///current score of Player
+  get score => _score;
 
-  get bulletOffset => Offset(0, bulletY);
+  ///Player Health per life
+  get health => _health;
+
+  ///max number of time player can live
+  get maxLive => _maxLive;
+
+  double _height = 50;
+  double _width = 50;
+
+  //ship height =50
+  get height => _height;
+  //ship height =50
+  get width => _width;
+
+  Position2D position2d = Position2D(dX: 0, dY: 0);
+
+  Player({
+    position2d,
+  });
 }

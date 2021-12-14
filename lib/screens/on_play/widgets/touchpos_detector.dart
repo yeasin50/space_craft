@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/provider/provider.dart';
+
+import '../../../provider/provider.dart';
 
 //this widget gonna handle UI Touch Position
 class TouchPositionDetector extends StatelessWidget {

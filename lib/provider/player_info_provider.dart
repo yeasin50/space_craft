@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,8 +20,13 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   final Duration bulletGenerateRate = const Duration(milliseconds: 100);
 
+  // bullet will move upward by [_bulletSpeed] px
+  final double _bulletSpeed = 10.0;
+
+  List<Bullet> get bullets => _bullets;
+  List<Bullet> _bullets = [];
+
   //todo: try without CancelableOperation
-  List<Bullet> bullets = [];
   CancelableOperation? _cancelableOperation;
   late Timer _timer;
 
@@ -58,6 +64,9 @@ class PlayerInfoNotifier extends ChangeNotifier {
     ).then((p0) {
       _timer = Timer.periodic(bulletGenerateRate, (timer) {
         _addBullet();
+        _bulletsMovement(); //todo: move to different section
+
+        notifyListeners();
       });
     }, onCancel: () {
       _timer.cancel();
@@ -65,11 +74,22 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   _addBullet() {
-    bullets.add(Bullet(
-      position: Vector2.fromValue(player.position2d),
+    _bullets.add(Bullet(
+      position: Vector2.fromValue(player.position2d)
+        ..dX = player.position2d.dX + player.width / 2, //fire from top center
     ));
+  }
 
-    notifyListeners();
+  _removeBullet(Bullet b) {
+    _bullets.remove(b);
+  }
+
+  //* player bullets will move up(-Y)
+  _bulletsMovement() {
+    for (final b in _bullets) {
+      b.position.dY -= _bulletSpeed;
+      if (b.position.dY < 0) _removeBullet(b);
+    }
   }
 
   /// increment score of player by destroying enemies

@@ -1,14 +1,25 @@
 /// Helper class TO hold position in 2D,
 ///`dX = Left to Right` ,,
 ///`dY = Top to Bottom`
-class Vector2 {
-  final double dX;
-  final double dY;
 
-  const Vector2({
+// helps to get value because dart work as reference value
+extension V2V on Vector2 {
+  Vector2 get value => Vector2(dX: dX, dY: dY);
+}
+
+class Vector2 {
+  double dX;
+  double dY;
+
+  Vector2({
     this.dX = 0,
     this.dY = 0,
   });
+
+  //to avoid value by reference
+  factory Vector2.fromValue(Vector2 v) {
+    return Vector2(dX: v.dX, dY: v.dY);
+  }
 
   Vector2 copyWith({
     double? dX,

@@ -10,20 +10,26 @@ class OnPlayScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playerInfo = ref.watch(playerInfoProvider);
-    return Stack(
-      children: [
-        Positioned(
-          top: playerInfo.player.position2d.dY,
-          left: playerInfo.player.position2d.dX,
-          child: playerShip(),
-        ),
-        const PlayerBulletsOverlay(
-          key: ValueKey("Player bullets UI"),
-        ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned(
+            top: playerInfo.player.position2d.dY,
+            left: playerInfo.player.position2d.dX,
+            child: playerShip(),
+          ),
+          ...playerInfo.bullets.map((b) {
+            return Positioned(
+              top: b.position.dY,
+              left: b.position.dX,
+              child: Text('A'),
+            );
+          }).toList(),
 
-        /// detect touch on bottom
-        const TouchPositionDetector(),
-      ],
+          /// detect touch on bottom
+          const TouchPositionDetector(),
+        ],
+      ),
     );
   }
 }

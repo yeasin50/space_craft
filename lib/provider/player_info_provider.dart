@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,37 +15,60 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 ///this provide Player UI update info
 class PlayerInfoNotifier extends ChangeNotifier {
   /// create player instance
-  Player player = Player(
-    position2d: const Vector2(dX: 50, dY: 50),
-  );
+  Player player = Player();
+
+  final Duration bulletGenerateRate = const Duration(milliseconds: 100);
+
+  //todo: try without CancelableOperation
+  List<Bullet> bullets = [];
+  CancelableOperation? _cancelableOperation;
+  late Timer _timer;
 
   /// update player vertical position
   void updateTopPosition(double dY) {
-    player = player.copyWith(
-      position2d: player.position2d.copyWith(
-        dY: dY,
-      ),
-    );
+    player.position2d.dY = dY;
     notifyListeners();
   }
 
   ///update player horizontal position
   void updateLeftPosition(double dX) {
-    player = player.copyWith(
-      position2d: player.position2d.copyWith(
-        dX: dX,
-      ),
-    );
+    player.position2d.dX = dX;
     notifyListeners();
   }
 
   void startShooting() {
-    player.copyWith(shoot: true);
-    notifyListeners();
+    player.shoot = true;
+    _bulletGeneration();
   }
 
   void stopShooting() {
-    player.copyWith(shoot: false);
+    player.shoot = false;
+    _cancelableOperation!.cancel();
+    _timer.cancel();
+    notifyListeners();
+  }
+
+  _bulletGeneration() {
+    if (_cancelableOperation != null) {
+      _cancelableOperation!.cancel();
+    }
+
+    _cancelableOperation = CancelableOperation.fromFuture(
+      Future.delayed(bulletGenerateRate),
+    ).then((p0) {
+      _timer = Timer.periodic(bulletGenerateRate, (timer) {
+        _addBullet();
+      });
+    }, onCancel: () {
+      _timer.cancel();
+    });
+  }
+
+  _addBullet() {
+    bullets.add(Bullet(
+      position: Vector2.fromValue(player.position2d),
+    ));
+
     notifyListeners();
   }
 

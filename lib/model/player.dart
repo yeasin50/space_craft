@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'model.dart';
 
 class Player {
@@ -13,14 +11,14 @@ class Player {
   final int maxLive;
 
   /// fire while player is alive and game is runnign
-  final bool shoot;
+  bool shoot;
 
   //ship height =50
   final double height;
   //ship height =50
   final double width;
 
-  final Vector2 position2d;
+  Vector2 position2d = Vector2(dX: 50, dY: 50);
   Player({
     this.score = 0,
     this.health = 100,
@@ -28,26 +26,5 @@ class Player {
     this.height = 50,
     this.width = 50,
     this.shoot = false,
-    this.position2d = const Vector2(dX: 50, dY: 50),
   });
-
-  Player copyWith({
-    int? score,
-    int? health,
-    int? maxLive,
-    bool? shoot,
-    double? height,
-    double? width,
-    Vector2? position2d,
-  }) {
-    return Player(
-      score: score ?? this.score,
-      health: health ?? this.health,
-      maxLive: maxLive ?? this.maxLive,
-      shoot: shoot ?? this.shoot,
-      height: height ?? this.height,
-      width: width ?? this.width,
-      position2d: position2d ?? this.position2d,
-    );
-  }
 }

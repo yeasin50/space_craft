@@ -14,16 +14,21 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 
 ///this provide Player UI update info
 class PlayerInfoNotifier extends ChangeNotifier {
+  PlayerInfoNotifier() {
+    _bulletsMovement();
+  }
+
   /// create player instance
-  Player player = Player();
+  final Player player = Player();
 
   final Duration bulletGenerateRate = const Duration(milliseconds: 100);
+  final Duration bulletMovementRate = const Duration(milliseconds: 100);
 
   // bullet will move upward by [_bulletSpeed] px
   final double _bulletSpeed = 10.0;
 
   List<Bullet> get bullets => _bullets;
-  List<Bullet> _bullets = [];
+  final List<Bullet> _bullets = [];
 
   //todo: try without CancelableOperation
   CancelableOperation? _cancelableOperation;
@@ -63,9 +68,6 @@ class PlayerInfoNotifier extends ChangeNotifier {
     ).then((p0) {
       _timer = Timer.periodic(bulletGenerateRate, (timer) {
         _addBullet();
-        _bulletsMovement(); //todo: move to different section
-
-        notifyListeners();
       });
     }, onCancel: () {
       _timer.cancel();
@@ -77,6 +79,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
       position: Vector2.fromValue(player.position2d)
         ..dX = player.position2d.dX + player.width / 2, //fire from top center
     ));
+    notifyListeners();
   }
 
   _removeBullet(Bullet b) {
@@ -85,10 +88,19 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   //* player bullets will move up(-Y)
   _bulletsMovement() {
-    for (final b in _bullets) {
-      b.position.dY -= _bulletSpeed;
-      if (b.position.dY < 0) _removeBullet(b);
-    }
+    Timer.periodic(
+      bulletMovementRate,
+      (timer) {
+        if (_bullets.isEmpty) return;
+
+        for (final b in _bullets) {
+          b.position.dY -= _bulletSpeed;
+          if (b.position.dY < 0) _removeBullet(b);
+        }
+        debugPrint("bullet length: ${bullets.length}");
+        notifyListeners();
+      },
+    );
   }
 
   /// increment score of player by destroying enemies

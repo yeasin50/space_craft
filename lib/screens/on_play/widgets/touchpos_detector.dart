@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../model/model.dart';
 import '../../../provider/provider.dart';
+import '../utils/utils.dart';
 
 //this widget gonna handle UI Touch Position
 class TouchPositionDetector extends StatelessWidget {
@@ -17,6 +16,11 @@ class TouchPositionDetector extends StatelessWidget {
           builder: (context, constraints) => GestureDetector(
             onPanDown: (details) {
               playerInfo.startShooting();
+              updatePlayerPosition(
+                offset: details.localPosition,
+                constraints: constraints,
+                playerInfoNotifier: playerInfo,
+              );
             },
             onTapUp: (details) {
               // handle quick tap up
@@ -27,28 +31,11 @@ class TouchPositionDetector extends StatelessWidget {
               playerInfo.stopShooting();
             },
             onPanUpdate: (details) {
-              /// touch possition
-              var posX = details.localPosition.dx;
-              var posY = details.localPosition.dy;
-
-              /// we are separating in two section, it'll help to move though another axis stuck
-              /// it'll make sure that even One axis will work even other axis stuc
-              if (posY >=
-                      constraints.maxHeight - playerInfo.player.height / 2 ||
-                  posY <= playerInfo.player.height / 2) {
-                ///`we cant move in Y axix` outScreen
-                ///may Add some effect like wave
-              } else {
-                playerInfo
-                    .updateTopPosition(posY - (playerInfo.player.height / 2));
-              }
-              if (posX >= constraints.maxWidth - playerInfo.player.width / 2 ||
-                  posX <= playerInfo.player.width / 2) {
-                ///`we cant move in X axix` outScreen
-              } else {
-                playerInfo
-                    .updateLeftPosition(posX - (playerInfo.player.width / 2));
-              }
+              updatePlayerPosition(
+                offset: details.localPosition,
+                constraints: constraints,
+                playerInfoNotifier: playerInfo,
+              );
             },
             child: Container(
               height: constraints.maxHeight,

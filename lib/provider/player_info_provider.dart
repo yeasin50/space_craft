@@ -22,7 +22,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   final Player player = Player();
 
   final Duration bulletGenerateRate = const Duration(milliseconds: 100);
-  final Duration bulletMovementRate = const Duration(milliseconds: 100);
+  final Duration bulletMovementRate = const Duration(milliseconds: 50);
 
   // bullet will move upward by [_bulletSpeed] px
   final double _bulletSpeed = 10.0;
@@ -47,6 +47,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   void startShooting() {
+    //can include a bullet just on tap,
     player.shoot = true;
     _bulletGeneration();
   }
@@ -77,7 +78,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
   _addBullet() {
     _bullets.add(Bullet(
       position: Vector2.fromValue(player.position2d)
-        ..dX = player.position2d.dX + player.width / 2, //fire from top center
+        ..dX =
+            player.position2d.dX + player.size.width / 2, //fire from top center
     ));
     notifyListeners();
   }

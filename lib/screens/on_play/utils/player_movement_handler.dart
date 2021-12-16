@@ -13,19 +13,20 @@ void updatePlayerPosition({
 
   /// we are separating in two section, it'll help to move though another axis stuck
   /// it'll make sure that even One axis will work even other axis stuc
-  if (posY >= constraints.maxHeight - playerInfoNotifier.player.height / 2 ||
-      posY <= playerInfoNotifier.player.height / 2) {
+  if (posY >=
+          constraints.maxHeight - playerInfoNotifier.player.size.height / 2 ||
+      posY <= playerInfoNotifier.player.size.height / 2) {
     ///`we cant move in Y axix` outScreen
     ///may Add some effect like wave
   } else {
     playerInfoNotifier
-        .updateTopPosition(posY - (playerInfoNotifier.player.height / 2));
+        .updateTopPosition(posY - (playerInfoNotifier.player.size.height / 2));
   }
-  if (posX >= constraints.maxWidth - playerInfoNotifier.player.width / 2 ||
-      posX <= playerInfoNotifier.player.width / 2) {
+  if (posX >= constraints.maxWidth - playerInfoNotifier.player.size.width / 2 ||
+      posX <= playerInfoNotifier.player.size.width / 2) {
     ///`we cant move in X axix` outScreen
   } else {
     playerInfoNotifier
-        .updateLeftPosition(posX - (playerInfoNotifier.player.width / 2));
+        .updateLeftPosition(posX - (playerInfoNotifier.player.size.width / 2));
   }
 }

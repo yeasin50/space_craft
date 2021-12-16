@@ -1,30 +1,26 @@
+import 'package:flutter/material.dart';
+
 import 'model.dart';
 
-class Player {
+class Player implements IShip {
   ///current score of Player
-  final int score;
-
-  ///Player Health per life
-  final int health;
+  int score = 0;
 
   ///max number of time player can live
-  final int maxLive;
+  final int maxLive = 3;
 
   /// fire while player is alive and game is runnign
-  bool shoot;
+  bool shoot = false;
 
-  //ship height =50
-  final double height;
-  //ship height =50
-  final double width;
+  @override
+  Color color = Colors.deepPurpleAccent;
 
-  Vector2 position2d = Vector2(dX: 50, dY: 50);
-  Player({
-    this.score = 0,
-    this.health = 100,
-    this.maxLive = 3,
-    this.height = 50,
-    this.width = 50,
-    this.shoot = false,
-  });
+  @override
+  double health = 100.0;
+
+  @override
+  Vector2 position2d = Vector2();
+
+  @override
+  Size size = const Size(50, 50);
 }

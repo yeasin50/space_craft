@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 
+import '../constants/constants.dart';
 import '../model/model.dart';
 import 'provider.dart';
 
@@ -13,7 +14,15 @@ final enemyProvider =
       constranits.maxWidth,
       constranits.maxHeight,
     );
-    return EnemyChangeNotifier(screenSize);
+
+    final GameMode gameMode = ref.watch(gameManagerProvider);
+    final GameManager gameModeNofitifer =
+        ref.watch(gameManagerProvider.notifier);
+
+    return EnemyChangeNotifier(
+      screenSize: screenSize,
+      gameMode: gameMode,
+    );
   },
 );
 
@@ -26,14 +35,26 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   final Duration enemyMovementRate = const Duration(milliseconds: 100);
   final Duration enemyGenerateDuration = const Duration(seconds: 1);
+  Timer? _timerEnemyGeneration;
+
   final double enemyMovementPX = 10.0;
 
+  final gameMode;
+
   //todo: controll flow
-  EnemyChangeNotifier(
-    this.screenSize,
-  ) {
+  EnemyChangeNotifier({
+    required this.screenSize,
+    required this.gameMode,
+  }) {
+    debugPrint(gameMode.toString());
     _enemyMovement();
-    generateEnemies();
+    if (gameMode == GameMode.playing) {
+      generateEnemies();
+    } else {
+      if (_timerEnemyGeneration != null) {
+        _timerEnemyGeneration!.cancel();
+      }
+    }
   }
 
   final List<EnemyShip> _enemies = [];
@@ -41,7 +62,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   generateEnemies() {
     //todo: create handler
-    Timer.periodic(enemyGenerateDuration, (t) {
+    _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
       _addEnemy();
     });
   }
@@ -72,7 +93,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
         }
       }
       // debugPrint("f1PY: ${_enemies.first.position2d.dY} ");
-      debugPrint("total enemyShip: ${_enemies.length}");
+      // debugPrint("total enemyShip: ${_enemies.length}");
       notifyListeners();
     });
   }

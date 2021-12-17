@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/model.dart';
+import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
   (ref) {

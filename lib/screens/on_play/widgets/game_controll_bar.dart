@@ -9,28 +9,23 @@ class GameControllBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final GameMode gameMode = ref.watch(gameManagerProvider);
-    final GameManager gameModeNofitifer =
-        ref.read(gameManagerProvider.notifier);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("$gameMode"),
           InkWell(
-            onTap: () {
-              gameModeNofitifer.started();
-            },
+            onTap: () {},
             child: const Text("started"),
           ),
           InkWell(
-            onTap: () {
-              gameModeNofitifer.paused();
-            },
+            onTap: () {},
             child: const Text("paused"),
           ),
           InkWell(
             onTap: () {
-              gameModeNofitifer.playing();
+              ref.read(enemyProvider).generateEnemies();
             },
             child: const Text("playing"),
           ),

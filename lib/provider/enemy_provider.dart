@@ -3,32 +3,22 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 
-import '../constants/constants.dart';
 import '../model/model.dart';
 import 'provider.dart';
 
-final enemyProvider =
-    ChangeNotifierProvider.family<EnemyChangeNotifier, BoxConstraints>(
-  (ref, constranits) {
-    final Size screenSize = Size(
-      constranits.maxWidth,
-      constranits.maxHeight,
-    );
-
-    final GameMode gameMode = ref.watch(gameManagerProvider);
-    final GameManager gameModeNofitifer =
-        ref.watch(gameManagerProvider.notifier);
-
-    return EnemyChangeNotifier(
-      screenSize: screenSize,
-      gameMode: gameMode,
-    );
+final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
+  (ref) {
+    return EnemyChangeNotifier();
   },
 );
 
 class EnemyChangeNotifier extends ChangeNotifier {
   // screen size to control enemy movement
-  final Size screenSize;
+  Size? _screenSize = Size(600, 700); // todo/create , add stop functionality
+
+  EnemyChangeNotifier() {
+    _enemyMovement();
+  }
 
   //enemy generation on different x position
   final Random _random = Random();
@@ -39,26 +29,13 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   final double enemyMovementPX = 10.0;
 
-  final gameMode;
-
-  //todo: controll flow
-  EnemyChangeNotifier({
-    required this.screenSize,
-    required this.gameMode,
-  }) {
-    debugPrint(gameMode.toString());
-    _enemyMovement();
-    if (gameMode == GameMode.playing) {
-      generateEnemies();
-    } else {
-      if (_timerEnemyGeneration != null) {
-        _timerEnemyGeneration!.cancel();
-      }
-    }
-  }
-
   final List<EnemyShip> _enemies = [];
   List<EnemyShip> get enemies => _enemies;
+
+  initScreen({required Size screenSize}) {
+    _screenSize = screenSize;
+    notifyListeners();
+  }
 
   generateEnemies() {
     //todo: create handler
@@ -72,7 +49,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
     _enemies.add(
       EnemyShip(
         position2d: Vector2(
-          dX: _random.nextDouble() * screenSize.width,
+          dX: _random.nextDouble() * _screenSize!.width,
           dY: 0.0,
         ),
       ),
@@ -88,7 +65,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
       for (final e in _enemies) {
         e.position2d.dY += enemyMovementPX;
 
-        if (e.position2d.dY > screenSize.height) {
+        if (e.position2d.dY > _screenSize!.height) {
           _enemies.remove(e);
         }
       }

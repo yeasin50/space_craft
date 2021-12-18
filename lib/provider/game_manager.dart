@@ -3,16 +3,19 @@ import 'provider.dart';
 
 final gameManagerProvider = StateNotifierProvider<GameManager, GameMode>(
   (ref) {
-    return GameManager();
+    return GameManager(ref);
   },
 );
 
 class GameManager extends StateNotifier<GameMode> {
-  GameManager() : super(GameMode.idle);
+  final StateNotifierProviderRef ref;
+
+  GameManager(this.ref) : super(GameMode.idle);
 
   void idle() => state = GameMode.idle;
   void started() => state = GameMode.started;
   void playing() => state = GameMode.playing;
+
   void paused() => state = GameMode.paused;
   void resumed() => state = GameMode.resumed;
   void restart() => state = GameMode.restart;

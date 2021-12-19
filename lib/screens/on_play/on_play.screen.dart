@@ -11,8 +11,8 @@ class OnPlayScreen extends ConsumerWidget {
     // final playerInfo = ref.watch(playerInfoProvider);
 
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) => Stack(
+      body: LayoutBuilder(builder: (context, constraints) {
+        return Stack(
           children: [
             // Positioned(
             //   top: playerInfo.player.position2d.dY,
@@ -39,8 +39,8 @@ class OnPlayScreen extends ConsumerWidget {
 
             const GameControllBar(),
           ],
-        ),
-      ),
+        );
+      }),
     );
   }
 }

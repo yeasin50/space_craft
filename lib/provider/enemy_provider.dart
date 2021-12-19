@@ -14,7 +14,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
 
 class EnemyChangeNotifier extends ChangeNotifier {
   // screen size to control enemy movement
-  Size? _screenSize = Size(600, 700); // todo/create , add stop functionality
+  Size? _screenSize = Size.zero;
 
   EnemyChangeNotifier() {
     _enemyMovement();
@@ -33,8 +33,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
   List<EnemyShip> get enemies => _enemies;
 
   initScreen({required Size screenSize}) {
-    _screenSize = screenSize;
-    notifyListeners();
+    Future.delayed(Duration.zero).then((value) {
+      // dirty way of handling errors 🤐
+      _screenSize = screenSize;
+      notifyListeners();
+    });
   }
 
   generateEnemies() {

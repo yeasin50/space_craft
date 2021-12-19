@@ -37,7 +37,7 @@ class OnPlayScreen extends ConsumerWidget {
               constraints: constraints,
             ),
 
-            const GameControllBar(),
+            GameControllBar(),
           ],
         );
       }),

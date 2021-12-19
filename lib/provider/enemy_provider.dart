@@ -17,7 +17,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   Size? _screenSize = Size.zero;
 
   EnemyChangeNotifier() {
-    _enemyMovement();
+    // _enemyMovement();
   }
 
   //enemy generation on different x position
@@ -25,7 +25,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   final Duration enemyMovementRate = const Duration(milliseconds: 100);
   final Duration enemyGenerateDuration = const Duration(seconds: 1);
+
   Timer? _timerEnemyGeneration;
+  Timer? _timerEnemyMovement;
 
   final double enemyMovementPX = 10.0;
 
@@ -45,6 +47,20 @@ class EnemyChangeNotifier extends ChangeNotifier {
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
       _addEnemy();
     });
+    _enemyMovement();
+  }
+
+  // stop enemymovement+ geration
+  pauseMode({
+    bool movement = true,
+    bool generator = true,
+  }) {
+    if (generator && _timerEnemyGeneration != null) {
+      _timerEnemyGeneration!.cancel();
+    }
+    if (movement && _timerEnemyMovement != null) {
+      _timerEnemyMovement!.cancel();
+    }
   }
 
   // create enemyShip on (,0) possition
@@ -62,7 +78,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   // move downward and destroy while it is downSide:enemyShip
   _enemyMovement() {
-    Timer.periodic(enemyMovementRate, (timer) {
+    _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
       if (_enemies.isEmpty) return;
 
       for (final e in _enemies) {
@@ -76,5 +92,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
       // debugPrint("total enemyShip: ${_enemies.length}");
       notifyListeners();
     });
+
+    notifyListeners();
   }
 }

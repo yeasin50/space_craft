@@ -14,10 +14,6 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 
 ///this provide Player UI update info
 class PlayerInfoNotifier extends ChangeNotifier {
-  PlayerInfoNotifier() {
-    _bulletsMovement();
-  }
-
   /// create player instance
   final Player player = Player();
 
@@ -33,6 +29,9 @@ class PlayerInfoNotifier extends ChangeNotifier {
   //todo: try without CancelableOperation
   CancelableOperation? _cancelableOperation;
   Timer? _timer;
+
+  //bullet movement  controller
+  Timer? _timerBulletMovement;
 
   /// update player vertical position
   void updateTopPosition(double dY) {
@@ -70,8 +69,11 @@ class PlayerInfoNotifier extends ChangeNotifier {
       _timer = Timer.periodic(bulletGenerateRate, (timer) {
         _addBullet();
       });
+      _bulletsMovement();
     }, onCancel: () {
       _timer?.cancel();
+
+      _timer = null;
     });
   }
 
@@ -84,20 +86,18 @@ class PlayerInfoNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  _removeBullet(Bullet b) {
-    _bullets.remove(b);
-  }
-
   //* player bullets will move up(-Y)
   _bulletsMovement() {
-    Timer.periodic(
+    // dont create antoher timer for movement
+    if (_timerBulletMovement != null && _timerBulletMovement!.isActive) return;
+    _timerBulletMovement = Timer.periodic(
       bulletMovementRate,
       (timer) {
         if (_bullets.isEmpty) return;
 
         for (final b in _bullets) {
           b.position.dY -= _bulletSpeed;
-          if (b.position.dY < 0) _removeBullet(b);
+          if (b.position.dY < 0) _bullets.remove(b);
         }
         debugPrint("bullet length: ${bullets.length}");
         notifyListeners();
@@ -109,5 +109,19 @@ class PlayerInfoNotifier extends ChangeNotifier {
   void incrementScore() {
     // player._score += 1;
     notifyListeners();
+  }
+
+//** controllers  */
+  /// stop player, bullet,generator
+  pauseMode() {
+    _timerBulletMovement?.cancel();
+  }
+
+  /// start player bullets movement
+  payingMode() {
+    _bulletsMovement();
+
+    debugPrint("playerProvider: PlayingMode");
+    debugPrint("BulletMovement Timer ${_timerBulletMovement == null}");
   }
 }

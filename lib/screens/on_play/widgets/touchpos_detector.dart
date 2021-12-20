@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants/constants.dart';
 import '../../../provider/provider.dart';
 import '../utils/utils.dart';
 
@@ -15,10 +16,14 @@ class TouchPositionDetector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      builder: (context, watch, child) {
-        final playerInfo = watch.read(playerInfoProvider);
+      builder: (context, ref, child) {
+        final playerInfo = ref.read(playerInfoProvider);
+        final gameManager = ref.read(gameManagerProvider.notifier);
         return GestureDetector(
           onPanDown: (details) {
+            debugPrint("$gameManager");
+            if (gameManager.mode != GameMode.playing) return;
+
             playerInfo.startShooting();
             updatePlayerPosition(
               offset: details.localPosition,
@@ -35,6 +40,7 @@ class TouchPositionDetector extends StatelessWidget {
             playerInfo.stopShooting();
           },
           onPanUpdate: (details) {
+            if (gameManager.mode != GameMode.playing) return;
             updatePlayerPosition(
               offset: details.localPosition,
               constraints: constraints,

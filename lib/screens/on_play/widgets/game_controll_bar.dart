@@ -74,12 +74,17 @@ class _GameControllBarState extends State<GameControllBar>
           isExpanded = !isExpanded;
         });
         if (isExpanded) {
+          //* pause the game
           controller.forward();
-
+          ref.read(gameManagerProvider.notifier).paused();
           ref.read(enemyProvider).pauseMode();
         } else {
+          //* resume the game
           controller.reverse();
+          ref.read(gameManagerProvider.notifier).playing();
           ref.read(enemyProvider).generateEnemies();
+
+          debugPrint("onControllBar Resume: ${ref.read(gameManagerProvider)}");
         }
       },
       icon: AnimatedIcon(

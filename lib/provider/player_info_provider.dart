@@ -32,7 +32,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   //todo: try without CancelableOperation
   CancelableOperation? _cancelableOperation;
-  late Timer _timer;
+  Timer? _timer;
 
   /// update player vertical position
   void updateTopPosition(double dY) {
@@ -54,8 +54,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   void stopShooting() {
     player.shoot = false;
-    _cancelableOperation!.cancel();
-    _timer.cancel();
+    _cancelableOperation?.cancel();
+    _timer?.cancel();
     notifyListeners();
   }
 
@@ -71,7 +71,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
         _addBullet();
       });
     }, onCancel: () {
-      _timer.cancel();
+      _timer?.cancel();
     });
   }
 

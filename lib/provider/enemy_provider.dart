@@ -26,6 +26,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   final Duration enemyMovementRate = const Duration(milliseconds: 100);
   final Duration enemyGenerateDuration = const Duration(seconds: 1);
 
+  //todo: create cancelable later
   Timer? _timerEnemyGeneration;
   Timer? _timerEnemyMovement;
 

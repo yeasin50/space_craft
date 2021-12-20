@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/provider/provider.dart';
+
+import '../../../provider/provider.dart';
 
 class GameControllBar extends StatefulWidget {
   const GameControllBar({Key? key}) : super(key: key);

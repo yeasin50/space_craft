@@ -11,33 +11,37 @@ class OnPlayScreen extends ConsumerWidget {
     final playerInfo = ref.watch(playerInfoProvider);
 
     return Scaffold(
+      backgroundColor: Colors.black,
       body: LayoutBuilder(builder: (context, constraints) {
         return Stack(
-          children: [
-            Positioned(
-              top: playerInfo.player.position2d.dY,
-              left: playerInfo.player.position2d.dX,
-              child: playerShip(),
-            ),
+          children: const [
+            Align(
+              child: ShipBlast(),
+            )
+            // Positioned(
+            //   top: playerInfo.player.position2d.dY,
+            //   left: playerInfo.player.position2d.dX,
+            //   child: playerShip(),
+            // ),
 
-            EnemyOverlay(
-              constraints: constraints,
-            ),
+            // EnemyOverlay(
+            //   constraints: constraints,
+            // ),
 
-            ...playerInfo.bullets.map((b) {
-              return Positioned(
-                top: b.position.dY,
-                left: b.position.dX,
-                child: const Text('A'),
-              );
-            }).toList(),
+            // ...playerInfo.bullets.map((b) {
+            //   return Positioned(
+            //     top: b.position.dY,
+            //     left: b.position.dX,
+            //     child: const Text('A'),
+            //   );
+            // }).toList(),
 
             /// detect touch on bottom
-            TouchPositionDetector(
-              constraints: constraints,
-            ),
+            // TouchPositionDetector(
+            //   constraints: constraints,
+            // ),
 
-            const GameControllBar(),
+            // const GameControllBar(),
           ],
         );
       }),

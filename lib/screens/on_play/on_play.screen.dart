@@ -14,9 +14,12 @@ class OnPlayScreen extends ConsumerWidget {
       backgroundColor: Colors.black,
       body: LayoutBuilder(builder: (context, constraints) {
         return Stack(
-          children: const [
+          children: [
             Align(
-              child: ShipBlast(),
+              child: Container(
+                // color: Colors.cyanAccent.withOpacity(.3),
+                child: PlayerShip(),
+              ),
             )
             // Positioned(
             //   top: playerInfo.player.position2d.dY,

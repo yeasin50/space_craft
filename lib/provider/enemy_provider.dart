@@ -14,7 +14,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
 
 class EnemyChangeNotifier extends ChangeNotifier {
   // screen size to control enemy movement
-  Size? _screenSize = Size.zero;
+  Size? _screenSize;
 
   EnemyChangeNotifier() {
     // _enemyMovement();
@@ -66,6 +66,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   // create enemyShip on (,0) possition
   _addEnemy() {
+    assert(
+      (_screenSize != null),
+      '''got null on _screenSize use [initScreen] to set _screenSize.[enemy_provider.dart 38:44]''',
+    );
+
     _enemies.add(
       EnemyShip(
         position2d: Vector2(

@@ -36,6 +36,7 @@ class _GameControllBarState extends State<GameControllBar>
     super.dispose();
   }
 
+  //todo: change icons color
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -54,7 +55,10 @@ class _GameControllBarState extends State<GameControllBar>
                     2,
                     (index) => IconButton(
                       onPressed: () {},
-                      icon: const Icon(Icons.alarm),
+                      icon: const Icon(
+                        Icons.alarm,
+                        color: Colors.white,
+                      ),
                     ),
                   )
                 ],
@@ -89,6 +93,7 @@ class _GameControllBarState extends State<GameControllBar>
         }
       },
       icon: AnimatedIcon(
+        color: Colors.white,
         icon: AnimatedIcons.pause_play, // may changes later
         progress: controller,
       ),

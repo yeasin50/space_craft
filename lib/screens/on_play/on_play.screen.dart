@@ -15,21 +15,21 @@ class OnPlayScreen extends ConsumerWidget {
       body: LayoutBuilder(builder: (context, constraints) {
         return Stack(
           children: [
-            Align(
-              child: Container(
-                // color: Colors.cyanAccent.withOpacity(.3),
-                child: PlayerShip(),
-              ),
-            )
+            // Align(
+            //   child: Container(
+            //     // color: Colors.cyanAccent.withOpacity(.3),
+            //     child: PlayerShip(),
+            //   ),
+            // )
             // Positioned(
             //   top: playerInfo.player.position2d.dY,
             //   left: playerInfo.player.position2d.dX,
             //   child: playerShip(),
             // ),
 
-            // EnemyOverlay(
-            //   constraints: constraints,
-            // ),
+            EnemyOverlay(
+              constraints: constraints,
+            ),
 
             // ...playerInfo.bullets.map((b) {
             //   return Positioned(
@@ -44,7 +44,7 @@ class OnPlayScreen extends ConsumerWidget {
             //   constraints: constraints,
             // ),
 
-            // const GameControllBar(),
+            const GameControllBar(),
           ],
         );
       }),

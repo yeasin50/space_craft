@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
@@ -20,19 +20,31 @@ class EnemyChangeNotifier extends ChangeNotifier {
     // _enemyMovement();
   }
 
+  final List<Bullet> _bullets = [];
+
+  /// enemy ship bullets
+  List<Bullet> get bullets => _bullets;
+
   //enemy generation on different x position
-  final Random _random = Random();
+  final math.Random _random = math.Random();
 
   final Duration enemyMovementRate = const Duration(milliseconds: 100);
-  final Duration enemyGenerateDuration = const Duration(seconds: 1);
+  final Duration enemyGenerateDuration = const Duration(seconds: 2);
 
-  //todo: create cancelable later
+  final Duration _bulletGeneratorDelay = const Duration(seconds: 1);
+  final Duration _bulletMovementRate = const Duration(milliseconds: 100);
+
+  //todo: create cancelable if needed later
   Timer? _timerEnemyGeneration;
   Timer? _timerEnemyMovement;
+  Timer? _timerBulletGenerator;
+  Timer? _timerBulletMovement;
 
-  final double enemyMovementPX = 10.0;
+  double enemyMovementPY = 7.0;
+  double bulletMoventPY = 24.0;
 
   final List<EnemyShip> _enemies = [];
+
   List<EnemyShip> get enemies => _enemies;
 
   initScreen({required Size screenSize}) {
@@ -49,18 +61,28 @@ class EnemyChangeNotifier extends ChangeNotifier {
       _addEnemy();
     });
     _enemyMovement();
+    generateBullet();
   }
 
-  // stop enemymovement+ geration
+  /// if true, stop enemymovement+ geration..+bullets
   pauseMode({
     bool movement = true,
     bool generator = true,
+    bool bulletMovement = true,
+    bool bulletGenerator = true,
   }) {
     if (generator && _timerEnemyGeneration != null) {
       _timerEnemyGeneration!.cancel();
     }
     if (movement && _timerEnemyMovement != null) {
       _timerEnemyMovement!.cancel();
+    }
+
+    if (bulletGenerator && _timerBulletGenerator != null) {
+      _timerBulletGenerator!.cancel();
+    }
+    if (bulletMovement && _timerBulletMovement != null) {
+      _timerBulletMovement!.cancel();
     }
   }
 
@@ -71,10 +93,18 @@ class EnemyChangeNotifier extends ChangeNotifier {
       '''got null on _screenSize use [initScreen] to set _screenSize.[enemy_provider.dart 38:44]''',
     );
 
+    // to avoid boundary confliction
+    final randX = _random.nextDouble() * _screenSize!.width;
+    final dx = randX - 40 < 0
+        ? randX + 40
+        : randX + 40 > _screenSize!.width
+            ? randX - 40
+            : randX;
+    //todo: random dY for multi-generation
     _enemies.add(
       EnemyShip(
         position2d: Vector2(
-          dX: _random.nextDouble() * _screenSize!.width,
+          dX: dx,
           dY: 0.0,
         ),
       ),
@@ -82,23 +112,64 @@ class EnemyChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  // move downward and destroy while it is downSide:enemyShip
+  /// move downward and destroy while it is downSide:enemyShip
   _enemyMovement() {
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
       if (_enemies.isEmpty) return;
 
       for (final e in _enemies) {
-        e.position2d.dY += enemyMovementPX;
+        e.position2d.dY += enemyMovementPY;
 
         if (e.position2d.dY > _screenSize!.height) {
           _enemies.remove(e);
         }
       }
-      // debugPrint("f1PY: ${_enemies.first.position2d.dY} ");
+
       // debugPrint("total enemyShip: ${_enemies.length}");
       notifyListeners();
     });
 
     notifyListeners();
+  }
+
+  //** Enemy Bullets  */
+
+  generateBullet() {
+    _timerBulletGenerator = Timer.periodic(_bulletGeneratorDelay, (timer) {
+      _addBullet();
+    });
+    _bulletMovement();
+  }
+
+  /// adding bullets based on enemy position
+  _addBullet() {
+    if (_enemies.isEmpty) return;
+
+    for (var e in _enemies) {
+      //todo: min the bullet width and should i add bullet property on [EnemyShip] level, or create random timer
+      if (_random.nextBool()) {
+        _bullets.add(
+          Bullet(position: e.position2d.value..dX += e.size.width * .25),
+        );
+      }
+    }
+    debugPrint("total _bullet: ${_bullets.length}");
+    //todo: check if notifier is needed to make it smooth
+  }
+
+  /// bullet movement on separate method: movement needed to be smooth while controlling the enemy generation
+  _bulletMovement() {
+    _timerBulletMovement = Timer.periodic(_bulletMovementRate, (timer) {
+      if (_bullets.isEmpty) return;
+
+      for (final b in _bullets) {
+        b.position.dY += bulletMoventPY;
+
+        if (b.position.dY > _screenSize!.height) {
+          _bullets.remove(b);
+        }
+      }
+      notifyListeners();
+    });
   }
 }

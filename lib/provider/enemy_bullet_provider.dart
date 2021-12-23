@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import '../model/model.dart';
 import 'provider.dart';
 
+/// enemy ship bullets
 final bulletsProvider = ChangeNotifierProvider<BulletsNotifier>(
   (ref) {
     return BulletsNotifier();
@@ -14,6 +15,8 @@ final bulletsProvider = ChangeNotifierProvider<BulletsNotifier>(
 
 class BulletsNotifier extends ChangeNotifier {
   final Duration bulletGenerateRate = const Duration(milliseconds: 100);
+
+  List<Bullet> bullets = [];
 
   CancelableOperation? _cancelableOperation;
   late Timer _timer;

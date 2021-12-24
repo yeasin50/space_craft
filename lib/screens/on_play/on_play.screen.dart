@@ -21,28 +21,32 @@ class OnPlayScreen extends ConsumerWidget {
             //     child: PlayerShip(),
             //   ),
             // )
-            // Positioned(
-            //   top: playerInfo.player.position2d.dY,
-            //   left: playerInfo.player.position2d.dX,
-            //   child: playerShip(),
-            // ),
+            Positioned(
+              top: playerInfo.player.position2d.dY,
+              left: playerInfo.player.position2d.dX,
+              child: playerShip(),
+            ),
 
             EnemyOverlay(
               constraints: constraints,
             ),
 
-            // ...playerInfo.bullets.map((b) {
-            //   return Positioned(
-            //     top: b.position.dY,
-            //     left: b.position.dX,
-            //     child: const Text('A'),
-            //   );
-            // }).toList(),
+            ...playerInfo.bullets.map((b) {
+              return Positioned(
+                top: b.position.dY,
+                left: b.position.dX,
+                child: Container(
+                  height: b.radius,
+                  width: b.radius,
+                  color: b.color,
+                ),
+              );
+            }).toList(),
 
             /// detect touch on bottom
-            // TouchPositionDetector(
-            //   constraints: constraints,
-            // ),
+            TouchPositionDetector(
+              constraints: constraints,
+            ),
 
             const GameControllBar(),
           ],

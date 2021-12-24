@@ -1,23 +1,25 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../model/model.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
   (ref) {
-    return PlayerInfoNotifier();
+    return PlayerInfoNotifier(ref: ref);
   },
 );
 
 ///this provide Player UI update info
 class PlayerInfoNotifier extends ChangeNotifier {
+  final ChangeNotifierProviderRef ref;
+
   /// create player instance
   final Player player = Player();
 
-  final Duration bulletGenerateRate = const Duration(milliseconds: 100);
+  final Duration bulletGenerateRate = const Duration(milliseconds: 400);
   final Duration bulletMovementRate = const Duration(milliseconds: 50);
 
   // bullet will move upward by [_bulletSpeed] px
@@ -32,6 +34,10 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   //bullet movement  controller
   Timer? _timerBulletMovement;
+
+  PlayerInfoNotifier({
+    required this.ref,
+  });
 
   /// update player vertical position
   void updateTopPosition(double dY) {
@@ -79,6 +85,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   _addBullet() {
     _bullets.add(Bullet(
+      color: Colors.deepOrangeAccent,
       position: Vector2.fromValue(player.position2d)
         ..dX =
             player.position2d.dX + player.size.width / 2, //fire from top center
@@ -97,12 +104,35 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
         for (final b in _bullets) {
           b.position.dY -= _bulletSpeed;
+          // remove bullet while it is beyond screen:at Top
           if (b.position.dY < 0) _bullets.remove(b);
+
+          _removeEnemyOnBulletCollid(b);
         }
-        debugPrint("bullet length: ${bullets.length}");
+        // debugPrint("bullet length: ${bullets.length}");
         notifyListeners();
       },
-    );
+    ); 
+  }
+
+  /// remove enemy and bullet, increase score while bullet hit enemyShip
+  _removeEnemyOnBulletCollid(Bullet b) {
+    final enemyNotifier = ref.read(enemyProvider);
+
+    //todo:count bullet width
+    for (final enemyShip in enemyNotifier.enemies) {
+      // checking if ship within bullet  position
+      if (b.position.dX >= enemyShip.position2d.dX &&
+              b.position.dX <= enemyShip.position2d.dX + enemyShip.size.width &&
+              b.position.dY <= enemyShip.position2d.dY //ok
+
+          ) {
+        enemyNotifier.removeEnemy(enemyShip);
+        _bullets.remove(b);
+      }
+    }
+
+    // debugPrint("total enemy ${enemyNotifier.enemies.length}");
   }
 
   /// increment score of player by destroying enemies

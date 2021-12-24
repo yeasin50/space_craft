@@ -12,6 +12,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
   },
 );
 
+//todo: test with single refresh method: [notifier]
 class EnemyChangeNotifier extends ChangeNotifier {
   // screen size to control enemy movement
   Size? _screenSize;
@@ -25,14 +26,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// enemy ship bullets
   List<Bullet> get bullets => _bullets;
 
+  final List<EnemyShip> _enemies = [];
+  List<EnemyShip> get enemies => _enemies;
+
   //enemy generation on different x position
   final math.Random _random = math.Random();
-
-  final Duration enemyMovementRate = const Duration(milliseconds: 100);
-  final Duration enemyGenerateDuration = const Duration(seconds: 2);
-
-  final Duration _bulletGeneratorDelay = const Duration(seconds: 1);
-  final Duration _bulletMovementRate = const Duration(milliseconds: 100);
 
   //todo: create cancelable if needed later
   Timer? _timerEnemyGeneration;
@@ -40,12 +38,21 @@ class EnemyChangeNotifier extends ChangeNotifier {
   Timer? _timerBulletGenerator;
   Timer? _timerBulletMovement;
 
-  double enemyMovementPY = 7.0;
-  double bulletMoventPY = 24.0;
+  /// move enemy down by  `enemyMovementPY` px
+  double enemyMovementPY = 4.0;
 
-  final List<EnemyShip> _enemies = [];
+  /// move enemy down on every `enemyMovementRate` [Duration]
+  final Duration enemyMovementRate = const Duration(milliseconds: 200);
 
-  List<EnemyShip> get enemies => _enemies;
+  /// Generate single enemy on every  `enemyGenerateDuration` [Duration]
+  final Duration enemyGenerateDuration = const Duration(seconds: 2);
+
+  final Duration _bulletGeneratorDelay = const Duration(seconds: 1);
+
+  /// move enemy down by  `bulletMoventPY` px
+  double bulletMoventPY = 10.0;
+
+  final Duration _bulletMovementRate = const Duration(milliseconds: 70);
 
   initScreen({required Size screenSize}) {
     Future.delayed(Duration.zero).then((value) {
@@ -121,7 +128,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
         e.position2d.dY += enemyMovementPY;
 
         if (e.position2d.dY > _screenSize!.height) {
-          _enemies.remove(e);
+          removeEnemy(e);
         }
       }
 
@@ -129,6 +136,12 @@ class EnemyChangeNotifier extends ChangeNotifier {
       notifyListeners();
     });
 
+    notifyListeners();
+  }
+
+  /// remove enemy from
+  removeEnemy(EnemyShip e) {
+    _enemies.remove(e);
     notifyListeners();
   }
 
@@ -153,7 +166,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
         );
       }
     }
-    debugPrint("total _bullet: ${_bullets.length}");
+    // debugPrint("total _bullet: ${_bullets.length}");
     //todo: check if notifier is needed to make it smooth
   }
 

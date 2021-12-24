@@ -47,14 +47,14 @@ class TouchPositionDetector extends StatelessWidget {
               playerInfoNotifier: playerInfo,
             );
           },
-          child: Container(
-            height: constraints.maxHeight,
-            width: constraints.maxWidth,
-            //TODO: backGround Color
-            color: Colors.blue.withOpacity(.3),
+          // child: SizedBox(
+          //   height: constraints.maxHeight,
+          //   width: constraints.maxWidth,
+          //   //TODO: backGround Color
+          //   // color: Colors.blue.withOpacity(.3),
 
-            ///we can also choose overlay widget here, or BG Placement 🤓
-          ),
+          //   ///we can also choose overlay widget here, or BG Placement 🤓
+          // ),
         );
       },
     );

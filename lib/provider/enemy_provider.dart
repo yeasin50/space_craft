@@ -8,16 +8,17 @@ import 'provider.dart';
 
 final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
   (ref) {
-    return EnemyChangeNotifier();
+    return EnemyChangeNotifier(ref);
   },
 );
 
 //todo: test with single refresh method: [notifier]
 class EnemyChangeNotifier extends ChangeNotifier {
+  final ChangeNotifierProviderRef ref;
   // screen size to control enemy movement
   Size? _screenSize;
 
-  EnemyChangeNotifier() {
+  EnemyChangeNotifier(this.ref) {
     // _enemyMovement();
   }
 
@@ -71,28 +72,6 @@ class EnemyChangeNotifier extends ChangeNotifier {
     generateBullet();
   }
 
-  /// if true, stop enemymovement+ geration..+bullets
-  pauseMode({
-    bool movement = true,
-    bool generator = true,
-    bool bulletMovement = true,
-    bool bulletGenerator = true,
-  }) {
-    if (generator && _timerEnemyGeneration != null) {
-      _timerEnemyGeneration!.cancel();
-    }
-    if (movement && _timerEnemyMovement != null) {
-      _timerEnemyMovement!.cancel();
-    }
-
-    if (bulletGenerator && _timerBulletGenerator != null) {
-      _timerBulletGenerator!.cancel();
-    }
-    if (bulletMovement && _timerBulletMovement != null) {
-      _timerBulletMovement!.cancel();
-    }
-  }
-
   // create enemyShip on (,0) possition
   _addEnemy() {
     assert(
@@ -127,6 +106,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
       for (final e in _enemies) {
         e.position2d.dY += enemyMovementPY;
 
+        _checkPlayerShipCollision();
+
         if (e.position2d.dY > _screenSize!.height) {
           removeEnemy(e);
         }
@@ -145,8 +126,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  //** Enemy Bullets  */
-
+  /// Enemy Bullets
   generateBullet() {
     _timerBulletGenerator = Timer.periodic(_bulletGeneratorDelay, (timer) {
       _addBullet();
@@ -184,5 +164,52 @@ class EnemyChangeNotifier extends ChangeNotifier {
       }
       notifyListeners();
     });
+  }
+
+  /// playerShip colision with enemyShip
+  /// remove enemyShip, decrease playerShip health
+  void _checkPlayerShipCollision() {
+    // what if I use `_removeEnemyOnBulletCollision()`
+
+    final player = ref.read(playerInfoProvider).player;
+
+    for (final enemyShip in _enemies) {
+      // checking if ship within bullet  position
+      if (enemyShip.position2d.dX <= player.position2d.dX + player.size.width &&
+          enemyShip.position2d.dX >=
+              player.position2d.dX - player.size.width / 2 &&
+          enemyShip.position2d.dY >=
+              player.position2d.dY - player.size.height / 2 &&
+          enemyShip.position2d.dY <=
+              player.position2d.dY + player.size.height / 2) {
+        removeEnemy(enemyShip);
+        //todo: damage playerShip
+        debugPrint("rm Enemy");
+      }
+    }
+  }
+
+  //** Controllers */
+
+  /// if true, stop enemymovement+ geration..+bullets
+  pauseMode({
+    bool movement = true,
+    bool generator = true,
+    bool bulletMovement = true,
+    bool bulletGenerator = true,
+  }) {
+    if (generator && _timerEnemyGeneration != null) {
+      _timerEnemyGeneration!.cancel();
+    }
+    if (movement && _timerEnemyMovement != null) {
+      _timerEnemyMovement!.cancel();
+    }
+
+    if (bulletGenerator && _timerBulletGenerator != null) {
+      _timerBulletGenerator!.cancel();
+    }
+    if (bulletMovement && _timerBulletMovement != null) {
+      _timerBulletMovement!.cancel();
+    }
   }
 }

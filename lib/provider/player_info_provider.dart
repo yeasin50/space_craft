@@ -107,7 +107,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
           // remove bullet while it is beyond screen:at Top
           if (b.position.dY < 0) _bullets.remove(b);
 
-          _removeEnemyOnBulletCollid(b);
+          _removeEnemyOnBulletCollision(b);
         }
         // debugPrint("bullet length: ${bullets.length}");
         notifyListeners();
@@ -116,17 +116,15 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   /// remove enemy and bullet, increase score while bullet hit enemyShip
-  _removeEnemyOnBulletCollid(Bullet b) {
+  _removeEnemyOnBulletCollision(Bullet b) {
     final enemyNotifier = ref.read(enemyProvider);
 
     //Done:count bullet width
     for (final enemyShip in enemyNotifier.enemies) {
       // checking if ship within bullet  position
       if (b.position.dX + b.radius >= enemyShip.position2d.dX &&
-              b.position.dX <= enemyShip.position2d.dX + enemyShip.size.width &&
-              b.position.dY <= enemyShip.position2d.dY //ok
-
-          ) {
+          b.position.dX <= enemyShip.position2d.dX + enemyShip.size.width &&
+          b.position.dY <= enemyShip.position2d.dY) {
         enemyNotifier.removeEnemy(enemyShip);
         _bullets.remove(b);
       }

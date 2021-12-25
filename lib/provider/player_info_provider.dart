@@ -112,17 +112,17 @@ class PlayerInfoNotifier extends ChangeNotifier {
         // debugPrint("bullet length: ${bullets.length}");
         notifyListeners();
       },
-    ); 
+    );
   }
 
   /// remove enemy and bullet, increase score while bullet hit enemyShip
   _removeEnemyOnBulletCollid(Bullet b) {
     final enemyNotifier = ref.read(enemyProvider);
 
-    //todo:count bullet width
+    //Done:count bullet width
     for (final enemyShip in enemyNotifier.enemies) {
       // checking if ship within bullet  position
-      if (b.position.dX >= enemyShip.position2d.dX &&
+      if (b.position.dX + b.radius >= enemyShip.position2d.dX &&
               b.position.dX <= enemyShip.position2d.dX + enemyShip.size.width &&
               b.position.dY <= enemyShip.position2d.dY //ok
 

@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+
+import '../utils/utils.dart';
 
 class MagicBall extends StatefulWidget {
   const MagicBall({
@@ -10,37 +11,47 @@ class MagicBall extends StatefulWidget {
   }) : super(key: key);
 
   final Size size;
+
+  /// generate [genaratePerBlust] [] after [blustDelay]
+  final int genaratePerBlust = 10;
+  final Duration blustDelay = const Duration(milliseconds: 400);
+
   @override
   _MagicBallState createState() => _MagicBallState();
 }
 
 class _MagicBallState extends State<MagicBall> {
-  List<Particle> particles = [];
+  List<ParticleWidget> particles = [];
 
   int idC = 0;
   late Timer _timer;
 
+  _removeParticle(int id) {
+    particles.removeWhere((element) {
+      // debugPrint(
+      //     " Gen:$idC state: ${element.id == id} totalParticles: ${particles.length}");
+      return element.id == id;
+    });
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-
-    _timer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
+    _timer = Timer.periodic(widget.blustDelay, (timer) {
       particles.addAll(
         List.generate(
-          11,
-          (index) => Particle(
-            key: ValueKey("${index + idC}"),
-            id: (index + idC++).toInt(),
+          widget.genaratePerBlust,
+          (index) => ParticleWidget(
+            key: ValueKey("P $idC $index"),
+            id: idC++,
             parentSize: widget.size,
-            callback: () {
-              particles.removeWhere(
-                (element) => element.id == (index + idC).toInt(),
-              );
-              setState(() {});
-            },
+            callback: _removeParticle,
           ),
         ),
       );
+      idC += widget.genaratePerBlust;
+
       setState(() {});
     });
   }
@@ -76,9 +87,10 @@ class _MagicBallState extends State<MagicBall> {
   }
 }
 
-class Particle extends StatefulWidget {
+/// used on [MagicBall]
+class ParticleWidget extends StatefulWidget {
   final int id;
-  const Particle({
+  const ParticleWidget({
     Key? key,
     required this.id,
     required this.parentSize,
@@ -89,29 +101,16 @@ class Particle extends StatefulWidget {
   final Size parentSize;
 
   /// remove particle on animation end
-  final Function callback;
+  final Function(int) callback;
 
   @override
-  State<Particle> createState() => _ParticleState();
+  State<ParticleWidget> createState() => _ParticleWidgetState();
 }
 
-class _ParticleState extends State<Particle>
+class _ParticleWidgetState extends State<ParticleWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<Offset> animation;
-
-  final Random random = Random();
-
-  /// define direction of particle
-  Offset endOffSet() {
-    final randomHeight = random.nextDouble() * widget.parentSize.width / 2;
-    final randomWidth = random.nextDouble() * widget.parentSize.height / 2;
-
-    return Offset(
-      random.nextDouble() > .5 ? randomWidth : 0,
-      random.nextDouble() > .5 ? randomHeight : 0,
-    );
-  }
 
   @override
   void initState() {
@@ -128,14 +127,12 @@ class _ParticleState extends State<Particle>
       )
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          widget.callback();
+          widget.callback(widget.id);
         }
       });
 
-    animation = Tween<Offset>(
-      begin: Offset(widget.parentSize.width / 2, widget.parentSize.height / 2),
-      end: endOffSet(),
-    ).animate(controller);
+    animation =
+        particleAnimation(controller: controller, size: widget.parentSize);
 
     // controller.repeat(reverse: true);
     controller.forward();

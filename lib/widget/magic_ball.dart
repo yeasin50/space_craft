@@ -157,7 +157,8 @@ class _ParticleWidgetState extends State<ParticleWidget>
     animation =
         particleAnimation(controller: controller, size: widget.parentSize);
 
-    widget.debugMode ? controller.repeat() : controller.forward();
+    // widget.debugMode ? controller.repeat() :
+    controller.forward();
   }
 
   @override
@@ -174,12 +175,15 @@ class _ParticleWidgetState extends State<ParticleWidget>
       top: animation.value.dy,
 
       //todo: clipPath with animatedContainer(size)
-      child: Container(
-        height: particleSize.height * controller.value,
-        width: particleSize.width * controller.value,
-        decoration: const BoxDecoration(
-          color: Colors.amber,
-          shape: BoxShape.circle,
+      child: ClipPath(
+        clipper: ParticlePathClipper(),
+        child: Container(
+          height: particleSize.height * controller.value,
+          width: particleSize.width * controller.value,
+          decoration: const BoxDecoration(
+            color: Colors.amber,
+            shape: BoxShape.circle,
+          ),
         ),
       ),
     );

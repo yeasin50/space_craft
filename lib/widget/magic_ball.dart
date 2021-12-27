@@ -89,19 +89,31 @@ class _MagicBallState extends State<MagicBall> {
 
 /// used on [MagicBall]
 class ParticleWidget extends StatefulWidget {
+  /// to test ParticleWidget separately needed [particleSize]
+  final bool debugMode;
+
+  final Size? particleSize;
+
   final int id;
-  const ParticleWidget({
-    Key? key,
-    required this.id,
-    required this.parentSize,
-    required this.callback,
-  }) : super(key: key);
 
   // separate animation for each particle
   final Size parentSize;
 
   /// remove particle on animation end
-  final Function(int) callback;
+  final Function(int id) callback;
+
+  const ParticleWidget({
+    Key? key,
+    required this.id,
+    required this.parentSize,
+    required this.callback,
+    this.debugMode = false,
+    this.particleSize,
+  })  : assert(
+          debugMode && particleSize == null,
+          "For debug mode: particleSize is required",
+        ),
+        super(key: key);
 
   @override
   State<ParticleWidget> createState() => _ParticleWidgetState();
@@ -112,9 +124,20 @@ class _ParticleWidgetState extends State<ParticleWidget>
   late AnimationController controller;
   late Animation<Offset> animation;
 
+  late Size particleSize;
+  late Size parentSize;
+
   @override
   void initState() {
     super.initState();
+
+    if (widget.debugMode) {
+      parentSize = Size.infinite;
+      particleSize = widget.particleSize ?? const Size(100, 100);
+    } else {
+      parentSize = widget.parentSize;
+      particleSize = widget.particleSize ?? const Size(5, 5); //
+    }
 
     controller = AnimationController(
       vsync: this,
@@ -134,8 +157,7 @@ class _ParticleWidgetState extends State<ParticleWidget>
     animation =
         particleAnimation(controller: controller, size: widget.parentSize);
 
-    // controller.repeat(reverse: true);
-    controller.forward();
+    widget.debugMode ? controller.repeat() : controller.forward();
   }
 
   @override
@@ -146,12 +168,15 @@ class _ParticleWidgetState extends State<ParticleWidget>
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("controller value: ${controller.value}");
     return Positioned(
       left: animation.value.dx,
       top: animation.value.dy,
+
+      //todo: clipPath with animatedContainer(size)
       child: Container(
-        height: 5,
-        width: 5,
+        height: particleSize.height * controller.value,
+        width: particleSize.width * controller.value,
         decoration: const BoxDecoration(
           color: Colors.amber,
           shape: BoxShape.circle,

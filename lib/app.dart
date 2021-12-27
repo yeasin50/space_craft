@@ -21,10 +21,17 @@ class _TestCases extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: MagicBall(),
+      body: Stack(
+        children: [
+          ParticleWidget(
+            debugMode: true,
+            callback: (id) {},
+            id: 2,
+            parentSize: const Size(100, 100),
+          ),
+        ],
       ),
     );
   }

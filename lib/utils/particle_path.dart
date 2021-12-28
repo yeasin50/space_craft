@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 class ParticlePathClipper extends CustomClipper<Path> {
@@ -16,4 +18,16 @@ class ParticlePathClipper extends CustomClipper<Path> {
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
 }
 
-///TODO: add more shapes
+class StarPathClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) => Path()
+    ..moveTo(size.width * .25, size.height * .9)
+    ..lineTo(size.width * .5, 0)
+    ..lineTo(size.width * .85, size.height * .9)
+    ..lineTo(size.width * .05, size.height * .3)
+    ..lineTo(size.width * .95, size.height * .3)
+    ..lineTo(size.width * .25, size.height * .9);
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
+}

@@ -23,15 +23,18 @@ class _TestCases extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          ParticleWidget(
-            debugMode: true,
-            callback: (id) {},
-            id: 2,
-            parentSize: const Size(100, 100),
-          ),
-        ],
+      body: Container(
+        color: Colors.cyanAccent.withOpacity(.2),
+        child: Stack(
+          children: [
+            ParticleWidget(
+              debugMode: true,
+              callback: (id) {},
+              id: 2,
+              parentSize: const Size(100, 100),
+            ),
+          ],
+        ),
       ),
     );
   }

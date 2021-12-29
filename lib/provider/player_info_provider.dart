@@ -16,6 +16,8 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 class PlayerInfoNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef ref;
 
+  IPlayerScore scoreManager = PlayerScoreManager();
+
   /// create player instance
   final Player player = Player();
 
@@ -127,19 +129,25 @@ class PlayerInfoNotifier extends ChangeNotifier {
           b.position.dY <= enemyShip.position2d.dY) {
         enemyNotifier.removeEnemy(enemyShip);
         _bullets.remove(b);
+        incrementScore();
       }
     }
 
     // debugPrint("total enemy ${enemyNotifier.enemies.length}");
   }
 
+//**********************
+//*  Score Management  *
+//**********************/
   /// increment score of player by destroying enemies
   void incrementScore() {
-    // player._score += 1;
+    scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
     notifyListeners();
   }
 
-//** controllers  */
+//****************
+//* Controllers  *
+//****************/
   /// stop player, bullet,generator
   pauseMode() {
     _timerBulletMovement?.cancel();

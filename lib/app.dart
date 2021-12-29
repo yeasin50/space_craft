@@ -10,8 +10,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: _TestCases(),
-      //  OnPlayScreen(),
+      home:
+          // _TestCases(),
+          OnPlayScreen(),
     );
   }
 }

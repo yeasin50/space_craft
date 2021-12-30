@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:space_craft/screens/on_play/utils/utils.dart';
 
 import '../../model/model.dart';
+import '../constants/constants.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
@@ -126,9 +128,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
     //Done:count bullet width
     for (final enemyShip in enemyNotifier.enemies) {
       // checking if ship within bullet  position
-      if (b.position.dX + b.radius >= enemyShip.position2d.dX &&
-          b.position.dX <= enemyShip.position2d.dX + enemyShip.size.width &&
-          b.position.dY <= enemyShip.position2d.dY) {
+      if (collisionChecker(ship: enemyShip, bullet: b)) {
         enemyNotifier.removeEnemy(enemyShip);
         _bullets.remove(b);
         incrementScore();
@@ -138,18 +138,30 @@ class PlayerInfoNotifier extends ChangeNotifier {
     // debugPrint("total enemy ${enemyNotifier.enemies.length}");
   }
 
-//**********************
-//*  Score Management  *
-//**********************/
+  //*---------------------------*
+  //*  Score Health Management  *
+  //*---------------------------*
   /// increment score of player by destroying enemies
   void incrementScore() {
     scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
     notifyListeners();
   }
 
-//****************
-//* Controllers  *
-//****************/
+  /// decrease player health
+  void decreaseHeath(CollisionType collisionType) {
+    if (collisionType == CollisionType.bullet) {
+      player.health -= 5;
+    }
+    if (collisionType == CollisionType.ship) {
+      player.health -= 10;
+    }
+    //todo: GameOver while 0 score
+    notifyListeners();
+  }
+
+  //*---------------------------*
+  //*       Controllers         *
+  //*---------------------------*
   /// stop player, bullet,generator
   pauseMode() {
     _timerBulletMovement?.cancel();

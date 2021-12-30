@@ -12,9 +12,6 @@ abstract class IShip {
 }
 
 class Player implements IShip {
-  ///current score of Player
-  int score = 0;
-
   ///max number of time player can live
   final int maxLive = 3;
 

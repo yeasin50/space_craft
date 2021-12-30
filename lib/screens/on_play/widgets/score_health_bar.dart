@@ -16,6 +16,11 @@ class ScoreHealthBar extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
+          "Health: ${playerInfoNotifier.player.health}",
+          style: const TextStyle(color: Colors.white),
+        ),
+        const SizedBox(width: 10),
+        Text(
           "Score: ${playerInfoNotifier.scoreManager.score()}",
           style: const TextStyle(color: Colors.white),
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/model/model.dart';
 
 import '../../../provider/provider.dart';
 
@@ -11,8 +12,8 @@ void updatePlayerPosition({
   final double posY = offset.dy;
   final double posX = offset.dx;
 
-  /// we are separating in two section, it'll help to move though another axis stuck
-  /// it'll make sure that even One axis will work even other axis stuc
+  // we are separating in two section, it'll help to move though another axis stuck
+  // it'll make sure that even One axis will work even other axis stuc
   if (posY >=
           constraints.maxHeight - playerInfoNotifier.player.size.height / 2 ||
       posY <= playerInfoNotifier.player.size.height / 2) {
@@ -29,4 +30,18 @@ void updatePlayerPosition({
     playerInfoNotifier
         .updateLeftPosition(posX - (playerInfoNotifier.player.size.width / 2));
   }
+}
+
+/// check collision between ship and bullet
+bool collisionChecker({
+  required IShip ship,
+  required IBullet bullet,
+}) {
+  if (bullet.position.dX >= ship.position2d.dX &&
+      bullet.position.dX <= ship.position2d.dX + ship.size.width &&
+      bullet.position.dY <= ship.position2d.dY + ship.size.height &&
+      bullet.position.dY >= ship.position2d.dY) {
+    return true;
+  }
+  return false;
 }

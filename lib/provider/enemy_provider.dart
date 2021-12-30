@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
+import 'package:space_craft/screens/on_play/utils/utils.dart';
 
+import '../constants/constants.dart';
 import '../model/model.dart';
 import 'provider.dart';
 
@@ -106,7 +108,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
       for (final e in _enemies) {
         e.position2d.dY += enemyMovementPY;
 
-        _checkPlayerShipCollision();
+        _enemyShipCollision();
 
         if (e.position2d.dY > _screenSize!.height) {
           removeEnemy(e);
@@ -160,23 +162,29 @@ class EnemyChangeNotifier extends ChangeNotifier {
     _timerBulletMovement = Timer.periodic(_bulletMovementRate, (timer) {
       if (_bullets.isEmpty) return;
 
+      final playerNotifier = ref.read(playerInfoProvider);
+
       for (final b in _bullets) {
         b.position.dY += bulletMoventPY;
 
-        if (b.position.dY > _screenSize!.height) {
+        //check bullet collision with player collision or beyond screen
+        if (collisionChecker(bullet: b, ship: playerNotifier.player) ||
+            b.position.dY > _screenSize!.height) {
           _bullets.remove(b);
+          playerNotifier.decreaseHeath(CollisionType.bullet);
         }
       }
       notifyListeners();
     });
   }
 
-  /// playerShip colision with enemyShip
+  /// check playerShip colision with enemyShip
   /// remove enemyShip, decrease playerShip health
-  void _checkPlayerShipCollision() {
+  void _enemyShipCollision() {
     // what if I use `_removeEnemyOnBulletCollision()`
 
-    final player = ref.read(playerInfoProvider).player;
+    final playerNotifier = ref.read(playerInfoProvider);
+    final player = playerNotifier.player;
 
     for (final enemyShip in _enemies) {
       // checking if ship within bullet  position
@@ -188,16 +196,29 @@ class EnemyChangeNotifier extends ChangeNotifier {
           enemyShip.position2d.dY <=
               player.position2d.dY + player.size.height / 2) {
         removeEnemy(enemyShip);
-        //todo: damage playerShip
+        playerNotifier.decreaseHeath(CollisionType.ship);
         debugPrint("rm Enemy");
       }
     }
   }
 
-  //** Controllers */
+  /// check bullet hits the playerShip
+  bool _bulletColisionOnPlayer({
+    required Player player,
+    required Vector2 bulletPos,
+  }) {
+    if (bulletPos.dX >= player.position2d.dX &&
+        bulletPos.dX <= player.position2d.dX + player.size.width / 2) {
+      return true;
+    }
+    return false;
+  }
 
+  //*---------------------------*
+  //*       Controllers         *
+  //*---------------------------*
   /// if true, stop enemymovement+ geration..+bullets
-  pauseMode({
+  void pauseMode({
     bool movement = true,
     bool generator = true,
     bool bulletMovement = true,

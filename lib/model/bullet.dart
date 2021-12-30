@@ -33,15 +33,18 @@ class PlayerShipBullet implements IBullet {
 
 class EnemyShipBullet implements IBullet {
   late final Vector2 _position;
+  late final Color _color;
 
   EnemyShipBullet({
     required Vector2 position,
+    Color? color,
   }) {
     _position = position;
+    _color = color ?? Colors.deepOrange;
   }
 
   @override
-  Color get color => Colors.deepOrange;
+  Color get color => _color;
 
   @override
   int? get id => null;
@@ -52,19 +55,3 @@ class EnemyShipBullet implements IBullet {
   @override
   double get radius => 5.0;
 }
-
-//old model
-// class BulletX {
-//   Vector2 position;
-//   final int? id;
-//   final double radius;
-
-//   final Color color;
-
-//   BulletX({
-//     required this.position,
-//     this.id,
-//     this.radius = 10,
-//     this.color = Colors.green,
-//   });
-// }

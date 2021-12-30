@@ -22,10 +22,10 @@ class EnemyChangeNotifier extends ChangeNotifier {
     // _enemyMovement();
   }
 
-  final List<Bullet> _bullets = [];
+  final List<IBullet> _bullets = [];
 
   /// enemy ship bullets
-  List<Bullet> get bullets => _bullets;
+  List<IBullet> get bullets => _bullets;
 
   final List<EnemyShip> _enemies = [];
   List<EnemyShip> get enemies => _enemies;
@@ -142,7 +142,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
       //todo: min the bullet width and should i add bullet property on [EnemyShip] level, or create random timer
       if (_random.nextBool()) {
         _bullets.add(
-          Bullet(position: e.position2d.value..dX += e.size.width * .25),
+          EnemyShipBullet(
+              position: e.position2d.value..dX += e.size.width * .25),
         );
       }
     }

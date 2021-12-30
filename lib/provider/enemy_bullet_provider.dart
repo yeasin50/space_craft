@@ -16,7 +16,7 @@ final bulletsProvider = ChangeNotifierProvider<BulletsNotifier>(
 class BulletsNotifier extends ChangeNotifier {
   final Duration bulletGenerateRate = const Duration(milliseconds: 100);
 
-  List<Bullet> bullets = [];
+  List<IBullet> bullets = [];
 
   CancelableOperation? _cancelableOperation;
   late Timer _timer;
@@ -39,7 +39,7 @@ class BulletsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  removePlayerBullet(Bullet bullet) {
+  removePlayerBullet(IBullet bullet) {
     notifyListeners();
   }
 }

@@ -27,8 +27,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
   // bullet will move upward by [_bulletSpeed] px
   final double _bulletSpeed = 10.0;
 
-  List<Bullet> get bullets => _bullets;
-  final List<Bullet> _bullets = [];
+  List<IBullet> get bullets => _bullets;
+  final List<IBullet> _bullets = [];
 
   //todo: try without CancelableOperation
   CancelableOperation? _cancelableOperation;
@@ -86,12 +86,13 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   _addBullet() {
-    _bullets.add(Bullet(
-      color: Colors.deepOrangeAccent,
-      position: Vector2.fromValue(player.position2d)
-        ..dX =
-            player.position2d.dX + player.size.width / 2, //fire from top center
-    ));
+    _bullets.add(
+      PlayerShipBullet(
+        position: Vector2.fromValue(player.position2d)
+          ..dX = player.position2d.dX +
+              player.size.width / 2, //fire from top center
+      ),
+    );
     notifyListeners();
   }
 
@@ -118,7 +119,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   /// remove enemy and bullet, increase score while bullet hit enemyShip
-  _removeEnemyOnBulletCollision(Bullet b) {
+  _removeEnemyOnBulletCollision(IBullet b) {
     final enemyNotifier = ref.read(enemyProvider);
 
     //Done:count bullet width

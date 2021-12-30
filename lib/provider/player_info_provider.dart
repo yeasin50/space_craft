@@ -90,7 +90,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
       PlayerShipBullet(
         position: Vector2.fromValue(player.position2d)
           ..dX = player.position2d.dX +
-              player.size.width / 2, //fire from top center
+              player.size.width / 2 - //fire from top center
+              PlayerShipBullet.bulletWidth / 2, // position on middle
       ),
     );
     notifyListeners();

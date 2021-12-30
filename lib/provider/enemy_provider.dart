@@ -143,7 +143,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
       if (_random.nextBool()) {
         _bullets.add(
           EnemyShipBullet(
-              position: e.position2d.value..dX += e.size.width * .25),
+            position: e.position2d.value
+              ..dX = e.position2d.dX +
+                  e.size.width / 2 -
+                  EnemyShipBullet.bulletWidth / 2, //precise position
+          ),
         );
       }
     }

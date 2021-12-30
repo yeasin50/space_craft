@@ -12,6 +12,8 @@ abstract class IBullet {
 class PlayerShipBullet implements IBullet {
   late final Vector2 _position;
 
+  static const double bulletWidth = 10.0;
+
   PlayerShipBullet({
     required Vector2 position,
   }) {
@@ -28,12 +30,14 @@ class PlayerShipBullet implements IBullet {
   Vector2 get position => _position;
 
   @override
-  double get radius => 10.0;
+  double get radius => bulletWidth;
 }
 
 class EnemyShipBullet implements IBullet {
   late final Vector2 _position;
   late final Color _color;
+
+  static const double bulletWidth = 5.0;
 
   EnemyShipBullet({
     required Vector2 position,
@@ -53,5 +57,5 @@ class EnemyShipBullet implements IBullet {
   Vector2 get position => _position;
 
   @override
-  double get radius => 5.0;
+  double get radius => bulletWidth;
 }

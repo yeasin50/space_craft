@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'model.dart';
 
-abstract class IShip {
-  late final Color color;
-  late final Size size;
-
+abstract class IShip implements GameObject {
   //ship Health per life
   late final double health;
-  late final Vector2 position2d;
 }
 
 class Player implements IShip {
+  late final Vector2 _position;
+
+  Player({
+    required Vector2 position,
+  }) {
+    _position = position;
+  }
+
   ///max number of time player can live
   final int maxLive = 3;
 
@@ -25,16 +29,20 @@ class Player implements IShip {
   double health = 100.0;
 
   @override
-  Vector2 position2d = Vector2();
+  Size size = const Size(50, 50);
 
   @override
-  Size size = const Size(50, 50);
+  Vector2 get position => _position;
 }
 
 class EnemyShip implements IShip {
+  late final Vector2 _position;
+
   EnemyShip({
-    required this.position2d,
-  });
+    required Vector2 position,
+  }) {
+    _position = position;
+  }
 
   @override
   Size size = const Size(24, 24);
@@ -46,5 +54,5 @@ class EnemyShip implements IShip {
   double health = 5;
 
   @override
-  Vector2 position2d;
+  Vector2 get position => _position;
 }

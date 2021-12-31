@@ -91,7 +91,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
     //todo: random dY for multi-generation
     _enemies.add(
       EnemyShip(
-        position2d: Vector2(
+        position: Vector2(
           dX: dx,
           dY: 0.0,
         ),
@@ -106,11 +106,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
       if (_enemies.isEmpty) return;
 
       for (final e in _enemies) {
-        e.position2d.dY += enemyMovementPY;
+        e.position.dY += enemyMovementPY;
 
         _enemyShipCollision();
 
-        if (e.position2d.dY > _screenSize!.height) {
+        if (e.position.dY > _screenSize!.height) {
           removeEnemy(e);
         }
       }
@@ -145,8 +145,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
       if (_random.nextBool()) {
         _bullets.add(
           EnemyShipBullet(
-            position: e.position2d.value
-              ..dX = e.position2d.dX +
+            position: e.position.value
+              ..dX = e.position.dX +
                   e.size.width / 2 -
                   EnemyShipBullet.bulletWidth / 2, //precise position
           ),
@@ -189,13 +189,13 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
     for (final enemyShip in _enemies) {
       // checking if ship within bullet  position
-      if (enemyShip.position2d.dX <= player.position2d.dX + player.size.width &&
-          enemyShip.position2d.dX >=
-              player.position2d.dX - player.size.width / 2 &&
-          enemyShip.position2d.dY >=
-              player.position2d.dY - player.size.height / 2 &&
-          enemyShip.position2d.dY <=
-              player.position2d.dY + player.size.height / 2) {
+      if (enemyShip.position.dX <= player.position.dX + player.size.width &&
+          enemyShip.position.dX >=
+              player.position.dX - player.size.width / 2 &&
+          enemyShip.position.dY >=
+              player.position.dY - player.size.height / 2 &&
+          enemyShip.position.dY <=
+              player.position.dY + player.size.height / 2) {
         removeEnemy(enemyShip);
         playerNotifier.decreaseHeath(CollisionType.ship);
         debugPrint("rm Enemy");

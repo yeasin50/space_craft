@@ -37,10 +37,10 @@ bool collisionChecker({
   required IShip ship,
   required IBullet bullet,
 }) {
-  if (bullet.position.dX >= ship.position2d.dX &&
-      bullet.position.dX <= ship.position2d.dX + ship.size.width &&
-      bullet.position.dY <= ship.position2d.dY + ship.size.height &&
-      bullet.position.dY >= ship.position2d.dY) {
+  if (bullet.position.dX >= ship.position.dX &&
+      bullet.position.dX <= ship.position.dX + ship.size.width &&
+      bullet.position.dY <= ship.position.dY + ship.size.height &&
+      bullet.position.dY >= ship.position.dY) {
     return true;
   }
   return false;

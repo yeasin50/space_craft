@@ -20,8 +20,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   IPlayerScore scoreManager = PlayerScoreManager();
 
-  /// create player instance
-  final Player player = Player();
+  /// create player instance //todo: pass initPoss
+  final Player player = Player(position: Vector2(dX: 100, dY: 100));
 
   final Duration bulletGenerateRate = const Duration(milliseconds: 400);
   final Duration bulletMovementRate = const Duration(milliseconds: 50);
@@ -45,13 +45,13 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   /// update player vertical position
   void updateTopPosition(double dY) {
-    player.position2d.dY = dY;
+    player.position.dY = dY;
     notifyListeners();
   }
 
   ///update player horizontal position
   void updateLeftPosition(double dX) {
-    player.position2d.dX = dX;
+    player.position.dX = dX;
     notifyListeners();
   }
 
@@ -90,8 +90,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
   _addBullet() {
     _bullets.add(
       PlayerShipBullet(
-        position: Vector2.fromValue(player.position2d)
-          ..dX = player.position2d.dX +
+        position: Vector2.fromValue(player.position)
+          ..dX = player.position.dX +
               player.size.width / 2 - //fire from top center
               PlayerShipBullet.bulletWidth / 2, // position on middle
       ),

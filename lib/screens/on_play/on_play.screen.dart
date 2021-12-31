@@ -17,8 +17,8 @@ class OnPlayScreen extends ConsumerWidget {
           return Stack(
             children: [
               Positioned(
-                top: playerInfo.player.position2d.dY,
-                left: playerInfo.player.position2d.dX,
+                top: playerInfo.player.position.dY,
+                left: playerInfo.player.position.dX,
                 child: playerShip(),
               ),
 
@@ -31,8 +31,8 @@ class OnPlayScreen extends ConsumerWidget {
                   top: b.position.dY,
                   left: b.position.dX,
                   child: Container(
-                    height: b.radius,
-                    width: b.radius,
+                    height: b.size.height,
+                    width: b.size.width,
                     color: b.color,
                   ),
                 );

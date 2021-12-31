@@ -168,10 +168,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
         b.position.dY += bulletMoventPY;
 
         //check bullet collision with player collision or beyond screen
-        if (collisionChecker(bullet: b, ship: playerNotifier.player) ||
-            b.position.dY > _screenSize!.height) {
+        final bool _c =
+            collisionChecker(bullet: b, ship: playerNotifier.player);
+        if (_c || b.position.dY > _screenSize!.height) {
           _bullets.remove(b);
-          playerNotifier.decreaseHeath(CollisionType.bullet);
+          if (_c) playerNotifier.decreaseHeath(CollisionType.bullet);
         }
       }
       notifyListeners();
@@ -200,18 +201,6 @@ class EnemyChangeNotifier extends ChangeNotifier {
         debugPrint("rm Enemy");
       }
     }
-  }
-
-  /// check bullet hits the playerShip
-  bool _bulletColisionOnPlayer({
-    required Player player,
-    required Vector2 bulletPos,
-  }) {
-    if (bulletPos.dX >= player.position2d.dX &&
-        bulletPos.dX <= player.position2d.dX + player.size.width / 2) {
-      return true;
-    }
-    return false;
   }
 
   //*---------------------------*

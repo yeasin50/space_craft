@@ -128,7 +128,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
     //Done:count bullet width
     for (final enemyShip in enemyNotifier.enemies) {
       // checking if ship within bullet  position
-      if (collisionChecker(ship: enemyShip, bullet: b)) {
+      if (collisionChecker(a: enemyShip, b: b)) {
         enemyNotifier.removeEnemy(enemyShip);
         _bullets.remove(b);
         incrementScore();

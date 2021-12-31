@@ -31,17 +31,3 @@ void updatePlayerPosition({
         .updateLeftPosition(posX - (playerInfoNotifier.player.size.width / 2));
   }
 }
-
-/// check collision between ship and bullet
-bool collisionChecker({
-  required IShip ship,
-  required IBullet bullet,
-}) {
-  if (bullet.position.dX >= ship.position.dX &&
-      bullet.position.dX <= ship.position.dX + ship.size.width &&
-      bullet.position.dY <= ship.position.dY + ship.size.height &&
-      bullet.position.dY >= ship.position.dY) {
-    return true;
-  }
-  return false;
-}

@@ -169,7 +169,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
         //check bullet collision with player collision or beyond screen
         final bool _c =
-            collisionChecker(bullet: b, ship: playerNotifier.player);
+            collisionChecker(b: b, a: playerNotifier.player);
         if (_c || b.position.dY > _screenSize!.height) {
           _bullets.remove(b);
           if (_c) playerNotifier.decreaseHeath(CollisionType.bullet);

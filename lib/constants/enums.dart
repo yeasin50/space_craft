@@ -6,3 +6,9 @@ enum GameMode {
   resumed,
   restart,
 }
+
+///
+enum CollisionType {
+  bullet,
+  ship,
+}

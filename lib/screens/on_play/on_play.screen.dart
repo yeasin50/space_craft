@@ -12,46 +12,50 @@ class OnPlayScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: LayoutBuilder(builder: (context, constraints) {
-        return Stack(
-          children: [
-            // Align(
-            //   child: Container(
-            //     // color: Colors.cyanAccent.withOpacity(.3),
-            //     child: PlayerShip(),
-            //   ),
-            // )
-            Positioned(
-              top: playerInfo.player.position2d.dY,
-              left: playerInfo.player.position2d.dX,
-              child: playerShip(),
-            ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Stack(
+            children: [
+              Positioned(
+                top: playerInfo.player.position.dY,
+                left: playerInfo.player.position.dX,
+                child: playerShip(),
+              ),
 
-            EnemyOverlay(
-              constraints: constraints,
-            ),
+              EnemyOverlay(
+                constraints: constraints,
+              ),
 
-            ...playerInfo.bullets.map((b) {
-              return Positioned(
-                top: b.position.dY,
-                left: b.position.dX,
-                child: Container(
-                  height: b.radius,
-                  width: b.radius,
-                  color: b.color,
+              ...playerInfo.bullets.map((b) {
+                return Positioned(
+                  top: b.position.dY,
+                  left: b.position.dX,
+                  child: Container(
+                    height: b.size.height,
+                    width: b.size.width,
+                    color: b.color,
+                  ),
+                );
+              }).toList(),
+
+              /// detect touch on bottom
+              TouchPositionDetector(
+                constraints: constraints,
+              ),
+
+              Positioned(
+                top: 16,
+                left: 16,
+                child: ScoreHealthBar(
+                  playerInfoNotifier: playerInfo,
                 ),
-              );
-            }).toList(),
+              ),
 
-            /// detect touch on bottom
-            TouchPositionDetector(
-              constraints: constraints,
-            ),
-
-            const GameControllBar(),
-          ],
-        );
-      }),
+              const GameControllBar(),
+            ],
+          );
+        },
+      ),
     );
   }
 }

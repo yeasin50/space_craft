@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:space_craft/screens/on_play/utils/utils.dart';
 
 import '../../model/model.dart';
+import '../constants/constants.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
@@ -16,8 +18,10 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 class PlayerInfoNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef ref;
 
-  /// create player instance
-  final Player player = Player();
+  IPlayerScore scoreManager = PlayerScoreManager();
+
+  /// create player instance //todo: pass initPoss
+  final Player player = Player(position: Vector2(dX: 100, dY: 100));
 
   final Duration bulletGenerateRate = const Duration(milliseconds: 400);
   final Duration bulletMovementRate = const Duration(milliseconds: 50);
@@ -25,8 +29,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
   // bullet will move upward by [_bulletSpeed] px
   final double _bulletSpeed = 10.0;
 
-  List<Bullet> get bullets => _bullets;
-  final List<Bullet> _bullets = [];
+  List<IBullet> get bullets => _bullets;
+  final List<IBullet> _bullets = [];
 
   //todo: try without CancelableOperation
   CancelableOperation? _cancelableOperation;
@@ -41,13 +45,13 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   /// update player vertical position
   void updateTopPosition(double dY) {
-    player.position2d.dY = dY;
+    player.position.dY = dY;
     notifyListeners();
   }
 
   ///update player horizontal position
   void updateLeftPosition(double dX) {
-    player.position2d.dX = dX;
+    player.position.dX = dX;
     notifyListeners();
   }
 
@@ -84,12 +88,14 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   _addBullet() {
-    _bullets.add(Bullet(
-      color: Colors.deepOrangeAccent,
-      position: Vector2.fromValue(player.position2d)
-        ..dX =
-            player.position2d.dX + player.size.width / 2, //fire from top center
-    ));
+    _bullets.add(
+      PlayerShipBullet(
+        position: Vector2.fromValue(player.position)
+          ..dX = player.position.dX +
+              player.size.width / 2 - //fire from top center
+              PlayerShipBullet.bulletWidth / 2, // position on middle
+      ),
+    );
     notifyListeners();
   }
 
@@ -116,30 +122,46 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   /// remove enemy and bullet, increase score while bullet hit enemyShip
-  _removeEnemyOnBulletCollision(Bullet b) {
+  _removeEnemyOnBulletCollision(IBullet b) {
     final enemyNotifier = ref.read(enemyProvider);
 
     //Done:count bullet width
     for (final enemyShip in enemyNotifier.enemies) {
       // checking if ship within bullet  position
-      if (b.position.dX + b.radius >= enemyShip.position2d.dX &&
-          b.position.dX <= enemyShip.position2d.dX + enemyShip.size.width &&
-          b.position.dY <= enemyShip.position2d.dY) {
+      if (collisionChecker(a: enemyShip, b: b)) {
         enemyNotifier.removeEnemy(enemyShip);
         _bullets.remove(b);
+        incrementScore();
       }
     }
 
     // debugPrint("total enemy ${enemyNotifier.enemies.length}");
   }
 
+  //*---------------------------*
+  //*  Score Health Management  *
+  //*---------------------------*
   /// increment score of player by destroying enemies
   void incrementScore() {
-    // player._score += 1;
+    scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
     notifyListeners();
   }
 
-//** controllers  */
+  /// decrease player health
+  void decreaseHeath(CollisionType collisionType) {
+    if (collisionType == CollisionType.bullet) {
+      player.health -= 5;
+    }
+    if (collisionType == CollisionType.ship) {
+      player.health -= 10;
+    }
+    //todo: GameOver while 0 score
+    notifyListeners();
+  }
+
+  //*---------------------------*
+  //*       Controllers         *
+  //*---------------------------*
   /// stop player, bullet,generator
   pauseMode() {
     _timerBulletMovement?.cancel();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/model/model.dart';
 
 import '../../../provider/provider.dart';
 
@@ -11,8 +12,8 @@ void updatePlayerPosition({
   final double posY = offset.dy;
   final double posX = offset.dx;
 
-  /// we are separating in two section, it'll help to move though another axis stuck
-  /// it'll make sure that even One axis will work even other axis stuc
+  // we are separating in two section, it'll help to move though another axis stuck
+  // it'll make sure that even One axis will work even other axis stuc
   if (posY >=
           constraints.maxHeight - playerInfoNotifier.player.size.height / 2 ||
       posY <= playerInfoNotifier.player.size.height / 2) {

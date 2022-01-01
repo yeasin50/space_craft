@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
+import 'package:space_craft/screens/on_play/utils/utils.dart';
 
+import '../constants/constants.dart';
 import '../model/model.dart';
 import 'provider.dart';
 
@@ -22,10 +24,10 @@ class EnemyChangeNotifier extends ChangeNotifier {
     // _enemyMovement();
   }
 
-  final List<Bullet> _bullets = [];
+  final List<IBullet> _bullets = [];
 
   /// enemy ship bullets
-  List<Bullet> get bullets => _bullets;
+  List<IBullet> get bullets => _bullets;
 
   final List<EnemyShip> _enemies = [];
   List<EnemyShip> get enemies => _enemies;
@@ -89,7 +91,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
     //todo: random dY for multi-generation
     _enemies.add(
       EnemyShip(
-        position2d: Vector2(
+        position: Vector2(
           dX: dx,
           dY: 0.0,
         ),
@@ -104,11 +106,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
       if (_enemies.isEmpty) return;
 
       for (final e in _enemies) {
-        e.position2d.dY += enemyMovementPY;
+        e.position.dY += enemyMovementPY;
 
-        _checkPlayerShipCollision();
+        _enemyShipCollision();
 
-        if (e.position2d.dY > _screenSize!.height) {
+        if (e.position.dY > _screenSize!.height) {
           removeEnemy(e);
         }
       }
@@ -142,7 +144,12 @@ class EnemyChangeNotifier extends ChangeNotifier {
       //todo: min the bullet width and should i add bullet property on [EnemyShip] level, or create random timer
       if (_random.nextBool()) {
         _bullets.add(
-          Bullet(position: e.position2d.value..dX += e.size.width * .25),
+          EnemyShipBullet(
+            position: e.position.value
+              ..dX = e.position.dX +
+                  e.size.width / 2 -
+                  EnemyShipBullet.bulletWidth / 2, //precise position
+          ),
         );
       }
     }
@@ -155,44 +162,52 @@ class EnemyChangeNotifier extends ChangeNotifier {
     _timerBulletMovement = Timer.periodic(_bulletMovementRate, (timer) {
       if (_bullets.isEmpty) return;
 
+      final playerNotifier = ref.read(playerInfoProvider);
+
       for (final b in _bullets) {
         b.position.dY += bulletMoventPY;
 
-        if (b.position.dY > _screenSize!.height) {
+        //check bullet collision with player collision or beyond screen
+        final bool _c =
+            collisionChecker(b: b, a: playerNotifier.player);
+        if (_c || b.position.dY > _screenSize!.height) {
           _bullets.remove(b);
+          if (_c) playerNotifier.decreaseHeath(CollisionType.bullet);
         }
       }
       notifyListeners();
     });
   }
 
-  /// playerShip colision with enemyShip
+  /// check playerShip colision with enemyShip
   /// remove enemyShip, decrease playerShip health
-  void _checkPlayerShipCollision() {
+  void _enemyShipCollision() {
     // what if I use `_removeEnemyOnBulletCollision()`
 
-    final player = ref.read(playerInfoProvider).player;
+    final playerNotifier = ref.read(playerInfoProvider);
+    final player = playerNotifier.player;
 
     for (final enemyShip in _enemies) {
       // checking if ship within bullet  position
-      if (enemyShip.position2d.dX <= player.position2d.dX + player.size.width &&
-          enemyShip.position2d.dX >=
-              player.position2d.dX - player.size.width / 2 &&
-          enemyShip.position2d.dY >=
-              player.position2d.dY - player.size.height / 2 &&
-          enemyShip.position2d.dY <=
-              player.position2d.dY + player.size.height / 2) {
+      if (enemyShip.position.dX <= player.position.dX + player.size.width &&
+          enemyShip.position.dX >=
+              player.position.dX - player.size.width / 2 &&
+          enemyShip.position.dY >=
+              player.position.dY - player.size.height / 2 &&
+          enemyShip.position.dY <=
+              player.position.dY + player.size.height / 2) {
         removeEnemy(enemyShip);
-        //todo: damage playerShip
+        playerNotifier.decreaseHeath(CollisionType.ship);
         debugPrint("rm Enemy");
       }
     }
   }
 
-  //** Controllers */
-
+  //*---------------------------*
+  //*       Controllers         *
+  //*---------------------------*
   /// if true, stop enemymovement+ geration..+bullets
-  pauseMode({
+  void pauseMode({
     bool movement = true,
     bool generator = true,
     bool bulletMovement = true,

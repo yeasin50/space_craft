@@ -23,8 +23,8 @@ class EnemyOverlay extends ConsumerWidget {
       children: [
         ...enemyNotifer.enemies.map(
           (EnemyShip e) => Positioned(
-            top: e.position2d.dY,
-            left: e.position2d.dX,
+            top: e.position.dY,
+            left: e.position.dX,
             child: EnemyShipWidget(
               ship: e,
             ),
@@ -51,8 +51,8 @@ class _EnemyBulletOverlay extends ConsumerWidget {
             top: b.position.dY,
             left: b.position.dX,
             child: Container(
-              height: b.radius,
-              width: b.radius,
+              height: b.size.height,
+              width: b.size.width,
               decoration: BoxDecoration(
                 color: b.color,
                 shape: BoxShape.circle,

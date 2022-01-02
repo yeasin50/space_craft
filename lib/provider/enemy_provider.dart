@@ -173,7 +173,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
         final bool _c = collisionChecker(b: b, a: playerNotifier.player);
         if (_c || b.position.dY > _screenSize!.height) {
           _bullets.remove(b);
-          if (_c) playerNotifier.decreaseHeath(CollisionType.bullet);
+          if (_c) {
+            playerNotifier.decreaseHeath(DamageOnEB);
+          }
         }
       }
       notifyListeners();
@@ -197,7 +199,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
           enemyShip.position.dY <=
               player.position.dY + player.size.height / 2) {
         removeEnemy(enemyShip);
-        playerNotifier.decreaseHeath(CollisionType.ship);
+        playerNotifier.decreaseHeath(DamageOnShipCollision);
         debugPrint("rm Enemy");
       }
     }

@@ -7,6 +7,8 @@ abstract class IShipHealth {
 class DamageOnEB implements IShipHealth {
   IShipHealth iShipHealth;
 
+  static String type = "abstract Iship";
+
   double decreaseHealth = 1.0;
 
   DamageOnEB({
@@ -17,7 +19,7 @@ class DamageOnEB implements IShipHealth {
   double health() => iShipHealth.health() - decreaseHealth;
 }
 
-///Player ship  Bullet damage
+/// ship  Bullet damage
 class DamageOnPB implements IShipHealth {
   IShipHealth iShipHealth;
 

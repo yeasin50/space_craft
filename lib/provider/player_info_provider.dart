@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:space_craft/model/health_management.dart';
 import 'package:space_craft/screens/on_play/utils/utils.dart';
 
 import '../../model/model.dart';
@@ -19,6 +20,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef ref;
 
   IPlayerScore scoreManager = PlayerScoreManager();
+  IShipHealth shipHealthManager = PlayerHealthManager();
 
   /// create player instance //todo: pass initPoss
   final Player player = Player(position: Vector2(dX: 100, dY: 100));
@@ -150,10 +152,10 @@ class PlayerInfoNotifier extends ChangeNotifier {
   /// decrease player health
   void decreaseHeath(CollisionType collisionType) {
     if (collisionType == CollisionType.bullet) {
-      player.health -= 5;
+      player.health = DamageOnPB(iShipHealth: player.health);
     }
     if (collisionType == CollisionType.ship) {
-      player.health -= 10;
+      player.health = DamageOnShipCollision(iShipHealth: player.health);
     }
     //todo: GameOver while 0 score
     notifyListeners();

@@ -42,7 +42,7 @@ class _TestCasesState extends State<_TestCases> {
             },
           ),
           LiveBar(
-            liveValue: sliderVal * 100,
+            liveValue: sliderVal,
           ),
         ],
       ),
@@ -63,52 +63,17 @@ class LiveBar extends StatefulWidget {
 }
 
 class _LiveBarState extends State<LiveBar> with SingleTickerProviderStateMixin {
-  late Animation<Color> colorAnimation;
-
-  late AnimationController controller;
-
-  @override
-  void initState() {
-    controller = AnimationController(vsync: this);
-
-    TweenSequence(
-      [
-        TweenSequenceItem(
-          tween: ColorTween(
-            begin: Colors.redAccent,
-            end: Colors.red.shade300,
-          ),
-          weight: 1,
-        ),
-      ],
-    ).animate(controller);
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(40)),
-      child: SizedBox(
-        width: 400,
-        height: 100,
-        child: ColoredBox(
-          color: Colors.grey,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Text(widget.liveValue.toStringAsFixed(0)),
-              Align(
-                alignment: const Alignment(-.95, 0),
-                child: Icon(
-                  Icons.favorite,
-                  color: changeColorHue(
-                      color: Colors.red, increaseBy: widget.liveValue),
-                ),
-              ),
-            ],
-          ),
+      child: Container(
+        color: Colors.cyanAccent.withOpacity(.3),
+        width: 700 * widget.liveValue + 300,
+        height: 300,
+        child: CustomPaint(
+          painter: HeartPainter(value: widget.liveValue),
+          size: const Size(700, 300),
         ),
       ),
     );

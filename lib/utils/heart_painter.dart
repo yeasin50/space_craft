@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
 import '../extensions/extensions.dart';
+import 'dart:ui' as ui;
 
 class HeartPainter extends CustomPainter {
+  /// progres value [0.0 - 1.0]
   final double value;
 
   HeartPainter({
     required this.value,
-  });
+  }) : assert(
+          value > -1.0 && value <= 1,
+          "HeartPainter value must be withing 0.0-1.0",
+        );
   @override
   void paint(Canvas canvas, Size size) {
     final double circleR = size.height / 4;
     final double maxHeight = size.height * .95;
 
     Paint paint = Paint()
-      ..color = Colors.red
-      ..style = PaintingStyle.fill;
+      // ..color = Colors.red
+      ..style = PaintingStyle.fill
+      ..shader = LinearGradient(
+        colors: const [
+          Colors.transparent,
+          Colors.red,
+        ],
+        stops: [
+          0.0,
+          value,
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ).createShader(
+        Rect.fromLTWH(0, 0, size.width, size.height),
+      );
 
     Path heartRightPath = Path()
       ..moveTo(size.width - circleR * 2, circleR)
@@ -35,10 +54,6 @@ class HeartPainter extends CustomPainter {
         size.width - circleR * 2,
         maxHeight,
       )
-      // ..lineTo(
-      //   size.width - circleR * 2,
-      //   maxHeight,
-      // )
       ..lineTo(size.width - circleR * 2, circleR);
 
     canvas.drawPath(heartRightPath, paint);

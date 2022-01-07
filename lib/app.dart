@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/utils/utils.dart';
 
+import 'package:space_craft/utils/utils.dart';
 import 'package:space_craft/widget/magic_ball.dart';
 
 import 'screens/on_play/on_play.screen.dart';
@@ -43,6 +43,7 @@ class _TestCasesState extends State<_TestCases> {
           ),
           LiveBar(
             liveValue: sliderVal,
+            height: 300,
           ),
         ],
       ),
@@ -51,29 +52,38 @@ class _TestCasesState extends State<_TestCases> {
 }
 
 class LiveBar extends StatefulWidget {
+  final double height;
+  final double liveValue;
+
   const LiveBar({
     Key? key,
+    required this.height,
     required this.liveValue,
   }) : super(key: key);
-
-  final double liveValue;
 
   @override
   State<LiveBar> createState() => _LiveBarState();
 }
 
 class _LiveBarState extends State<LiveBar> with SingleTickerProviderStateMixin {
+  late final Size paintSize;
+
+  @override
+  void initState() {
+    paintSize = Size(widget.height, widget.height);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(40)),
       child: Container(
-        color: Colors.cyanAccent.withOpacity(.3),
-        width: 700 * widget.liveValue + 300,
-        height: 300,
+        // color: Colors.cyanAccent.withOpacity(.3),
+        width: paintSize.width * widget.liveValue + paintSize.height - 1,
+        height: paintSize.height,
         child: CustomPaint(
           painter: HeartPainter(value: widget.liveValue),
-          size: const Size(700, 300),
         ),
       ),
     );

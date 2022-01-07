@@ -78,8 +78,40 @@ class HeartPainter extends CustomPainter {
         maxHeight,
       )
       ..lineTo(circleR * 2, circleR);
-
     canvas.drawPath(heartLeftPath, paint);
+
+    //* midle path
+    final double lineWidth = size.height * .03 * (1 - value);
+
+    final midPoint = Offset(size.width / 2, maxHeight / 2);
+
+    Path path = Path()
+      // top left line
+      ..moveTo(circleR * 2, circleR)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(circleR * 2, circleR + lineWidth)
+      //mid left
+      ..moveTo(circleR * 2, maxHeight / 2 - lineWidth / 2)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(circleR * 2, maxHeight / 2 + lineWidth / 2)
+      //bottom left part
+      ..moveTo(circleR * 2, maxHeight - lineWidth)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(circleR * 2, maxHeight)
+      //topRight
+      ..moveTo(size.width - circleR * 2, circleR)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(size.width - circleR * 2, circleR + lineWidth)
+      // certerRight
+      ..moveTo(size.width - circleR * 2, maxHeight / 2 - lineWidth / 2)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(size.width - circleR * 2, maxHeight / 2 + lineWidth / 2)
+      //bottom left part
+      ..moveTo(size.width - circleR * 2, maxHeight - lineWidth)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(size.width - circleR * 2, maxHeight);
+
+    canvas.drawPath(path, paint);
   }
 
   @override

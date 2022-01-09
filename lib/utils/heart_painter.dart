@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../extensions/extensions.dart';
 import 'dart:ui' as ui;
 
+//todo: fix draw for small version
 class HeartPainter extends CustomPainter {
   /// progres value [0.0 - 1.0]
   final double value;

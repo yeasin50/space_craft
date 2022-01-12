@@ -26,9 +26,6 @@ class ScoreHealthBar extends StatelessWidget {
         LiveBar(
           liveValue: 1 - playerInfoNotifier.player.health.health() / 100,
         ),
-        LiveBar(
-          liveValue: 1 - playerInfoNotifier.player.health.health() / 100,
-        ),
         const SizedBox(width: 10),
         Text(
           "Score: ${playerInfoNotifier.scoreManager.score()}",

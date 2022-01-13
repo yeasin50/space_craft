@@ -13,8 +13,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: _TestCases(),
-      home: OnPlayScreen(),
+      home: _TestCases(),
+      // home: OnPlayScreen(),
     );
   }
 }
@@ -43,7 +43,6 @@ class _TestCasesState extends State<_TestCases> {
             },
           ),
           LiveBar(
-            scale: .3,
             liveValue: sliderVal,
           ),
         ],

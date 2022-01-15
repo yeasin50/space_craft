@@ -81,6 +81,13 @@ class HeartPainter extends CustomPainter {
       ..lineTo(circleR * 2, circleR);
     canvas.drawPath(heartLeftPath, paint);
 
+    //to fix divider
+    canvas.drawLine(
+      Offset(circleR * 2, circleR),
+      Offset(circleR * 2, maxHeight),
+      paint,
+    );
+
     // //* midle path
     // final double lineWidth = size.height * .03 * (1 - value);
 

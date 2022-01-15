@@ -43,7 +43,8 @@ class _TestCasesState extends State<_TestCases> {
             },
           ),
           LiveBar(
-            liveValue: sliderVal,
+            liveValue: 1,
+            scale: sliderVal,
           ),
         ],
       ),

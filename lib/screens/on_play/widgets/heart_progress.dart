@@ -19,49 +19,30 @@ class LiveBar extends StatelessWidget {
     required this.liveValue,
   }) : super(key: key);
 
-  final Size paintSize = const Size(300, 300);
+  final Size paintSize = const Size(300 - 1, 300);
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(40)),
-      child: Row(
-        children: [
-          ...List.generate(
-            3,
-            (index) => Transform(
-              alignment: alignment,
-              transform: Matrix4(
-                  1, //scale X
-                  0,
-                  0,
-                  0, //eof 1
-                  0,
-                  1,
-                  0, //scale Y
-                  0, //eof 2
-                  0,
-                  0,
-                  1,
-                  0, //eof 3
-                  0,
-                  0,
-                  0,
-                  10 * scale //scale X
-                  ),
-              child: SizedBox(
-                // color: Colors.cyanAccent.withOpacity(.3),
-                width: paintSize.width,
-                // * widget.liveValue + paintSize.height - 1, // not using spaces
-                height: paintSize.height,
-                child: CustomPaint(
-                  painter: HeartPainter(value: liveValue),
-                ),
+    return Row(
+      children: [
+        ...List.generate(
+          3,
+          (index) => ConstrainedBox(
+            constraints: BoxConstraints.tight(
+              paintSize * scale,
+            ),
+            child: SizedBox(
+              // * widget.liveValue + paintSize.height - 1, // not using spaces
+              width: paintSize.width - 1,
+              height: paintSize.height,
+              child: CustomPaint(
+                size: paintSize,
+                painter: HeartPainter(value: 0),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

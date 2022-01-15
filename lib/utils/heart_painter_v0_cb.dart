@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import '../extensions/extensions.dart';
 import 'dart:ui' as ui;
 
-///: fix draw for small version, moved to next Paint [HeartPainterQB]
+/// Paint GradientHeart based on value[0.0-1.0]
 class HeartPainter extends CustomPainter {
   /// progres value [0.0 - 1.0]
   final double value;
 
   HeartPainter({
-    required this.value,
-  }) : assert(
+    required double value,
+  })  : value = 1 - value,
+        assert(
           value > -1.0 && value <= 1,
           "HeartPainter value must be withing 0.0-1.0",
         );
@@ -84,7 +85,7 @@ class HeartPainter extends CustomPainter {
     //to fix divider
     canvas.drawLine(
       Offset(circleR * 2, circleR),
-      Offset(circleR * 2, maxHeight),
+      Offset(circleR * 2, maxHeight * .99),
       paint,
     );
 

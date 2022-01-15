@@ -64,7 +64,7 @@ class HealthBox implements IShipHealth {
 
 /// Player health manager
 class PlayerHealthManager implements IShipHealth {
-  final double initalHealth = 100.0;
+  final double initalHealth = 300.0;
 
   @override
   double health() => initalHealth;

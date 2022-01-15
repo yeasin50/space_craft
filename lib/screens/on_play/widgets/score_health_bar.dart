@@ -19,12 +19,8 @@ class ScoreHealthBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Health: ${playerInfoNotifier.player.health.health()}",
-          style: const TextStyle(color: Colors.white),
-        ),
         LiveBar(
-          liveValue: 1 - playerInfoNotifier.player.health.health() / 100,
+          playerHealth: playerInfoNotifier.player.health.health(),
         ),
         const SizedBox(width: 10),
         Text(

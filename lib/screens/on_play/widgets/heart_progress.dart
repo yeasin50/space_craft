@@ -6,8 +6,8 @@ class LiveBar extends StatelessWidget {
   /// resize heart. default size is 48px scale 0.16
   final double scale;
 
-  /// health value [0-1.0]
-  final double liveValue;
+  /// player health value  [0...], divie heart drawing by 100
+  final double playerHealth;
 
   /// align the Transform.scale being cheating on [HeartPainter]'s drawing
   final Alignment alignment;
@@ -16,17 +16,19 @@ class LiveBar extends StatelessWidget {
     Key? key,
     this.scale = 0.16,
     this.alignment = Alignment.topLeft,
-    required this.liveValue,
+    required this.playerHealth,
   }) : super(key: key);
 
   final Size paintSize = const Size(300 - 1, 300);
 
   @override
   Widget build(BuildContext context) {
+    final int numberOfHeart =
+        playerHealth ~/ 100 + (playerHealth % 100 != 0 ? 1 : 0);
     return Row(
       children: [
         ...List.generate(
-          3,
+          numberOfHeart,
           (index) => ConstrainedBox(
             constraints: BoxConstraints.tight(
               paintSize * scale,
@@ -37,7 +39,10 @@ class LiveBar extends StatelessWidget {
               height: paintSize.height,
               child: CustomPaint(
                 size: paintSize,
-                painter: HeartPainter(value: 0),
+                painter: HeartPainter(
+                  ///todo: performCalculation
+                  value:1,
+                ),
               ),
             ),
           ),

@@ -34,8 +34,14 @@ class _TestCasesState extends State<_TestCases> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
+          SizedBox(
+            height: 100,
+          ),
           Slider(
             value: sliderVal,
+            max: 500,
+            divisions: 50,
+            label: "$sliderVal",
             onChanged: (value) {
               setState(() {
                 sliderVal = value;
@@ -43,8 +49,7 @@ class _TestCasesState extends State<_TestCases> {
             },
           ),
           LiveBar(
-            liveValue: 1,
-            scale: sliderVal,
+            playerHealth: sliderVal,
           ),
         ],
       ),

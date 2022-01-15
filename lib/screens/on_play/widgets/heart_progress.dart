@@ -33,7 +33,7 @@ class LiveBar extends StatelessWidget {
             ),
             child: SizedBox(
               // * widget.liveValue + paintSize.height - 1, // not using spaces
-              width: paintSize.width - 1,
+              width: paintSize.width,
               height: paintSize.height,
               child: CustomPaint(
                 size: paintSize,

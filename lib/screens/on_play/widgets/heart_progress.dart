@@ -21,6 +21,7 @@ class LiveBar extends StatelessWidget {
 
   final Size paintSize = const Size(300 - 1, 300);
 
+  ///returns perHealth paint value [0..1]
   double getHeartValue({
     required int index,
   }) {

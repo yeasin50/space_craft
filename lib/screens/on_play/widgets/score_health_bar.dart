@@ -14,13 +14,19 @@ class ScoreHealthBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final playerHealth = playerInfoNotifier.player.health.health();
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         LiveBar(
-          playerHealth: playerInfoNotifier.player.health.health(),
+          playerHealth: playerHealth < 0 ? 0 : playerHealth,
+        ),
+        Text(
+          "Health $playerHealth",
+          style: const TextStyle(color: Colors.white),
         ),
         const SizedBox(width: 10),
         Text(

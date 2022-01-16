@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
-import 'package:space_craft/screens/on_play/utils/utils.dart';
 
 import '../constants/constants.dart';
 import '../model/model.dart';
+import '../screens/on_play/utils/utils.dart';
 import 'provider.dart';
 
 final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
@@ -95,6 +95,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
           dX: dx,
           dY: 0.0,
         ),
+        color: getRandomColor,
       ),
     );
     notifyListeners();
@@ -145,6 +146,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
       if (_random.nextBool()) {
         _bullets.add(
           EnemyShipBullet(
+            color: e.color,
             position: e.position.value
               ..dX = e.position.dX +
                   e.size.width / 2 -
@@ -168,11 +170,12 @@ class EnemyChangeNotifier extends ChangeNotifier {
         b.position.dY += bulletMoventPY;
 
         //check bullet collision with player collision or beyond screen
-        final bool _c =
-            collisionChecker(b: b, a: playerNotifier.player);
+        final bool _c = collisionChecker(b: b, a: playerNotifier.player);
         if (_c || b.position.dY > _screenSize!.height) {
           _bullets.remove(b);
-          if (_c) playerNotifier.decreaseHeath(CollisionType.bullet);
+          if (_c) {
+            playerNotifier.decreaseHeath(DamageOnEB);
+          }
         }
       }
       notifyListeners();
@@ -190,14 +193,13 @@ class EnemyChangeNotifier extends ChangeNotifier {
     for (final enemyShip in _enemies) {
       // checking if ship within bullet  position
       if (enemyShip.position.dX <= player.position.dX + player.size.width &&
-          enemyShip.position.dX >=
-              player.position.dX - player.size.width / 2 &&
+          enemyShip.position.dX >= player.position.dX - player.size.width / 2 &&
           enemyShip.position.dY >=
               player.position.dY - player.size.height / 2 &&
           enemyShip.position.dY <=
               player.position.dY + player.size.height / 2) {
         removeEnemy(enemyShip);
-        playerNotifier.decreaseHeath(CollisionType.ship);
+        playerNotifier.decreaseHeath(DamageOnShipCollision);
         debugPrint("rm Enemy");
       }
     }

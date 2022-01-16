@@ -47,6 +47,7 @@ class OnPlayScreen extends ConsumerWidget {
                 top: 16,
                 left: 16,
                 child: ScoreHealthBar(
+                  heartHeight: 30,
                   playerInfoNotifier: playerInfo,
                 ),
               ),

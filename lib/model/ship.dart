@@ -4,7 +4,7 @@ import 'model.dart';
 
 abstract class IShip implements GameObject {
   //ship Health per life
-  late final double health;
+  late final IShipHealth health;
 }
 
 class Player implements IShip {
@@ -23,36 +23,39 @@ class Player implements IShip {
   bool shoot = false;
 
   @override
-  Color color = Colors.deepPurpleAccent;
+  Color get color => Colors.deepPurpleAccent;
 
   @override
-  double health = 100.0;
-
-  @override
-  Size size = const Size(50, 50);
+  Size get size => const Size(50, 50);
 
   @override
   Vector2 get position => _position;
+
+  @override
+  IShipHealth health = PlayerHealthManager();
 }
 
 class EnemyShip implements IShip {
   late final Vector2 _position;
+  late final Color _color;
 
   EnemyShip({
     required Vector2 position,
+    Color color = Colors.pink,
   }) {
     _position = position;
+    _color = color;
   }
 
   @override
   Size size = const Size(24, 24);
 
   @override
-  Color color = Colors.pink;
-
-  @override
-  double health = 5;
+  Color get color => _color;
 
   @override
   Vector2 get position => _position;
+
+  @override
+  IShipHealth health = NEnemyHealthManager();
 }

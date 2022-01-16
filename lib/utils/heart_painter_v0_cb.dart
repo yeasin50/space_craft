@@ -24,14 +24,13 @@ class HeartPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..shader = LinearGradient(
         colors: const [
-          Colors.transparent,
           Colors.red,
+          Colors.transparent,
         ],
         stops: [
-          0.0,
-          value,
+          1 - value,
+          value - 1,
         ],
-        // fixme:change draw
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
       ).createShader(
@@ -126,6 +125,6 @@ class HeartPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }

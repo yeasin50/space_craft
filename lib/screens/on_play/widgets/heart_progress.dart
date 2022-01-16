@@ -25,8 +25,7 @@ class LiveBar extends StatelessWidget {
     required int index,
   }) {
     final heartValue = playerHealth / ((index + 1) * 100);
-
-    return heartValue < 1 ? 1 - heartValue : 1;
+    return heartValue < 1 ? playerHealth % 100 * .01 : 1;
   }
 
   @override
@@ -38,6 +37,7 @@ class LiveBar extends StatelessWidget {
         ...List.generate(
           numberOfHeart,
           (index) => ConstrainedBox(
+            key: ValueKey("CPaint $index"),
             constraints: BoxConstraints.tight(
               paintSize * scale,
             ),
@@ -46,6 +46,7 @@ class LiveBar extends StatelessWidget {
               width: paintSize.width,
               height: paintSize.height,
               child: CustomPaint(
+                key: ValueKey("Paint $index"),
                 size: paintSize,
                 painter: HeartPainter(
                   value: getHeartValue(index: index),

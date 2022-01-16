@@ -39,16 +39,16 @@ class _TestCasesState extends State<_TestCases> {
           ),
           Slider(
             value: sliderVal,
-            max: 500,
-            divisions: 50,
-            label: "$sliderVal",
+            max: 200,
             onChanged: (value) {
+              debugPrint("slider value $value");
               setState(() {
                 sliderVal = value;
               });
             },
           ),
           LiveBar(
+            key: UniqueKey(),
             playerHealth: sliderVal,
           ),
         ],

@@ -31,6 +31,7 @@ class HeartPainter extends CustomPainter {
           0.0,
           value,
         ],
+        // fixme:change draw
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
       ).createShader(

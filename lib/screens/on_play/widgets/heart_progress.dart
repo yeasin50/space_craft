@@ -21,6 +21,14 @@ class LiveBar extends StatelessWidget {
 
   final Size paintSize = const Size(300 - 1, 300);
 
+  double getHeartValue({
+    required int index,
+  }) {
+    final heartValue = playerHealth / ((index + 1) * 100);
+
+    return heartValue < 1 ? 1 - heartValue : 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     final int numberOfHeart =
@@ -40,8 +48,7 @@ class LiveBar extends StatelessWidget {
               child: CustomPaint(
                 size: paintSize,
                 painter: HeartPainter(
-                  ///todo: performCalculation
-                  value:1,
+                  value: getHeartValue(index: index),
                 ),
               ),
             ),

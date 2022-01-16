@@ -39,7 +39,7 @@ class _TestCasesState extends State<_TestCases> {
           ),
           Slider(
             value: sliderVal,
-            max: 200,
+            max: 250,
             onChanged: (value) {
               debugPrint("slider value $value");
               setState(() {
@@ -47,6 +47,12 @@ class _TestCasesState extends State<_TestCases> {
               });
             },
           ),
+          // CustomPaint(
+          //   size: const Size(300, 300),
+          //   painter: HeartPainter(
+          //     value: sliderVal,
+          //   ),
+          // ),
           LiveBar(
             key: UniqueKey(),
             playerHealth: sliderVal,

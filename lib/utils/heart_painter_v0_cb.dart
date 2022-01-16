@@ -29,7 +29,7 @@ class HeartPainter extends CustomPainter {
         ],
         stops: [
           1 - value,
-          value - 1,
+          0,
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,

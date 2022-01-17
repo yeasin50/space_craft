@@ -1,3 +1,4 @@
+export 'angle_conversion.dart';
 export 'heart_paint_v1_qb.dart';
 export 'heart_painter_v0_cb.dart';
 export 'hue_changer.dart';

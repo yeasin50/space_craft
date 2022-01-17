@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:space_craft/utils/utils.dart';
 import 'package:space_craft/widget/magic_ball.dart';
 
+import 'screens/on_play/on_play.dart';
 import 'screens/on_play/on_play.screen.dart';
 import 'screens/on_play/widgets/widgets.dart';
 
@@ -13,8 +14,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: _TestCases(),
-      home: OnPlayScreen(),
+      home: _TestCases(),
+      // home: OnPlayScreen(),
     );
   }
 }
@@ -47,12 +48,16 @@ class _TestCasesState extends State<_TestCases> {
               });
             },
           ),
-          // CustomPaint(
-          //   size: const Size(300, 300),
-          //   painter: HeartPainter(
-          //     value: sliderVal,
-          //   ),
-          // ),
+          CustomPaint(
+            size: const Size(
+              100,
+              100 * 4,
+            ),
+            painter: BulletPaint(
+              color: Colors.pink,
+              downward: false,
+            ),
+          ),
           LiveBar(
             key: UniqueKey(),
             playerHealth: sliderVal,

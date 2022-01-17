@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../provider/provider.dart';
+import 'on_play.dart';
 import 'widgets/widgets.dart';
 
 class OnPlayScreen extends ConsumerWidget {
@@ -30,10 +31,18 @@ class OnPlayScreen extends ConsumerWidget {
                 return Positioned(
                   top: b.position.dY,
                   left: b.position.dX,
-                  child: Container(
+                  child: SizedBox(
                     height: b.size.height,
                     width: b.size.width,
-                    color: b.color,
+                    child: CustomPaint(
+                      size: Size(
+                        b.size.width,
+                        b.size.height,
+                      ),
+                      painter: BulletPaint(
+                        color: b.color,
+                      ),
+                    ),
                   ),
                 );
               }).toList(),

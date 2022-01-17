@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/utils/utils.dart';
 
 /// [BulletPaint] is extend by [CustomPainter] to draw the ship's bullet.
 ///  default color is ship's color
 class BulletPaint extends CustomPainter {
-  //todo: there are some extra
+  //todo: there are some extra space on sides
 
   /// bullet color
   final Color color;
 
-  /// Bullet move topScreen to bottom,default is `true`
-  /// downward=true for enemyShip and playerShip=false
-  final bool downward;
-
   BulletPaint({
     required this.color,
-    this.downward = true,
   });
 
   @override

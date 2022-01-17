@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/utils/utils.dart';
+import 'package:space_craft/widget/widget.dart';
 
 import '../../provider/provider.dart';
 import 'on_play.dart';
@@ -31,18 +33,10 @@ class OnPlayScreen extends ConsumerWidget {
                 return Positioned(
                   top: b.position.dY,
                   left: b.position.dX,
-                  child: SizedBox(
-                    height: b.size.height,
-                    width: b.size.width,
-                    child: CustomPaint(
-                      size: Size(
-                        b.size.width,
-                        b.size.height,
-                      ),
-                      painter: BulletPaint(
-                        color: b.color,
-                      ),
-                    ),
+                  child: BulletWidget(
+                    bulletHeight: b.size.height,
+                    color: b.color,
+                    downward: false,
                   ),
                 );
               }).toList(),

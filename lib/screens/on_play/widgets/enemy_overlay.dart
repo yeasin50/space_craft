@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/widget/widget.dart';
 
 import '../../../model/model.dart';
 import '../../../provider/provider.dart';
@@ -50,13 +51,9 @@ class _EnemyBulletOverlay extends ConsumerWidget {
           (b) => Positioned(
             top: b.position.dY,
             left: b.position.dX,
-            child: Container(
-              height: b.size.height,
-              width: b.size.width,
-              decoration: BoxDecoration(
-                color: b.color,
-                shape: BoxShape.circle,
-              ),
+            child: BulletWidget(
+              bulletHeight: b.size.height,
+              color: b.color,
             ),
           ),
         ),

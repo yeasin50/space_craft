@@ -14,8 +14,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: _TestCases(),
-      // home: OnPlayScreen(),
+      // home: _TestCases(),
+      home: OnPlayScreen(),
     );
   }
 }
@@ -48,14 +48,16 @@ class _TestCasesState extends State<_TestCases> {
               });
             },
           ),
-          CustomPaint(
-            size: const Size(
-              100,
-              100 * 4,
-            ),
-            painter: BulletPaint(
-              color: Colors.pink,
-              downward: false,
+          Transform.rotate(
+            angle: deg2rad(180),
+            child: CustomPaint(
+              size: const Size(
+                100,
+                100 * 4,
+              ),
+              painter: BulletPaint(
+                color: Colors.pink,
+              ),
             ),
           ),
           LiveBar(

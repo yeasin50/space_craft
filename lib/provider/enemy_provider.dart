@@ -57,7 +57,10 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   final Duration _bulletMovementRate = const Duration(milliseconds: 70);
 
-  initScreen({required Size screenSize}) {
+  ///get screen Size ://todo: move to GameManager
+  Size get screenSize => _screenSize ?? Size.zero;
+
+  void initScreen({required Size screenSize}) {
     Future.delayed(Duration.zero).then((value) {
       // dirty way of handling errors 🤐
       _screenSize = screenSize;
@@ -174,7 +177,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
         if (_c || b.position.dY > _screenSize!.height) {
           _bullets.remove(b);
           if (_c) {
-            playerNotifier.decreaseHeath(DamageOnEB);
+            playerNotifier.updateHeathStatus(DamageOnEB);
           }
         }
       }
@@ -199,7 +202,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
           enemyShip.position.dY <=
               player.position.dY + player.size.height / 2) {
         removeEnemy(enemyShip);
-        playerNotifier.decreaseHeath(DamageOnShipCollision);
+        playerNotifier.updateHeathStatus(DamageOnShipCollision);
         debugPrint("rm Enemy");
       }
     }

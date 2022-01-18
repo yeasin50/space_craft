@@ -148,12 +148,15 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   /// decrease player health
-  void decreaseHeath(Type type) {
+  void updateHeathStatus(Type type) {
     if (type == DamageOnEB) {
       player.health = DamageOnEB(iShipHealth: player.health);
     }
     if (type == DamageOnShipCollision) {
       player.health = DamageOnShipCollision(iShipHealth: player.health);
+    }
+    if (type == GeneralHealingBox) {
+      player.health = GeneralHealingBox(iShipHealth: player.health);
     }
     //todo: GameOver while 0 score
     notifyListeners();

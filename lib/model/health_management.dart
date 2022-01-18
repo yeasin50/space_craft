@@ -1,3 +1,9 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+
+import 'model.dart';
+
 /// Damage delear:on bullet, ship
 abstract class IShipHealth {
   double health();
@@ -47,22 +53,10 @@ class DamageOnShipCollision implements IShipHealth {
   double health() => iShipHealth.health() - decreaseHealth;
 }
 
-//* Increase Part
-/// increase health using [HealthBox]
-class HealthBox implements IShipHealth {
-  IShipHealth iShipHealth;
-
-  double decreaseHealth = 10.0;
-
-  HealthBox({
-    required this.iShipHealth,
-  });
-
-  @override
-  double health() => iShipHealth.health() + decreaseHealth;
-}
-
-/// Player health manager
+//*---------------------------*
+//*      Health Manager       *
+//*---------------------------*
+/// Player health manager, `initalHealth:300.0`
 class PlayerHealthManager implements IShipHealth {
   final double initalHealth = 300.0;
 
@@ -76,4 +70,35 @@ class NEnemyHealthManager implements IShipHealth {
 
   @override
   double health() => initalHealth;
+}
+
+//*---------------------------*
+//*      Healing Part         *
+//*---------------------------*
+///* increase health by 10. combination of IShipHealth, GameObject
+class GeneralHealingBox implements IShipHealth, GameObject {
+  IShipHealth iShipHealth;
+
+  static const Size boxSize = Size(24, 25);
+
+  final Vector2 _intiObjectPos;
+
+  final double increaseHealth = 10.0;
+
+  GeneralHealingBox({
+    required this.iShipHealth,
+    Vector2? initPos,
+  }) : _intiObjectPos = initPos ?? Vector2();
+
+  @override
+  double health() => iShipHealth.health() + increaseHealth;
+
+  @override
+  Color get color => Colors.amber; //color; //test cases
+
+  @override
+  Vector2 get position => _intiObjectPos;
+
+  @override
+  Size get size => boxSize;
 }

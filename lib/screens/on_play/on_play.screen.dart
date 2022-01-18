@@ -57,6 +57,9 @@ class OnPlayScreen extends ConsumerWidget {
                 ),
               ),
 
+              // healing Objects
+              const HealingPortionOverlay(),
+
               // game pause, restart, settings
               const Align(
                 alignment: Alignment(-.95, -.95),

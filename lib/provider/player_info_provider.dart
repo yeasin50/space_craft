@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:space_craft/model/health_management.dart';
-import 'package:space_craft/screens/on_play/utils/utils.dart';
 
 import '../../model/model.dart';
-import '../constants/constants.dart';
+import '../screens/on_play/utils/utils.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(

@@ -30,7 +30,7 @@ class BulletWidget extends StatelessWidget {
         bulletHeight * 4,
       ),
       painter: BulletPaint(
-        color: Colors.pink,
+        color: color,
       ),
     );
 

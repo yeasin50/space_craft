@@ -87,10 +87,10 @@ class BulletPaint extends CustomPainter {
         ],
       ).createShader(
         Rect.fromLTRB(
-          -20,
-          -20,
-          size.width + 20,
-          size.height + 20,
+          -size.width * .25,
+          -size.width * .25,
+          size.width + size.width * .25,
+          size.height + size.width * .25,
         ),
       );
 

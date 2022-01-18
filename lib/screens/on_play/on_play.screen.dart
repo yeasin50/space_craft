@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/utils/utils.dart';
-import 'package:space_craft/widget/widget.dart';
 
 import '../../provider/provider.dart';
+import '../../widget/widget.dart';
 import 'on_play.dart';
 import 'widgets/widgets.dart';
 
@@ -25,10 +24,12 @@ class OnPlayScreen extends ConsumerWidget {
                 child: playerShip(),
               ),
 
+              // enemy ships and enemy's bullets
               EnemyOverlay(
                 constraints: constraints,
               ),
 
+              //player ship's bullet
               ...playerInfo.bullets.map((b) {
                 return Positioned(
                   top: b.position.dY,
@@ -46,6 +47,7 @@ class OnPlayScreen extends ConsumerWidget {
                 constraints: constraints,
               ),
 
+              //player Health, ScoreBar
               Positioned(
                 top: 16,
                 left: 16,
@@ -55,7 +57,13 @@ class OnPlayScreen extends ConsumerWidget {
                 ),
               ),
 
-              const GameControllBar(),
+              // game pause, restart, settings
+              const Align(
+                alignment: Alignment(-.95, -.95),
+                child: GameControllBar(),
+              ),
+
+              /// special power player
             ],
           );
         },

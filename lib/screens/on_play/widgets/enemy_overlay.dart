@@ -5,6 +5,7 @@ import '../../../model/model.dart';
 import '../../../provider/provider.dart';
 import 'widgets.dart';
 
+/// enemy ships and enemy's bullets on  [_EnemyBulletOverlay] widget
 class EnemyOverlay extends ConsumerWidget {
   const EnemyOverlay({
     Key? key,

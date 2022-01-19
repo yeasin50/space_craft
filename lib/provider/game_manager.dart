@@ -18,11 +18,13 @@ class GameManager extends StateNotifier<GameMode> {
   void playing() {
     state = GameMode.playing;
     ref.read(playerInfoProvider).payingMode();
+    ref.read(healingObjectProvider).playingMode();
   }
 
   void paused() {
     state = GameMode.paused;
     ref.read(playerInfoProvider).pauseMode();
+    ref.read(healingObjectProvider).pauseMode();
   }
 
   void resumed() => state = GameMode.resumed;

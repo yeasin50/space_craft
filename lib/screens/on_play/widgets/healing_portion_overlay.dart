@@ -14,6 +14,8 @@ class HealingPortionOverlay extends ConsumerWidget {
       children: [
         ...healthBoxNotifer.map(
           (hb) => Positioned(
+            left: hb.position.dX,
+            top: hb.position.dY,
             child: Container(
               color: hb.color,
               height: hb.size.height,

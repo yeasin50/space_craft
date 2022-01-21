@@ -10,11 +10,8 @@ class StartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Scaffold(
-        body: Responsive(
-          mobile: MobileView(),
-          tablet: TabletView(),
-          desktop: DesktopView(),
-        ),
+        backgroundColor: Colors.black,
+        body: StartPageBody(),
       ),
     );
   }

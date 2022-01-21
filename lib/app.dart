@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/screens/start/start.screen.dart';
 
 import 'package:space_craft/utils/utils.dart';
 import 'package:space_craft/widget/magic_ball.dart';
@@ -6,16 +7,20 @@ import 'package:space_craft/widget/magic_ball.dart';
 import 'screens/on_play/on_play.dart';
 import 'screens/on_play/on_play.screen.dart';
 import 'screens/on_play/widgets/widgets.dart';
+import 'utils/ring_path.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: _TestCases(),
-      home: OnPlayScreen(),
+      theme: Theme.of(context).copyWith(
+        scaffoldBackgroundColor: Colors.black,
+      ),
+      home: const _TestCases(),
+      // home: OnPlayScreen(),
     );
   }
 }
@@ -48,19 +53,16 @@ class _TestCasesState extends State<_TestCases> {
               });
             },
           ),
-          CustomPaint(
-              size: const Size(
-                100,
-                100 * 4,
-              ),
-              painter: BulletPaint(
-                color: Colors.pink,
+          Container(
+            color: Colors.cyanAccent.withOpacity(.3),
+            child: ClipPath(
+              clipper: RingPath(),
+              child: Container(
+                color: Colors.amber,
+                width: 300,
+                height: 300,
               ),
             ),
-         
-          LiveBar(
-            key: UniqueKey(),
-            playerHealth: sliderVal,
           ),
         ],
       ),

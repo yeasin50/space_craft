@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'dart:math' as math;
-import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../model/model.dart';
 import '../screens/on_play/on_play.dart';
 import 'provider.dart';
 
-final healingObjectProvider = ChangeNotifierProvider((ref) {
-  return HealingObjectNotifier(ref: ref);
-});
+final healingObjectProvider = ChangeNotifierProvider(
+  (ref) {
+    return HealingObjectNotifier(ref: ref);
+  },
+);
 
 class HealingObjectNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef ref;
@@ -26,7 +27,8 @@ class HealingObjectNotifier extends ChangeNotifier {
   ///box movement depends on it
   Timer? _timerBoxMovement;
 
-  final Duration healthGenerateRate = const Duration(seconds: 1);
+  //todo: change healt generation rate on realease
+  final Duration healthGenerateRate = const Duration(seconds: 5);
   final Duration healthBoxMovementRate = const Duration(milliseconds: 200);
 
   /// move down by  `_boxMovementY = 10.0` px

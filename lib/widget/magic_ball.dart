@@ -89,9 +89,7 @@ class _MagicBallState extends State<MagicBall> {
 
 /// used on [MagicBall]
 class ParticleWidget extends StatefulWidget {
-  /// to test ParticleWidget separately needed [particleSize]
-  final bool debugMode;
-
+  /// draw [particleSize] default Size(10,10), within [parentSize]
   final Size? particleSize;
 
   final int id;
@@ -107,13 +105,8 @@ class ParticleWidget extends StatefulWidget {
     required this.id,
     required this.parentSize,
     required this.callback,
-    this.debugMode = false,
     this.particleSize,
-  })  : assert(
-          debugMode && particleSize == null,
-          "For debug mode: particleSize is required",
-        ),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   State<ParticleWidget> createState() => _ParticleWidgetState();
@@ -131,13 +124,8 @@ class _ParticleWidgetState extends State<ParticleWidget>
   void initState() {
     super.initState();
 
-    if (widget.debugMode) {
-      parentSize = Size.infinite;
-      particleSize = widget.particleSize ?? const Size(100, 100);
-    } else {
-      parentSize = widget.parentSize;
-      particleSize = widget.particleSize ?? const Size(5, 5); //
-    }
+    parentSize = widget.parentSize;
+    particleSize = widget.particleSize ?? const Size(10, 10);
 
     controller = AnimationController(
       vsync: this,
@@ -169,7 +157,7 @@ class _ParticleWidgetState extends State<ParticleWidget>
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("controller value: ${controller.value}");
+    // debugPrint("controller value: ${controller.value}");
     return Positioned(
       left: animation.value.dx,
       top: animation.value.dy,

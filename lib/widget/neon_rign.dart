@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../utils/utils.dart';
@@ -15,7 +17,7 @@ import '../utils/utils.dart';
 /// ...
 ///```
 
-/// animated colorfull rign widget that will be `width=height=radius*2`. change colors based on [duration] you provide, default `Duration(seconds: 2)` with `Curves.ease`
+/// animated colorfull rign widget that will be `width=height=radius*2`. change colors based on [duration] you provide, default `Duration(milliseconds: 150),` with `Curves.ease`
 class NeonRingWidget extends StatefulWidget {
   /// rign radius, use to draw circle[Container],
   final double radius;
@@ -23,7 +25,7 @@ class NeonRingWidget extends StatefulWidget {
   /// ColorSet that will change over time using[changeColorHue]
   final List<Color> colorSet;
 
-  ///Duration of animation default=`Duration(seconds: 2)`
+  ///Duration of animation default=`Duration(milliseconds: 150),`
   final Duration duration;
 
   /// default Curve= `Curves.ease`
@@ -35,7 +37,7 @@ class NeonRingWidget extends StatefulWidget {
   const NeonRingWidget({
     Key? key,
     required this.colorSet,
-    this.duration = const Duration(seconds: 2),
+    this.duration = const Duration(milliseconds: 150),
     this.curve = Curves.ease,
     this.frameThickness,
     required this.radius,
@@ -46,18 +48,51 @@ class NeonRingWidget extends StatefulWidget {
 }
 
 class _NeonRingWidgetState extends State<NeonRingWidget> {
+  Timer? _timer;
+
+  late List<Color> colorSet;
+
+  @override
+  void initState() {
+    super.initState();
+    _initColorTransformation();
+  }
+
+  void _initColorTransformation() {
+    colorSet = widget.colorSet; // for 1st build, `.toList()` to create new one
+
+    _timer = Timer.periodic(
+      widget.duration,
+      (timer) {
+        setState(() {
+          colorSet = colorSet
+              .map(
+                (color) => changeColorHue(
+                  color: color,
+                  increaseBy: 1,
+                ),
+              )
+              .toList();
+        });
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipPath(
       clipper: RingPath(),
       child: Container(
+        //todo:add blur
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              ...widget.colorSet.map(
-                (c) => changeColorHue(color: c, increaseBy: 1),
-              )
-            ],
+            colors: colorSet,
           ),
         ),
         width: widget.radius * 2,

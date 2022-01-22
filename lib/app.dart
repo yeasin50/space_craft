@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/constants/color_palette.dart';
 import 'package:space_craft/screens/start/start.screen.dart';
 
 import 'package:space_craft/utils/utils.dart';
@@ -8,6 +9,7 @@ import 'screens/on_play/on_play.dart';
 import 'screens/on_play/on_play.screen.dart';
 import 'screens/on_play/widgets/widgets.dart';
 import 'utils/ring_path.dart';
+import 'widget/neon_rign.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -38,33 +40,18 @@ class _TestCasesState extends State<_TestCases> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 100,
-          ),
-          Slider(
-            value: sliderVal,
-            max: 250,
-            onChanged: (value) {
-              debugPrint("slider value $value");
-              setState(() {
-                sliderVal = value;
-              });
-            },
-          ),
-          Container(
-            color: Colors.cyanAccent.withOpacity(.3),
-            child: ClipPath(
-              clipper: RingPath(),
-              child: Container(
-                color: Colors.amber,
-                width: 300,
-                height: 300,
-              ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            NeonRingWidget(
+              key: UniqueKey(),
+              colorSet: colorSet0,
+              radius: 150,
+              frameThickness: 16,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

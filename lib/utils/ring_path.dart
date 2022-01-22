@@ -1,12 +1,14 @@
 import 'package:flutter/widgets.dart';
 
-/// draw path like o, used [CustomClipper]<[Path]>
+/// draw path like o with , used [CustomClipper]<[Path]>
 class RingPath extends CustomClipper<Path> {
-  /// ring/border thickness, defaul 10% on last like `0`
-  final double gap;
+  /// ring/border thickness, default  it will be 16px [borderThickness].
+  final double borderThickness;
+
   RingPath({
-    this.gap = .1,
+    this.borderThickness = 16,
   });
+  
   @override
   Path getClip(Size size) {
     Offset center = Offset(size.width / 2, size.height / 2);
@@ -15,7 +17,8 @@ class RingPath extends CustomClipper<Path> {
     Path path1 = Path();
     path1.fillType = PathFillType.evenOdd;
     path1.addOval(Rect.fromCircle(center: center, radius: radius));
-    path1.addOval(Rect.fromCircle(center: center, radius: radius * (1 - gap)));
+    path1.addOval(
+        Rect.fromCircle(center: center, radius: radius - borderThickness));
 
     return path1;
   }

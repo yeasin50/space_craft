@@ -44,12 +44,32 @@ class _TestCasesState extends State<_TestCases> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            NeonRingWidget(
-              key: UniqueKey(),
-              colorSet: colorSet0,
-              radius: 150,
-              frameThickness: 16,
-            ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Opacity(
+                  opacity: .3,
+                  child: NeonRingWidget(
+                    key: UniqueKey(),
+                    colorSet: colorSet0,
+                    rotation: true,
+                    radius: 165,
+                    rotationIncrementRate: 10,
+                    duration: Duration(milliseconds: 50),
+                    frameThickness: 16,
+                  ),
+                ),
+                NeonRingWidget(
+                  key: UniqueKey(),
+                  colorSet: colorSet0,
+                  rotation: false,
+                  rotationIncrementRate: 10,
+                  radius: 155,
+                  duration: Duration(milliseconds: 50),
+                  frameThickness: 16,
+                ),
+              ],
+            )
           ],
         ),
       ),

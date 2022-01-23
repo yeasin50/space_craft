@@ -8,12 +8,12 @@ import '../utils/utils.dart';
 ///This is an example with default value
 ///....
 /// NeonRingWidget(
-///   colorSet: [color1,color2,color3,color4],
+/// key: UniqueKey(),
+///   colorSet: colorSet0,
+///   rotation: false,
 ///   radius: 150,
-///   curve: Curves.easeIn,
-///   duration: Duration(seconds: 2),
 ///   frameThickness: 16,
-/// ),
+// ),
 /// ...
 ///```
 
@@ -25,7 +25,7 @@ class NeonRingWidget extends StatefulWidget {
   /// ColorSet that will change over time using[changeColorHue]
   final List<Color> colorSet;
 
-  ///Duration of animation default=`Duration(milliseconds: 150),`
+  ///Duration of animation default=`Duration(milliseconds: 150),` pefer 50mili sec
   final Duration duration;
 
   /// default Curve= `Curves.ease`
@@ -34,6 +34,13 @@ class NeonRingWidget extends StatefulWidget {
   ///border width, for null value it will use [RingPath]'s `borderThickness:16px`
   final double? frameThickness;
 
+  /// rotate ring widget default is true
+  final bool rotation;
+
+  /// rotate transform by  `rotationIncrementRate` degree on every [duration] while `rotation:true`
+  /// default [rotationIncrementRate] is 5 degree
+  final double rotationIncrementRate;
+
   const NeonRingWidget({
     Key? key,
     required this.colorSet,
@@ -41,6 +48,8 @@ class NeonRingWidget extends StatefulWidget {
     this.curve = Curves.ease,
     this.frameThickness,
     required this.radius,
+    this.rotation = true,
+    this.rotationIncrementRate = 5.0,
   }) : super(key: key);
 
   @override
@@ -49,6 +58,8 @@ class NeonRingWidget extends StatefulWidget {
 
 class _NeonRingWidgetState extends State<NeonRingWidget> {
   Timer? _timer;
+
+  double rotateAngel = 0;
 
   late List<Color> colorSet;
 
@@ -64,16 +75,19 @@ class _NeonRingWidgetState extends State<NeonRingWidget> {
     _timer = Timer.periodic(
       widget.duration,
       (timer) {
-        setState(() {
-          colorSet = colorSet
-              .map(
-                (color) => changeColorHue(
-                  color: color,
-                  increaseBy: 1,
-                ),
-              )
-              .toList();
-        });
+        colorSet = colorSet
+            .map(
+              (color) => changeColorHue(
+                color: color,
+                increaseBy: 1,
+              ),
+            )
+            .toList();
+
+        if (widget.rotation) {
+          rotateAngel += deg2rad(widget.rotationIncrementRate);
+        }
+        setState(() {});
       },
     );
   }
@@ -86,17 +100,20 @@ class _NeonRingWidgetState extends State<NeonRingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: RingPath(),
-      child: Container(
-        //todo:add blur
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: colorSet,
+    return Transform.rotate(
+      angle: rotateAngel,
+      child: ClipPath(
+        clipper: RingPath(),
+        child: Container(
+          //todo:add blur
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: colorSet,
+            ),
           ),
+          width: widget.radius * 2,
+          height: widget.radius * 2,
         ),
-        width: widget.radius * 2,
-        height: widget.radius * 2,
       ),
     );
   }

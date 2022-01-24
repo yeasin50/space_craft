@@ -11,7 +11,6 @@ class StartScreen extends StatelessWidget {
     return const SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,
-        body: StartPageBody(),
       ),
     );
   }

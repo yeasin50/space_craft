@@ -1,12 +1,35 @@
 import 'package:flutter/material.dart';
 
+///```
+///  return ScaleTransition(
+///      scale: _animationBlast,
+///      alignment: Alignment.topCenter,
+///      child: CustomPaint(
+///        size: widget.size,
+///      painter: ShipBlastPainter(),
+///     ),
+///   );
+///```
+/// ship engine blast/fire used by [ShipBlast] widget, animating scale provide the view
 class ShipBlastPainter extends CustomPainter {
+  /// fireShade/outside/ borderSide color, default ` Colors.lightBlueAccent.shade100`
+  final Color outterColor;
+
+  /// fireColor/ inside color, default `Colors.cyanAccent`
+  final Color innerColor;
+
+  ShipBlastPainter({
+    Color? outterColor,
+    Color? innerColor,
+  })  : outterColor = outterColor ?? Colors.lightBlueAccent.shade100,
+        innerColor = innerColor ?? Colors.cyanAccent;
+
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..shader = LinearGradient(
         colors: [
-          Colors.lightBlueAccent.shade100,
+          outterColor,
           Colors.transparent,
         ],
         begin: Alignment.topCenter,
@@ -24,18 +47,17 @@ class ShipBlastPainter extends CustomPainter {
     canvas.drawPath(outerPath, paint);
 
     //** inner Fire */
-
     final topPort = size.height * .1;
     Paint innerPaint = Paint()
       ..strokeCap = StrokeCap.round
-      ..shader = const LinearGradient(
+      ..shader = LinearGradient(
         colors: [
-          Colors.cyanAccent,
+          innerColor,
           Colors.white,
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        stops: [0.35, 6.0],
+        stops: const [0.35, 6.0],
       ).createShader(
         Rect.fromCenter(
           width: size.width * .6,

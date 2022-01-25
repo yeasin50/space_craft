@@ -57,6 +57,12 @@ class _ShipBlastState extends State<ShipBlast>
   }
 
   @override
+  void dispose() {
+    _blastController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScaleTransition(
       scale: _animationBlast,

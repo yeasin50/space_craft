@@ -18,10 +18,14 @@ class ShipBlast extends StatefulWidget {
   ///scale transation rate. default speed `Duration(milliseconds: 30)`
   final Duration animationDuration;
 
+  /// scale tween
+  final Tween<double>? scaleTween;
+
   const ShipBlast({
     Key? key,
     this.size = const Size(100, 400),
     this.animationDuration = const Duration(milliseconds: 30),
+    this.scaleTween,
   }) : super(key: key);
 
   @override
@@ -33,21 +37,23 @@ class _ShipBlastState extends State<ShipBlast>
   late AnimationController _blastController;
   late Animation<double> _animationBlast;
 
+  late Tween<double> scaleTween;
+
   late final Duration _blustDuration;
   @override
   void initState() {
     _blustDuration = widget.animationDuration;
+    scaleTween = widget.scaleTween ?? Tween<double>(begin: .6, end: 1.0);
 
     _blastController = AnimationController(
       vsync: this,
       duration: _blustDuration, // controll flow based on GameMode
     )..addListener(() => setState(() {}));
 
-    _animationBlast =
-        Tween<double>(begin: .6, end: 1.0).animate(_blastController);
-    super.initState();
-
+    _animationBlast = scaleTween.animate(_blastController);
     _blastController.repeat(reverse: true);
+
+    super.initState();
   }
 
   @override

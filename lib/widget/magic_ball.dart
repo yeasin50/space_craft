@@ -7,10 +7,11 @@ import '../utils/utils.dart';
 class MagicBall extends StatefulWidget {
   const MagicBall({
     Key? key,
-    this.size = const Size(300, 300),
+    this.radius = 150,
   }) : super(key: key);
 
-  final Size size;
+  /// used to create magicBall `Size(radius*2,radius*2)`
+  final double radius;
 
   /// generate [genaratePerBlust] [] after [blustDelay]
   final int genaratePerBlust = 10;
@@ -26,6 +27,8 @@ class _MagicBallState extends State<MagicBall> {
   int idC = 0;
   late Timer _timer;
 
+  late Size widgetSize;
+
   _removeParticle(int id) {
     particles.removeWhere((element) {
       // debugPrint(
@@ -38,6 +41,8 @@ class _MagicBallState extends State<MagicBall> {
   @override
   void initState() {
     super.initState();
+
+    widgetSize = Size(widget.radius * 2, widget.radius * 2);
     _timer = Timer.periodic(widget.blustDelay, (timer) {
       particles.addAll(
         List.generate(
@@ -45,7 +50,7 @@ class _MagicBallState extends State<MagicBall> {
           (index) => ParticleWidget(
             key: ValueKey("P $idC $index"),
             id: idC++,
-            parentSize: widget.size,
+            parentSize: widgetSize,
             callback: _removeParticle,
           ),
         ),
@@ -67,8 +72,8 @@ class _MagicBallState extends State<MagicBall> {
     return ClipOval(
       child: Container(
         alignment: Alignment.center,
-        width: widget.size.width,
-        height: widget.size.height,
+        width: widgetSize.width,
+        height: widgetSize.height,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: RadialGradient(colors: [

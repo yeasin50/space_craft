@@ -23,98 +23,38 @@ class StartScreen extends StatelessWidget {
             final double width = constraints.maxWidth;
             final double height = constraints.maxHeight;
 
-            //* used on `NeonRingWidget`
-            final double ringRadius = math.min(width, height) * .25;
+            ///* used on [NeonRingWidget]
+            final double ringRadius = math.min(width, height) * .35;
             final double blastHeight = math.min(width, height) * .05;
             return Stack(
               children: [
-                /// fire burn 4 corners
-
-                // Align(
-                //   alignment: Alignment.bottomCenter,
-                //   child: ShipBlast(
-                //     animationDuration: const Duration(milliseconds: 30),
-                //     size: Size(blastHeight / 4, blastHeight),
-                //   ),
-                // ),
-
-                ///center Start button
-                // Align(
-                //   alignment: Alignment.center,
-                //   child: GloabTransform(
-                //     radius: rignRadius,
-                //   ),
-                // ),
+                //center Start button
+                Align(
+                  alignment: Alignment.center,
+                  child: GloabTransform(
+                    radius: ringRadius * 1.2,
+                  ),
+                ),
 
                 Align(
                   alignment: Alignment.center,
                   child: RorationalBlustRing(
-                    radius: ringRadius,
+                    radius: ringRadius * 1.1,
+                    blutSize: Size(blastHeight * 4, blastHeight),
+                    numberOfBlust: 4,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: MagicBall(
+                    radius: ringRadius * .7,
                   ),
                 )
-                // Align(
-                //   alignment: Alignment.center,
-                //   child: MagicBall(
-                //     radius: rignRadius * .7,
-                //   ),
-                // )
               ],
             );
           },
         ),
       ),
-    );
-  }
-}
-
-class RorationalBlustRing extends StatefulWidget {
-  final double radius;
-  const RorationalBlustRing({
-    Key? key,
-    required this.radius,
-  }) : super(key: key);
-
-  @override
-  State<RorationalBlustRing> createState() => _RorationalBlustRingState();
-}
-
-class _RorationalBlustRingState extends State<RorationalBlustRing> {
-  late double rignRadius = widget.radius;
-
-  double sliderValue = 0.0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Slider(
-          value: sliderValue,
-          min: 0,
-          max: 20,
-          onChanged: (value) {
-            setState(() => sliderValue = value);
-          },
-        ),
-        SizedBox(
-          height: rignRadius * 2,
-          width: rignRadius * 2,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              ///todo: align the widgets
-              ...List.generate(
-                sliderValue.toInt(),
-                (index) => Transform.rotate(
-                  angle: deg2rad((360 / sliderValue * index)),
-                  child: const ShipBlast(
-                    size: Size(22, 22 * 4),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
@@ -146,6 +86,7 @@ class _GloabTransformState extends State<GloabTransform> {
         Align(
           alignment: Alignment.center,
           child: NeonRignWidget(
+            duration: Duration(milliseconds: 30),
             colorSet: colorSet0,
             radius: rignRadius,
             frameThickness: rignRadius * .5,

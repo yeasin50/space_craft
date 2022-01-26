@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../provider/provider.dart';
+import '../../widget/widget.dart';
+import 'on_play.dart';
 import 'widgets/widgets.dart';
 
 class OnPlayScreen extends ConsumerWidget {
@@ -22,18 +24,20 @@ class OnPlayScreen extends ConsumerWidget {
                 child: playerShip(),
               ),
 
+              // enemy ships and enemy's bullets
               EnemyOverlay(
                 constraints: constraints,
               ),
 
+              //player ship's bullet
               ...playerInfo.bullets.map((b) {
                 return Positioned(
                   top: b.position.dY,
                   left: b.position.dX,
-                  child: Container(
-                    height: b.size.height,
-                    width: b.size.width,
+                  child: BulletWidget(
+                    bulletHeight: b.size.height,
                     color: b.color,
+                    downward: false,
                   ),
                 );
               }).toList(),
@@ -43,6 +47,7 @@ class OnPlayScreen extends ConsumerWidget {
                 constraints: constraints,
               ),
 
+              //player Health, ScoreBar
               Positioned(
                 top: 16,
                 left: 16,
@@ -52,7 +57,16 @@ class OnPlayScreen extends ConsumerWidget {
                 ),
               ),
 
-              const GameControllBar(),
+              // healing Objects
+              const HealingPortionOverlay(),
+
+              // game pause, restart, settings
+              const Align(
+                alignment: Alignment(-.95, -.95),
+                child: GameControllBar(),
+              ),
+
+              /// special power player
             ],
           );
         },

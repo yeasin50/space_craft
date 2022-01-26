@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:space_craft/model/health_management.dart';
-import 'package:space_craft/screens/on_play/utils/utils.dart';
 
 import '../../model/model.dart';
-import '../constants/constants.dart';
+import '../screens/on_play/utils/utils.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
@@ -150,12 +148,15 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   /// decrease player health
-  void decreaseHeath(Type type) {
+  void updateHeathStatus(Type type) {
     if (type == DamageOnEB) {
       player.health = DamageOnEB(iShipHealth: player.health);
     }
     if (type == DamageOnShipCollision) {
       player.health = DamageOnShipCollision(iShipHealth: player.health);
+    }
+    if (type == GeneralHealingBox) {
+      player.health = GeneralHealingBox(iShipHealth: player.health);
     }
     //todo: GameOver while 0 score
     notifyListeners();

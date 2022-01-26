@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../extensions/extensions.dart';
-import 'dart:ui' as ui;
+
+import 'utils.dart';
 
 /// Paint GradientHeart based on value[0.0-1.0]
 class HeartPainter extends CustomPainter {
@@ -46,8 +46,8 @@ class HeartPainter extends CustomPainter {
           circleR * 2,
           circleR * 2,
         ),
-        180.deg2rad,
-        225.deg2rad,
+        deg2rad(180),
+        deg2rad(225),
         true,
       )
       ..quadraticBezierTo(
@@ -69,8 +69,8 @@ class HeartPainter extends CustomPainter {
           circleR * 2,
           circleR * 2,
         ),
-        0.deg2rad,
-        -225.deg2rad,
+        deg2rad(0),
+        deg2rad(-225),
         true,
       )
       ..quadraticBezierTo(

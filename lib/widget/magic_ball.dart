@@ -7,10 +7,11 @@ import '../utils/utils.dart';
 class MagicBall extends StatefulWidget {
   const MagicBall({
     Key? key,
-    this.size = const Size(300, 300),
+    this.radius = 150,
   }) : super(key: key);
 
-  final Size size;
+  /// used to create magicBall `Size(radius*2,radius*2)`
+  final double radius;
 
   /// generate [genaratePerBlust] [] after [blustDelay]
   final int genaratePerBlust = 10;
@@ -26,6 +27,8 @@ class _MagicBallState extends State<MagicBall> {
   int idC = 0;
   late Timer _timer;
 
+  late Size widgetSize;
+
   _removeParticle(int id) {
     particles.removeWhere((element) {
       // debugPrint(
@@ -38,6 +41,8 @@ class _MagicBallState extends State<MagicBall> {
   @override
   void initState() {
     super.initState();
+
+    widgetSize = Size(widget.radius * 2, widget.radius * 2);
     _timer = Timer.periodic(widget.blustDelay, (timer) {
       particles.addAll(
         List.generate(
@@ -45,7 +50,7 @@ class _MagicBallState extends State<MagicBall> {
           (index) => ParticleWidget(
             key: ValueKey("P $idC $index"),
             id: idC++,
-            parentSize: widget.size,
+            parentSize: widgetSize,
             callback: _removeParticle,
           ),
         ),
@@ -67,8 +72,8 @@ class _MagicBallState extends State<MagicBall> {
     return ClipOval(
       child: Container(
         alignment: Alignment.center,
-        width: widget.size.width,
-        height: widget.size.height,
+        width: widgetSize.width,
+        height: widgetSize.height,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: RadialGradient(colors: [
@@ -89,9 +94,7 @@ class _MagicBallState extends State<MagicBall> {
 
 /// used on [MagicBall]
 class ParticleWidget extends StatefulWidget {
-  /// to test ParticleWidget separately needed [particleSize]
-  final bool debugMode;
-
+  /// draw [particleSize] default Size(10,10), within [parentSize]
   final Size? particleSize;
 
   final int id;
@@ -107,13 +110,8 @@ class ParticleWidget extends StatefulWidget {
     required this.id,
     required this.parentSize,
     required this.callback,
-    this.debugMode = false,
     this.particleSize,
-  })  : assert(
-          debugMode && particleSize == null,
-          "For debug mode: particleSize is required",
-        ),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   State<ParticleWidget> createState() => _ParticleWidgetState();
@@ -131,13 +129,8 @@ class _ParticleWidgetState extends State<ParticleWidget>
   void initState() {
     super.initState();
 
-    if (widget.debugMode) {
-      parentSize = Size.infinite;
-      particleSize = widget.particleSize ?? const Size(100, 100);
-    } else {
-      parentSize = widget.parentSize;
-      particleSize = widget.particleSize ?? const Size(5, 5); //
-    }
+    parentSize = widget.parentSize;
+    particleSize = widget.particleSize ?? const Size(10, 10);
 
     controller = AnimationController(
       vsync: this,
@@ -169,7 +162,7 @@ class _ParticleWidgetState extends State<ParticleWidget>
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("controller value: ${controller.value}");
+    // debugPrint("controller value: ${controller.value}");
     return Positioned(
       left: animation.value.dx,
       top: animation.value.dy,

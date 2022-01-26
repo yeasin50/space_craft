@@ -10,8 +10,25 @@ import 'package:space_craft/widget/widget.dart';
 import '../../packages/packages.dart';
 import 'start.dart';
 
-class StartScreen extends StatelessWidget {
+class StartScreen extends StatefulWidget {
   const StartScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StartScreen> createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  bool showMagicBall = false;
+  bool showBlustRing = false;
+  bool showNeonCircle = false;
+
+  bool defaultBlustSize = false;
+
+  double numberOfBlust = 5.0;
+
+  final magicBallKey = GlobalKey();
+  final blustKey = GlobalKey();
+  final ringKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -27,27 +44,73 @@ class StartScreen extends StatelessWidget {
             final double ringRadius = math.min(width, height) * .35;
             final double blastHeight = math.min(width, height) * .05;
             return Stack(
+              alignment: Alignment.center,
               children: [
                 //center Start button
-                Align(
-                  alignment: Alignment.center,
-                  child: GloabTransform(
+                if (showNeonCircle)
+                  GlobeTransform(
+                    key: ringKey,
                     radius: ringRadius * 1.2,
                   ),
-                ),
+
+                if (showBlustRing)
+                  RorationalBlustRing(
+                    key: ValueKey("$blustKey $defaultBlustSize"),
+                    radius: ringRadius * 1.1,
+                    blutSize: defaultBlustSize
+                        ? null
+                        : Size(blastHeight * 4, blastHeight),
+                    numberOfBlust: numberOfBlust.toInt(),
+                  ),
+
+                if (showMagicBall)
+                  MagicBall(
+                    key: magicBallKey,
+                    radius: ringRadius * .7,
+                  ),
 
                 Align(
-                  alignment: Alignment.center,
-                  child: RorationalBlustRing(
-                    radius: ringRadius * 1.1,
-                    blutSize: Size(blastHeight * 4, blastHeight),
-                    numberOfBlust: 4,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: MagicBall(
-                    radius: ringRadius * .7,
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    color: Colors.cyanAccent,
+                    height: 48,
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          value: showBlustRing,
+                          onChanged: (value) =>
+                              setState(() => showBlustRing = !showBlustRing),
+                        ),
+                        Checkbox(
+                          value: showNeonCircle,
+                          onChanged: (value) =>
+                              setState(() => showNeonCircle = !showNeonCircle),
+                        ),
+                        Checkbox(
+                          value: showMagicBall,
+                          onChanged: (value) =>
+                              setState(() => showMagicBall = !showMagicBall),
+                        ),
+                        Expanded(
+                          child: Slider(
+                            value: numberOfBlust,
+                            divisions: 20,
+                            max: 20,
+                            onChanged: (value) {
+                              setState(() {
+                                numberOfBlust = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Checkbox(
+                          key: ValueKey("bChanger $defaultBlustSize"),
+                          value: defaultBlustSize,
+                          onChanged: (value) => setState(
+                              () => defaultBlustSize = !defaultBlustSize),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -59,18 +122,18 @@ class StartScreen extends StatelessWidget {
   }
 }
 
-class GloabTransform extends StatefulWidget {
+class GlobeTransform extends StatefulWidget {
   final double radius;
-  const GloabTransform({
+  const GlobeTransform({
     Key? key,
     required this.radius,
   }) : super(key: key);
 
   @override
-  State<GloabTransform> createState() => _GloabTransformState();
+  State<GlobeTransform> createState() => _GlobeTransformState();
 }
 
-class _GloabTransformState extends State<GloabTransform> {
+class _GlobeTransformState extends State<GlobeTransform> {
   late double rignRadius;
 
   @override

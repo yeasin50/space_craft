@@ -12,14 +12,15 @@ class RorationalBlustRing extends StatefulWidget {
 
   /// bust size for each,Size(x,4x) is perfect shape
   /// default value is `blutSize: Size(22, 22 * 4)`
-  final Size blutSize;
+  final Size? blutSize;
 
   const RorationalBlustRing({
     Key? key,
     required this.radius,
-    this.blutSize = const Size(22, 22 * 4),
+    Size? blutSize,
     this.numberOfBlust = 7,
-  }) : super(key: key);
+  })  : blutSize = blutSize ?? const Size(22, 22 * 4),
+        super(key: key);
 
   @override
   State<RorationalBlustRing> createState() => _RorationalBlustRingState();
@@ -28,7 +29,7 @@ class RorationalBlustRing extends StatefulWidget {
 class _RorationalBlustRingState extends State<RorationalBlustRing> {
   late double rignRadius = widget.radius;
 
-  late final Size blutSize = widget.blutSize;
+  late final Size blutSize = widget.blutSize!;
 
   @override
   Widget build(BuildContext context) {

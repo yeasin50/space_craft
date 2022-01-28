@@ -22,8 +22,8 @@ class App extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
       ),
       // home: const _TestCases(),
-      // home: OnPlayScreen(),
-      home: const StartScreen(),
+      home: const OnPlayScreen(),
+      // home: const StartScreen(),
     );
   }
 }

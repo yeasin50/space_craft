@@ -194,13 +194,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
     final player = playerNotifier.player;
 
     for (final enemyShip in _enemies) {
-      // checking if ship within bullet  position
-      if (enemyShip.position.dX <= player.position.dX + player.size.width &&
-          enemyShip.position.dX >= player.position.dX - player.size.width / 2 &&
-          enemyShip.position.dY >=
-              player.position.dY - player.size.height / 2 &&
-          enemyShip.position.dY <=
-              player.position.dY + player.size.height / 2) {
+      if (collisionChecker(a: enemyShip, b: player)) {
         removeEnemy(enemyShip);
         playerNotifier.updateHeathStatus(DamageOnShipCollision);
         debugPrint("rm Enemy");

@@ -21,7 +21,7 @@ Animation<Offset> particleAnimation({
   required AnimationController controller,
 }) {
   final of = _endOffSet(controller: controller, size: size);
-  debugPrint(of.toString());
+  // debugPrint(of.toString());
   return Tween<Offset>(
     begin: Offset(size.width / 2, size.height / 2),
     end: of,

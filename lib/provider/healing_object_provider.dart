@@ -87,8 +87,8 @@ class HealingObjectNotifier extends ChangeNotifier {
             playerRef.updateHeathStatus(GeneralHealingBox);
           }
 
-          debugPrint(
-              "boxPosY: ${box.position.dY} sHeight ${screenSize.height} ");
+          // debugPrint(
+          //     "boxPosY: ${box.position.dY} sHeight ${screenSize.height} ");
           // remove box while dY>screenSize.height
           if (box.position.dY > screenSize.height) {
             _healingBoxes.remove(box);

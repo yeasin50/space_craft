@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 ///```
 /// Rotate child based on [rotateAxis] that is used on X,Y,Z axis
 class RotateWidget extends StatefulWidget {
-  /// listen animation value
+  /// callback animation value between [0-1]
   final Function(double value)? onChanged;
 
   const RotateWidget({
@@ -79,7 +79,7 @@ class _RotateWidgetState extends State<RotateWidget>
         setState(() {});
 
         if (widget.onChanged != null) {
-          widget.onChanged!(_animation.value);
+          widget.onChanged!(_animation.value / (_math.pi * 2));
         }
       });
 

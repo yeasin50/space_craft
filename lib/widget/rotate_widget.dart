@@ -17,6 +17,9 @@ import 'package:flutter/material.dart';
 ///```
 /// Rotate child based on [rotateAxis] that is used on X,Y,Z axis
 class RotateWidget extends StatefulWidget {
+  /// listen animation value
+  final Function(double value)? onChanged;
+
   const RotateWidget({
     Key? key,
     required this.child,
@@ -24,6 +27,7 @@ class RotateWidget extends StatefulWidget {
     this.curve = Curves.ease,
     this.repeat = true,
     this.rotateAxis = const <bool>[false, true, false],
+    this.onChanged,
   }) : super(key: key);
 
   /// rotate this child
@@ -73,6 +77,10 @@ class _RotateWidgetState extends State<RotateWidget>
         if (widget.rotateAxis[1]) transformMatrix.rotateY(_animation.value);
         if (widget.rotateAxis[2]) transformMatrix.rotateZ(_animation.value);
         setState(() {});
+
+        if (widget.onChanged != null) {
+          widget.onChanged!(_animation.value);
+        }
       });
 
     _animation = Tween<double>(begin: 0.0, end: _math.pi * 2).animate(

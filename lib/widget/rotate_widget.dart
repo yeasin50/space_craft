@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 ///```
 ///RotateWidget(
-///  curve: Curves.easeIn,
+///  const Interval(0.0, 0.9, curve: Curves.easeIn),
 ///  duration: const Duration(seconds: 5),
 ///  repeat: true,
+///  reverseOnRepeat: true,
 ///  rotateAxis: const <bool>[false, true, false],
 ///  child: Container(
 ///    height: 100,
@@ -24,11 +25,18 @@ class RotateWidget extends StatefulWidget {
     Key? key,
     required this.child,
     this.duration = const Duration(seconds: 5),
-    this.curve = Curves.ease,
+    this.interval = const Interval(0.0, 1.0, curve: Curves.easeIn),
     this.repeat = true,
-    this.rotateAxis = const <bool>[false, true, false],
+    this.reverseOnRepeat = true,
+    List<bool?>? rotateAxis,
     this.onChanged,
-  }) : super(key: key);
+  })  : rotateAxis = rotateAxis ??
+            const <bool?>[
+              false,
+              true,
+              false
+            ], //todo: create condifition to fill remeaning list[3xbool] is user pass mistakley less or more
+        super(key: key);
 
   /// rotate this child
   final Widget child;
@@ -39,13 +47,15 @@ class RotateWidget extends StatefulWidget {
 
   /// use `List<bool>` enable rotation of `[X,Y,Z]` based on bool:true
   /// default value is `[false, true, false]` to rotate on Y axis
-  final List<bool> rotateAxis;
+  final List<bool?> rotateAxis;
 
   /// duration of single rotate-animation, default 5sec
   final Duration duration;
 
-  /// animation curve , default is [Curves.easeIn]
-  final Curve curve;
+  /// animation interval , default is [Curves.easeIn]
+  final Interval interval;
+
+  final bool reverseOnRepeat;
 
   @override
   State<RotateWidget> createState() => _RotateWidgetState();
@@ -73,25 +83,31 @@ class _RotateWidgetState extends State<RotateWidget>
       duration: widget.duration,
     )..addListener(() {
         transformMatrix = Matrix4.identity();
-        if (widget.rotateAxis[0]) transformMatrix.rotateX(_animation.value);
-        if (widget.rotateAxis[1]) transformMatrix.rotateY(_animation.value);
-        if (widget.rotateAxis[2]) transformMatrix.rotateZ(_animation.value);
+        if (widget.rotateAxis[0] ?? false) {
+          transformMatrix.rotateX(_animation.value);
+        }
+        if (widget.rotateAxis[1] != null && widget.rotateAxis[1]!) {
+          transformMatrix.rotateY(_animation.value);
+        }
+        if (widget.rotateAxis[2] != null && widget.rotateAxis[2]!) {
+          transformMatrix.rotateZ(_animation.value);
+        }
         setState(() {});
 
         if (widget.onChanged != null) {
-          widget.onChanged!(_animation.value / (_math.pi * 2));
+          widget.onChanged!(_animation.value / (_math.pi));
         }
       });
 
-    _animation = Tween<double>(begin: 0.0, end: _math.pi * 2).animate(
+    _animation = Tween<double>(begin: 0.0, end: _math.pi).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 1.0, curve: widget.curve),
+        curve: widget.interval,
       ),
     );
 
     if (widget.repeat) {
-      _controller.repeat();
+      _controller.repeat(reverse: widget.reverseOnRepeat);
     } else {
       _controller.forward();
     }

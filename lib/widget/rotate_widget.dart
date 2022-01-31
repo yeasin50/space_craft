@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 ///```
 ///RotateWidget(
-///  const Interval(0.0, 0.9, curve: Curves.easeIn),
+///  const Interval(0.0, 0.9, curve: Curves.linear),
 ///  duration: const Duration(seconds: 5),
 ///  repeat: true,
 ///  reverseOnRepeat: true,
@@ -25,18 +25,12 @@ class RotateWidget extends StatefulWidget {
     Key? key,
     required this.child,
     this.duration = const Duration(seconds: 5),
-    this.interval = const Interval(0.0, 1.0, curve: Curves.easeIn),
+    this.interval = const Interval(0.0, 1.0, curve: Curves.linear),
     this.repeat = true,
     this.reverseOnRepeat = true,
-    List<bool?>? rotateAxis,
+    this.rotateAxis = const [false, true, false],
     this.onChanged,
-  })  : rotateAxis = rotateAxis ??
-            const <bool?>[
-              false,
-              true,
-              false
-            ], //todo: create condifition to fill remeaning list[3xbool] is user pass mistakley less or more
-        super(key: key);
+  }) : super(key: key);
 
   /// rotate this child
   final Widget child;
@@ -47,7 +41,7 @@ class RotateWidget extends StatefulWidget {
 
   /// use `List<bool>` enable rotation of `[X,Y,Z]` based on bool:true
   /// default value is `[false, true, false]` to rotate on Y axis
-  final List<bool?> rotateAxis;
+  final List<bool> rotateAxis;
 
   /// duration of single rotate-animation, default 5sec
   final Duration duration;
@@ -70,36 +64,58 @@ class _RotateWidgetState extends State<RotateWidget>
   /// used on [Transform]'s
   Matrix4 transformMatrix = Matrix4.identity();
 
+  List<bool>? axis;
+
   @override
   void initState() {
+    axis = _axisSetup(widget.rotateAxis);
     _animVariableInit();
     super.initState();
   }
 
-  /// init animation data
+  /// axisSetUp defaul value is `[false,true,false]`
+  List<bool> _axisSetup(List<bool> widgetRotateAxis) {
+    ///* _axis = [false,true,false]
+    List<bool> _axis = List.generate(3, (index) => index == 1 ? true : false);
+    // feed user data
+    for (int i = 0; i < widgetRotateAxis.length && i < _axis.length; i++) {
+      _axis[i] = widgetRotateAxis[i];
+    }
+    return _axis;
+  }
+
+  /// init animation data [axis]
   void _animVariableInit() {
+    /// todo: handle assert message
+    assert(
+      axis != null,
+      "Got null on axis, init _axisSetup setup on initState",
+    );
+
+    final double _maxRotation = _math.pi * 2;
+
     _controller = AnimationController(
       vsync: this,
       duration: widget.duration,
     )..addListener(() {
         transformMatrix = Matrix4.identity();
-        if (widget.rotateAxis[0] ?? false) {
+        if (axis![0]) {
           transformMatrix.rotateX(_animation.value);
         }
-        if (widget.rotateAxis[1] != null && widget.rotateAxis[1]!) {
+        if (axis![1]) {
           transformMatrix.rotateY(_animation.value);
         }
-        if (widget.rotateAxis[2] != null && widget.rotateAxis[2]!) {
+        if (axis![2]) {
           transformMatrix.rotateZ(_animation.value);
         }
         setState(() {});
 
         if (widget.onChanged != null) {
-          widget.onChanged!(_animation.value / (_math.pi));
+          widget.onChanged!(_animation.value / _maxRotation);
         }
       });
 
-    _animation = Tween<double>(begin: 0.0, end: _math.pi).animate(
+    _animation = Tween<double>(begin: 0.0, end: _maxRotation).animate(
       CurvedAnimation(
         parent: _controller,
         curve: widget.interval,

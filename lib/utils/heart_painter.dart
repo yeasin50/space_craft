@@ -4,7 +4,19 @@ import '../provider/provider.dart';
 
 import 'utils.dart';
 
-/// Paint GradientHeart based on value[0.0-1.0]
+/// ```
+///CustomPaint(
+/// painter: HeartPainter.radial(
+///  color: Colors.red,
+///  animationValue: value,
+///),
+//),
+/// ```
+///
+///
+/// used on [RotateWidget] to paint [RadialGradient] for falling hearth of[HealingObjectNotifier]
+///
+/// two constructor [HeartPainter.linear] and [HeartPainter.radial]  for Paint GradientHeart based on value[0.0-1.0]
 class HeartPainter extends CustomPainter {
   /// progres value [0.0 - 1.0]
   final double value;
@@ -12,10 +24,21 @@ class HeartPainter extends CustomPainter {
   ///heart base/default color is red
   Color color;
 
+  ///show middle path on heart slipt, you need to set size(x*n ,x) to see default is false
+  final bool showMiddlePaint;
+
   //used to create shader
   late final Gradient _gradient;
 
-  /// used on [RotateWidget] to paint [RadialGradient] for falling hearth of[HealingObjectNotifier]
+  /// ```CustomPaint(
+  ///painter: HeartPainter.radial(
+  ///  color: Colors.red,
+  ///  animationValue: value,
+  ///),
+  ///),
+  /// ```
+  /// `animationValue` is used to spread color on canvas
+  /// used on [RotateWidget] to paint [RadialGradient] for falling heart
   HeartPainter.radial({
     this.color = Colors.red,
     double? animationValue,
@@ -29,19 +52,30 @@ class HeartPainter extends CustomPainter {
                 : animationValue < .5
                     ? 0.5
                     : animationValue),
-            Colors.red.withOpacity(.2),
+            color.withOpacity(.2),
           ],
           stops: [
             animationValue ?? 0,
             .3,
           ],
-        );
+        ),
+        showMiddlePaint = false;
 
+  ///
+  /// `value` is define how much heath will be paint from top to bottom
+  /// ```
+  ///CustomPaint(
+  /// painter: HeartPainter.linear(
+  ///  color: Colors.red,
+  ///  value: value,
+  ///),
+  /// ```
   ///default construtor of [HeartPainter] required to pass `value` between 0-1 and default `color` of Heart is red
-  HeartPainter({
+  HeartPainter.linear({
     required double value,
     this.color = Colors.red,
-  })  : value = 1 - value,
+  })  : showMiddlePaint = false,
+        value = 1 - value,
         _gradient = LinearGradient(
           colors: [color, Colors.transparent],
           stops: [1 - value, 0],

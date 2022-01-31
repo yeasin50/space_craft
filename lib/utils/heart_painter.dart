@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widget/widget.dart';
+import '../provider/provider.dart';
 
 import 'utils.dart';
 
@@ -7,33 +9,58 @@ class HeartPainter extends CustomPainter {
   /// progres value [0.0 - 1.0]
   final double value;
 
+  ///heart base/default color is red
+  Color color;
+
+  //used to create shader
+  late final Gradient _gradient;
+
+  /// used on [RotateWidget] to paint [RadialGradient] for falling hearth of[HealingObjectNotifier]
+  HeartPainter.radial({
+    this.color = Colors.red,
+    double? animationValue,
+  })  : value = 1.0,
+        _gradient = RadialGradient(
+          focal: Alignment.center,
+          radius: 1.0,
+          colors: [
+            color.withOpacity(animationValue == null
+                ? 1
+                : animationValue < .5
+                    ? 0.5
+                    : animationValue),
+            Colors.red.withOpacity(.2),
+          ],
+          stops: [
+            animationValue ?? 0,
+            .3,
+          ],
+        );
+
+  ///default construtor of [HeartPainter] required to pass `value` between 0-1 and default `color` of Heart is red
   HeartPainter({
     required double value,
+    this.color = Colors.red,
   })  : value = 1 - value,
+        _gradient = LinearGradient(
+          colors: [color, Colors.transparent],
+          stops: [1 - value, 0],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
         assert(
           value > -1.0 && value <= 1,
           "HeartPainter value must be withing 0.0-1.0",
         );
+
   @override
   void paint(Canvas canvas, Size size) {
     final double circleR = size.height / 4;
     final double maxHeight = size.height * .95;
 
     Paint paint = Paint()
-      // ..color = Colors.red
       ..style = PaintingStyle.fill
-      ..shader = LinearGradient(
-        colors: const [
-          Colors.red,
-          Colors.transparent,
-        ],
-        stops: [
-          1 - value,
-          0,
-        ],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-      ).createShader(
+      ..shader = _gradient.createShader(
         Rect.fromLTWH(0, 0, size.width, size.height),
       );
 
@@ -90,41 +117,51 @@ class HeartPainter extends CustomPainter {
     );
 
     // //* midle path
-    // final double lineWidth = size.height * .03 * (1 - value);
-
-    // final midPoint = Offset(size.width / 2, maxHeight / 2);
-
-    // Path path = Path()
-    //   // top left line
-    //   ..moveTo(circleR * 2, circleR)
-    //   ..lineTo(midPoint.dx, midPoint.dy)
-    //   ..lineTo(circleR * 2, circleR + lineWidth)
-    //   //mid left
-    //   ..moveTo(circleR * 2, maxHeight / 2 - lineWidth / 2)
-    //   ..lineTo(midPoint.dx, midPoint.dy)
-    //   ..lineTo(circleR * 2, maxHeight / 2 + lineWidth / 2)
-    //   //bottom left part
-    //   ..moveTo(circleR * 2, maxHeight - lineWidth)
-    //   ..lineTo(midPoint.dx, midPoint.dy)
-    //   ..lineTo(circleR * 2, maxHeight)
-    //   //topRight
-    //   ..moveTo(size.width - circleR * 2, circleR)
-    //   ..lineTo(midPoint.dx, midPoint.dy)
-    //   ..lineTo(size.width - circleR * 2, circleR + lineWidth)
-    //   // certerRight
-    //   ..moveTo(size.width - circleR * 2, maxHeight / 2 - lineWidth / 2)
-    //   ..lineTo(midPoint.dx, midPoint.dy)
-    //   ..lineTo(size.width - circleR * 2, maxHeight / 2 + lineWidth / 2)
-    //   //bottom left part
-    //   ..moveTo(size.width - circleR * 2, maxHeight - lineWidth)
-    //   ..lineTo(midPoint.dx, midPoint.dy)
-    //   ..lineTo(size.width - circleR * 2, maxHeight);
-
-    // canvas.drawPath(path, paint);
+    // _drawHeartJoint(canvas: canvas, paint: paint, size: size, value: value);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(covariant HeartPainter oldDelegate) => this != oldDelegate;
+
+  /// middle paths, heart Joing
+  void _drawHeartJoint({
+    required Size size,
+    required Canvas canvas,
+    required Paint paint,
+    required double value,
+  }) {
+    final double circleR = size.height / 4;
+    final double maxHeight = size.height * .95;
+    final double lineWidth = size.height * .03 * (1 - value);
+
+    final midPoint = Offset(size.width / 2, maxHeight / 2);
+
+    Path path = Path()
+      // top left line
+      ..moveTo(circleR * 2, circleR)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(circleR * 2, circleR + lineWidth)
+      //mid left
+      ..moveTo(circleR * 2, maxHeight / 2 - lineWidth / 2)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(circleR * 2, maxHeight / 2 + lineWidth / 2)
+      //bottom left part
+      ..moveTo(circleR * 2, maxHeight - lineWidth)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(circleR * 2, maxHeight)
+      //topRight
+      ..moveTo(size.width - circleR * 2, circleR)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(size.width - circleR * 2, circleR + lineWidth)
+      // certerRight
+      ..moveTo(size.width - circleR * 2, maxHeight / 2 - lineWidth / 2)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(size.width - circleR * 2, maxHeight / 2 + lineWidth / 2)
+      //bottom left part
+      ..moveTo(size.width - circleR * 2, maxHeight - lineWidth)
+      ..lineTo(midPoint.dx, midPoint.dy)
+      ..lineTo(size.width - circleR * 2, maxHeight);
+
+    canvas.drawPath(path, paint);
   }
 }

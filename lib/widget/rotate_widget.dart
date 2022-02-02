@@ -130,6 +130,12 @@ class _RotateWidgetState extends State<RotateWidget>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Transform(
       alignment: Alignment.center,

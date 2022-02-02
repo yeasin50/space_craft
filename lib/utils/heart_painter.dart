@@ -4,19 +4,9 @@ import '../provider/provider.dart';
 
 import 'utils.dart';
 
-/// ```
-///CustomPaint(
-/// painter: HeartPainter.radial(
-///  color: Colors.red,
-///  animationValue: value,
-///),
-//),
-/// ```
-///
-///
 /// used on [RotateWidget] to paint [RadialGradient] for falling hearth of[HealingObjectNotifier]
 ///
-/// two constructor [HeartPainter.linear] and [HeartPainter.radial]  for Paint GradientHeart based on value[0.0-1.0]
+/// two constructor [HeartPainter] and [HeartPainter.radial]  for Paint GradientHeart based on value[0.0-1.0]
 class HeartPainter extends CustomPainter {
   /// progres value [0.0 - 1.0]
   final double value;
@@ -30,11 +20,12 @@ class HeartPainter extends CustomPainter {
   //used to create shader
   late final Gradient _gradient;
 
-  /// ```CustomPaint(
+  /// ```
+  /// CustomPaint(
   ///painter: HeartPainter.radial(
   ///  color: Colors.red,
   ///  animationValue: value,
-  ///),
+  /// ),
   ///),
   /// ```
   /// `animationValue` is used to spread color on canvas
@@ -71,14 +62,13 @@ class HeartPainter extends CustomPainter {
   ///),
   /// ```
   ///default construtor of [HeartPainter] required to pass `value` between 0-1 and default `color` of Heart is red
-  HeartPainter.linear({
-    required double value,
+  HeartPainter({
+    required this.value,
     this.color = Colors.red,
   })  : showMiddlePaint = false,
-        value = 1 - value,
         _gradient = LinearGradient(
           colors: [color, Colors.transparent],
-          stops: [1 - value, 0],
+          stops: [value, 0],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),

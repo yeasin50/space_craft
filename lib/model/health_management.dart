@@ -77,7 +77,7 @@ class NEnemyHealthManager implements IShipHealth {
 class GeneralHealingBox implements IShipHealth, GameObject {
   IShipHealth iShipHealth;
 
-  static const Size boxSize = Size(24, 25);
+  static const Size boxSize = Size(48, 49);
 
   final Vector2 _intiObjectPos;
 

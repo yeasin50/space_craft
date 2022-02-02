@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/utils/heart_painter.dart';
-import 'package:space_craft/widget/rotate_widget.dart';
 
 import '../../../provider/provider.dart';
+import '../../../utils/heart_painter.dart';
+import '../../../widget/rotate_widget.dart';
 
 /// provide player ship healing portion, increase player ship health
 class HealingPortionOverlay extends ConsumerWidget {
@@ -14,17 +14,19 @@ class HealingPortionOverlay extends ConsumerWidget {
 
     return Stack(
       children: [
-        ...healthBoxNotifer.map(
-          (hb) => Positioned(
+        ...healthBoxNotifer.map((hb) {
+          return Positioned(
             left: hb.position.dX,
             top: hb.position.dY,
             child: RotateWidget(
+              //not using animated Value for heavy🤔
               child: CustomPaint(
-                painter: HeartPainter.linear(value: 1),
+                size: Size(hb.size.width, hb.size.height),
+                painter: HeartPainter.radial(),
               ),
             ),
-          ),
-        )
+          );
+        })
       ],
     );
   }

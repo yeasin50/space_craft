@@ -22,8 +22,8 @@ class App extends StatelessWidget {
       theme: Theme.of(context).copyWith(
         scaffoldBackgroundColor: Colors.black,
       ),
-      home: const _TestCases(),
-      // home: OnPlayScreen(),
+      // home: const _TestCases(),
+      home: OnPlayScreen(),
       // home: const StartScreen(),
     );
   }

@@ -25,7 +25,7 @@ class HeartPainter extends CustomPainter {
   ///painter: HeartPainter.radial(
   ///  color: Colors.red,
   ///  animationValue: value,
-  /// ),
+  ///),
   ///),
   /// ```
   /// `animationValue` is used to spread color on canvas

@@ -56,18 +56,21 @@ class _TestCasesState extends State<_TestCases> {
               },
             ),
             RotateWidget(
+              // rotateAxis: [false, false, true, false],
               reverseOnRepeat: true,
+              interval: Interval(0, 1, curve: Curves.linear),
               onChanged: (value) {
                 setState(() {
                   sliderVal = value;
                 });
-                print(value);
+                // print(value);
               },
               child: Container(
                 height: 100,
                 width: 100,
                 child: CustomPaint(
                   painter: HeartPainter.radial(
+                    color: Colors.deepPurple,
                     animationValue: sliderVal,
                   ),
                 ),

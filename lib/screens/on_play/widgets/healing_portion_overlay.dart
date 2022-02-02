@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/utils/heart_painter.dart';
+import 'package:space_craft/widget/rotate_widget.dart';
 
 import '../../../provider/provider.dart';
 
@@ -16,10 +18,10 @@ class HealingPortionOverlay extends ConsumerWidget {
           (hb) => Positioned(
             left: hb.position.dX,
             top: hb.position.dY,
-            child: Container(
-              color: hb.color,
-              height: hb.size.height,
-              width: hb.size.width,
+            child: RotateWidget(
+              child: CustomPaint(
+                painter: HeartPainter.linear(value: 1),
+              ),
             ),
           ),
         )

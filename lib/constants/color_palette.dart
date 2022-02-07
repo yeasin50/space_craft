@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
@@ -9,7 +9,7 @@ const color3 = Color(0xffff008d);
 List<Color> get _enemyShipColors => [color1, color2, color3];
 
 Color get getRandomColor =>
-    _enemyShipColors[Random().nextInt(_enemyShipColors.length)];
+    _enemyShipColors[math.Random().nextInt(_enemyShipColors.length)];
 
 /// Color [purple,blue,yellow,red]
 const List<Color> colorSet0 = [
@@ -26,3 +26,8 @@ const List<Color> colorSet1 = [
   Color.fromRGBO(255, 59, 148, 1),
   Color.fromRGBO(166, 253, 41, 1),
 ];
+
+const List<List<Color>> _colorSets = [colorSet0, colorSet1];
+
+List<Color> get getRandomColorSet =>
+    _colorSets[math.Random().nextInt(_colorSets.length - 1)];

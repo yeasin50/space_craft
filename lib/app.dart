@@ -10,6 +10,7 @@ import 'screens/on_play/on_play.screen.dart';
 import 'screens/on_play/widgets/widgets.dart';
 import 'utils/ring_path.dart';
 import 'widget/neon_ring.dart';
+import 'widget/rotate_widget.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class _TestCases extends StatefulWidget {
 }
 
 class _TestCasesState extends State<_TestCases> {
-  double sliderVal = .2;
+  double sliderVal = .0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,32 +46,36 @@ class _TestCasesState extends State<_TestCases> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Opacity(
-                  opacity: .3,
-                  child: NeonRignWidget(
-                    key: UniqueKey(),
-                    colorSet: colorSet0,
-                    rotation: true,
-                    radius: 165,
-                    rotationIncrementRate: 10,
-                    duration: const Duration(milliseconds: 50),
-                    frameThickness: 16,
+            Slider(
+              value: sliderVal,
+              onChanged: (value) {
+                setState(() {
+                  sliderVal = value;
+                });
+                print(value);
+              },
+            ),
+            RotateWidget(
+              // rotateAxis: [false, false, true, false],
+              reverseOnRepeat: true,
+              interval: Interval(0, 1, curve: Curves.linear),
+              onChanged: (value) {
+                setState(() {
+                  sliderVal = value;
+                });
+                // print(value);
+              },
+              child: Container(
+                height: 100,
+                width: 100,
+                child: CustomPaint(
+                  painter: HeartPainter.radial(
+                    color: Colors.deepPurple,
+                    animationValue: sliderVal,
                   ),
                 ),
-                NeonRignWidget(
-                  key: UniqueKey(),
-                  colorSet: colorSet0,
-                  rotation: true,
-                  rotationIncrementRate: 10,
-                  radius: 155,
-                  duration: const Duration(milliseconds: 50),
-                  frameThickness: 16,
-                ),
-              ],
-            )
+              ),
+            ),
           ],
         ),
       ),

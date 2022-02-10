@@ -4,18 +4,62 @@ import 'package:flutter/material.dart';
 
 import '../utils/utils.dart';
 
+/// [MagicBall] animate particles from center, keep creation on every `blustDelay`
+
+/// default constructor for MagicBall
+/// ```
+/// const MagicBall(
+///     radius: 150,
+///     numberOfParticles: 10,
+///     blustDelay: Duration(milliseconds: 400),
+///   ),
+/// ```
+
+/// [MagicBall.singleBlust] generate `numberOfParticles:10` only for single time
+///
+///```
+/// const MagicBall.singleBlust(
+///    blustDelay: Duration(milliseconds: 0),
+///    numberOfParticles: 10,
+///    radius: 150,
+///   ),
+///```
 class MagicBall extends StatefulWidget {
   const MagicBall({
     Key? key,
     this.radius = 150,
-  }) : super(key: key);
+    this.numberOfParticles = 10,
+    this.blustDelay = const Duration(milliseconds: 400),
+  })  : repeated = true,
+        showRing = true,
+        super(key: key);
+
+  const MagicBall.singleBlust({
+    Key? key,
+    this.radius = 150,
+    this.numberOfParticles = 10,
+    this.blustDelay = const Duration(milliseconds: 0),
+  })  : repeated = false,
+        showRing = false,
+        super(key: key);
+
+  /// `showRign` is used to show the outter circle/ring. Only needed when showing magicBall or start screen
+  /// `false` disable `decoration` on and used on ship destroy Effect
+  ///  true for [MagicBall], false for [MagicBall.singleBlust]
+  final bool showRing;
 
   /// used to create magicBall `Size(radius*2,radius*2)`
   final double radius;
 
-  /// generate [genaratePerBlust] [] after [blustDelay]
-  final int genaratePerBlust = 10;
-  final Duration blustDelay = const Duration(milliseconds: 400);
+  /// generate `numberOfParticles`  on  every blust
+  final int numberOfParticles;
+
+  /// Continuous particle creation on every `blustDelay`, default true for [MagicBall], false for [MagicBall.singleBlust]
+  final bool repeated;
+
+  /// repeated blust will generate on every `blustDelay`
+  /// default  [MagicBall.singleBlust] `blustDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 miliSec.
+  final Duration blustDelay;
 
   @override
   _MagicBallState createState() => _MagicBallState();
@@ -25,11 +69,13 @@ class _MagicBallState extends State<MagicBall> {
   List<ParticleWidget> particles = [];
 
   int idC = 0;
-  late Timer _timer;
 
+  //for repeated animation
+  late Timer _timer;
   late Size widgetSize;
 
-  _removeParticle(int id) {
+  /// remove particle when it reach the radius/border
+  void _removeParticle(int id) {
     particles.removeWhere((element) {
       // debugPrint(
       //     " Gen:$idC state: ${element.id == id} totalParticles: ${particles.length}");
@@ -46,7 +92,7 @@ class _MagicBallState extends State<MagicBall> {
     _timer = Timer.periodic(widget.blustDelay, (timer) {
       particles.addAll(
         List.generate(
-          widget.genaratePerBlust,
+          widget.numberOfParticles,
           (index) => ParticleWidget(
             key: ValueKey("P $idC $index"),
             id: idC++,
@@ -55,9 +101,14 @@ class _MagicBallState extends State<MagicBall> {
           ),
         ),
       );
-      idC += widget.genaratePerBlust;
 
+      //stop repeatation if `widget.repeated:false`
+      if (!widget.repeated) {
+        timer.cancel();
+      }
+      idC += widget.numberOfParticles;
       setState(() {});
+      // debugPrint("timer periodic: Particle id $idC");
     });
   }
 
@@ -74,16 +125,18 @@ class _MagicBallState extends State<MagicBall> {
         alignment: Alignment.center,
         width: widgetSize.width,
         height: widgetSize.height,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(colors: [
-            Colors.transparent,
-            Colors.lightBlueAccent.withOpacity(.5),
-          ], stops: const [
-            .8,
-            1.0
-          ]),
-        ),
+        decoration: widget.showRing
+            ? BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    Colors.transparent,
+                    Colors.lightBlueAccent.withOpacity(.5),
+                  ],
+                  stops: const [.8, 1.0],
+                ),
+              )
+            : null,
         child: Stack(
           children: particles,
         ),

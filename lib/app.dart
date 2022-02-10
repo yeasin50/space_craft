@@ -22,8 +22,8 @@ class App extends StatelessWidget {
       theme: Theme.of(context).copyWith(
         scaffoldBackgroundColor: Colors.black,
       ),
-      // home: const _TestCases(),
-      home: const OnPlayScreen(),
+      home: const _TestCases(),
+      // home: const OnPlayScreen(),
       // home: const StartScreen(),
     );
   }
@@ -48,33 +48,21 @@ class _TestCasesState extends State<_TestCases> {
           children: [
             Slider(
               value: sliderVal,
+              max: 10,
+              divisions: 10,
               onChanged: (value) {
-                setState(() {
-                  sliderVal = value;
-                });
-                print(value);
+                setState(() => sliderVal = value);
               },
             ),
-            RotateWidget(
-              // rotateAxis: [false, false, true, false],
-              reverseOnRepeat: true,
-              interval: Interval(0, 1, curve: Curves.linear),
-              onChanged: (value) {
-                setState(() {
-                  sliderVal = value;
-                });
-                // print(value);
-              },
-              child: Container(
-                height: 100,
-                width: 100,
-                child: CustomPaint(
-                  painter: HeartPainter.radial(
-                    color: Colors.deepPurple,
-                    animationValue: sliderVal,
-                  ),
-                ),
-              ),
+            const MagicBall(
+              radius: 150,
+              numberOfParticles: 10,
+              blustDelay: Duration(milliseconds: 400),
+            ),
+            const MagicBall.singleBlust(
+              blustDelay: Duration(milliseconds: 0),
+              numberOfParticles: 10,
+              radius: 150,
             ),
           ],
         ),

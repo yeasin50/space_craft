@@ -1,3 +1,7 @@
+
+#tested widgets
+/lib/widgetAnimationTest/*
+
 # Miscellaneous
 *.class
 *.log

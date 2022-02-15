@@ -20,6 +20,7 @@ class EnemyOverlay extends ConsumerWidget {
     enemyNotifer.initScreen(
       screenSize: Size(constraints.maxWidth, constraints.maxHeight),
     );
+
     return Stack(
       key: const ValueKey("Enemies Stack"),
       children: [
@@ -33,6 +34,17 @@ class EnemyOverlay extends ConsumerWidget {
           ),
         ),
         const _EnemyBulletOverlay(),
+
+        /// bullets overlay
+        ...enemyNotifer.shipsBlustLocation.map(
+          (blustLoc) => Positioned(
+            top: blustLoc.dY - 20, //minimize the blust size
+            left: blustLoc.dX - 20,
+            child: const MagicBall.singleBlust(
+              radius: 40,
+            ),
+          ),
+        )
       ],
     );
   }

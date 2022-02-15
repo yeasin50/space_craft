@@ -122,7 +122,8 @@ class _MagicBallState extends State<MagicBall> {
   Widget build(BuildContext context) {
     return ClipOval(
       child: Container(
-        alignment: Alignment.center,
+        //todo: fixing explosion position
+        //* we can use `widget.showRing` or `widget.repeated` while both is false on [MagicBall.singleBlust()]
         width: widgetSize.width,
         height: widgetSize.height,
         decoration: widget.showRing

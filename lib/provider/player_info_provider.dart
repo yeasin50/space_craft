@@ -122,7 +122,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   /// remove enemy and bullet, increase score while bullet hit enemyShip
-  _removeEnemyOnBulletCollision(IBullet b) {
+  void _removeEnemyOnBulletCollision(IBullet b) {
     final enemyNotifier = ref.read(enemyProvider);
 
     //Done:count bullet width
@@ -131,6 +131,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
       if (collisionChecker(a: enemyShip, b: b)) {
         enemyNotifier.removeEnemy(enemyShip);
         _bullets.remove(b);
+        ref.read(enemyProvider).addBlust(enemyShip.position);
         incrementScore();
       }
     }

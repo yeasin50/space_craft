@@ -163,7 +163,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   }
 
   /// bullet movement on separate method: movement needed to be smooth while controlling the enemy generation
-  _bulletMovement() {
+  void _bulletMovement() {
     _timerBulletMovement = Timer.periodic(_bulletMovementRate, (timer) {
       if (_bullets.isEmpty) return;
 
@@ -197,9 +197,40 @@ class EnemyChangeNotifier extends ChangeNotifier {
       if (collisionChecker(a: enemyShip, b: player)) {
         removeEnemy(enemyShip);
         playerNotifier.updateHeathStatus(DamageOnShipCollision);
-        debugPrint("rm Enemy");
+        addBlust(enemyShip.position);
+        // debugPrint("rm Enemy");
       }
     }
+  }
+
+  ///* track the ship destroy position and show [MagicBall.singleBlust()]
+  /// need to shrink the size, max blust can be `_maxBlustNumber:10`
+  /// blust effect cant be controlled/pasue by GameManager
+  final List<Vector2> _shipsBlustLocation = [];
+
+  /// ships positions on (player bullet) destroy, used to show blust
+  List<Vector2> get shipsBlustLocation => _shipsBlustLocation;
+
+  /// number of blust can shown on ui, used to reduce the object
+  final int _maxBlustNumber = 10;
+
+  //todo: add setter
+
+  /// add [Vector2] to show blust , used this method on [_enemyShipCollision]
+  /// method for future purpose:audio
+  void addBlust(Vector2 v2) {
+    _shipsBlustLocation.insert(0, v2.value);
+
+    /// reduce size while list becomes `_maxBlustNumber`
+    if (_shipsBlustLocation.length > _maxBlustNumber) {
+      _shipsBlustLocation.removeRange(
+        _maxBlustNumber ~/ 2,
+        _shipsBlustLocation.length ,
+      );
+    }
+
+    debugPrint("blust Number ${_shipsBlustLocation.length}");
+    notifyListeners();
   }
 
   //*---------------------------*

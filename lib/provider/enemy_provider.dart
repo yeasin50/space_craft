@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import '../constants/constants.dart';
 import '../model/model.dart';
 import '../screens/on_play/utils/utils.dart';
+import '../extensions/extensions.dart';
 import 'provider.dart';
 
 final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
@@ -29,8 +30,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// enemy ship bullets
   List<IBullet> get bullets => _bullets;
 
-  final List<EnemyShip> _enemies = [];
-  List<EnemyShip> get enemies => _enemies;
+  final List<IShip> _enemies = [];
+  List<IShip> get enemies => _enemies;
 
   //enemy generation on different x position
   final math.Random _random = math.Random();
@@ -58,7 +59,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   final Duration _bulletMovementRate = const Duration(milliseconds: 70);
 
   ///get screen Size ://todo: move to GameManager
-  Size get screenSize => _screenSize ?? Size.zero;
+  Size get screenSize => _screenSize ?? Size(500, 600);
 
   void initScreen({required Size screenSize}) {
     Future.delayed(Duration.zero).then((value) {
@@ -68,98 +69,108 @@ class EnemyChangeNotifier extends ChangeNotifier {
     });
   }
 
-  generateEnemies() {
+  ///Enemy GeneratePer [enemyGenerateDuration]
+  final int _generateNxEmeny = 2;
+
+  ///start Enemy creator,
+  void _generateEnemies() {
     //todo: create handler
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
-      _addEnemy();
+      assert(
+        (screenSize != null),
+        '''got null on screenSize use [initScreen] to set _screenSize.[enemy_provider.dart 38:44]''',
+      );
+
+      _enemies.addAll(
+        List.generate(
+          _generateNxEmeny,
+          (index) => EnemyShip(
+            position: _enemyInitPosition(),
+            color: getRandomColor,
+          ),
+        ),
+      );
+      notifyListeners();
     });
-    _enemyMovement();
-    generateBullet();
   }
 
-  // create enemyShip on (,0) possition
-  _addEnemy() {
-    assert(
-      (_screenSize != null),
-      '''got null on _screenSize use [initScreen] to set _screenSize.[enemy_provider.dart 38:44]''',
-    );
-
+  ///generate random position for enemy
+  Vector2 _enemyInitPosition() {
     // to avoid boundary confliction
-    final randX = _random.nextDouble() * _screenSize!.width;
+    final randX = _random.nextDouble() * screenSize.width;
     final dx = randX - 40 < 0
         ? randX + 40
-        : randX + 40 > _screenSize!.width
+        : randX + 40 > screenSize.width
             ? randX - 40
             : randX;
     //todo: random dY for multi-generation
-    _enemies.add(
-      EnemyShip(
-        position: Vector2(
-          dX: dx,
-          dY: 0.0,
-        ),
-        color: getRandomColor,
-      ),
-    );
-    notifyListeners();
+    return Vector2(dX: dx, dY: 0);
   }
 
   /// move downward and destroy while it is downSide:enemyShip
-  _enemyMovement() {
+  ///* check playerShip colision with enemyShip
+  /// > * remove enemyShip,
+  /// > * decrease playerShip health
+  void _enemyMovement() {
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
       if (_enemies.isEmpty) return;
 
-      for (final e in _enemies) {
-        e.position.dY += enemyMovementPY;
+      final playerNotifier = ref.read(playerInfoProvider);
+      final player = playerNotifier.player;
 
-        _enemyShipCollision();
+      List<IShip> removeableShip = [];
+      List<Vector2> addableBulst = [];
 
-        if (e.position.dY > _screenSize!.height) {
-          removeEnemy(e);
+      for (final enemy in _enemies) {
+        enemy.position.dY += enemyMovementPY;
+
+        if (enemy.position.dY > screenSize.height) {
+          removeableShip.add(enemy);
+          continue;
+        }
+
+        /// check playerShip colision with enemyShip
+        /// remove enemyShip, decrease playerShip health
+        if (collisionChecker(a: enemy, b: player)) {
+          removeableShip.add(enemy);
+          playerNotifier.updateHeathStatus(DamageOnShipCollision);
+          addableBulst.add(enemy.position.value);
         }
       }
-
       // debugPrint("total enemyShip: ${_enemies.length}");
+
+      // update objects
+      _enemies.removeAll(removeableShip);
+      _shipsBlustLocation.addAll(addableBulst);
       notifyListeners();
     });
 
     notifyListeners();
   }
 
-  /// remove enemy from
-  removeEnemy(EnemyShip e) {
-    _enemies.remove(e);
-    notifyListeners();
-  }
-
-  /// Enemy Bullets
-  generateBullet() {
+  /// Enemy Bullets generation based on [_bulletGeneratorDelay].
+  /// Add bullet based on enemy position
+  void _generateBullet() {
     _timerBulletGenerator = Timer.periodic(_bulletGeneratorDelay, (timer) {
-      _addBullet();
-    });
-    _bulletMovement();
-  }
+      if (_enemies.isEmpty) return;
 
-  /// adding bullets based on enemy position
-  _addBullet() {
-    if (_enemies.isEmpty) return;
-
-    for (var e in _enemies) {
-      //todo: min the bullet width and should i add bullet property on [EnemyShip] level, or create random timer
-      if (_random.nextBool()) {
-        _bullets.add(
-          EnemyShipBullet(
-            color: e.color,
-            position: e.position.value
-              ..dX = e.position.dX +
-                  e.size.width / 2 -
-                  EnemyShipBullet.bulletWidth / 2, //precise position
-          ),
-        );
+      for (IShip ship in _enemies) {
+        //todo: check if is needed temp
+        //not all enemy will fire
+        if (_random.nextBool()) {
+          _bullets.add(
+            EnemyShipBullet(
+              color: ship.color,
+              position: ship.position.value
+                ..dX = ship.position.dX +
+                    ship.size.width / 2 -
+                    EnemyShipBullet.bulletWidth / 2, //precise position
+            ),
+          );
+        }
       }
-    }
-    // debugPrint("total _bullet: ${_bullets.length}");
-    //todo: check if notifier is needed to make it smooth
+      notifyListeners();
+    });
   }
 
   /// bullet movement on separate method: movement needed to be smooth while controlling the enemy generation
@@ -169,38 +180,34 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
       final playerNotifier = ref.read(playerInfoProvider);
 
+      /// clear all bullet on Timer
+      List<IBullet> removeableBullets = [];
+
       for (final b in _bullets) {
         b.position.dY += bulletMoventPY;
 
         //check bullet collision with player collision or beyond screen
         final bool _c = collisionChecker(b: b, a: playerNotifier.player);
-        if (_c || b.position.dY > _screenSize!.height) {
-          _bullets.remove(b);
+        if (_c || b.position.dY > screenSize.height) {
+          removeableBullets.add(b);
           if (_c) {
             playerNotifier.updateHeathStatus(DamageOnEB);
           }
         }
       }
+      _bullets.removeAll(removeableBullets);
+      //todo: how can i dispose list to free memory
+      removeableBullets.clear(); //? not needed
       notifyListeners();
     });
   }
 
-  /// check playerShip colision with enemyShip
-  /// remove enemyShip, decrease playerShip health
-  void _enemyShipCollision() {
-    // what if I use `_removeEnemyOnBulletCollision()`
-
-    final playerNotifier = ref.read(playerInfoProvider);
-    final player = playerNotifier.player;
-
-    for (final enemyShip in _enemies) {
-      if (collisionChecker(a: enemyShip, b: player)) {
-        removeEnemy(enemyShip);
-        playerNotifier.updateHeathStatus(DamageOnShipCollision);
-        addBlust(enemyShip.position);
-        // debugPrint("rm Enemy");
-      }
-    }
+  ///* remove enemy-ships from current: OutSider
+  void removeEnemies({
+    required List<IShip> ships,
+  }) {
+    _enemies.removeAll(ships);
+    notifyListeners();
   }
 
   ///* track the ship destroy position and show [MagicBall.singleBlust()]
@@ -216,16 +223,17 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   //todo: add setter
 
+  /// * add blustPosition from outSide
   /// add [Vector2] to show blust , used this method on [_enemyShipCollision]
   /// method for future purpose:audio
-  void addBlust(Vector2 v2) {
-    _shipsBlustLocation.insert(0, v2.value);
+  void addBlusts(List<Vector2> v2) {
+    _shipsBlustLocation.insertAll(0, v2);
 
     /// reduce size while list becomes `_maxBlustNumber`
     if (_shipsBlustLocation.length > _maxBlustNumber) {
       _shipsBlustLocation.removeRange(
         _maxBlustNumber ~/ 2,
-        _shipsBlustLocation.length ,
+        _shipsBlustLocation.length,
       );
     }
 
@@ -236,6 +244,18 @@ class EnemyChangeNotifier extends ChangeNotifier {
   //*---------------------------*
   //*       Controllers         *
   //*---------------------------*
+
+  /// call while game is running and needed to genrate enemy
+  ///* preodicly enemy creation
+  ///* start EnemyMovemnt
+  ///* generate Enemies bullet and movement
+  void playMode() {
+    _generateEnemies();
+    _enemyMovement();
+    _generateBullet();
+    _bulletMovement();
+  }
+
   /// if true, stop enemymovement+ geration..+bullets
   void pauseMode({
     bool movement = true,

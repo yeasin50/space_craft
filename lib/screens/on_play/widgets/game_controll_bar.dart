@@ -87,7 +87,7 @@ class _GameControllBarState extends State<GameControllBar>
           //* resume the game
           controller.reverse();
           ref.read(gameManagerProvider.notifier).playing();
-          ref.read(enemyProvider).generateEnemies();
+          ref.read(enemyProvider).playMode();
 
           debugPrint("onControllBar Resume: ${ref.read(gameManagerProvider)}");
         }

@@ -25,7 +25,7 @@ class EnemyOverlay extends ConsumerWidget {
       key: const ValueKey("Enemies Stack"),
       children: [
         ...enemyNotifer.enemies.map(
-          (EnemyShip e) => Positioned(
+          (IShip e) => Positioned(
             top: e.position.dY,
             left: e.position.dX,
             child: EnemyShipWidget(
@@ -36,6 +36,7 @@ class EnemyOverlay extends ConsumerWidget {
         const _EnemyBulletOverlay(),
 
         /// bullets overlay
+        /// todo: add controller
         ...enemyNotifer.shipsBlustLocation.map(
           (blustLoc) => Positioned(
             top: blustLoc.dY - 20, //minimize the blust size

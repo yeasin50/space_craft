@@ -42,11 +42,6 @@ class OnPlayScreen extends ConsumerWidget {
                 );
               }).toList(),
 
-              /// detect touch on bottom
-              TouchPositionDetector(
-                constraints: constraints,
-              ),
-
               //player Health, ScoreBar
               Positioned(
                 top: 16,
@@ -60,13 +55,18 @@ class OnPlayScreen extends ConsumerWidget {
               // healing Objects
               const HealingPortionOverlay(),
 
+              /// special power player
+
+              /// detect touch on bottom
+              TouchPositionDetector(
+                constraints: constraints,
+              ),
+
               // game pause, restart, settings
               const Align(
                 alignment: Alignment(-.95, -.95),
                 child: GameControllBar(),
               ),
-
-              /// special power player
             ],
           );
         },

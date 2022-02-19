@@ -112,14 +112,14 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// > * remove enemyShip,
   /// > * decrease playerShip health
   void _enemyMovement() {
+    List<IShip> removeableShip = [];
+    List<Vector2> addableBulst = [];
+
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
       if (_enemies.isEmpty) return;
 
       final playerNotifier = ref.read(playerInfoProvider);
       final player = playerNotifier.player;
-
-      List<IShip> removeableShip = [];
-      List<Vector2> addableBulst = [];
 
       for (final enemy in _enemies) {
         enemy.position.dY += enemyMovementPY;
@@ -140,8 +140,15 @@ class EnemyChangeNotifier extends ChangeNotifier {
       // debugPrint("total enemyShip: ${_enemies.length}");
 
       // update objects
-      _enemies.removeAll(removeableShip);
-      _shipsBlustLocation.addAll(addableBulst);
+      if (removeableShip.isNotEmpty) {
+        _enemies.removeAll(removeableShip);
+        removeableShip.clear();
+      }
+      if (addableBulst.isNotEmpty) {
+        addBlusts(addableBulst);
+        addableBulst.clear();
+      }
+
       notifyListeners();
     });
 

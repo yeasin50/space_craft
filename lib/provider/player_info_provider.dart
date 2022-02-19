@@ -146,6 +146,9 @@ class PlayerInfoNotifier extends ChangeNotifier {
         _bullets.removeAll(removeableBullets);
         enemyNotifier.removeEnemies(ships: removeableShip);
         enemyNotifier.addBlusts(addableBlustPos);
+        addableBlustPos.clear();
+        removeableBullets.clear();
+        removeableShip.clear();
         notifyListeners();
       },
     );

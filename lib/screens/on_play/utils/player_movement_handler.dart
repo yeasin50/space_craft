@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/model/model.dart';
 
 import '../../../provider/provider.dart';
 
@@ -20,14 +19,14 @@ void updatePlayerPosition({
     ///`we cant move in Y axix` outScreen
     ///may Add some effect like wave
   } else {
-    playerInfoNotifier
-        .updateTopPosition(posY - (playerInfoNotifier.player.size.height / 2));
+    playerInfoNotifier.updatePosition(
+        dY: posY - (playerInfoNotifier.player.size.height / 2));
   }
   if (posX >= constraints.maxWidth - playerInfoNotifier.player.size.width / 2 ||
       posX <= playerInfoNotifier.player.size.width / 2) {
     ///`we cant move in X axix` outScreen
   } else {
-    playerInfoNotifier
-        .updateLeftPosition(posX - (playerInfoNotifier.player.size.width / 2));
+    playerInfoNotifier.updatePosition(
+        dX: posX - (playerInfoNotifier.player.size.width / 2));
   }
 }

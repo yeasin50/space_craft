@@ -217,6 +217,13 @@ class EnemyChangeNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeBullets({
+    required List<IBullet> bullets,
+  }) {
+    _bullets.removeAll(bullets);
+    notifyListeners();
+  }
+
   ///* track the ship destroy position and show [MagicBall.singleBlust()]
   /// need to shrink the size, max blust can be `_maxBlustNumber:10`
   /// blust effect cant be controlled/pasue by GameManager
@@ -244,7 +251,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
       );
     }
 
-    debugPrint("blust Number ${_shipsBlustLocation.length}");
+    // debugPrint("blust Number ${_shipsBlustLocation.length}");
     notifyListeners();
   }
 

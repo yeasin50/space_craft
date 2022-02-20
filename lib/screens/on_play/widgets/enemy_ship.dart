@@ -7,7 +7,7 @@ class EnemyShipWidget extends StatelessWidget {
     Key? key,
     required this.ship,
   }) : super(key: key);
-  final EnemyShip ship;
+  final IShip ship;
 
   @override
   Widget build(BuildContext context) {

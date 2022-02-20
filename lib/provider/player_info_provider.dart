@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/model.dart';
+import '../extensions/extensions.dart';
 import '../screens/on_play/utils/utils.dart';
 import 'provider.dart';
 
@@ -87,7 +88,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
     });
   }
 
-  _addBullet() {
+  void _addBullet() {
     _bullets.add(
       PlayerShipBullet(
         position: Vector2.fromValue(player.position)
@@ -99,54 +100,64 @@ class PlayerInfoNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  //* player bullets will move up(-Y)
-  _bulletsMovement() {
-    // dont create antoher timer for movement
+  ///*  player bullets will move up(-Y) on Every Frame(lie, on [bulletMovementRate])
+  /// removed removeable objects end of the timer loop.
+  /// ----
+  /// * remove enemy on bullet collision, removeable object on removeable list
+  /// * destroy EnemyShip and player bullet on collision
+  /// * increase score while bullet hit enemyShip
+  /// * add blust while destroying ship
+  void _bulletsMovement() {
+    //* variables to hold and perform operation all at once
+    // remove theses from player `_bullets`
+    List<IBullet> removeableBullets = [];
+
+    // call enemyProvider and remove theses ship
+    List<IShip> removeableShip = [];
+
+    // include theses on blustProvider
+    List<Vector2> addableBlustPos = [];
+
+    // this timer is active on playing mode
     if (_timerBulletMovement != null && _timerBulletMovement!.isActive) return;
     _timerBulletMovement = Timer.periodic(
       bulletMovementRate,
       (timer) {
         if (_bullets.isEmpty) return;
 
+        final enemyNotifier = ref.read(enemyProvider);
+
         for (final b in _bullets) {
           b.position.dY -= _bulletSpeed;
           // remove bullet while it is beyond screen:at Top
-          if (b.position.dY < 0) _bullets.remove(b);
+          if (b.position.dY < 0) removeableBullets.add(b);
 
-          _removeEnemyOnBulletCollision(b);
+          for (final enemyShip in enemyNotifier.enemies) {
+            // checking if ship within bullet  position
+            if (collisionChecker(a: enemyShip, b: b)) {
+              removeableShip.add(enemyShip);
+              removeableBullets.add(b);
+              addableBlustPos.add(enemyShip.position);
+              scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
+            }
+          }
         }
-        // debugPrint("bullet length: ${bullets.length}");
+        // removed removeable object
+        _bullets.removeAll(removeableBullets);
+        enemyNotifier.removeEnemies(ships: removeableShip);
+        enemyNotifier.addBlusts(addableBlustPos);
+        addableBlustPos.clear();
+        removeableBullets.clear();
+        removeableShip.clear();
         notifyListeners();
       },
     );
-  }
-
-  /// remove enemy and bullet, increase score while bullet hit enemyShip
-  void _removeEnemyOnBulletCollision(IBullet b) {
-    final enemyNotifier = ref.read(enemyProvider);
-
-    //Done:count bullet width
-    for (final enemyShip in enemyNotifier.enemies) {
-      // checking if ship within bullet  position
-      if (collisionChecker(a: enemyShip, b: b)) {
-        enemyNotifier.removeEnemy(enemyShip);
-        _bullets.remove(b);
-        ref.read(enemyProvider).addBlust(enemyShip.position);
-        incrementScore();
-      }
-    }
-
-    // debugPrint("total enemy ${enemyNotifier.enemies.length}");
   }
 
   //*---------------------------*
   //*  Score Health Management  *
   //*---------------------------*
   /// increment score of player by destroying enemies
-  void incrementScore() {
-    scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
-    notifyListeners();
-  }
 
   /// decrease player health
   void updateHeathStatus(Type type) {

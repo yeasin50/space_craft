@@ -19,7 +19,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
 class EnemyChangeNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef ref;
   // screen size to control enemy movement
-  Size? _screenSize;
+  Size screenSize = ObjectScalar.instatnce.screenSize;
 
   EnemyChangeNotifier(this.ref) {
     // _enemyMovement();
@@ -58,17 +58,6 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   final Duration _bulletMovementRate = const Duration(milliseconds: 70);
 
-  ///get screen Size ://todo: move to GameManager
-  Size get screenSize => _screenSize ?? Size(500, 600);
-
-  void initScreen({required Size screenSize}) {
-    Future.delayed(Duration.zero).then((value) {
-      // dirty way of handling errors 🤐
-      _screenSize = screenSize;
-      notifyListeners();
-    });
-  }
-
   ///Enemy GeneratePer [enemyGenerateDuration]
   final int _generateNxEmeny = 2;
 
@@ -76,11 +65,6 @@ class EnemyChangeNotifier extends ChangeNotifier {
   void _generateEnemies() {
     //todo: create handler
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
-      assert(
-        (screenSize != null),
-        '''got null on screenSize use [initScreen] to set _screenSize.[enemy_provider.dart 38:44]''',
-      );
-
       _enemies.addAll(
         List.generate(
           _generateNxEmeny,

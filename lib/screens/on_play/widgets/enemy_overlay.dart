@@ -17,9 +17,6 @@ class EnemyOverlay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final enemyNotifer = ref.watch(enemyProvider);
-    enemyNotifer.initScreen(
-      screenSize: Size(constraints.maxWidth, constraints.maxHeight),
-    );
 
     return Stack(
       key: const ValueKey("Enemies Stack"),

@@ -1,11 +1,26 @@
 import 'dart:ui';
 
+abstract class _Elements {
+  /// full screen/view size, that will cover by app
+  Size get screen;
+
+  Size get playerShip;
+
+  Size get enemyShip;
+
+  /// prefer bullet Size(x,4x)
+  Size get playerBullet;
+
+  /// prefer bullet Size(x,4x)
+  Size get enemyBullet;
+}
+
 /// define GameObject's scale, provide information about screen and element size
 /// Singleton class
-class ObjectScalar {
-  static final ObjectScalar _instance = ObjectScalar._privateConstructor();
-  static ObjectScalar get instatnce => _instance;
-  ObjectScalar._privateConstructor();
+class GObjectSize implements _Elements {
+  static final GObjectSize _instance = GObjectSize._privateConstructor();
+  static GObjectSize get instatnce => _instance;
+  GObjectSize._privateConstructor();
 
   _showErr() {
     assert(
@@ -19,8 +34,19 @@ class ObjectScalar {
   /// inital the screenSize, use to generate others elements size
   void init({required Size size}) => _screenSize = size;
 
-  /// screen size
-  Size get screenSize => _screenSize ?? _showErr();
+  @override
+  Size get screen => _screenSize ?? _showErr();
 
-  //todo: create object scaller
+  //todo: make responsive
+  @override
+  Size get enemyShip => const Size(10, 10);
+
+  @override
+  Size get playerShip => const Size(50, 50);
+
+  @override
+  Size get enemyBullet => const Size(5, 5 * 4);
+
+  @override
+  Size get playerBullet => const Size(5, 5 * 4);
 }

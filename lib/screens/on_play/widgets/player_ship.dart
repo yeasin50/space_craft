@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../provider/provider.dart';
 import '../utils/utils.dart';
 
 Widget playerShip() {
   return Container(
-    height: 50,
-    width: 50,
+    height: GObjectSize.instatnce.playerShip.height,
+    width: GObjectSize.instatnce.playerShip.width,
     color: Colors.red,
   );
 }

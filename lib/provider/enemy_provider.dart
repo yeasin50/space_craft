@@ -19,7 +19,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
 class EnemyChangeNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef ref;
   // screen size to control enemy movement
-  Size screenSize = ObjectScalar.instatnce.screenSize;
+  Size screenSize = GObjectSize.instatnce.screen;
 
   EnemyChangeNotifier(this.ref) {
     // _enemyMovement();

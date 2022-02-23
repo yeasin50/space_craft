@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../provider/provider.dart';
 import 'model.dart';
 
 abstract class IShip implements GameObject {
@@ -26,7 +27,7 @@ class Player implements IShip {
   Color get color => Colors.deepPurpleAccent;
 
   @override
-  Size get size => const Size(50, 50);
+  Size get size => GObjectSize.instatnce.playerShip;
 
   @override
   Vector2 get position => _position;
@@ -48,7 +49,7 @@ class EnemyShip implements IShip {
   }
 
   @override
-  Size size = const Size(24, 24);
+  Size size =  GObjectSize.instatnce.enemyShip;
 
   @override
   Color get color => _color;

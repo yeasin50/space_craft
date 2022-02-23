@@ -39,7 +39,7 @@ class GObjectSize implements _Elements {
 
   //todo: make responsive
   @override
-  Size get enemyShip => const Size(10, 10);
+  Size get enemyShip => const Size(24, 24);
 
   @override
   Size get playerShip => const Size(50, 50);

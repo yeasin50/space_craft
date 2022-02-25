@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 abstract class _Elements {
   /// full screen/view size, that will cover by app
@@ -31,8 +31,20 @@ class GObjectSize implements _Elements {
 
   Size? _screenSize;
 
+  ///it will decide the object scale, it will be
+  late double _minLenght;
+
   /// inital the screenSize, use to generate others elements size
-  void init({required Size size}) => _screenSize = size;
+  void init({
+    required Size size,
+  }) {
+    _screenSize = size;
+
+    // can be use `math.min`
+    size.height < size.width
+        ? _minLenght = size.height
+        : _minLenght = size.width;
+  }
 
   @override
   Size get screen => _screenSize ?? _showErr();
@@ -42,7 +54,11 @@ class GObjectSize implements _Elements {
   Size get enemyShip => const Size(24, 24);
 
   @override
-  Size get playerShip => const Size(50, 50);
+  Size get playerShip {
+    debugPrint("screen size: $screen");
+
+    return const Size(50, 50);
+  }
 
   @override
   Size get enemyBullet => const Size(5, 5 * 4);

@@ -58,7 +58,7 @@ class GObjectSize implements _Elements {
   /// ship size is depend on screen size [_minLenght * .075], min ship  Size(50, 50)
   @override
   Size get playerShip {
-    debugPrint("screen size: $screen");
+    // debugPrint("screen size: $screen");
     _showErr();
     const double _scale = .075;
     return Size(
@@ -69,7 +69,7 @@ class GObjectSize implements _Elements {
 
   @override
   Size get healthBox {
-    debugPrint("screen size: $screen");
+    // debugPrint("screen size: $screen");
     _showErr();
     const double _scale = .05;
     return Size(

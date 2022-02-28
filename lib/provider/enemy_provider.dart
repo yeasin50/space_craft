@@ -228,7 +228,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
       );
     }
 
-    debugPrint("blust Number ${_shipsBlustLocation.length}");
+    // debugPrint("blust Number ${_shipsBlustLocation.length}");
     notifyListeners();
   }
 

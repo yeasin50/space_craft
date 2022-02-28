@@ -186,7 +186,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   payingMode() {
     _bulletsMovement();
 
-    debugPrint("playerProvider: PlayingMode");
-    debugPrint("BulletMovement Timer ${_timerBulletMovement == null}");
+    // debugPrint("playerProvider: PlayingMode");
+    // debugPrint("BulletMovement Timer ${_timerBulletMovement == null}");
   }
 }

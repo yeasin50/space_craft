@@ -155,7 +155,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
               position: ship.position.value
                 ..dX = ship.position.dX +
                     ship.size.width / 2 -
-                    EnemyShipBullet.bulletWidth / 2, //precise position
+                    GObjectSize.instatnce.enemyBullet.width /
+                        2, //precise position
             ),
           );
         }

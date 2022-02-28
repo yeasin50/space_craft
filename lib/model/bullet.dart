@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../provider/provider.dart';
 import 'model.dart';
 
 abstract class GameObject {
@@ -14,8 +15,6 @@ abstract class IBullet implements GameObject {
 
 class PlayerShipBullet implements IBullet {
   late final Vector2 _position;
-
-  static const double bulletWidth = 10.0;
 
   PlayerShipBullet({
     required Vector2 position,
@@ -33,14 +32,12 @@ class PlayerShipBullet implements IBullet {
   Vector2 get position => _position;
 
   @override
-  Size get size => const Size(bulletWidth, bulletWidth);
+  Size get size => GObjectSize.instatnce.playerBullet;
 }
 
 class EnemyShipBullet implements IBullet {
   late final Vector2 _position;
   late final Color _color;
-
-  static const double bulletWidth = 5.0;
 
   EnemyShipBullet({
     required Vector2 position,
@@ -60,5 +57,5 @@ class EnemyShipBullet implements IBullet {
   Vector2 get position => _position;
 
   @override
-  Size get size => const Size(bulletWidth, bulletWidth);
+  Size get size => GObjectSize.instatnce.enemyBullet;
 }

@@ -94,7 +94,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
         position: Vector2.fromValue(player.position)
           ..dX = player.position.dX +
               player.size.width / 2 - //fire from top center
-              PlayerShipBullet.bulletWidth / 2, // position on middle
+              GObjectSize.instatnce.playerBullet.width /
+                  2, // position on middle
       ),
     );
     notifyListeners();

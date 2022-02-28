@@ -53,7 +53,14 @@ class GObjectSize implements _Elements {
 
   //todo: make responsive size
   @override
-  Size get enemyShip => const Size(24, 24);
+  Size get enemyShip {
+    _showErr();
+    const double _scale = .04;
+    return Size(
+      _minLenght * _scale,
+      _minLenght * _scale,
+    );
+  }
 
   /// ship size is depend on screen size [_minLenght * .075], min ship  Size(50, 50)
   @override
@@ -71,7 +78,7 @@ class GObjectSize implements _Elements {
   Size get healthBox {
     // debugPrint("screen size: $screen");
     _showErr();
-    const double _scale = .05;
+    const double _scale = .06;
     return Size(
       _minLenght * _scale,
       _minLenght * _scale,
@@ -79,8 +86,22 @@ class GObjectSize implements _Elements {
   }
 
   @override
-  Size get enemyBullet => const Size(5, 5 * 4);
+  Size get enemyBullet {
+    _showErr();
+    const double _scale = .01;
+    return Size(
+      _minLenght * _scale,
+      _minLenght * _scale,
+    );
+  }
 
   @override
-  Size get playerBullet => const Size(5, 5 * 4);
+  Size get playerBullet {
+    _showErr();
+    const double _scale = .013;
+    return Size(
+      _minLenght * _scale,
+      _minLenght * _scale,
+    );
+  }
 }

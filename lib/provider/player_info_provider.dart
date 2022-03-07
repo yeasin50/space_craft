@@ -44,15 +44,16 @@ class PlayerInfoNotifier extends ChangeNotifier {
     required this.ref,
   });
 
-  /// update player vertical position
-  void updateTopPosition(double dY) {
-    player.position.dY = dY;
-    notifyListeners();
-  }
+  /// Update player position
+  void updatePosition({double? dX, double? dY}) {
+    if (dX != null) player.position.dX = dX;
+    if (dY != null) player.position.dY = dY;
 
-  ///update player horizontal position
-  void updateLeftPosition(double dX) {
-    player.position.dX = dX;
+    //todo: create setting for theses
+    _enemyCollisionChecker();
+    _healthBoxCollision();
+    _enemyBulletCollision();
+
     notifyListeners();
   }
 
@@ -69,7 +70,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  _bulletGeneration() {
+  void _bulletGeneration() {
     if (_cancelableOperation != null) {
       _cancelableOperation!.cancel();
     }
@@ -153,6 +154,52 @@ class PlayerInfoNotifier extends ChangeNotifier {
         notifyListeners();
       },
     );
+  }
+
+  /// realTime Collision between EmeyShip on PlayerShip movement.
+  /// while it get touch with playerShip
+  /// used on playerShip movement [updatePosition]
+  /// * this method doesn't notify the update
+  void _enemyCollisionChecker() {
+    final enemyNotifier = ref.read(enemyProvider);
+    List<IShip> removeableEnemy = [];
+    for (final enemy in enemyNotifier.enemies) {
+      if (collisionChecker(a: enemy, b: player)) removeableEnemy.add(enemy);
+    }
+    enemyNotifier.removeEnemies(ships: removeableEnemy);
+    // no need to notify, `removeEnemies` handle this;
+  }
+
+  /// realTime Collision between HealthBox and Player movement
+  /// value will be notifiyed by inner or outine the method
+  /// * this method doesn't notify the update
+  void _healthBoxCollision() {
+    final healthBoxNotifier = ref.read(healingObjectProvider);
+
+    List<GeneralHealingBox> removeableBox = [];
+
+    for (final hb in healthBoxNotifier.healingBoxes) {
+      if (collisionChecker(a: hb, b: player)) {
+        player.health = GeneralHealingBox(iShipHealth: player.health);
+        removeableBox.add(hb);
+      }
+    }
+    healthBoxNotifier.removeBox(healingBox: removeableBox);
+  }
+
+  /// realTime Collision between Enemy's bullets and Player movement
+  /// * this method doesn't notify the update
+  void _enemyBulletCollision() {
+    final enemyNotifier = ref.read(enemyProvider);
+
+    final List<IBullet> removeableBullet = [];
+
+    for (final bullet in enemyNotifier.bullets) {
+      if (collisionChecker(a: bullet, b: player)) {
+        removeableBullet.add(bullet);
+      }
+    }
+    enemyNotifier.removeBullets(bullets: removeableBullet);
   }
 
   //*---------------------------*

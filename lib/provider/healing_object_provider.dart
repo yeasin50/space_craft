@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../extensions/extensions.dart';
 import '../model/model.dart';
 import '../screens/on_play/on_play.dart';
 import 'provider.dart';
@@ -97,6 +98,14 @@ class HealingObjectNotifier extends ChangeNotifier {
         notifyListeners();
       },
     );
+  }
+
+  /// remove `List<GeneralHealingBox>`  while it observed by player
+  void removeBox({
+    required List<GeneralHealingBox> healingBox,
+  }) {
+    _healingBoxes.removeAll(healingBox);
+    notifyListeners();
   }
 
   //*---------------------------*

@@ -16,6 +16,8 @@ class OnPlayScreen extends ConsumerWidget {
       backgroundColor: Colors.black,
       body: LayoutBuilder(
         builder: (context, constraints) {
+          GObjectSize.init(
+              size: Size(constraints.maxWidth, constraints.maxHeight));
           return Stack(
             children: [
               Positioned(

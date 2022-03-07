@@ -21,7 +21,7 @@ class TouchPositionDetector extends StatelessWidget {
         final gameManager = ref.read(gameManagerProvider.notifier);
         return GestureDetector(
           onPanDown: (details) {
-            debugPrint("$gameManager");
+            // debugPrint("$gameManager");
             if (gameManager.mode != GameMode.playing) return;
 
             playerInfo.startShooting();

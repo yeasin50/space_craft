@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../provider/provider.dart';
 import 'model.dart';
 
 /// Damage delear:on bullet, ship
@@ -77,7 +78,7 @@ class NEnemyHealthManager implements IShipHealth {
 class GeneralHealingBox implements IShipHealth, GameObject {
   IShipHealth iShipHealth;
 
-  static const Size boxSize = Size(48, 49);
+  static Size boxSize = GObjectSize.instatnce.healthBox;
 
   final Vector2 _intiObjectPos;
 

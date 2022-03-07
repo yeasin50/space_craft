@@ -6,9 +6,7 @@ A simple game, wanna impliment in flutter.
 
 ## TODO
 
-- [ ] player_info_provider  
-  - try without CancelableOperation  
-  - separate bullets movement of generator operation
+- [ ]  replace `Positioned` with `Aling` widget
 
 ----
 

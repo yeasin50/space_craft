@@ -27,7 +27,7 @@ class GObjectSize implements _Elements {
   _showErr() {
     assert(
       _screenSize != null,
-      "You must call ObjectScalar.init(size: x) first",
+      "You must call GObjectSize.init(size: x) first",
     );
   }
 

@@ -6,9 +6,10 @@ A simple game, wanna impliment in flutter.
 
 ## TODO
 
-- [ ]  replace `Positioned` with `Aling` widget
+- [ ] replace `Positioned` with `Aling` widget
+- [ ] rm unused assets
 
-----
+---
 
 ## ⚠ For game you should use [Flame package](https://pub.dev/packages/flame)
 

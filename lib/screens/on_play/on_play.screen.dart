@@ -23,7 +23,7 @@ class OnPlayScreen extends ConsumerWidget {
               Positioned(
                 top: playerInfo.player.position.dY,
                 left: playerInfo.player.position.dX,
-                child: playerShip(),
+                child: const PlayerShip(),
               ),
 
               // enemy ships and enemy's bullets

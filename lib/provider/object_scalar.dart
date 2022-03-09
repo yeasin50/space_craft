@@ -67,7 +67,7 @@ class GObjectSize implements _Elements {
   Size get playerShip {
     // debugPrint("screen size: $screen");
     _showErr();
-    const double _scale = .075;
+    const double _scale = .10;
     return Size(
       _minLenght * _scale,
       _minLenght * _scale,

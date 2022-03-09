@@ -11,6 +11,7 @@ Widget playerShip() {
   );
 }
 
+/// ship widget represent player
 class PlayerShip extends StatefulWidget {
   const PlayerShip({Key? key}) : super(key: key);
 
@@ -22,7 +23,10 @@ class _PlayerShipState extends State<PlayerShip> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: const Size(400, 400),
+      size: Size(
+        GObjectSize.instatnce.playerShip.width,
+        GObjectSize.instatnce.playerShip.height,
+      ),
       painter: PlayerShipPaint(),
     );
   }

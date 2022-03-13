@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../../provider/provider.dart';
+import '../../../utils/utils.dart';
 import '../../../widget/widget.dart';
 import '../utils/utils.dart';
 
@@ -38,6 +38,22 @@ class PlayerShip extends StatelessWidget {
               GObjectSize.instatnce.playerShip.height,
             ),
             painter: PlayerShipPaint(),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: RotateWidget(
+              reverseOnRepeat: false,
+              rotateAxis: const [false, false, true],
+              // duration: Duration(milliseconds: 200),
+              child: ClipPath(
+                clipper: StarPathClipper(),
+                child: Container(
+                  height: GObjectSize.instatnce.playerShip.height * .5,
+                  width: GObjectSize.instatnce.playerShip.height * .5,
+                  color: Colors.amber,
+                ),
+              ),
+            ),
           ),
         ],
       ),

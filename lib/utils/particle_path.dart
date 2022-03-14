@@ -18,6 +18,24 @@ class ParticlePathClipper extends CustomClipper<Path> {
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
 }
 
+//todo: improve StarPathClipper Path
+
+/// Path to draw star;
+/// ClipPath(clipper: StarPathClipper(),..)
+class _StarPathClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) => Path()
+    ..moveTo(size.width * .25, size.height * .9)
+    ..lineTo(size.width * .5, 0)
+    ..lineTo(size.width * .85, size.height * .9)
+    ..lineTo(size.width * .05, size.height * .3)
+    ..lineTo(size.width * .95, size.height * .3)
+    ..lineTo(size.width * .25, size.height * .9);
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
+}
+
 class StarPathClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) => Path()

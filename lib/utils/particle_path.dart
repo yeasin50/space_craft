@@ -20,7 +20,7 @@ class ParticlePathClipper extends CustomClipper<Path> {
 
 //todo: improve StarPathClipper Path
 
-/// Path to draw star;
+/// Path to draw star:old;
 /// ClipPath(clipper: StarPathClipper(),..)
 class _StarPathClipper extends CustomClipper<Path> {
   @override

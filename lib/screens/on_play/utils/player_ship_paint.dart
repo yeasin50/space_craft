@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
-///. not gonna use paint
 class PlayerShipPaint extends CustomPainter {
+  /// top body color[0]
+  /// bottom body color[1]
+  final List<Color> colors = [
+    Colors.red,
+    Colors.white,
+  ];
   @override
   void paint(Canvas canvas, Size size) {
     final double height = size.height;
     final double width = size.width;
 
     Paint paint = Paint()
-      ..color = Colors.red
+      ..color = colors[0]
       ..style = PaintingStyle.fill;
 
     //starting from left wing
@@ -27,7 +32,7 @@ class PlayerShipPaint extends CustomPainter {
     canvas.drawPath(path, paint);
 
     //* midle part:top
-    paint.color = Colors.redAccent.withOpacity(.8);
+    paint.color = colors[0].withOpacity(.8);
     final topHeadPath = Path()
       ..moveTo(width / 2, 0)
       //left round
@@ -54,7 +59,7 @@ class PlayerShipPaint extends CustomPainter {
 
     canvas.drawPath(topHeadPath, paint);
 
-    //second bloc
+    /// second bloc gradientPaint
     Paint secondBlocPaint = Paint()
       ..shader = RadialGradient(colors: [
         Colors.white,
@@ -88,13 +93,58 @@ class PlayerShipPaint extends CustomPainter {
         width * .55,
         height * .1,
       );
-    canvas.drawPath(secondBloc, paint);
+    canvas.drawPath(secondBloc, secondBlocPaint);
 
-    //mid part
+    //* after middle part
+
+    Paint bottomPaint = Paint()..color = colors[1];
+
+    //bottom curves
+    Path bottomBodyPath = Path()
+      ..moveTo(0, height * .5)
+      ..lineTo(width * .25, height * .5)
+      ..lineTo(width, height * .5)
+      ..lineTo(width, height)
+      ..quadraticBezierTo(
+        /// LEFT CURVE
+        width,
+        height * .5,
+        width * .5,
+        height * .5,
+      )
+      ..moveTo(0, height * .5)
+      ..lineTo(0, height)
+      ..quadraticBezierTo(
+        0,
+        height * .5,
+        width * .5,
+        height * .5,
+      );
+
+    canvas.drawPath(bottomBodyPath, bottomPaint);
+
+    canvas.drawPath(
+      Path()
+        ..moveTo(width / 2, height * .25)
+        ..lineTo(width * .9, height * .6) //mid-right corner
+        ..lineTo(width * .1, height * .6) //mid-left corner
+        ..lineTo(width / 2, height * .25) //top
+        ..moveTo(width * .1, height * .6)
+        // left curve engine fire curve
+        ..lineTo(width * .45, height * .9)
+        ..lineTo(width * .45, height)
+        ..quadraticBezierTo(width * .45, height * .9, width / 2, height * .9)
+        ..lineTo(width / 2, height * .6)
+        // right curve engine fire curve
+        ..moveTo(width / 2, height * .6)
+        ..lineTo(width * .9, height * .6)
+        ..lineTo(width * .55, height * .9)
+        ..lineTo(width * .55, height)
+        ..quadraticBezierTo(width * .55, height * .9, width / 2, height * .9),
+      Paint()..color = colors[1],
+    );
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

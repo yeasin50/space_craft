@@ -27,7 +27,7 @@ class GObjectSize implements _Elements {
   _showErr() {
     assert(
       _screenSize != null,
-      "You must call ObjectScalar.init(size: x) first",
+      "You must call GObjectSize.init(size: x) first",
     );
   }
 
@@ -67,7 +67,7 @@ class GObjectSize implements _Elements {
   Size get playerShip {
     // debugPrint("screen size: $screen");
     _showErr();
-    const double _scale = .075;
+    const double _scale = .10;
     return Size(
       _minLenght * _scale,
       _minLenght * _scale,

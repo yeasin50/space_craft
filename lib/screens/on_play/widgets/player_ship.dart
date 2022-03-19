@@ -40,18 +40,22 @@ class PlayerShip extends StatelessWidget {
             painter: PlayerShipPaint(),
           ),
           Align(
-            alignment: Alignment.center,
+            alignment: const Alignment(0, -.1),
             child: RotateWidget(
               reverseOnRepeat: false,
               rotateAxis: const [false, false, true],
               // duration: Duration(milliseconds: 200),
               child: ClipPath(
                 clipper: StarPathClipper(),
-                child: Container(
-                  height: GObjectSize.instatnce.playerShip.height * .5,
-                  width: GObjectSize.instatnce.playerShip.height * .5,
-                  color: Colors.amber,
-                ),
+                child: () {
+                  final double startSize =
+                      GObjectSize.instatnce.playerShip.height * .45;
+                  return Container(
+                    height: startSize,
+                    width: startSize,
+                    color: Colors.amber,
+                  );
+                }(),
               ),
             ),
           ),

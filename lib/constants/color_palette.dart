@@ -2,11 +2,18 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-const color1 = Color(0xff001eff);
-const color2 = Color(0xff8900ff);
-const color3 = Color(0xffff008d);
+class ColorPallet {
+  static const player = Colors.white;
+  static const enemyA = Color(0xff001eff);
+  static const enemyB = Color(0xff8900ff);
+  static const enemyC = Color(0xffff008d);
+}
 
-List<Color> get _enemyShipColors => [color1, color2, color3];
+List<Color> get _enemyShipColors => [
+      ColorPallet.enemyA,
+      ColorPallet.enemyB,
+      ColorPallet.enemyC,
+    ];
 
 Color get getRandomColor =>
     _enemyShipColors[math.Random().nextInt(_enemyShipColors.length)];

@@ -3,7 +3,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import '../constants/constants.dart';
 import '../model/model.dart';
 import '../screens/on_play/utils/utils.dart';
 import '../extensions/extensions.dart';
@@ -70,7 +69,6 @@ class EnemyChangeNotifier extends ChangeNotifier {
           _generateNxEmeny,
           (index) => EnemyShip(
             position: _enemyInitPosition(),
-            color: getRandomColor,
           ),
         ),
       );

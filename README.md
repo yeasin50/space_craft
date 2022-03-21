@@ -8,6 +8,8 @@ A simple game, wanna impliment in flutter.
 
 - [ ] replace `Positioned` with `Aling` widget
 - [ ] rm unused assets
+- [ ] controll space on enemy generation
+- [ ] controll generationRate
 
 ---
 

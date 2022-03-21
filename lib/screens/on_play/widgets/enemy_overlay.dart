@@ -27,7 +27,8 @@ class EnemyOverlay extends ConsumerWidget {
             top: e.position.dY,
             left: e.position.dX,
             child: EnemyShipWidget(
-              ship: e,
+              // can be changed on provider
+              ship: e as EnemyShip,
             ),
           ),
         ),

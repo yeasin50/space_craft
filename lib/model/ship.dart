@@ -28,6 +28,8 @@ abstract class IShip implements GameObject {
   });
 }
 
+/// playerShip, default life= 3x100,
+///  health is controlled by [PlayerHealthManager]
 class Player implements IShip {
   late final Vector2 _position;
 
@@ -61,8 +63,11 @@ class EnemyShip implements IShip {
   final Vector2 _position;
 
   ///image State, helps to animate currently we have two image per ship
-  /// [0,1]
   // ShipImageState state;
+  ShipImageState _imageState;
+
+  /// enemy ship look, it is the same ship with little movement
+  ShipImageState get imageState => _imageState;
 
   final ShipName _name;
 
@@ -70,7 +75,8 @@ class EnemyShip implements IShip {
     required Vector2 position,
     ShipName? name,
   })  : _position = position,
-        _name = name ?? randomEnemyName;
+        _name = name ?? randomEnemyName,
+        _imageState = ShipImageState.a;
 
   @override
   Size size = GObjectSize.instatnce.enemyShip;
@@ -86,4 +92,13 @@ class EnemyShip implements IShip {
 
   @override
   ShipName get name => _name;
+
+  /// switch image state between A-B while [state] is null. else update [_imageState] based on params
+  void switchImageState({ShipImageState? state}) {
+    state == null
+        ? _imageState == ShipImageState.a
+            ? _imageState == ShipImageState.b
+            : _imageState = ShipImageState.a
+        : _imageState = state;
+  }
 }

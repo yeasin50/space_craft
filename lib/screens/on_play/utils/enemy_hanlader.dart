@@ -7,6 +7,8 @@ import '../../../model/model.dart';
 
 final _random = Random();
 
+//I am using enum to get imagePath because in future I may replace this with animate Paint/Path or rive
+
 ///get random Enemy [ShipName]
 ShipName get randomEnemyName =>
     // sublist to remove playerShip from index:0
@@ -30,4 +32,37 @@ Color getShipColor({required ShipName shipName}) {
     default:
       return Colors.grey;
   }
+}
+
+/// enemy image paths file assets
+String enemyShipImagePath({required EnemyShip enemy}) {
+  const String _baseImagePath = "assets/images/";
+
+  late String imageName;
+
+  switch (enemy.name) {
+    case ShipName.enemyA:
+      imageName = enemy.imageState == ShipImageState.a
+          ? "InvaderA1.png"
+          : "InvaderA2.png";
+      break;
+
+    case ShipName.enemyB:
+      imageName = enemy.imageState == ShipImageState.a
+          ? "InvaderB1.png"
+          : "InvaderB2.png";
+      break;
+
+    case ShipName.enemyC:
+      imageName = enemy.imageState == ShipImageState.a
+          ? "InvaderC1.png"
+          : "InvaderC2.png";
+      break;
+
+    default:
+      assert(true, "Enemy shipName is not reconized");
+      break;
+  }
+
+  return _baseImagePath + imageName;
 }

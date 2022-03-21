@@ -97,7 +97,7 @@ class EnemyShip implements IShip {
   void switchImageState({ShipImageState? state}) {
     state == null
         ? _imageState == ShipImageState.a
-            ? _imageState == ShipImageState.b
+            ? _imageState = ShipImageState.b
             : _imageState = ShipImageState.a
         : _imageState = state;
   }

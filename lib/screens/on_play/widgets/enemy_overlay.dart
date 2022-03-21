@@ -23,12 +23,11 @@ class EnemyOverlay extends ConsumerWidget {
       key: const ValueKey("Enemies Stack"),
       children: [
         ...enemyNotifer.enemies.map(
-          (IShip e) => Positioned(
+          (EnemyShip e) => Positioned(
             top: e.position.dY,
             left: e.position.dX,
             child: EnemyShipWidget(
-              // can be changed on provider
-              ship: e as EnemyShip,
+              ship: e,
             ),
           ),
         ),

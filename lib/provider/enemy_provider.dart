@@ -29,8 +29,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// enemy ship bullets
   List<IBullet> get bullets => _bullets;
 
-  final List<IShip> _enemies = [];
-  List<IShip> get enemies => _enemies;
+  final List<EnemyShip> _enemies = [];
+  List<EnemyShip> get enemies => _enemies;
 
   //enemy generation on different x position
   final math.Random _random = math.Random();
@@ -94,7 +94,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// > * remove enemyShip,
   /// > * decrease playerShip health
   void _enemyMovement() {
-    List<IShip> removeableShip = [];
+    List<EnemyShip> removeableShip = [];
     List<Vector2> addableBulst = [];
 
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
@@ -194,7 +194,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   ///* remove enemy-ships from current: OutSider
   void removeEnemies({
-    required List<IShip> ships,
+    required List<EnemyShip> ships,
   }) {
     _enemies.removeAll(ships);
     notifyListeners();

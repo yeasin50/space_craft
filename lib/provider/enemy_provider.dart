@@ -143,10 +143,10 @@ class EnemyChangeNotifier extends ChangeNotifier {
     _timerBulletGenerator = Timer.periodic(_bulletGeneratorDelay, (timer) {
       if (_enemies.isEmpty) return;
 
-      for (IShip ship in _enemies) {
-        //todo: check if is needed temp
-        //not all enemy will fire
+      for (EnemyShip ship in _enemies) {
+        //* not all enemy will fire, ship image state changes on fire
         if (_random.nextBool()) {
+          _switchEnemyShipState(ship);
           _bullets.add(
             EnemyShipBullet(
               color: ship.color,
@@ -205,6 +205,16 @@ class EnemyChangeNotifier extends ChangeNotifier {
   }) {
     _bullets.removeAll(bullets);
     notifyListeners();
+  }
+
+  /// Ship Movement Effect on fire
+  /// change image state to show a little animation,
+  /// todo: check if we want separate movement controller::timer,
+  void _switchEnemyShipState(EnemyShip enemy) {
+    // enemy.switchImageState();
+    enemy.switchImageState();
+
+    // debugPrint(" ${enemy.imageState}");
   }
 
   ///* track the ship destroy position and show [MagicBall.singleBlust()]

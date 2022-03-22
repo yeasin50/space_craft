@@ -7,7 +7,7 @@ A simple game, wanna impliment in flutter.
 ## TODO
 
 - [ ] score based on EnemyShip
-- [ ] controll space on enemy generation
+- [x] controll space on enemy generation
 - [ ] create two shape for player collision
 - [ ] controll generationRate
 - [ ] bullet rotate effect

@@ -62,7 +62,6 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   ///start Enemy creator,
   void _generateEnemies() {
-    //todo: create handler
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
       _enemies.addAll(
         List.generate(
@@ -78,14 +77,26 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   ///generate random position for enemy
   Vector2 _enemyInitPosition() {
+    late double randX;
+
+    if (enemies.isNotEmpty) {
+      //spacing between last generated ship
+      final double lastShipPosX = _enemies.first.position.dX;
+      do {
+        randX = _random.nextDouble() * screenSize.width;
+      } while ((randX - lastShipPosX).abs() < screenSize.width * .25);
+    } else {
+      randX = _random.nextDouble() * screenSize.width;
+    }
+
     // to avoid boundary confliction
-    final randX = _random.nextDouble() * screenSize.width;
     final dx = randX - 40 < 0
         ? randX + 40
         : randX + 40 > screenSize.width
             ? randX - 40
             : randX;
     //todo: random dY for multi-generation
+
     return Vector2(dX: dx, dY: 0);
   }
 

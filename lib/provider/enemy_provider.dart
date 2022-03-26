@@ -124,7 +124,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
         /// check playerShip colision with enemyShip
         /// remove enemyShip, decrease playerShip health
-        if (collisionChecker(a: enemy, b: player)) {
+        ///* improving enemy colission by dividing ship into two parts,  instead of directly using player size, we will use `GObjectSize.playerShipTopPart` and `GObjectSize.playerShipBottomPart`
+        if (collisionChecker(a: enemy, b: player.bottomPart) ||
+            collisionChecker(a: enemy, b: player.topPart)) {
           removeableShip.add(enemy);
           playerNotifier.updateHeathStatus(DamageOnShipCollision);
           addableBulst.add(enemy.position.value);

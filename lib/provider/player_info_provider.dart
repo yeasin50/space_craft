@@ -164,6 +164,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
     final enemyNotifier = ref.read(enemyProvider);
     List<EnemyShip> removeableEnemy = [];
     for (final enemy in enemyNotifier.enemies) {
+      /// we can also use
+      /// collisionChecker(a: enemy, b: player.bottomPart) || collisionChecker(a: enemy, b: player.topPart))
       if (collisionChecker(a: enemy, b: player)) removeableEnemy.add(enemy);
     }
     enemyNotifier.removeEnemies(ships: removeableEnemy);

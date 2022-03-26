@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/model.dart';
+import '../utils/utils.dart';
 
 class EnemyShipWidget extends StatelessWidget {
   const EnemyShipWidget({
     Key? key,
     required this.ship,
   }) : super(key: key);
-  final IShip ship;
+  final EnemyShip ship;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: ship.size.height,
+    return Image.asset(
+      enemyShipImagePath(enemy: ship),
       width: ship.size.width,
+      height: ship.size.height,
       color: ship.color,
     );
   }

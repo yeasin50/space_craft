@@ -115,7 +115,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
     List<IBullet> removeableBullets = [];
 
     // call enemyProvider and remove theses ship
-    List<IShip> removeableShip = [];
+    List<EnemyShip> removeableShip = [];
 
     // include theses on blustProvider
     List<Vector2> addableBlustPos = [];
@@ -162,7 +162,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   /// * this method doesn't notify the update
   void _enemyCollisionChecker() {
     final enemyNotifier = ref.read(enemyProvider);
-    List<IShip> removeableEnemy = [];
+    List<EnemyShip> removeableEnemy = [];
     for (final enemy in enemyNotifier.enemies) {
       if (collisionChecker(a: enemy, b: player)) removeableEnemy.add(enemy);
     }

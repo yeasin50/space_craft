@@ -1,7 +1,6 @@
-// ignore_for_file: unused_element, non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 
+/// ParticlePathClipper used to show on magicBall and ship destroy effect
 class ParticlePathClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) => Path()
@@ -17,8 +16,6 @@ class ParticlePathClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
 }
-
-//todo: improve StarPathClipper Path
 
 /// Path to draw star:old;
 /// ClipPath(clipper: StarPathClipper(),..)

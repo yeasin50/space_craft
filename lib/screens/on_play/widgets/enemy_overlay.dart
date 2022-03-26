@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:space_craft/widget/widget.dart';
 
 import '../../../model/model.dart';
@@ -22,7 +23,7 @@ class EnemyOverlay extends ConsumerWidget {
       key: const ValueKey("Enemies Stack"),
       children: [
         ...enemyNotifer.enemies.map(
-          (IShip e) => Positioned(
+          (EnemyShip e) => Positioned(
             top: e.position.dY,
             left: e.position.dX,
             child: EnemyShipWidget(
@@ -30,7 +31,7 @@ class EnemyOverlay extends ConsumerWidget {
             ),
           ),
         ),
-        const _EnemyBulletOverlay(),
+        _EnemyBulletOverlay(bullets: enemyNotifer.bullets),
 
         /// bullets overlay
         /// todo: add controller
@@ -49,16 +50,22 @@ class EnemyOverlay extends ConsumerWidget {
 }
 
 /// separate context *if needed widget to minimize the pressure
-class _EnemyBulletOverlay extends ConsumerWidget {
-  const _EnemyBulletOverlay({Key? key}) : super(key: key);
+/// maybe merge on parent
+class _EnemyBulletOverlay extends StatelessWidget {
+  /// enemy bullets passed from parent
+  final List<IBullet> bullets;
+
+  const _EnemyBulletOverlay({
+    Key? key,
+    required this.bullets,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final enemyNotifer = ref.watch(enemyProvider);
+  Widget build(BuildContext context) {
     return Stack(
       key: const ValueKey("Enemies bullet Stack"),
       children: [
-        ...enemyNotifer.bullets.map(
+        ...bullets.map(
           (b) => Positioned(
             top: b.position.dY,
             left: b.position.dX,

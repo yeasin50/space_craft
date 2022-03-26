@@ -3,7 +3,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import '../constants/constants.dart';
 import '../model/model.dart';
 import '../screens/on_play/utils/utils.dart';
 import '../extensions/extensions.dart';
@@ -30,8 +29,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// enemy ship bullets
   List<IBullet> get bullets => _bullets;
 
-  final List<IShip> _enemies = [];
-  List<IShip> get enemies => _enemies;
+  final List<EnemyShip> _enemies = [];
+  List<EnemyShip> get enemies => _enemies;
 
   //enemy generation on different x position
   final math.Random _random = math.Random();
@@ -63,14 +62,12 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   ///start Enemy creator,
   void _generateEnemies() {
-    //todo: create handler
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
       _enemies.addAll(
         List.generate(
           _generateNxEmeny,
           (index) => EnemyShip(
             position: _enemyInitPosition(),
-            color: getRandomColor,
           ),
         ),
       );
@@ -80,14 +77,26 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   ///generate random position for enemy
   Vector2 _enemyInitPosition() {
+    late double randX;
+
+    if (enemies.isNotEmpty) {
+      //spacing between last generated ship
+      final double lastShipPosX = _enemies.first.position.dX;
+      do {
+        randX = _random.nextDouble() * screenSize.width;
+      } while ((randX - lastShipPosX).abs() < screenSize.width * .25);
+    } else {
+      randX = _random.nextDouble() * screenSize.width;
+    }
+
     // to avoid boundary confliction
-    final randX = _random.nextDouble() * screenSize.width;
     final dx = randX - 40 < 0
         ? randX + 40
         : randX + 40 > screenSize.width
             ? randX - 40
             : randX;
     //todo: random dY for multi-generation
+
     return Vector2(dX: dx, dY: 0);
   }
 
@@ -96,7 +105,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// > * remove enemyShip,
   /// > * decrease playerShip health
   void _enemyMovement() {
-    List<IShip> removeableShip = [];
+    List<EnemyShip> removeableShip = [];
     List<Vector2> addableBulst = [];
 
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
@@ -145,10 +154,10 @@ class EnemyChangeNotifier extends ChangeNotifier {
     _timerBulletGenerator = Timer.periodic(_bulletGeneratorDelay, (timer) {
       if (_enemies.isEmpty) return;
 
-      for (IShip ship in _enemies) {
-        //todo: check if is needed temp
-        //not all enemy will fire
+      for (EnemyShip ship in _enemies) {
+        //* not all enemy will fire, ship image state changes on fire
         if (_random.nextBool()) {
+          _switchEnemyShipState(ship);
           _bullets.add(
             EnemyShipBullet(
               color: ship.color,
@@ -196,7 +205,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   ///* remove enemy-ships from current: OutSider
   void removeEnemies({
-    required List<IShip> ships,
+    required List<EnemyShip> ships,
   }) {
     _enemies.removeAll(ships);
     notifyListeners();
@@ -207,6 +216,16 @@ class EnemyChangeNotifier extends ChangeNotifier {
   }) {
     _bullets.removeAll(bullets);
     notifyListeners();
+  }
+
+  /// Ship Movement Effect on fire
+  /// change image state to show a little animation,
+  /// todo: check if we want separate movement controller::timer,
+  void _switchEnemyShipState(EnemyShip enemy) {
+    // enemy.switchImageState();
+    enemy.switchImageState();
+
+    // debugPrint(" ${enemy.imageState}");
   }
 
   ///* track the ship destroy position and show [MagicBall.singleBlust()]

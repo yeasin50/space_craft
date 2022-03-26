@@ -55,10 +55,11 @@ class GObjectSize implements _Elements {
   @override
   Size get enemyShip {
     _showErr();
-    const double _scale = .04;
+    const double _scale = .001;
+    // asset's image 48x32
     return Size(
-      _minLenght * _scale,
-      _minLenght * _scale,
+      48 * _minLenght * _scale,
+      32 * _minLenght * _scale,
     );
   }
 

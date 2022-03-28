@@ -75,6 +75,28 @@ class GObjectSize implements _Elements {
     );
   }
 
+  /// topPortion height factor
+  /// to get bottom use `1-[topHeightFactor]`
+  final double topHeightFactor = 0.35;
+
+  final double topWidthFactor = .5;
+
+  /// top part of player ship based on Paint, This fix expty space player enemy-collision
+  Size get playerShipTopPart {
+    return Size(
+      playerShip.width * topWidthFactor,
+      playerShip.height * topHeightFactor,
+    );
+  }
+
+  /// body part except [playerShipTopPart]; to fix collision
+  Size get playerShipBottomPart {
+    return Size(
+      playerShip.width,
+      playerShip.height * (1 - topHeightFactor),
+    );
+  }
+
   @override
   Size get healthBox {
     // debugPrint("screen size: $screen");

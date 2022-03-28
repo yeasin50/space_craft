@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import '../provider/provider.dart';
 import 'model.dart';
 
-abstract class GameObject {
-  Vector2 get position;
-  Size get size;
-  Color get color;
-}
+
 
 abstract class IBullet implements GameObject {
   int? get id;

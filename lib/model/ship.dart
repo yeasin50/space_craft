@@ -57,6 +57,36 @@ class Player implements IShip {
 
   @override
   ShipName get name => ShipName.player;
+
+  /// covering my mistake with it
+  /// return same as [Player] for collision checkUP
+  GameObject get topPart {
+    Vector2 p = Vector2(
+      dX: position.dX +
+          (size.width *
+              (GObjectSize.instatnce.topWidthFactor /
+                  2)), //top part moving half width
+      dY: position.dY,
+    );
+
+    return PlayerShipBodyPart(
+      position: p,
+      size: GObjectSize.instatnce.playerShipTopPart,
+    );
+  }
+
+  GameObject get bottomPart {
+    Vector2 p = Vector2(
+      dX: position.dX,
+      dY: position.dY + size.height * GObjectSize.instatnce.topHeightFactor,
+    );
+    Size s = Size(
+        size.width, size.height * (1 - GObjectSize.instatnce.topHeightFactor));
+    return PlayerShipBodyPart(
+      position: p,
+      size: s,
+    );
+  }
 }
 
 class EnemyShip implements IShip {

@@ -32,47 +32,12 @@ class PlayerShip extends StatelessWidget {
               ),
             ),
           ),
-
-          /// part test
-
-          Consumer(
-            builder: (context, ref, child) {
-              final player = ref.watch(playerInfoProvider).player;
-              return Positioned(
-                top: player.bottomPart.position.dY,
-                left: player.bottomPart.position.dX,
-                child: Container(
-                  height: player.bottomPart.size.height,
-                  width: player.bottomPart.size.width,
-                  color: Color.fromARGB(255, 240, 255, 24).withOpacity(.5),
-                ),
-              );
-            },
-          ),
-          Consumer(
-            builder: (context, ref, child) {
-              final player = ref.watch(playerInfoProvider).player;
-              return Positioned(
-                top: player.topPart.position.dY,
-                left: player.topPart.position.dX,
-                child: Container(
-                  height: player.topPart.size.height,
-                  width: player.topPart.size.width,
-                  color: Color.fromARGB(255, 2, 17, 231).withOpacity(.5),
-                ),
-              );
-            },
-          ),
-
-          Opacity(
-            opacity: .3,
-            child: CustomPaint(
-              size: Size(
-                GObjectSize.instatnce.playerShip.width,
-                GObjectSize.instatnce.playerShip.height,
-              ),
-              painter: PlayerShipPaint(),
+          CustomPaint(
+            size: Size(
+              GObjectSize.instatnce.playerShip.width,
+              GObjectSize.instatnce.playerShip.height,
             ),
+            painter: PlayerShipPaint(),
           ),
           Align(
             alignment: const Alignment(0, -.1),

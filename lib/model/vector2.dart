@@ -30,4 +30,7 @@ class Vector2 {
       dY: dY ?? this.dY,
     );
   }
+
+  @override
+  String toString() => 'Vector2(dX: $dX, dY: $dY)';
 }

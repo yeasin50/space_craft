@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:space_craft/model/model.dart';
@@ -20,24 +18,24 @@ class ShipMovemntTest extends ConsumerWidget {
       body: RawKeyboardListener(
         focusNode: f,
         onKey: (event) {
-          keyboardMovementHandler(
-              event: event, playerInfoNotifier: playerInfoNotifier);
-          // Vector2 moveTo = playerInfoNotifier.player.position;
-
-          // if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
-          //   playerInfoNotifier.updatePosition(dY: moveTo.dX -= movementRate);
+          // if (event is! RawKeyDownEvent) {
+          //   return;
           // }
-          // if (event.isKeyPressed(LogicalKeyboardKey.arrowRight)) {
-          //   playerInfoNotifier.updatePosition(dY: moveTo.dX += movementRate);
-          // }
-          // if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-          //   // moveTo.dY -= movementRate;
-          //   playerInfoNotifier.updatePosition(dY: moveTo.dY -= movementRate);
-          //   // moveTo = Vector2(dX: 40, dY: 200);
-          // }
-          // if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
-          //   playerInfoNotifier.updatePosition(dY: moveTo.dY += movementRate);
-          // }
+          // keyboardMovementHandler(
+          //     event: event, playerInfoNotifier: playerInfoNotifier);
+          Vector2 moveTo = playerInfoNotifier.player.position;
+//FIXME: movement issue on while pressing and changing key[multi key]
+          if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
+            playerInfoNotifier.updatePosition(dY: moveTo.dX -= movementRate);
+          } else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight)) {
+            playerInfoNotifier.updatePosition(dY: moveTo.dX += movementRate);
+          } else if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+            // moveTo.dY -= movementRate;
+            playerInfoNotifier.updatePosition(dY: moveTo.dY -= movementRate);
+            // moveTo = Vector2(dX: 40, dY: 200);
+          } else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+            playerInfoNotifier.updatePosition(dY: moveTo.dY += movementRate);
+          }
         },
         child: LayoutBuilder(
           builder: (context, constraints) {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:space_craft/model/model.dart';
 
 import '../../provider/provider.dart';
 import '../screens.dart';
@@ -21,26 +20,10 @@ class ShipMovemntTest extends ConsumerWidget {
           if (event is! RawKeyDownEvent) {
             return;
           }
-          // keyboardMovementHandler(
-          //     event: event, playerInfoNotifier: playerInfoNotifier);
-          Vector2 moveTo = playerInfoNotifier.player.position;
-
-          if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
-            moveTo.dX -= movementRate;
-          }
-          if (event.isKeyPressed(LogicalKeyboardKey.arrowRight)) {
-            moveTo.dX += movementRate;
-          }
-          if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-            // moveTo.dY -= movementRate;
-            moveTo.dY -= movementRate;
-            // moveTo = Vector2(dX: 40, dY: 200);
-          }
-          if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
-            moveTo.dY += movementRate;
-          }
-
-          playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
+          keyboardMovementHandler(
+            event: event,
+            playerInfoNotifier: playerInfoNotifier,
+          );
         },
         child: LayoutBuilder(
           builder: (context, constraints) {

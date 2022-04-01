@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:space_craft/model/model.dart';
 
+import '../../../model/model.dart';
 import '../../../provider/provider.dart';
 
 /// update player position by maintaining border
@@ -42,8 +42,6 @@ void updatePlayerPosition({
   }
 }
 
-int clickC = 0;
-
 ///*keyboardMovement update player position by maintaining border
 ///
 /// `playerInfoNotifier` player provider instance, you can pass context too
@@ -54,48 +52,27 @@ void keyboardMovementHandler({
   // required BoxConstraints constraints,
   required RawKeyEvent event,
 }) {
-  if (event is! RawKeyDownEvent) {}
-  final playerCurrentPosition = playerInfoNotifier.player.position;
+  if (event is! RawKeyDownEvent) return;
 
-  /// FIXME:  error on this method
-  final double movementRate = 2.0;
+  const double movementRate = 2.0;
 
-  Vector2 moveTo = playerCurrentPosition;
+  Vector2 moveTo = playerInfoNotifier.player.position;
 
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {
-    debugPrint("> bef  movement: ${moveTo.toString()}");
-    // moveTo.dX -= movementRate;
-    playerInfoNotifier.updatePosition(dY: moveTo.dX -= movementRate);
-    // moveTo = Vector2(dX: 40, dY: 40);
+    moveTo.copyWith(dX: moveTo.dX -= movementRate);
   } else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
       event.isKeyPressed(LogicalKeyboardKey.keyD)) {
-    debugPrint("<bef  movement: ${moveTo.toString()}");
-    playerInfoNotifier.updatePosition(dY: moveTo.dX += movementRate);
-    // moveTo.dX += movementRate;
-    // moveTo = Vector2(dX: 400, dY: 400);
-    debugPrint("${clickC++}");
+    moveTo.copyWith(dX: moveTo.dX += movementRate);
   }
   if (event.isKeyPressed(LogicalKeyboardKey.arrowUp) ||
       event.isKeyPressed(LogicalKeyboardKey.keyW)) {
-    debugPrint("^ bef  movement: ${moveTo.toString()}");
-    // moveTo.dY -= movementRate;
-    playerInfoNotifier.updatePosition(dY: moveTo.dY -= movementRate);
-    // moveTo = Vector2(dX: 40, dY: 200);
+    moveTo.copyWith(dY: moveTo.dY -= movementRate);
   }
   if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
       event.isKeyPressed(LogicalKeyboardKey.keyS)) {
-    // debugPrint("v bef  movement: ${moveTo.toString()}");
-    // moveTo.dY += movementRate;
-    playerInfoNotifier.updatePosition(dY: moveTo.dY += movementRate);
-    // moveTo = Vector2(dX: 440, dY: 100);
+    moveTo.copyWith(dY: moveTo.dY += movementRate);
   }
 
-  debugPrint("After movement: ${moveTo.toString()}");
-
-  updatePlayerPosition(
-    // constraints: GObjectSize.instatnce.screen,
-    playerInfoNotifier: playerInfoNotifier,
-    offset: Offset(moveTo.dX, moveTo.dY),
-  );
+  playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
 }

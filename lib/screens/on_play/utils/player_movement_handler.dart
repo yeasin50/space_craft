@@ -54,6 +54,7 @@ void keyboardMovementHandler({
   // required BoxConstraints constraints,
   required RawKeyEvent event,
 }) {
+  if (event is! RawKeyDownEvent) {}
   final playerCurrentPosition = playerInfoNotifier.player.position;
 
   /// FIXME:  error on this method
@@ -61,26 +62,29 @@ void keyboardMovementHandler({
 
   Vector2 moveTo = playerCurrentPosition;
 
-  if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft)) {
+  if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
+      event.isKeyPressed(LogicalKeyboardKey.keyA)) {
     debugPrint("> bef  movement: ${moveTo.toString()}");
     // moveTo.dX -= movementRate;
     playerInfoNotifier.updatePosition(dY: moveTo.dX -= movementRate);
     // moveTo = Vector2(dX: 40, dY: 40);
-  }
-  if (event.isKeyPressed(LogicalKeyboardKey.arrowRight)) {
+  } else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
+      event.isKeyPressed(LogicalKeyboardKey.keyD)) {
     debugPrint("<bef  movement: ${moveTo.toString()}");
     playerInfoNotifier.updatePosition(dY: moveTo.dX += movementRate);
     // moveTo.dX += movementRate;
     // moveTo = Vector2(dX: 400, dY: 400);
     debugPrint("${clickC++}");
   }
-  if (event.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+  if (event.isKeyPressed(LogicalKeyboardKey.arrowUp) ||
+      event.isKeyPressed(LogicalKeyboardKey.keyW)) {
     debugPrint("^ bef  movement: ${moveTo.toString()}");
     // moveTo.dY -= movementRate;
     playerInfoNotifier.updatePosition(dY: moveTo.dY -= movementRate);
     // moveTo = Vector2(dX: 40, dY: 200);
   }
-  if (event.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+  if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
+      event.isKeyPressed(LogicalKeyboardKey.keyS)) {
     // debugPrint("v bef  movement: ${moveTo.toString()}");
     // moveTo.dY += movementRate;
     playerInfoNotifier.updatePosition(dY: moveTo.dY += movementRate);

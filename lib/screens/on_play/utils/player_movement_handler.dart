@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../model/model.dart';
 import '../../../provider/provider.dart';
+import 'object_collision_checker.dart';
 
 /// update player position by maintaining border
 ///
@@ -56,26 +57,41 @@ void keyboardMovementHandler({
 
   Vector2 moveTo = playerInfoNotifier.player.position;
 
-  //move left
+  //move left; moveable when dX>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {
-    moveTo.copyWith(dX: moveTo.dX -= GObjectSize.instatnce.movementRatio);
+    final double x = moveTo.dX - GObjectSize.instatnce.movementRatio;
+
+    if (x > 0) {
+      moveTo.copyWith(dX: x);
+    }
   }
-  //move right
+  //move right; when dx< screenWidth-playerWidth
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
       event.isKeyPressed(LogicalKeyboardKey.keyD)) {
-    moveTo.copyWith(dX: moveTo.dX += GObjectSize.instatnce.movementRatio);
+    final x = moveTo.dX + GObjectSize.instatnce.movementRatio;
+    if (x <
+        GObjectSize.instatnce.screen.width -
+            playerInfoNotifier.player.size.width) moveTo.copyWith(dX: x);
   }
-  // move up
+  // move up ; when dY>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowUp) ||
       event.isKeyPressed(LogicalKeyboardKey.keyW)) {
-    moveTo.copyWith(dY: moveTo.dY -= GObjectSize.instatnce.movementRatio);
+    final double y = moveTo.dY - GObjectSize.instatnce.movementRatio;
+    if (y > 0) moveTo.copyWith(dY: y);
   }
-  //move down
+  //move down ; dY< screenWidth-playerHeight
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
       event.isKeyPressed(LogicalKeyboardKey.keyS)) {
-    moveTo.copyWith(dY: moveTo.dY += GObjectSize.instatnce.movementRatio);
+    final y = moveTo.dY + GObjectSize.instatnce.movementRatio;
+    if (y <
+        GObjectSize.instatnce.screen.height -
+            GObjectSize.instatnce.playerShip.height) moveTo.copyWith(dY: y);
   }
+  // final collisionPoints = playerMoveable(
+  //   playerSize: playerInfoNotifier.player.size,
+  //   touchPosition: moveTo,
+  // );
 
   playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
 }

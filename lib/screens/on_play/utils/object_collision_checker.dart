@@ -31,19 +31,23 @@ List<BlockedSide> playerMoveable({
 
   List<BlockedSide> blocked = [];
 
-  if (posY >= GObjectSize.instatnce.screen.height - playerSize.height / 2) {
-    blocked.add(BlockedSide.bottom);
-  }
-
-  if (posY <= playerSize.height / 2) {
+  //top collision checker
+  if (posY <= 0) {
     blocked.add(BlockedSide.top);
   }
 
-  if (posX >= GObjectSize.instatnce.screen.width - playerSize.width / 2) {
+  //bottom collision checker
+  if (posY >= GObjectSize.instatnce.screen.height - playerSize.height) {
+    blocked.add(BlockedSide.bottom);
+  }
+
+  // right collision checker
+  if (posX >= GObjectSize.instatnce.screen.width - playerSize.width) {
     blocked.add(BlockedSide.right);
   }
 
-  if (posX <= playerSize.width / 2) {
+  //left collision cheker
+  if (posX <= 0) {
     blocked.add(BlockedSide.left);
   }
 

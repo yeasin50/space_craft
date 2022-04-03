@@ -54,24 +54,27 @@ void keyboardMovementHandler({
 }) {
   if (event is! RawKeyDownEvent) return;
 
-  const double movementRate = 2.0;
-
   Vector2 moveTo = playerInfoNotifier.player.position;
 
+  //move left
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {
-    moveTo.copyWith(dX: moveTo.dX -= movementRate);
-  } else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
-      event.isKeyPressed(LogicalKeyboardKey.keyD)) {
-    moveTo.copyWith(dX: moveTo.dX += movementRate);
+    moveTo.copyWith(dX: moveTo.dX -= GObjectSize.instatnce.movementRatio);
   }
+  //move right
+  else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
+      event.isKeyPressed(LogicalKeyboardKey.keyD)) {
+    moveTo.copyWith(dX: moveTo.dX += GObjectSize.instatnce.movementRatio);
+  }
+  // move up
   if (event.isKeyPressed(LogicalKeyboardKey.arrowUp) ||
       event.isKeyPressed(LogicalKeyboardKey.keyW)) {
-    moveTo.copyWith(dY: moveTo.dY -= movementRate);
+    moveTo.copyWith(dY: moveTo.dY -= GObjectSize.instatnce.movementRatio);
   }
-  if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
+  //move down
+  else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
       event.isKeyPressed(LogicalKeyboardKey.keyS)) {
-    moveTo.copyWith(dY: moveTo.dY += movementRate);
+    moveTo.copyWith(dY: moveTo.dY += GObjectSize.instatnce.movementRatio);
   }
 
   playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);

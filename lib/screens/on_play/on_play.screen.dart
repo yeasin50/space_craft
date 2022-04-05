@@ -12,11 +12,11 @@ class OnPlayScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playerInfo = ref.watch(playerInfoProvider);
-    final f = FocusNode(canRequestFocus: true);
+    final f = FocusNode();
     return RawKeyboardListener(
+      autofocus: true,
       focusNode: f,
       onKey: (event) {
-        // check gameMode state if needed
         keyboardMovementHandler(
           event: event,
           playerInfoNotifier: playerInfo,

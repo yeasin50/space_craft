@@ -52,10 +52,13 @@ void keyboardMovementHandler({
   // required BoxConstraints constraints,
   required RawKeyEvent event,
 }) {
+  debugPrint("keyboardMovementHandler Key pressed ${event.data}");
+
   if (event is! RawKeyDownEvent) return;
 
   Vector2 moveTo = playerInfoNotifier.player.position;
 
+  //FIXME: 1st keyStrock isnto working on [A,S,D,E]
   //move left; moveable when dX>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {

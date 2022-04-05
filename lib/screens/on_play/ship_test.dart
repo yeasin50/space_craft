@@ -16,10 +16,8 @@ class ShipMovemntTest extends ConsumerWidget {
     return Scaffold(
       body: RawKeyboardListener(
         focusNode: f,
+        autofocus: true,
         onKey: (event) {
-          if (event is! RawKeyDownEvent) {
-            return;
-          }
           keyboardMovementHandler(
             event: event,
             playerInfoNotifier: playerInfoNotifier,

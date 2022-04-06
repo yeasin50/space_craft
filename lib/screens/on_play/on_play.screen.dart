@@ -38,32 +38,32 @@ class OnPlayScreen extends ConsumerWidget {
                 ),
 
                 // enemy ships and enemy's bullets
-                // EnemyOverlay(
-                //   constraints: constraints,
-                // ),
+                EnemyOverlay(
+                  constraints: constraints,
+                ),
 
                 //player ship's bullet
-                // ...playerInfo.bullets.map((b) {
-                //   return Positioned(
-                //     top: b.position.dY,
-                //     left: b.position.dX,
-                //     child: BulletWidget(
-                //       bulletHeight: b.size.height,
-                //       color: b.color,
-                //       downward: false,
-                //     ),
-                //   );
-                // }).toList(),
+                ...playerInfo.bullets.map((b) {
+                  return Positioned(
+                    top: b.position.dY,
+                    left: b.position.dX,
+                    child: BulletWidget(
+                      bulletHeight: b.size.height,
+                      color: b.color,
+                      downward: false,
+                    ),
+                  );
+                }).toList(),
 
                 //player Health, ScoreBar
-                // Positioned(
-                //   top: 16,
-                //   left: 16,
-                //   child: ScoreHealthBar(
-                //     heartHeight: 30,
-                //     playerInfoNotifier: playerInfo,
-                //   ),
-                // ),
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: ScoreHealthBar(
+                    heartHeight: 30,
+                    playerInfoNotifier: playerInfo,
+                  ),
+                ),
 
                 // healing Objects
                 const HealingPortionOverlay(),

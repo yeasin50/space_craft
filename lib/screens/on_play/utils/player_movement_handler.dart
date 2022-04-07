@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../model/model.dart';
 import '../../../provider/provider.dart';
+import 'object_collision_checker.dart';
 
 /// update player position by maintaining border
 ///
@@ -58,7 +59,9 @@ void keyboardMovementHandler({
 
   Vector2 moveTo = playerInfoNotifier.player.position;
 
+
   //FIXME: 1st keyStrock isnto working on [A,S,D,E]
+
   //move left; moveable when dX>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {
@@ -72,7 +75,6 @@ void keyboardMovementHandler({
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
       event.isKeyPressed(LogicalKeyboardKey.keyD)) {
     final x = moveTo.dX + GObjectSize.instatnce.movementRatio;
-
     if (x <
         GObjectSize.instatnce.screen.width -
             playerInfoNotifier.player.size.width) {
@@ -90,13 +92,17 @@ void keyboardMovementHandler({
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
       event.isKeyPressed(LogicalKeyboardKey.keyS)) {
     final y = moveTo.dY + GObjectSize.instatnce.movementRatio;
-
     if (y <
         GObjectSize.instatnce.screen.height -
             GObjectSize.instatnce.playerShip.height) {
       moveTo.update(dY: y);
     }
+
   }
+  // final collisionPoints = playerMoveable(
+  //   playerSize: playerInfoNotifier.player.size,
+  //   touchPosition: moveTo,
+  // );
 
   playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
 }

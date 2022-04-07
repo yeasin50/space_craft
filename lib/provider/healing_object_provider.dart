@@ -81,7 +81,7 @@ class HealingObjectNotifier extends ChangeNotifier {
 
         // collusion checking
         for (final box in healingBoxes) {
-          box.position.dY += _boxMovementY;
+          box.position.copyWith(dY: box.position.dY + _boxMovementY);
           //hit with PlayerShip, increase player health and remove box
           if (collisionChecker(a: playerRef.player, b: box)) {
             _healingBoxes.remove(box);

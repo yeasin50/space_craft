@@ -46,8 +46,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   /// Update player position
   void updatePosition({double? dX, double? dY}) {
-    if (dX != null) player.position.dX = dX;
-    if (dY != null) player.position.dY = dY;
+    if (dX != null) player.position.copyWith(dX: dX);
+    if (dY != null) player.position.copyWith(dY: dY);
 
     //todo: create setting for theses
     _enemyCollisionChecker();
@@ -92,11 +92,12 @@ class PlayerInfoNotifier extends ChangeNotifier {
   void _addBullet() {
     _bullets.add(
       PlayerShipBullet(
-        position: Vector2.fromValue(player.position)
-          ..dX = player.position.dX +
+        position: Vector2.fromValue(player.position).copyWith(
+          dX: player.position.dX +
               player.size.width / 2 - //fire from top center
               GObjectSize.instatnce.playerBullet.width /
                   2, // position on middle
+        ),
       ),
     );
     notifyListeners();
@@ -130,7 +131,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
         final enemyNotifier = ref.read(enemyProvider);
 
         for (final b in _bullets) {
-          b.position.dY -= _bulletSpeed;
+          b.position.copyWith(dY: b.position.dY - _bulletSpeed);
           // remove bullet while it is beyond screen:at Top
           if (b.position.dY < 0) removeableBullets.add(b);
 

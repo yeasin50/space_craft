@@ -27,7 +27,7 @@ class TouchPositionDetector extends StatelessWidget {
             playerInfo.startShooting();
             updatePlayerPosition(
               offset: details.localPosition,
-              constraints: constraints,
+              // constraints: constraints,
               playerInfoNotifier: playerInfo,
             );
           },
@@ -43,7 +43,7 @@ class TouchPositionDetector extends StatelessWidget {
             if (gameManager.mode != GameMode.playing) return;
             updatePlayerPosition(
               offset: details.localPosition,
-              constraints: constraints,
+              // constraints: constraints,
               playerInfoNotifier: playerInfo,
             );
           },

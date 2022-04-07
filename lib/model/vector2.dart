@@ -1,3 +1,5 @@
+import 'package:equatable/equatable.dart';
+
 /// Helper class TO hold position in 2D,
 ///`dX = Left to Right` ,,
 ///`dY = Top to Bottom`
@@ -7,7 +9,7 @@ extension V2V on Vector2 {
   Vector2 get value => Vector2(dX: dX, dY: dY);
 }
 
-class Vector2 {
+class Vector2 extends Equatable {
   double dX;
   double dY;
 
@@ -30,4 +32,10 @@ class Vector2 {
       dY: dY ?? this.dY,
     );
   }
+
+  @override
+  String toString() => 'Vector2(dX: $dX, dY: $dY)';
+
+  @override
+  List<Object?> get props => [dX, dY];
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/screens.dart';
-import 'widgetAnimationTest/test.dart';
+import 'screens/on_play/ship_test.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -14,7 +13,7 @@ class App extends StatelessWidget {
         scaffoldBackgroundColor: Colors.black,
       ),
       // home: const TestCases(),
-      home: const OnPlayScreen(),
+      home: ShipMovemntTest(),
       // home: const StartScreen(),
     );
   }

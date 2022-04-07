@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:space_craft/constants/constants.dart';
+
 import '../../provider/provider.dart';
 import '../../widget/widget.dart';
 import 'on_play.dart';
-import 'widgets/widgets.dart';
 
 class OnPlayScreen extends ConsumerWidget {
   const OnPlayScreen({Key? key}) : super(key: key);

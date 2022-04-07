@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:space_craft/widget/widget.dart';
-
 import '../../../model/model.dart';
 import '../../../provider/provider.dart';
+import '../../../widget/widget.dart';
 import 'widgets.dart';
 
 /// enemy ships and enemy's bullets on  [_EnemyBulletOverlay] widget

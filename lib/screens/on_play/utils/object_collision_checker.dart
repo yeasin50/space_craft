@@ -1,7 +1,6 @@
 import 'dart:ui';
 
-import 'package:space_craft/model/model.dart';
-
+import '../../../model/model.dart';
 import '../../../provider/provider.dart';
 
 /// check collision between [GameObject]

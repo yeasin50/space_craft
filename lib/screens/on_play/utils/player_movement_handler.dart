@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../../../model/model.dart';
 import '../../../provider/provider.dart';
-import 'object_collision_checker.dart';
 
 /// update player position by maintaining border
 ///

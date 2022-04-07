@@ -22,7 +22,8 @@ class EnemyOverlay extends ConsumerWidget {
       key: const ValueKey("Enemies Stack"),
       children: [
         ...enemyNotifer.enemies.map(
-          (EnemyShip e) => Positioned(
+          (EnemyShip e) => AnimatedPositioned(
+            duration: GObjectSize.instatnce.animationDuration,
             top: e.position.dY,
             left: e.position.dX,
             child: EnemyShipWidget(
@@ -35,7 +36,8 @@ class EnemyOverlay extends ConsumerWidget {
         /// bullets overlay
         /// todo: add controller
         ...enemyNotifer.shipsBlustLocation.map(
-          (blustLoc) => Positioned(
+          (blustLoc) => AnimatedPositioned(
+            duration: GObjectSize.instatnce.animationDuration,
             top: blustLoc.dY - 20, //minimize the blust size
             left: blustLoc.dX - 20,
             child: const MagicBall.singleBlust(
@@ -65,7 +67,8 @@ class _EnemyBulletOverlay extends StatelessWidget {
       key: const ValueKey("Enemies bullet Stack"),
       children: [
         ...bullets.map(
-          (b) => Positioned(
+          (b) => AnimatedPositioned(
+            duration: GObjectSize.instatnce.animationDuration,
             top: b.position.dY,
             left: b.position.dX,
             child: BulletWidget(

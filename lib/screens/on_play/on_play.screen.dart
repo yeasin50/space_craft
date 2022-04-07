@@ -29,7 +29,8 @@ class OnPlayScreen extends ConsumerWidget {
             );
             return Stack(
               children: [
-                Positioned(
+                AnimatedPositioned(
+                  duration: GObjectSize.instatnce.animationDuration,
                   top: playerInfo.player.position.dY,
                   left: playerInfo.player.position.dX,
                   child: const PlayerShip(),
@@ -42,7 +43,8 @@ class OnPlayScreen extends ConsumerWidget {
 
                 //player ship's bullet
                 ...playerInfo.bullets.map((b) {
-                  return Positioned(
+                  return AnimatedPositioned(
+                    duration: GObjectSize.instatnce.animationDuration,
                     top: b.position.dY,
                     left: b.position.dX,
                     child: BulletWidget(
@@ -54,7 +56,8 @@ class OnPlayScreen extends ConsumerWidget {
                 }).toList(),
 
                 //player Health, ScoreBar
-                Positioned(
+                AnimatedPositioned(
+                  duration: GObjectSize.instatnce.animationDuration,
                   top: 16,
                   left: 16,
                   child: ScoreHealthBar(

@@ -15,6 +15,9 @@ abstract class _Elements {
   Size get enemyBullet;
 
   Size get healthBox;
+
+  /// position movement duration.
+  Duration get animationDuration;
 }
 
 /// define GameObject's scale, provide information about screen and element size
@@ -131,4 +134,7 @@ class GObjectSize implements _Elements {
       _minLenght * _scale,
     );
   }
+
+  @override
+  Duration get animationDuration => const Duration(milliseconds: 50);
 }

@@ -35,7 +35,7 @@ void main(List<String> args) {
 }
 ```
 ## TODO
-
+- [ ] keyboard movement works after tapping
 - [ ] score based on EnemyShip
 - [x] controll space on enemy generation
 - [ ] create two shape for player collision

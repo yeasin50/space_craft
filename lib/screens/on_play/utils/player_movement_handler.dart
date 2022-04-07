@@ -53,9 +53,14 @@ void keyboardMovementHandler({
   // required BoxConstraints constraints,
   required RawKeyEvent event,
 }) {
+  debugPrint("keyboardMovementHandler Key pressed ${event.data}");
+
   if (event is! RawKeyDownEvent) return;
 
   Vector2 moveTo = playerInfoNotifier.player.position;
+
+
+  //FIXME: 1st keyStrock isnto working on [A,S,D,E]
 
   //move left; moveable when dX>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
@@ -63,7 +68,7 @@ void keyboardMovementHandler({
     final double x = moveTo.dX - GObjectSize.instatnce.movementRatio;
 
     if (x > 0) {
-      moveTo.copyWith(dX: x);
+      moveTo.update(dX: x);
     }
   }
   //move right; when dx< screenWidth-playerWidth
@@ -72,13 +77,16 @@ void keyboardMovementHandler({
     final x = moveTo.dX + GObjectSize.instatnce.movementRatio;
     if (x <
         GObjectSize.instatnce.screen.width -
-            playerInfoNotifier.player.size.width) moveTo.copyWith(dX: x);
+            playerInfoNotifier.player.size.width) {
+      moveTo.update(dX: x);
+    }
   }
   // move up ; when dY>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowUp) ||
       event.isKeyPressed(LogicalKeyboardKey.keyW)) {
     final double y = moveTo.dY - GObjectSize.instatnce.movementRatio;
-    if (y > 0) moveTo.copyWith(dY: y);
+
+    if (y > 0) moveTo.update(dY: y);
   }
   //move down ; dY< screenWidth-playerHeight
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
@@ -86,7 +94,10 @@ void keyboardMovementHandler({
     final y = moveTo.dY + GObjectSize.instatnce.movementRatio;
     if (y <
         GObjectSize.instatnce.screen.height -
-            GObjectSize.instatnce.playerShip.height) moveTo.copyWith(dY: y);
+            GObjectSize.instatnce.playerShip.height) {
+      moveTo.update(dY: y);
+    }
+
   }
   // final collisionPoints = playerMoveable(
   //   playerSize: playerInfoNotifier.player.size,

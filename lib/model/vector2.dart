@@ -18,6 +18,15 @@ class Vector2 extends Equatable {
     this.dY = 0,
   });
 
+  //update [Vector2] value
+  void update({
+    double? dX,
+    double? dY,
+  }) {
+    this.dX = dX ?? this.dX;
+    this.dY = dY ?? this.dY;
+  }
+
   //to avoid value by reference
   factory Vector2.fromValue(Vector2 v) {
     return Vector2(dX: v.dX, dY: v.dY);

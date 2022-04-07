@@ -81,8 +81,9 @@ class GObjectSize implements _Elements {
 
   final double topWidthFactor = .5;
 
+  ///todo: create Settings for sensivity
   ///player movement px on keyboard action: [keyboardMovementHandler]
-  double get movementRatio => _minLenght * .01;
+  double get movementRatio => screen.width * .02;
 
   /// top part of player ship based on Paint, This fix expty space player enemy-collision
   Size get playerShipTopPart {

@@ -231,12 +231,13 @@ class PlayerInfoNotifier extends ChangeNotifier {
   /// stop player, bullet,generator
   pauseMode() {
     _timerBulletMovement?.cancel();
+    stopShooting();
   }
 
   /// start player bullets movement
   payingMode() {
     _bulletsMovement();
-
+    startShooting();
     // debugPrint("playerProvider: PlayingMode");
     // debugPrint("BulletMovement Timer ${_timerBulletMovement == null}");
   }

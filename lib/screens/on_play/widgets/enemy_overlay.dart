@@ -6,18 +6,18 @@ import '../../../widget/widget.dart';
 import 'widgets.dart';
 
 /// enemy ships and enemy's bullets on  [_EnemyBulletOverlay] widget
-class EnemyOverlay extends ConsumerWidget {
+class EnemyOverlay extends StatelessWidget {
   const EnemyOverlay({
     Key? key,
     required this.constraints,
+    required this.enemyNotifer,
   }) : super(key: key);
 
   final BoxConstraints constraints;
+  final EnemyChangeNotifier enemyNotifer;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final enemyNotifer = ref.watch(enemyProvider);
-
+  Widget build(BuildContext context) {
     return Stack(
       key: const ValueKey("Enemies Stack"),
       children: [

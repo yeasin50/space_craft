@@ -92,7 +92,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   void _addBullet() {
     _bullets.add(
       PlayerShipBullet(
-        position: Vector2.fromValue(player.position).copyWith(
+        position: player.position.copyWith(
           dX: player.position.dX +
               player.size.width / 2 - //fire from top center
               GObjectSize.instatnce.playerBullet.width /

@@ -52,7 +52,7 @@ void keyboardMovementHandler({
   // required BoxConstraints constraints,
   required RawKeyEvent event,
 }) {
-  debugPrint("keyboardMovementHandler Key pressed ${event.data}");
+  // debugPrint("keyboardMovementHandler Key pressed ${event.data}");
 
   if (event is! RawKeyDownEvent) return;
 

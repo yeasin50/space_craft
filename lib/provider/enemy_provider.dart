@@ -115,7 +115,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
       final player = playerNotifier.player;
 
       for (final enemy in _enemies) {
-        enemy.position.copyWith(dY: enemy.position.dY + enemyMovementPY);
+        enemy.position.update(dY: enemy.position.dY + enemyMovementPY);
 
         if (enemy.position.dY > screenSize.height) {
           removeableShip.add(enemy);
@@ -188,7 +188,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
       List<IBullet> removeableBullets = [];
 
       for (final b in _bullets) {
-        b.position.copyWith(dY: b.position.dY + bulletMoventPY);
+        b.position.update(dY: b.position.dY + bulletMoventPY);
 
         //check bullet collision with player collision or beyond screen
         final bool _c = collisionChecker(b: b, a: playerNotifier.player);

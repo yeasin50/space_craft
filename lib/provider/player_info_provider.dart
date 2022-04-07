@@ -131,7 +131,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
         final enemyNotifier = ref.read(enemyProvider);
 
         for (final b in _bullets) {
-          b.position.copyWith(dY: b.position.dY - _bulletSpeed);
+          b.position.update(dY: b.position.dY - _bulletSpeed);
           // remove bullet while it is beyond screen:at Top
           if (b.position.dY < 0) removeableBullets.add(b);
 

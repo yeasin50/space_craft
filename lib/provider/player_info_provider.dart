@@ -46,8 +46,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   /// Update player position
   void updatePosition({double? dX, double? dY}) {
-    if (dX != null) player.position.copyWith(dX: dX);
-    if (dY != null) player.position.copyWith(dY: dY);
+    if (dX != null) player.position.update(dX: dX);
+    if (dY != null) player.position.update(dY: dY);
 
     //todo: create setting for theses
     _enemyCollisionChecker();

@@ -234,6 +234,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   ///* track the ship destroy position and show [MagicBall.singleBlust()]
   /// need to shrink the size, max blust can be `_maxBlustNumber:10`
   /// blust effect cant be controlled/pasue by GameManager
+  /// todo: blust will be replaced by rive effect
   final List<Vector2> _shipsBlustLocation = [];
 
   /// ships positions on (player bullet) destroy, used to show blust
@@ -246,7 +247,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   /// * add blustPosition from outSide
   /// add [Vector2] to show blust , used this method on [_enemyShipCollision]
-  /// method for future purpose:audio
+  /// method for future purpose:audio;
+  ///* `notifyListeners();` is hadled by parent method
   void addBlusts(List<Vector2> v2) {
     _shipsBlustLocation.insertAll(0, v2);
 
@@ -257,9 +259,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
         _shipsBlustLocation.length,
       );
     }
-
     // debugPrint("blust Number ${_shipsBlustLocation.length}");
-    notifyListeners();
   }
 
   //*---------------------------*

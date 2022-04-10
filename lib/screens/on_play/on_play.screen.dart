@@ -19,7 +19,7 @@ class OnPlayScreen extends StatelessWidget {
         return Consumer(
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
-            final enemyNotifer = ref.read(enemyProvider);
+            final enemyNotifer = ref.watch(enemyProvider);
             return RawKeyboardListener(
               autofocus: true,
               focusNode: f,

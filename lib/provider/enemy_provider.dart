@@ -210,6 +210,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   void removeEnemies({
     required List<EnemyShip> ships,
   }) {
+    if (ships.isEmpty) return;
     _enemies.removeAll(ships);
     notifyListeners();
   }
@@ -217,6 +218,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   void removeBullets({
     required List<IBullet> bullets,
   }) {
+    if (bullets.isEmpty) return;
     _bullets.removeAll(bullets);
     notifyListeners();
   }
@@ -248,8 +250,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// * add blustPosition from outSide
   /// add [Vector2] to show blust , used this method on [_enemyShipCollision]
   /// method for future purpose:audio;
-  ///* `notifyListeners();` is hadled by parent method
   void addBlusts(List<Vector2> v2) {
+    if (v2.isEmpty) return;
+    debugPrint("add blust");
     _shipsBlustLocation.insertAll(0, v2);
 
     /// reduce size while list becomes `_maxBlustNumber`
@@ -259,6 +262,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
         _shipsBlustLocation.length,
       );
     }
+    notifyListeners();
     // debugPrint("blust Number ${_shipsBlustLocation.length}");
   }
 

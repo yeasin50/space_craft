@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../../../model/model.dart';
 import '../../../provider/provider.dart';
-import 'object_collision_checker.dart';
 
 /// update player position by maintaining border
 ///
@@ -53,7 +52,7 @@ void keyboardMovementHandler({
   // required BoxConstraints constraints,
   required RawKeyEvent event,
 }) {
-  debugPrint("keyboardMovementHandler Key pressed ${event.data}");
+  // debugPrint("keyboardMovementHandler Key pressed ${event.data}");
 
   if (event is! RawKeyDownEvent) return;
 

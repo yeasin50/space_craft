@@ -3,9 +3,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
+import '../extensions/extensions.dart';
 import '../model/model.dart';
 import '../screens/on_play/utils/utils.dart';
-import '../extensions/extensions.dart';
 import 'provider.dart';
 
 final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
@@ -210,6 +210,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   void removeEnemies({
     required List<EnemyShip> ships,
   }) {
+    if (ships.isEmpty) return;
     _enemies.removeAll(ships);
     notifyListeners();
   }
@@ -217,6 +218,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   void removeBullets({
     required List<IBullet> bullets,
   }) {
+    if (bullets.isEmpty) return;
     _bullets.removeAll(bullets);
     notifyListeners();
   }
@@ -234,6 +236,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   ///* track the ship destroy position and show [MagicBall.singleBlust()]
   /// need to shrink the size, max blust can be `_maxBlustNumber:10`
   /// blust effect cant be controlled/pasue by GameManager
+  /// todo: blust will be replaced by rive effect
   final List<Vector2> _shipsBlustLocation = [];
 
   /// ships positions on (player bullet) destroy, used to show blust
@@ -246,8 +249,10 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   /// * add blustPosition from outSide
   /// add [Vector2] to show blust , used this method on [_enemyShipCollision]
-  /// method for future purpose:audio
+  /// method for future purpose:audio;
   void addBlusts(List<Vector2> v2) {
+    if (v2.isEmpty) return;
+    debugPrint("add blust");
     _shipsBlustLocation.insertAll(0, v2);
 
     /// reduce size while list becomes `_maxBlustNumber`
@@ -257,9 +262,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
         _shipsBlustLocation.length,
       );
     }
-
-    // debugPrint("blust Number ${_shipsBlustLocation.length}");
     notifyListeners();
+    // debugPrint("blust Number ${_shipsBlustLocation.length}");
   }
 
   //*---------------------------*

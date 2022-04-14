@@ -15,7 +15,9 @@ class HealingPortionOverlay extends ConsumerWidget {
     return Stack(
       children: [
         ...healthBoxNotifer.map((hb) {
-          return Positioned(
+          return AnimatedPositioned(
+            key: ValueKey(hb),
+            duration: GObjectSize.instatnce.animationDuration,
             left: hb.position.dX,
             top: hb.position.dY,
             child: RotateWidget(

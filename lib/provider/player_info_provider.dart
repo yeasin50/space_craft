@@ -46,8 +46,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   /// Update player position
   void updatePosition({double? dX, double? dY}) {
-    if (dX != null) player.position.copyWith(dX: dX);
-    if (dY != null) player.position.copyWith(dY: dY);
+    if (dX != null) player.position.update(dX: dX);
+    if (dY != null) player.position.update(dY: dY);
 
     //todo: create setting for theses
     _enemyCollisionChecker();
@@ -71,9 +71,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   void _bulletGeneration() {
-    if (_cancelableOperation != null) {
-      _cancelableOperation!.cancel();
-    }
+    ///todo: can be replaced with simple just `Timer`
+    _cancelableOperation?.cancel();
 
     _cancelableOperation = CancelableOperation.fromFuture(
       Future.delayed(bulletGenerateRate),
@@ -92,7 +91,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   void _addBullet() {
     _bullets.add(
       PlayerShipBullet(
-        position: Vector2.fromValue(player.position).copyWith(
+        position: player.position.copyWith(
           dX: player.position.dX +
               player.size.width / 2 - //fire from top center
               GObjectSize.instatnce.playerBullet.width /
@@ -237,6 +236,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   /// start player bullets movement
   payingMode() {
     _bulletsMovement();
+    // todo: set controller for touch and keyboard mode; disable on touch mode
     startShooting();
     // debugPrint("playerProvider: PlayingMode");
     // debugPrint("BulletMovement Timer ${_timerBulletMovement == null}");

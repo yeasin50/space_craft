@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:space_craft/constants/color_palette.dart';
+
+import '../constants/color_palette.dart';
 
 /// A circular neon Background/frame with little [Animation] of [Colors]
 ///this is repeated Animation using 4 colors.

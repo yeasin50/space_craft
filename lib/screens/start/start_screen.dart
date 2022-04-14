@@ -2,12 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import 'package:space_craft/constants/constants.dart';
-import 'package:space_craft/utils/angle_conversion.dart';
-import 'package:space_craft/widget/widget.dart';
-
-import '../../packages/packages.dart';
-import 'start.dart';
+import '../../constants/constants.dart';
+import '../../widget/widget.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({Key? key}) : super(key: key);

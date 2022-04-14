@@ -52,7 +52,7 @@ class OnPlayScreen extends StatelessWidget {
                     //player ship's bullet
                     ...playerInfo.bullets.map((b) {
                       return AnimatedPositioned(
-                        key: ValueKey(b),
+                        key: UniqueKey(),
                         duration: GObjectSize.instatnce.animationDuration,
                         top: b.position.dY,
                         left: b.position.dX,

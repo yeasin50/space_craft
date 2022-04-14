@@ -19,7 +19,6 @@ class OnPlayScreen extends StatelessWidget {
         return Consumer(
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
-            final enemyNotifer = ref.watch(enemyProvider);
             return RawKeyboardListener(
               autofocus: true,
               focusNode: f,
@@ -42,11 +41,7 @@ class OnPlayScreen extends StatelessWidget {
                     ),
 
                     // enemy ships and enemy's bullets
-                    EnemyOverlay(
-                      key: const ValueKey("EnemyOverlay"),
-                      enemyNotifer: enemyNotifer,
-                      constraints: constraints,
-                    ),
+                    EnemyOverlay(key: UniqueKey()),
 
                     //todo:fixed blust and animate
                     //player ship's bullet

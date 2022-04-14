@@ -6,18 +6,14 @@ import '../../../widget/widget.dart';
 import 'widgets.dart';
 
 /// enemy ships and enemy's bullets on  [_EnemyBulletOverlay] widget
-class EnemyOverlay extends StatelessWidget {
+class EnemyOverlay extends ConsumerWidget {
   const EnemyOverlay({
     Key? key,
-    required this.constraints,
-    required this.enemyNotifer,
   }) : super(key: key);
 
-  final BoxConstraints constraints;
-  final EnemyChangeNotifier enemyNotifer;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enemyNotifer = ref.watch(enemyProvider);
     return Stack(
       key: const ValueKey("Enemies Stack"),
       children: [
@@ -32,7 +28,6 @@ class EnemyOverlay extends StatelessWidget {
             ),
           ),
         ),
-        _EnemyBulletOverlay(bullets: enemyNotifer.bullets),
 
         /// bullets overlay
         /// todo: add controller
@@ -45,7 +40,22 @@ class EnemyOverlay extends StatelessWidget {
               radius: 40,
             ),
           ),
-        )
+        ),
+        // _EnemyBulletOverlay(bullets: enemyNotifer.bullets),
+
+        /// bullets overlay
+        /// todo: blust will be replaced by rive
+        /// FIXME:  blust not working
+        // ...enemyNotifer.shipsBlustLocation.map(
+        //   (blustLoc) => Positioned(
+        //     // duration: GObjectSize.instatnce.animationDuration,
+        //     top: blustLoc.dY - 20, //minimize the blust size
+        //     left: blustLoc.dX - 20,
+        //     child: const MagicBall.singleBlust(
+        //       radius: 40,
+        //     ),
+        //   ),
+        // )
       ],
     );
   }

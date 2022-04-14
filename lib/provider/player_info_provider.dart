@@ -71,9 +71,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   void _bulletGeneration() {
-    if (_cancelableOperation != null) {
-      _cancelableOperation!.cancel();
-    }
+    ///todo: can be replaced with simple just `Timer`
+    _cancelableOperation?.cancel();
 
     _cancelableOperation = CancelableOperation.fromFuture(
       Future.delayed(bulletGenerateRate),
@@ -237,6 +236,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   /// start player bullets movement
   payingMode() {
     _bulletsMovement();
+    // todo: set controller for touch and keyboard mode; disable on touch mode
     startShooting();
     // debugPrint("playerProvider: PlayingMode");
     // debugPrint("BulletMovement Timer ${_timerBulletMovement == null}");

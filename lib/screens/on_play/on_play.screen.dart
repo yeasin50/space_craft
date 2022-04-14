@@ -10,8 +10,8 @@ class OnPlayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final f = FocusNode();
-
     return LayoutBuilder(
+      key: const ValueKey("PrLa"),
       builder: (context, constraints) {
         GObjectSize.init(
           size: Size(constraints.maxWidth, constraints.maxHeight),
@@ -34,7 +34,7 @@ class OnPlayScreen extends StatelessWidget {
                 body: Stack(
                   children: [
                     AnimatedPositioned(
-                      key: const ValueKey("playerShipAnimatedPosition"),
+                      key: const ValueKey("Player Ship Widget"),
                       duration: GObjectSize.instatnce.animationDuration,
                       top: playerInfo.player.position.dY,
                       left: playerInfo.player.position.dX,
@@ -43,7 +43,7 @@ class OnPlayScreen extends StatelessWidget {
 
                     // enemy ships and enemy's bullets
                     EnemyOverlay(
-                      key: UniqueKey(),
+                      key: const ValueKey("EnemyOverlay"),
                       enemyNotifer: enemyNotifer,
                       constraints: constraints,
                     ),
@@ -51,9 +51,9 @@ class OnPlayScreen extends StatelessWidget {
                     //todo:fixed blust and animate
                     //player ship's bullet
                     ...playerInfo.bullets.map((b) {
-                      return Positioned(
-                        // key: UniqueKey(),
-                        // duration: GObjectSize.instatnce.animationDuration,
+                      return AnimatedPositioned(
+                        key: ValueKey(b),
+                        duration: GObjectSize.instatnce.animationDuration,
                         top: b.position.dY,
                         left: b.position.dX,
                         child: BulletWidget(
@@ -66,7 +66,6 @@ class OnPlayScreen extends StatelessWidget {
 
                     //player Health, ScoreBar
                     Positioned(
-                      // duration: GObjectSize.instatnce.animationDuration,
                       top: 16,
                       left: 16,
                       child: ScoreHealthBar(
@@ -76,7 +75,7 @@ class OnPlayScreen extends StatelessWidget {
                     ),
 
                     // healing Objects
-                    // const HealingPortionOverlay(),
+                    const HealingPortionOverlay(),
 
                     /// special power player
 

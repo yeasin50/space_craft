@@ -23,6 +23,7 @@ class EnemyOverlay extends StatelessWidget {
       children: [
         ...enemyNotifer.enemies.map(
           (EnemyShip e) => AnimatedPositioned(
+            key: ValueKey(e),
             duration: GObjectSize.instatnce.animationDuration,
             top: e.position.dY,
             left: e.position.dX,
@@ -36,8 +37,8 @@ class EnemyOverlay extends StatelessWidget {
         /// bullets overlay
         /// todo: add controller
         ...enemyNotifer.shipsBlustLocation.map(
-          (blustLoc) => AnimatedPositioned(
-            duration: GObjectSize.instatnce.animationDuration,
+          (blustLoc) => Positioned(
+            key: ValueKey(blustLoc),
             top: blustLoc.dY - 20, //minimize the blust size
             left: blustLoc.dX - 20,
             child: const MagicBall.singleBlust(
@@ -68,6 +69,7 @@ class _EnemyBulletOverlay extends StatelessWidget {
       children: [
         ...bullets.map(
           (b) => AnimatedPositioned(
+            key: ValueKey(b),
             duration: GObjectSize.instatnce.animationDuration,
             top: b.position.dY,
             left: b.position.dX,

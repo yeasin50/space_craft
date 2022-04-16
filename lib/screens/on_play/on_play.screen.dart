@@ -43,7 +43,7 @@ class OnPlayScreen extends StatelessWidget {
 
                     // enemy ships and enemy's bullets
                     EnemyOverlay(
-                      key: const ValueKey("EnemyOverlay"),
+                      key: const ValueKey("EnemyOverlay key"),
                       enemyNotifer: enemyNotifer,
                       constraints: constraints,
                     ),
@@ -52,7 +52,7 @@ class OnPlayScreen extends StatelessWidget {
                     //player ship's bullet
                     ...playerInfo.bullets.map((b) {
                       return AnimatedPositioned(
-                        key: UniqueKey(),
+                        key: ValueKey(b),
                         duration: GObjectSize.instatnce.animationDuration,
                         top: b.position.dY,
                         left: b.position.dX,
@@ -81,6 +81,7 @@ class OnPlayScreen extends StatelessWidget {
 
                     /// detect touch on bottom
                     TouchPositionDetector(
+                      key: const ValueKey("TouchPositionDetector key"),
                       constraints: constraints,
                     ),
 

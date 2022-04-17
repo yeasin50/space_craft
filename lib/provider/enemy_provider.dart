@@ -252,7 +252,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// method for future purpose:audio;
   void addBlusts(List<Vector2> v2) {
     if (v2.isEmpty) return;
-    debugPrint("add blust");
+    // debugPrint("add blust");
     _shipsBlustLocation.insertAll(0, v2);
 
     /// reduce size while list becomes `_maxBlustNumber`

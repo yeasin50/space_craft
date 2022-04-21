@@ -56,52 +56,62 @@ void keyboardMovementHandler({
 
   if (event is! RawKeyDownEvent) return;
 
-  Vector2 moveTo = playerInfoNotifier.player.position;
+  Vector2 moveTo = playerInfoNotifier.player.position.copyWith();
 
-
-  //FIXME: 1st keyStrock isnto working on [A,S,D,E]
+  //FIXME: 1st keyStrock isnto working on [A,S,D,E]:
+  //hint; maybe fixed by changing longPressed delayed
 
   //move left; moveable when dX>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {
     final double x = moveTo.dX - GObjectSize.instatnce.movementRatio;
 
-    if (x > 0) {
-      moveTo.update(dX: x);
-    }
+    moveTo.update(dX: x < 0 ? 0 : x);
+    // if (x >= 0) {
+    //   debugPrint("keyboardMovementHandler: show left glowing border");
+    // }
   }
+
   //move right; when dx< screenWidth-playerWidth
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
       event.isKeyPressed(LogicalKeyboardKey.keyD)) {
     final x = moveTo.dX + GObjectSize.instatnce.movementRatio;
-    if (x <
-        GObjectSize.instatnce.screen.width -
-            playerInfoNotifier.player.size.width) {
-      moveTo.update(dX: x);
-    }
+    final maxPossibleX = GObjectSize.instatnce.screen.width -
+        playerInfoNotifier.player.size.width;
+
+    moveTo.update(dX: x > maxPossibleX ? maxPossibleX : x);
+    // if (x > maxPossibleX) {
+    //   debugPrint("keyboardMovementHandler: glow right wall");
+    // }
   }
   // move up ; when dY>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowUp) ||
       event.isKeyPressed(LogicalKeyboardKey.keyW)) {
     final double y = moveTo.dY - GObjectSize.instatnce.movementRatio;
 
-    if (y > 0) moveTo.update(dY: y);
+    moveTo.update(dY: y < 0 ? 0 : y);
+    // if (y < 0) {
+    //   debugPrint("keyboardMovementHandler: glow Up");
+    // }
   }
   //move down ; dY< screenWidth-playerHeight
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
       event.isKeyPressed(LogicalKeyboardKey.keyS)) {
     final y = moveTo.dY + GObjectSize.instatnce.movementRatio;
-    if (y <
-        GObjectSize.instatnce.screen.height -
-            GObjectSize.instatnce.playerShip.height) {
-      moveTo.update(dY: y);
-    }
+    final possibleHeight = GObjectSize.instatnce.screen.height -
+        GObjectSize.instatnce.playerShip.height;
 
+    moveTo.update(dY: y > possibleHeight ? possibleHeight : y);
+
+    // if (y >= possibleHeight) {
+    //   debugPrint("keyboardMovementHandler: glow down");
+    // }
   }
-  // final collisionPoints = playerMoveable(
-  //   playerSize: playerInfoNotifier.player.size,
-  //   touchPosition: moveTo,
-  // );
 
-  playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
+  if (playerInfoNotifier.player.position != moveTo) {
+    playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
+    debugPrint("update value");
+  } else {
+    debugPrint("isnot updating");
+  }
 }

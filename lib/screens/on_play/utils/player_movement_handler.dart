@@ -110,8 +110,8 @@ void keyboardMovementHandler({
 
   if (playerInfoNotifier.player.position != moveTo) {
     playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
-    debugPrint("update value");
+    // debugPrint("update value");
   } else {
-    debugPrint("isnot updating");
+    // debugPrint("isnot updating");
   }
 }

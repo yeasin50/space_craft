@@ -58,6 +58,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
   void startShooting() {
     //can include a bullet just on tap,
     player.shoot = true;
+
+    _timer?.cancel();
     _timer = Timer.periodic(bulletGenerateRate, (timer) {
       _addBullet();
     });

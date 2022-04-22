@@ -63,28 +63,30 @@ class EnemyChangeNotifier extends ChangeNotifier {
   ///start Enemy creator,
   void _generateEnemies() {
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
+      List<double> _blockXPosition = [];
+
       _enemies.addAll(
-        List.generate(
-          _generateNxEmeny,
-          (index) => EnemyShip(
-            position: _enemyInitPosition(),
-          ),
-        ),
+        List.generate(_generateNxEmeny, (index) {
+          return EnemyShip(
+            position: _enemyInitPosition(_blockXPosition),
+          );
+        }),
       );
       notifyListeners();
     });
   }
 
   ///generate random position for enemy
-  Vector2 _enemyInitPosition() {
+  Vector2 _enemyInitPosition(List<double>? blockXList) {
     late double randX;
 
     if (enemies.isNotEmpty) {
       //spacing between last generated ship
-      final double lastShipPosX = _enemies.first.position.dX;
+      //FIXME:  handle enemy generator spacing
+      final double lastShipPosX = _enemies.last.position.dX;
       do {
         randX = _random.nextDouble() * screenSize.width;
-      } while ((randX - lastShipPosX).abs() < screenSize.width * .25);
+      } while ((randX - lastShipPosX).abs() > screenSize.width * .25);
     } else {
       randX = _random.nextDouble() * screenSize.width;
     }
@@ -95,8 +97,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
         : randX + 40 > screenSize.width
             ? randX - 40
             : randX;
-    //todo: random dY for multi-generation
 
+    final dy = -_random.nextDouble() * (screenSize.height * .15);
+    debugPrint("randX : $randX");
     return Vector2(dX: dx, dY: 0);
   }
 
@@ -157,7 +160,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
       if (_enemies.isEmpty) return;
 
       for (EnemyShip ship in _enemies) {
-        //* not all enemy will fire, ship image state changes on fire
+        //fire only when ship is visible on ui
+        if (ship.position.dY < ship.size.height) continue;
+
         if (_random.nextBool()) {
           _switchEnemyShipState(ship);
           _bullets.add(

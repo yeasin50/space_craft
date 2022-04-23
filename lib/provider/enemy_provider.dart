@@ -63,12 +63,10 @@ class EnemyChangeNotifier extends ChangeNotifier {
   ///start Enemy creator,
   void _generateEnemies() {
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
-      List<double> _blockXPosition = [];
-
       _enemies.addAll(
         List.generate(_generateNxEmeny, (index) {
           return EnemyShip(
-            position: _enemyInitPosition(_blockXPosition),
+            position: _enemyInitPosition(),
           );
         }),
       );
@@ -77,9 +75,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   }
 
   ///generate random position for enemy
-  Vector2 _enemyInitPosition(List<double>? blockXList) {
-    double randX;
-
+  Vector2 _enemyInitPosition() {
     // if (enemies.isNotEmpty) {
     //spacing between last generated ship
     //FIXME:  handle enemy generator spacing
@@ -89,7 +85,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
     //   } while (
     //       (randX - _enemies.last.position.dX).abs() < screenSize.width * .15);
     // } else {
-    randX = _random.nextDouble() * screenSize.width;
+    double randX = _random.nextDouble() * screenSize.width;
     // }
 
     // to avoid boundary confliction

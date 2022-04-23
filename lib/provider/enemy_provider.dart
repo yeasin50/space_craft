@@ -78,18 +78,19 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   ///generate random position for enemy
   Vector2 _enemyInitPosition(List<double>? blockXList) {
-    late double randX;
+    double randX;
 
-    if (enemies.isNotEmpty) {
-      //spacing between last generated ship
-      //FIXME:  handle enemy generator spacing
-      final double lastShipPosX = _enemies.last.position.dX;
-      do {
-        randX = _random.nextDouble() * screenSize.width;
-      } while ((randX - lastShipPosX).abs() > screenSize.width * .25);
-    } else {
-      randX = _random.nextDouble() * screenSize.width;
-    }
+    // if (enemies.isNotEmpty) {
+    //spacing between last generated ship
+    //FIXME:  handle enemy generator spacing
+    //   do {
+    //     randX = _random.nextDouble() * screenSize.width;
+    //     debugPrint("inner $randX");
+    //   } while (
+    //       (randX - _enemies.last.position.dX).abs() < screenSize.width * .15);
+    // } else {
+    randX = _random.nextDouble() * screenSize.width;
+    // }
 
     // to avoid boundary confliction
     final dx = randX - 40 < 0
@@ -99,8 +100,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
             : randX;
 
     final dy = -_random.nextDouble() * (screenSize.height * .15);
-    debugPrint("randX : $randX");
-    return Vector2(dX: dx, dY: 0);
+    return Vector2(dX: dx, dY: dy);
   }
 
   /// move downward and destroy while it is downSide:enemyShip

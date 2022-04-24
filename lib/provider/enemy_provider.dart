@@ -64,12 +64,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
   void _generateEnemies() {
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
       _enemies.addAll(
-        List.generate(
-          _generateNxEmeny,
-          (index) => EnemyShip(
+        List.generate(_generateNxEmeny, (index) {
+          return EnemyShip(
             position: _enemyInitPosition(),
-          ),
-        ),
+          );
+        }),
       );
       notifyListeners();
     });
@@ -77,17 +76,17 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   ///generate random position for enemy
   Vector2 _enemyInitPosition() {
-    late double randX;
-
-    if (enemies.isNotEmpty) {
-      //spacing between last generated ship
-      final double lastShipPosX = _enemies.first.position.dX;
-      do {
-        randX = _random.nextDouble() * screenSize.width;
-      } while ((randX - lastShipPosX).abs() < screenSize.width * .25);
-    } else {
-      randX = _random.nextDouble() * screenSize.width;
-    }
+    // if (enemies.isNotEmpty) {
+    //spacing between last generated ship
+    //FIXME:  handle enemy generator spacing
+    //   do {
+    //     randX = _random.nextDouble() * screenSize.width;
+    //     debugPrint("inner $randX");
+    //   } while (
+    //       (randX - _enemies.last.position.dX).abs() < screenSize.width * .15);
+    // } else {
+    double randX = _random.nextDouble() * screenSize.width;
+    // }
 
     // to avoid boundary confliction
     final dx = randX - 40 < 0
@@ -95,9 +94,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
         : randX + 40 > screenSize.width
             ? randX - 40
             : randX;
-    //todo: random dY for multi-generation
 
-    return Vector2(dX: dx, dY: 0);
+    final dy = -_random.nextDouble() * (screenSize.height * .15);
+    return Vector2(dX: dx, dY: dy);
   }
 
   /// move downward and destroy while it is downSide:enemyShip
@@ -106,7 +105,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// > * decrease playerShip health
   void _enemyMovement() {
     List<EnemyShip> removeableShip = [];
-    List<Vector2> addableBulst = [];
+    List<Vector2> addableBlast = [];
 
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
       if (_enemies.isEmpty) return;
@@ -129,7 +128,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
             collisionChecker(a: enemy, b: player.topPart)) {
           removeableShip.add(enemy);
           playerNotifier.updateHeathStatus(DamageOnShipCollision);
-          addableBulst.add(enemy.position.value);
+          addableBlast.add(enemy.position.value);
         }
       }
       // debugPrint("total enemyShip: ${_enemies.length}");
@@ -139,9 +138,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
         _enemies.removeAll(removeableShip);
         removeableShip.clear();
       }
-      if (addableBulst.isNotEmpty) {
-        addBlusts(addableBulst);
-        addableBulst.clear();
+      if (addableBlast.isNotEmpty) {
+        addblasts(addableBlast);
+        addableBlast.clear();
       }
 
       notifyListeners();
@@ -157,7 +156,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
       if (_enemies.isEmpty) return;
 
       for (EnemyShip ship in _enemies) {
-        //* not all enemy will fire, ship image state changes on fire
+        //fire only when ship is visible on ui
+        if (ship.position.dY < ship.size.height) continue;
+
         if (_random.nextBool()) {
           _switchEnemyShipState(ship);
           _bullets.add(
@@ -233,37 +234,37 @@ class EnemyChangeNotifier extends ChangeNotifier {
     // debugPrint(" ${enemy.imageState}");
   }
 
-  ///* track the ship destroy position and show [MagicBall.singleBlust()]
-  /// need to shrink the size, max blust can be `_maxBlustNumber:10`
-  /// blust effect cant be controlled/pasue by GameManager
-  /// todo: blust will be replaced by rive effect
-  final List<Vector2> _shipsBlustLocation = [];
+  ///* track the ship destroy position and show [MagicBall.singleblast()]
+  /// need to shrink the size, max blast can be `_maxblastNumber:10`
+  /// blast effect cant be controlled/pasue by GameManager
+  /// todo: blast will be replaced by rive effect
+  final List<Vector2> _shipsBlastLocation = [];
 
-  /// ships positions on (player bullet) destroy, used to show blust
-  List<Vector2> get shipsBlustLocation => _shipsBlustLocation;
+  /// ships positions on (player bullet) destroy, used to show blast
+  List<Vector2> get shipsblastLocation => _shipsBlastLocation;
 
-  /// number of blust can shown on ui, used to reduce the object
-  final int _maxBlustNumber = 10;
+  /// number of blast can shown on ui, used to reduce the object
+  final int _maxblastNumber = 10;
 
   //todo: add setter
 
-  /// * add blustPosition from outSide
-  /// add [Vector2] to show blust , used this method on [_enemyShipCollision]
+  /// * add blastPosition from outSide
+  /// add [Vector2] to show blast , used this method on [_enemyShipCollision]
   /// method for future purpose:audio;
-  void addBlusts(List<Vector2> v2) {
+  void addblasts(List<Vector2> v2) {
     if (v2.isEmpty) return;
-    // debugPrint("add blust");
-    _shipsBlustLocation.insertAll(0, v2);
+    // debugPrint("add blast");
+    _shipsBlastLocation.insertAll(0, v2);
 
-    /// reduce size while list becomes `_maxBlustNumber`
-    if (_shipsBlustLocation.length > _maxBlustNumber) {
-      _shipsBlustLocation.removeRange(
-        _maxBlustNumber ~/ 2,
-        _shipsBlustLocation.length,
+    /// reduce size while list becomes `_maxblastNumber`
+    if (_shipsBlastLocation.length > _maxblastNumber) {
+      _shipsBlastLocation.removeRange(
+        _maxblastNumber ~/ 2,
+        _shipsBlastLocation.length,
       );
     }
     notifyListeners();
-    // debugPrint("blust Number ${_shipsBlustLocation.length}");
+    // debugPrint("blast Number ${_shipsblastLocation.length}");
   }
 
   //*---------------------------*

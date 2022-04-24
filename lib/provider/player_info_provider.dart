@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/model.dart';
@@ -33,8 +32,6 @@ class PlayerInfoNotifier extends ChangeNotifier {
   List<IBullet> get bullets => _bullets;
   final List<IBullet> _bullets = [];
 
-  //todo: try without CancelableOperation
-  CancelableOperation? _cancelableOperation;
   Timer? _timer;
 
   //bullet movement  controller
@@ -46,8 +43,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   /// Update player position
   void updatePosition({double? dX, double? dY}) {
-    if (dX != null) player.position.update(dX: dX);
-    if (dY != null) player.position.update(dY: dY);
+    player.position.update(dX: dX, dY: dY);
 
     //todo: create setting for theses
     _enemyCollisionChecker();
@@ -57,35 +53,22 @@ class PlayerInfoNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///start player bullet generation and movement
   void startShooting() {
     //can include a bullet just on tap,
     player.shoot = true;
-    _bulletGeneration();
+
+    _timer?.cancel();
+    _timer = Timer.periodic(bulletGenerateRate, (timer) {
+      _addBullet();
+    });
+    _bulletsMovement();
   }
 
   void stopShooting() {
     player.shoot = false;
-    _cancelableOperation?.cancel();
     _timer?.cancel();
     notifyListeners();
-  }
-
-  void _bulletGeneration() {
-    ///todo: can be replaced with simple just `Timer`
-    _cancelableOperation?.cancel();
-
-    _cancelableOperation = CancelableOperation.fromFuture(
-      Future.delayed(bulletGenerateRate),
-    ).then((p0) {
-      _timer = Timer.periodic(bulletGenerateRate, (timer) {
-        _addBullet();
-      });
-      _bulletsMovement();
-    }, onCancel: () {
-      _timer?.cancel();
-
-      _timer = null;
-    });
   }
 
   void _addBullet() {
@@ -108,7 +91,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   /// * remove enemy on bullet collision, removeable object on removeable list
   /// * destroy EnemyShip and player bullet on collision
   /// * increase score while bullet hit enemyShip
-  /// * add blust while destroying ship
+  /// * add blast while destroying ship
   void _bulletsMovement() {
     //* variables to hold and perform operation all at once
     // remove theses from player `_bullets`
@@ -117,8 +100,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
     // call enemyProvider and remove theses ship
     List<EnemyShip> removeableShip = [];
 
-    // include theses on blustProvider
-    List<Vector2> addableBlustPos = [];
+    // include theses on blastProvider
+    List<Vector2> addableblastPos = [];
 
     // this timer is active on playing mode
     if (_timerBulletMovement != null && _timerBulletMovement!.isActive) return;
@@ -139,7 +122,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
             if (collisionChecker(a: enemyShip, b: b)) {
               removeableShip.add(enemyShip);
               removeableBullets.add(b);
-              addableBlustPos.add(enemyShip.position);
+              addableblastPos.add(enemyShip.position);
               scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
             }
           }
@@ -147,8 +130,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
         // removed removeable object
         _bullets.removeAll(removeableBullets);
         enemyNotifier.removeEnemies(ships: removeableShip);
-        enemyNotifier.addBlusts(addableBlustPos);
-        addableBlustPos.clear();
+        enemyNotifier.addblasts(addableblastPos);
+        addableblastPos.clear();
         removeableBullets.clear();
         removeableShip.clear();
         notifyListeners();

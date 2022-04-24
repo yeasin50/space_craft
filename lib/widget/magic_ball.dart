@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 
 import '../utils/utils.dart';
 
-/// [MagicBall] animate particles from center, keep creation on every `blustDelay`
+/// [MagicBall] animate particles from center, keep creation on every `blastDelay`
 
 /// default constructor for MagicBall
 /// ```
 /// const MagicBall(
 ///     radius: 150,
 ///     numberOfParticles: 10,
-///     blustDelay: Duration(milliseconds: 400),
+///     blastDelay: Duration(milliseconds: 400),
 ///   ),
 /// ```
 
-/// [MagicBall.singleBlust] generate `numberOfParticles:10` only for single time
+/// [MagicBall.singleblast] generate `numberOfParticles:10` only for single time
 ///
 ///```
-/// const MagicBall.singleBlust(
-///    blustDelay: Duration(milliseconds: 0),
+/// const MagicBall.singleblast(
+///    blastDelay: Duration(milliseconds: 0),
 ///    numberOfParticles: 10,
 ///    radius: 150,
 ///   ),
@@ -29,37 +29,37 @@ class MagicBall extends StatefulWidget {
     Key? key,
     this.radius = 150,
     this.numberOfParticles = 10,
-    this.blustDelay = const Duration(milliseconds: 400),
+    this.blastDelay = const Duration(milliseconds: 400),
   })  : repeated = true,
         showRing = true,
         super(key: key);
 
-  const MagicBall.singleBlust({
+  const MagicBall.singleBlast({
     Key? key,
     this.radius = 150,
     this.numberOfParticles = 10,
-    this.blustDelay = const Duration(milliseconds: 0),
+    this.blastDelay = const Duration(milliseconds: 0),
   })  : repeated = false,
         showRing = false,
         super(key: key);
 
   /// `showRign` is used to show the outter circle/ring. Only needed when showing magicBall or start screen
   /// `false` disable `decoration` on and used on ship destroy Effect
-  ///  true for [MagicBall], false for [MagicBall.singleBlust]
+  ///  true for [MagicBall], false for [MagicBall.singleblast]
   final bool showRing;
 
   /// used to create magicBall `Size(radius*2,radius*2)`
   final double radius;
 
-  /// generate `numberOfParticles`  on  every blust
+  /// generate `numberOfParticles`  on  every blast
   final int numberOfParticles;
 
-  /// Continuous particle creation on every `blustDelay`, default true for [MagicBall], false for [MagicBall.singleBlust]
+  /// Continuous particle creation on every `blastDelay`, default true for [MagicBall], false for [MagicBall.singleblast]
   final bool repeated;
 
-  /// repeated blust will generate on every `blustDelay`
-  /// default  [MagicBall.singleBlust] `blustDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 miliSec.
-  final Duration blustDelay;
+  /// repeated blast will generate on every `blastDelay`
+  /// default  [MagicBall.singleblast] `blastDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 miliSec.
+  final Duration blastDelay;
 
   @override
   _MagicBallState createState() => _MagicBallState();
@@ -89,7 +89,7 @@ class _MagicBallState extends State<MagicBall> {
     super.initState();
 
     widgetSize = Size(widget.radius * 2, widget.radius * 2);
-    _timer = Timer.periodic(widget.blustDelay, (timer) {
+    _timer = Timer.periodic(widget.blastDelay, (timer) {
       particles.addAll(
         List.generate(
           widget.numberOfParticles,
@@ -123,7 +123,7 @@ class _MagicBallState extends State<MagicBall> {
     return ClipOval(
       child: Container(
         //todo: fixing explosion position
-        //* we can use `widget.showRing` or `widget.repeated` while both is false on [MagicBall.singleBlust()]
+        //* we can use `widget.showRing` or `widget.repeated` while both is false on [MagicBall.singleblast()]
         width: widgetSize.width,
         height: widgetSize.height,
         decoration: widget.showRing

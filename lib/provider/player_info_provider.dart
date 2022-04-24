@@ -91,7 +91,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   /// * remove enemy on bullet collision, removeable object on removeable list
   /// * destroy EnemyShip and player bullet on collision
   /// * increase score while bullet hit enemyShip
-  /// * add blust while destroying ship
+  /// * add blast while destroying ship
   void _bulletsMovement() {
     //* variables to hold and perform operation all at once
     // remove theses from player `_bullets`
@@ -100,8 +100,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
     // call enemyProvider and remove theses ship
     List<EnemyShip> removeableShip = [];
 
-    // include theses on blustProvider
-    List<Vector2> addableBlustPos = [];
+    // include theses on blastProvider
+    List<Vector2> addableblastPos = [];
 
     // this timer is active on playing mode
     if (_timerBulletMovement != null && _timerBulletMovement!.isActive) return;
@@ -122,7 +122,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
             if (collisionChecker(a: enemyShip, b: b)) {
               removeableShip.add(enemyShip);
               removeableBullets.add(b);
-              addableBlustPos.add(enemyShip.position);
+              addableblastPos.add(enemyShip.position);
               scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
             }
           }
@@ -130,8 +130,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
         // removed removeable object
         _bullets.removeAll(removeableBullets);
         enemyNotifier.removeEnemies(ships: removeableShip);
-        enemyNotifier.addBlusts(addableBlustPos);
-        addableBlustPos.clear();
+        enemyNotifier.addblasts(addableblastPos);
+        addableblastPos.clear();
         removeableBullets.clear();
         removeableShip.clear();
         notifyListeners();

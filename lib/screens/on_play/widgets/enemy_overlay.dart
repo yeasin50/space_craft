@@ -36,12 +36,12 @@ class EnemyOverlay extends StatelessWidget {
 
         /// bullets overlay
         /// todo: add controller
-        ...enemyNotifer.shipsBlustLocation.map(
-          (blustLoc) => Positioned(
-            key: ValueKey(blustLoc),
-            top: blustLoc.dY - 20, //minimize the blust size
-            left: blustLoc.dX - 20,
-            child: const MagicBall.singleBlust(
+        ...enemyNotifer.shipsblastLocation.map(
+          (blastLoc) => Positioned(
+            key: ValueKey(blastLoc),
+            top: blastLoc.dY - 20, //minimize the blast size
+            left: blastLoc.dX - 20,
+            child: const MagicBall.singleBlast(
               radius: 40,
             ),
           ),

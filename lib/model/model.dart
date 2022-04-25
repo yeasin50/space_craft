@@ -6,3 +6,4 @@ export 'particle.dart';
 export 'score_management.dart';
 export 'ship.dart';
 export 'vector2.dart';
+export 'setting.dart';

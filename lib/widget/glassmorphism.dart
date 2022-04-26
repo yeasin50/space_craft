@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:space_craft/constants/color_palette.dart';
 
 class GlassMorphism extends StatelessWidget {
   GlassMorphism({
@@ -28,10 +29,10 @@ class GlassMorphism extends StatelessWidget {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(opacity),
+            color: ColorPallet.glassMorphism.withOpacity(opacity),
             borderRadius: _borderRadius,
             border: Border.all(
-              color: Colors.white.withOpacity(.2),
+              color: ColorPallet.glassMorphism.withOpacity(.2),
             ),
           ),
           child: child,

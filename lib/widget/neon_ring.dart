@@ -41,6 +41,8 @@ class NeonRingWidget extends StatefulWidget {
   /// default [rotationIncrementRate] is 5 degree
   final double rotationIncrementRate;
 
+  final Widget? child;
+
   const NeonRingWidget({
     Key? key,
     required this.colorSet,
@@ -50,6 +52,7 @@ class NeonRingWidget extends StatefulWidget {
     required this.radius,
     this.rotation = true,
     this.rotationIncrementRate = 5.0,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -113,6 +116,7 @@ class _NeonRingWidgetState extends State<NeonRingWidget> {
           ),
           width: widget.radius * 2,
           height: widget.radius * 2,
+          child: widget.child,
         ),
       ),
     );

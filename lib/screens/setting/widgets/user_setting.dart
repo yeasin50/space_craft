@@ -19,51 +19,47 @@ class SettingView extends ConsumerWidget {
       color: Color.fromARGB(245, 252, 252, 252),
       fontWeight: FontWeight.bold,
     );
-    return Center(
-      child: SingleChildScrollView(
-        child: GlassMorphism(
-          blur: 1,
-          opacity: .4,
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "User Setting",
-                  style: textStyleTitle,
-                ),
-                const SizedBox(height: 16),
-                musicSetting(settings, textStyle),
-                soundSetting(settings, textStyle),
-                effectSetting(settings, textStyle),
-                const SizedBox(height: 16),
-                movementSensivity(
-                  settings,
-                  titleTextStyle: textStyleTitle,
-                  textStyle: textStyle,
-                ),
-                const SizedBox(height: 16),
-                playMode(settings, textStyleTitle),
-                const SizedBox(height: 16),
-                controlMode(settings, textStyleTitle),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: 124,
-                  child: CustomButton(
-                    value: false,
-                    defaultColor: Colors.deepPurpleAccent,
-                    text: "Reset",
-                    callback: () {
-                      settings.defaultSetting();
-                    },
-                  ),
-                ),
-              ],
+    return GlassMorphism(
+      blur: 1,
+      opacity: .4,
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              "User Setting",
+              style: textStyleTitle,
             ),
-          ),
+            const SizedBox(height: 16),
+            musicSetting(settings, textStyle),
+            soundSetting(settings, textStyle),
+            effectSetting(settings, textStyle),
+            const SizedBox(height: 16),
+            movementSensivity(
+              settings,
+              titleTextStyle: textStyleTitle,
+              textStyle: textStyle,
+            ),
+            const SizedBox(height: 16),
+            playMode(settings, textStyleTitle),
+            const SizedBox(height: 16),
+            controlMode(settings, textStyleTitle),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: 124,
+              child: CustomButton(
+                value: false,
+                defaultColor: Colors.deepPurpleAccent,
+                text: "Reset",
+                callback: () {
+                  settings.defaultSetting();
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

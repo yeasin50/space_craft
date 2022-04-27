@@ -1,224 +1,88 @@
 import 'package:flutter/material.dart';
 
-import '../../../extensions/extensions.dart';
-import '../../../model/model.dart';
-import '../../../provider/provider.dart';
+import '../../../constants/constants.dart';
 import '../../../widget/widget.dart';
-import 'custom_button.dart';
+import 'user_setting.dart';
 
-class SettingView extends ConsumerWidget {
-  const SettingView({Key? key}) : super(key: key);
+///contains [SettingView] with animated close button
+class SettingDialogWidget extends StatefulWidget {
+  /// notify to show/animate the dilaog,
+  /// for true value it will start aniamting forward; open the dialog
+  /// for false it will reverse the animation means close the dialog
+  final ValueNotifier<bool> dialogVisibleStateNotifier;
+
+  /// [ScaleTransition] duration, defaul 400 milisec
+  final Duration duration;
+
+  const SettingDialogWidget({
+    Key? key,
+    required this.dialogVisibleStateNotifier,
+    this.duration = const Duration(milliseconds: 400),
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ref) {
-    final UserSetting settings = ref.watch<UserSetting>(userSettingProvider);
-    const TextStyle textStyle = TextStyle(
-      color: Color.fromARGB(255, 135, 152, 158),
+  State<SettingDialogWidget> createState() => _SettingDialogWidgetState();
+}
+
+class _SettingDialogWidgetState extends State<SettingDialogWidget>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: widget.duration,
+      vsync: this,
     );
-    const TextStyle textStyleTitle = TextStyle(
-      color: Color.fromARGB(245, 252, 252, 252),
-      fontWeight: FontWeight.bold,
-    );
-    return Center(
-      child: SingleChildScrollView(
-        child: GlassMorphism(
-          blur: 1,
-          opacity: .4,
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "User Setting",
-                  style: textStyleTitle,
-                ),
-                const SizedBox(height: 16),
-                musicSetting(settings, textStyle),
-                soundSetting(settings, textStyle),
-                effectSetting(settings, textStyle),
-                const SizedBox(height: 16),
-                movementSensivity(
-                  settings,
-                  titleTextStyle: textStyleTitle,
-                  textStyle: textStyle,
-                ),
-                const SizedBox(height: 16),
-                playMode(settings, textStyleTitle),
-                const SizedBox(height: 16),
-                controlMode(settings, textStyleTitle),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: 124,
-                  child: CustomButton(
-                    value: false,
-                    defaultColor: Colors.deepPurpleAccent,
-                    text: "Reset",
-                    callback: () {
-                      settings.defaultSetting();
-                    },
-                  ),
-                ),
-              ],
-            ),
+
+    _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
+
+    widget.dialogVisibleStateNotifier.addListener(() {
+      if (widget.dialogVisibleStateNotifier.value) {
+        _controller.forward();
+      } else {
+        _controller.reverse();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    //TODO: recheck
+    widget.dialogVisibleStateNotifier.removeListener(() {});
+    widget.dialogVisibleStateNotifier.dispose();
+    super.dispose();
+  }
+
+  void _toggle() {
+    widget.dialogVisibleStateNotifier.value =
+        !widget.dialogVisibleStateNotifier.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ScaleTransition(
+            scale: _animation,
+            child: const SettingView(),
           ),
-        ),
+          InkWell(
+            onTap: _toggle,
+            child: const NeonRingWidget(
+              colorSet: colorSet0,
+              rotation: false,
+              radius: 15,
+              frameThickness: 4,
+            ),
+          )
+        ],
       ),
-    );
-  }
-
-  Widget controlMode(UserSetting settings, TextStyle textStyle) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          "Controll mode",
-          style: textStyle,
-        ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: ControlMode.values.map(
-            (cMode) {
-              return CustomButton(
-                text: cMode.name.sentenceCase,
-                value: settings.controlMode == cMode,
-                callback: () {
-                  settings.update(controlMode: cMode);
-                },
-              );
-            },
-          ).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget playMode(UserSetting settings, TextStyle textStyle) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          "Play Mode",
-          style: textStyle,
-        ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: PlayMode.values.map(
-            (mode) {
-              return CustomButton(
-                text: mode.name.sentenceCase,
-                value: settings.playmode == mode,
-                callback: () {
-                  settings.update(playMode: mode);
-                },
-              );
-            },
-          ).toList(),
-        ),
-      ],
-    );
-  }
-
-  Row effectSetting(UserSetting settings, TextStyle textStyle) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          "Effect",
-          style: textStyle,
-        ),
-        Switch(
-          value: settings.effect,
-          onChanged: (v) {
-            settings.update(
-              effect: !settings.effect,
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Row soundSetting(UserSetting settings, TextStyle textStyle) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          "Sound",
-          style: textStyle,
-        ),
-        Switch(
-          value: settings.sound,
-          onChanged: (v) {
-            settings.update(
-              sound: !settings.sound,
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Row musicSetting(UserSetting settings, TextStyle textStyle) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          "Music",
-          style: textStyle,
-        ),
-        Switch(
-          value: settings.music,
-          onChanged: (v) {
-            settings.update(
-              music: !settings.music,
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget movementSensivity(
-    UserSetting settings, {
-    required TextStyle titleTextStyle,
-    required TextStyle textStyle,
-  }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          "Sensivity",
-          style: titleTextStyle,
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "Slow",
-              style: textStyle,
-            ),
-            Slider(
-              min: settings.minSensivity,
-              max: settings.maxSensivity,
-              value: settings.movementSensivity,
-              onChanged: (value) {
-                settings.update(
-                  movementSensitvity: value,
-                );
-              },
-            ),
-            Text(
-              "Fast",
-              style: textStyle,
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

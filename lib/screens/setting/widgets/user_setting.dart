@@ -9,16 +9,18 @@ import 'custom_button.dart';
 class SettingView extends ConsumerWidget {
   const SettingView({Key? key}) : super(key: key);
 
+  static const TextStyle _textStyle = TextStyle(
+    color: Color.fromARGB(255, 135, 152, 158),
+  );
+
+  static const TextStyle _textStyleTitle = TextStyle(
+    color: Color.fromARGB(245, 252, 252, 252),
+    fontWeight: FontWeight.bold,
+  );
   @override
   Widget build(BuildContext context, ref) {
     final UserSetting settings = ref.watch<UserSetting>(userSettingProvider);
-    const TextStyle textStyle = TextStyle(
-      color: Color.fromARGB(255, 135, 152, 158),
-    );
-    const TextStyle textStyleTitle = TextStyle(
-      color: Color.fromARGB(245, 252, 252, 252),
-      fontWeight: FontWeight.bold,
-    );
+
     return GlassMorphism(
       blur: 1,
       opacity: .4,
@@ -31,22 +33,22 @@ class SettingView extends ConsumerWidget {
           children: [
             const Text(
               "User Setting",
-              style: textStyleTitle,
+              style: _textStyleTitle,
             ),
             const SizedBox(height: 16),
-            musicSetting(settings, textStyle),
-            soundSetting(settings, textStyle),
-            effectSetting(settings, textStyle),
+            musicSetting(settings, _textStyle),
+            soundSetting(settings, _textStyle),
+            effectSetting(settings, _textStyle),
             const SizedBox(height: 16),
             movementSensivity(
               settings,
-              titleTextStyle: textStyleTitle,
-              textStyle: textStyle,
+              titleTextStyle: _textStyleTitle,
+              textStyle: _textStyle,
             ),
             const SizedBox(height: 16),
-            playMode(settings, textStyleTitle),
+            playMode(settings, _textStyleTitle),
             const SizedBox(height: 16),
-            controlMode(settings, textStyleTitle),
+            controlMode(settings, _textStyleTitle),
             const SizedBox(height: 24),
             SizedBox(
               width: 124,
@@ -70,7 +72,7 @@ class SettingView extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Controll mode",
+          "Control mode",
           style: textStyle,
         ),
         const SizedBox(height: 8),

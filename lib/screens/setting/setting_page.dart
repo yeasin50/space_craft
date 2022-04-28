@@ -10,15 +10,13 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<bool> dialogVibilityNotifier = ValueNotifier(false);
-
     return Scaffold(
       // floatingActionButton: FloatingActionButton(onPressed: () {
       //   dialogVibilityNotifier.value = !dialogVibilityNotifier.value;
       // }),
       body: Stack(
-        children: [
-          const Align(
+        children: const [
+          Align(
             alignment: Alignment(.3, -.9),
             child: RotateWidget(
               rotateAxis: [true, true, true],
@@ -31,9 +29,7 @@ class SettingPage extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.center,
-            child: SettingDialogWidget(
-              dialogVisibleStateNotifier: dialogVibilityNotifier,
-            ),
+            child: SettingDialogWidget(),
           ),
         ],
       ),

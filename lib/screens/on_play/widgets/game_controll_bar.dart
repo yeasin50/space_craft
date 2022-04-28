@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../provider/provider.dart';
+import '../../setting/setting.dart';
 
 class GameControllBar extends StatefulWidget {
-  const GameControllBar({Key? key}) : super(key: key);
+  const GameControllBar({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _GameControllBarState createState() => _GameControllBarState();
@@ -14,10 +17,12 @@ class _GameControllBarState extends State<GameControllBar>
   final Duration animationDuration = const Duration(milliseconds: 400);
   //status of pause/menu button, onExapnd show others options
   bool isExpanded = false;
-  late AnimationController controller;
+  late AnimationController _playPauseButtonController;
 
-  _initAnimation() {
-    controller = AnimationController(
+  bool _settingIsPressed = false;
+
+  void _initAnimation() {
+    _playPauseButtonController = AnimationController(
       vsync: this,
       duration: animationDuration,
       reverseDuration: animationDuration,
@@ -32,42 +37,56 @@ class _GameControllBarState extends State<GameControllBar>
 
   @override
   void dispose() {
-    controller.dispose();
+    _playPauseButtonController.dispose();
     super.dispose();
   }
 
   //todo: change icons color
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: const Alignment(.9, -.9),
-      child: Consumer(
-        builder: (context, ref, child) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedScale(
-              alignment: Alignment.centerRight,
-              duration: animationDuration,
-              scale: isExpanded ? 1 : 0,
-              child: Wrap(
-                children: [
-                  ...List.generate(
-                    2,
-                    (index) => IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.alarm,
-                        color: Colors.white,
+    return Stack(
+      children: [
+        Align(
+          alignment: const Alignment(.9, -.9),
+          child: Consumer(
+            builder: (context, ref, child) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AnimatedScale(
+                  alignment: Alignment.centerRight,
+                  duration: animationDuration,
+                  scale: isExpanded ? 1 : 0,
+                  child: Wrap(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          _settingIsPressed = !_settingIsPressed;
+                          setState(() {});
+                        },
+                        icon: const Icon(
+                          Icons.settings,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
+                    ],
+                  ),
+                ),
+                controllButton(ref),
+              ],
             ),
-            controllButton(ref),
-          ],
+          ),
         ),
-      ),
+        Align(
+          alignment: Alignment.center,
+          child: SettingDialogWidget(
+            isOpen: _settingIsPressed,
+            onClose: () {
+              _settingIsPressed = !_settingIsPressed;
+              setState(() {});
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -80,11 +99,11 @@ class _GameControllBarState extends State<GameControllBar>
         });
         if (isExpanded) {
           //* pause the game
-          controller.forward();
+          _playPauseButtonController.forward();
           ref.read(gameManagerProvider.notifier).paused();
         } else {
           //* resume the game
-          controller.reverse();
+          _playPauseButtonController.reverse();
           ref.read(gameManagerProvider.notifier).playing();
           // debugPrint("onControllBar Resume: ${ref.read(gameManagerProvider)}");
         }
@@ -92,7 +111,7 @@ class _GameControllBarState extends State<GameControllBar>
       icon: AnimatedIcon(
         color: Colors.white,
         icon: AnimatedIcons.pause_play, // may changes later
-        progress: controller,
+        progress: _playPauseButtonController,
       ),
     );
   }

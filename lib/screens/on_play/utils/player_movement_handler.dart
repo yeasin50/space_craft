@@ -16,6 +16,9 @@ void updatePlayerPosition({
   // required Size constraints,
   required Offset offset,
 }) {
+  //skip keyboardMevemnt while controll mode is only keyboard
+  if (UserSetting.instance.controlMode == ControlMode.keyboard) return;
+
   final double posY = offset.dy;
   final double posX = offset.dx;
 
@@ -53,6 +56,9 @@ void keyboardMovementHandler({
   required RawKeyEvent event,
 }) {
   // debugPrint("keyboardMovementHandler Key pressed ${event.data}");
+
+  //skip keyboardMevemnt while controll mode is only touch
+  if (UserSetting.instance.controlMode == ControlMode.touch) return;
 
   if (event is! RawKeyDownEvent) return;
 

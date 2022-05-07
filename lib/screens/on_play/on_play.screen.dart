@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/constants.dart';
 import '../../provider/provider.dart';
 import '../../widget/widget.dart';
 import 'on_play.dart';
@@ -29,10 +30,16 @@ class OnPlayScreen extends StatelessWidget {
             final playerInfo = ref.watch(playerInfoProvider);
             final enemyNotifer = ref.watch(enemyProvider);
 
+            final gameState = ref.watch(gameManagerProvider);
+
             return RawKeyboardListener(
               autofocus: true,
               focusNode: f,
-              onKey: (event) => _onKeyEvent(playerInfo, event),
+              onKey: (event) {
+                /// keyEvent will only work  on playmode, maybe we will move it on player provider
+                if (gameState != GameMode.playing) return;
+                _onKeyEvent(playerInfo, event);
+              },
               child: Scaffold(
                 body: Stack(
                   children: [

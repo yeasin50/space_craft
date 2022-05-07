@@ -6,8 +6,15 @@ import '../../../provider/provider.dart';
 import '../../../widget/widget.dart';
 import 'custom_button.dart';
 
-class SettingView extends ConsumerWidget {
+class SettingView extends StatefulWidget {
   const SettingView({Key? key}) : super(key: key);
+
+  @override
+  State<SettingView> createState() => _SettingViewState();
+}
+
+class _SettingViewState extends State<SettingView> {
+  final UserSetting settings = UserSetting.instance;
 
   static const TextStyle _textStyle = TextStyle(
     color: Color.fromARGB(255, 135, 152, 158),
@@ -17,10 +24,9 @@ class SettingView extends ConsumerWidget {
     color: Color.fromARGB(245, 252, 252, 252),
     fontWeight: FontWeight.bold,
   );
-  @override
-  Widget build(BuildContext context, ref) {
-    final UserSetting settings = ref.watch<UserSetting>(userSettingProvider);
 
+  @override
+  Widget build(BuildContext context) {
     return GlassMorphism(
       blur: 1,
       opacity: .4,
@@ -57,7 +63,9 @@ class SettingView extends ConsumerWidget {
                 defaultColor: Colors.deepPurpleAccent,
                 text: "Reset",
                 callback: () {
-                  settings.defaultSetting();
+                  setState(() {
+                    settings.defaultSetting();
+                  });
                 },
               ),
             ),
@@ -85,6 +93,7 @@ class SettingView extends ConsumerWidget {
                 value: settings.controlMode == cMode,
                 callback: () {
                   settings.update(controlMode: cMode);
+                  setState(() {});
                 },
               );
             },
@@ -112,6 +121,7 @@ class SettingView extends ConsumerWidget {
                 value: settings.playmode == mode,
                 callback: () {
                   settings.update(playMode: mode);
+                  setState(() {});
                 },
               );
             },
@@ -135,6 +145,7 @@ class SettingView extends ConsumerWidget {
             settings.update(
               effect: !settings.effect,
             );
+            setState(() {});
           },
         ),
       ],
@@ -152,9 +163,8 @@ class SettingView extends ConsumerWidget {
         Switch(
           value: settings.sound,
           onChanged: (v) {
-            settings.update(
-              sound: !settings.sound,
-            );
+            settings.update(sound: !settings.sound);
+            setState(() {});
           },
         ),
       ],
@@ -172,9 +182,8 @@ class SettingView extends ConsumerWidget {
         Switch(
           value: settings.music,
           onChanged: (v) {
-            settings.update(
-              music: !settings.music,
-            );
+            settings.update(music: !settings.music);
+            setState(() {});
           },
         ),
       ],
@@ -203,11 +212,10 @@ class SettingView extends ConsumerWidget {
             Slider(
               min: settings.minSensivity,
               max: settings.maxSensivity,
-              value: settings.movementSensivity,
+              value: settings.movementSensitivity,
               onChanged: (value) {
-                settings.update(
-                  movementSensitvity: value,
-                );
+                settings.update(movementSensitvity: value);
+                setState(() {});
               },
             ),
             Text(

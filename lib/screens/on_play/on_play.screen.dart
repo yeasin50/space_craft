@@ -37,6 +37,13 @@ class OnPlayScreen extends StatelessWidget {
                 body: Stack(
                   children: [
                     _playerShip(playerInfo),
+                    // AnimatedPositioned(
+                    //   key: const ValueKey("Player Ship Widget"),
+                    //   duration: GObjectSize.instatnce.animationDuration,
+                    //   top: playerInfo.player.position.dY,
+                    //   left: playerInfo.player.position.dX,
+                    //   child: const PlayerShip(),
+                    // ),
 
                     // enemy ships and enemy's bullets
                     EnemyOverlay(
@@ -47,6 +54,19 @@ class OnPlayScreen extends StatelessWidget {
 
                     //player ship's bullet
                     ..._playerBullets(playerInfo),
+                    // ...playerInfo.bullets.map((b) {
+                    //   return AnimatedPositioned(
+                    //     key: ValueKey(b),
+                    //     duration: GObjectSize.instatnce.animationDuration,
+                    //     top: b.position.dY,
+                    //     left: b.position.dX,
+                    //     child: BulletWidget(
+                    //       bulletHeight: b.size.height,
+                    //       color: b.color,
+                    //       downward: false,
+                    //     ),
+                    //   );
+                    // }).toList(),
 
                     //player Health, ScoreBar
                     Positioned(

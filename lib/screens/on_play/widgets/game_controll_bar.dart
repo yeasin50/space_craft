@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/utils/utils.dart';
 
 import '../../../provider/provider.dart';
 import '../../setting/setting.dart';
@@ -41,6 +42,26 @@ class _GameControllBarState extends State<GameControllBar>
     super.dispose();
   }
 
+  //play-pause button changes, close remaing overLay
+  void _onPlayPauseButtonChange(ref) {
+    if (_settingIsPressed = true) {
+      _settingIsPressed = false;
+    }
+    isExpanded = !isExpanded;
+    setState(() {});
+
+    if (isExpanded) {
+      //* pause the game
+      _playPauseButtonController.forward();
+      ref.read(gameManagerProvider.notifier).paused();
+    } else {
+      //* resume the game
+      _playPauseButtonController.reverse();
+      ref.read(gameManagerProvider.notifier).playing();
+      // debugPrint("onControllBar Resume: ${ref.read(gameManagerProvider)}");
+    }
+  }
+
   //todo: change icons color
   @override
   Widget build(BuildContext context) {
@@ -57,21 +78,37 @@ class _GameControllBarState extends State<GameControllBar>
                   duration: animationDuration,
                   scale: isExpanded ? 1 : 0,
                   child: Wrap(
+                    alignment: WrapAlignment.center,
                     children: [
-                      IconButton(
-                        onPressed: () {
+                      InkWell(
+                        splashColor: Colors.transparent,
+                        key: const ValueKey("user-setting-IconButton"),
+                        onTap: () {
                           _settingIsPressed = !_settingIsPressed;
                           setState(() {});
                         },
-                        icon: const Icon(
-                          Icons.settings,
-                          color: Colors.white,
+                        child: AnimatedScale(
+                          duration: animationDuration,
+                          alignment: Alignment.center,
+                          scale: _settingIsPressed ? 1.25 : 1,
+                          child: Icon(
+                            Icons.settings,
+                            color:
+                                _settingIsPressed ? Colors.blue : Colors.white,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                controllButton(ref),
+                IconButton(
+                  onPressed: () => _onPlayPauseButtonChange(ref),
+                  icon: AnimatedIcon(
+                    color: Colors.white,
+                    icon: AnimatedIcons.pause_play, // may changes later
+                    progress: _playPauseButtonController,
+                  ),
+                ),
               ],
             ),
           ),
@@ -87,32 +124,6 @@ class _GameControllBarState extends State<GameControllBar>
           ),
         ),
       ],
-    );
-  }
-
-//controll button, always
-  IconButton controllButton(WidgetRef ref) {
-    return IconButton(
-      onPressed: () {
-        setState(() {
-          isExpanded = !isExpanded;
-        });
-        if (isExpanded) {
-          //* pause the game
-          _playPauseButtonController.forward();
-          ref.read(gameManagerProvider.notifier).paused();
-        } else {
-          //* resume the game
-          _playPauseButtonController.reverse();
-          ref.read(gameManagerProvider.notifier).playing();
-          // debugPrint("onControllBar Resume: ${ref.read(gameManagerProvider)}");
-        }
-      },
-      icon: AnimatedIcon(
-        color: Colors.white,
-        icon: AnimatedIcons.pause_play, // may changes later
-        progress: _playPauseButtonController,
-      ),
     );
   }
 }

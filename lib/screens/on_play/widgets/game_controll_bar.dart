@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/utils/utils.dart';
+import 'package:space_craft/widget/widget.dart';
 
 import '../../../provider/provider.dart';
 import '../../setting/setting.dart';
@@ -66,7 +66,31 @@ class _GameControllBarState extends State<GameControllBar>
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.center,
       children: [
+        // backgrounds
+        Positioned(
+          key: const ValueKey("rorated-background-setting-logo"),
+          top: GObjectSize.instatnce.screen.height / 2 -
+              GObjectSize.instatnce.minLength * .3,
+          left: GObjectSize.instatnce.screen.width / 2,
+          child: AnimatedScale(
+            duration: animationDuration,
+            scale: _settingIsPressed ? 1 : 0,
+            alignment: Alignment.centerLeft,
+            child: RotateWidget(
+              reverseOnRepeat: false,
+              rotateAxis: const [false, false, true],
+              child: Icon(
+                Icons.settings,
+                size: GObjectSize.instatnce.minLength * .3,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+
+        ///tapable widgets
         Align(
           alignment: const Alignment(.9, -.9),
           child: Consumer(

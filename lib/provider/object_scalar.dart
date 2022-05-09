@@ -38,8 +38,9 @@ class GObjectSize implements _Elements {
 
   static Size? _screenSize;
 
-  ///it will decide the object scale, min(Screen.height, screen.width)
   static late double _minLenght;
+  ///it will decide the object scale, min(Screen.height, screen.width)
+  double get minLength => _minLenght;
 
   /// inital the screenSize, use to generate others elements size
   static void init({

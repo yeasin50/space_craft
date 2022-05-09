@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/utils/close_button_clipper_path.dart';
 
 import '../../../constants/constants.dart';
 import '../../../widget/widget.dart';
@@ -35,15 +36,25 @@ class SettingDialogWidget extends StatelessWidget {
         child: Column(
           children: [
             const SettingView(),
-            InkWell(
-              onTap: _toggle,
-              child: const NeonRingWidget(
-                colorSet: colorSet0,
-                rotation: false,
-                radius: 15,
-                frameThickness: 4,
+            RotateWidget(
+              rotateAxis: const [false, false, true],
+              reverseOnRepeat: false,
+              child: InkWell(
+                onTap: _toggle,
+                child: ClipPath(
+                  clipper: CloseButtonCustomClipperPath(
+                    thicknessRatio: .2,
+                  ),
+                  child: const NeonRingWidget(
+                    colorSet: colorSet0,
+                    duration: Duration(milliseconds: 100),
+                    rotation: false,
+                    radius: 15,
+                    frameThickness: 4,
+                  ),
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -241,7 +241,11 @@ class EnemyChangeNotifier extends ChangeNotifier {
   final List<Vector2> _shipsBlastLocation = [];
 
   /// ships positions on (player bullet) destroy, used to show blast
-  List<Vector2> get shipsblastLocation => _shipsBlastLocation;
+  ///
+  /// [UserSetting.instance.effect] must be true to show blast effet
+  // we can also bypass adding blast
+  List<Vector2> get shipsblastLocation =>
+      UserSetting.instance.effect ? _shipsBlastLocation : [];
 
   /// number of blast can shown on ui, used to reduce the object
   final int _maxblastNumber = 10;

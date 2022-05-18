@@ -5,7 +5,8 @@ A simple game, wanna impliment in flutter.
 [Audio manager usung assets_audio_player](https://pub.dev/packages/assets_audio_player/example)
 
 ## TODO
-
+- [ ] format constructor style based on flutter; Constructor then variables
+- [ ] Improve performance by testing on profile mode
 - [ ] keyboard movement works after tapping
 - [ ] score based on EnemyShip
 - [x] controll space on enemy generation

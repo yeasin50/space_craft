@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/constants.dart';
 import '../../provider/provider.dart';
 import '../../widget/widget.dart';
 import 'on_play.dart';
@@ -7,9 +8,17 @@ import 'on_play.dart';
 class OnPlayScreen extends StatelessWidget {
   const OnPlayScreen({Key? key}) : super(key: key);
 
+  void _onKeyEvent(playerInfo, event) {
+    keyboardMovementHandler(
+      event: event,
+      playerInfoNotifier: playerInfo,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final f = FocusNode();
+
     return LayoutBuilder(
       key: const ValueKey("PrLa"),
       builder: (context, constraints) {
@@ -20,26 +29,28 @@ class OnPlayScreen extends StatelessWidget {
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
             final enemyNotifer = ref.watch(enemyProvider);
+
+            final gameState = ref.watch(gameManagerProvider);
+
             return RawKeyboardListener(
               autofocus: true,
               focusNode: f,
               onKey: (event) {
-                keyboardMovementHandler(
-                  event: event,
-                  playerInfoNotifier: playerInfo,
-                );
+                /// keyEvent will only work  on playmode, maybe we will move it on player provider
+                if (gameState != GameMode.playing) return;
+                _onKeyEvent(playerInfo, event);
               },
               child: Scaffold(
-                backgroundColor: Colors.black,
                 body: Stack(
                   children: [
-                    AnimatedPositioned(
-                      key: const ValueKey("Player Ship Widget"),
-                      duration: GObjectSize.instatnce.animationDuration,
-                      top: playerInfo.player.position.dY,
-                      left: playerInfo.player.position.dX,
-                      child: const PlayerShip(),
-                    ),
+                    _playerShip(playerInfo),
+                    // AnimatedPositioned(
+                    //   key: const ValueKey("Player Ship Widget"),
+                    //   duration: GObjectSize.instatnce.animationDuration,
+                    //   top: playerInfo.player.position.dY,
+                    //   left: playerInfo.player.position.dX,
+                    //   child: const PlayerShip(),
+                    // ),
 
                     // enemy ships and enemy's bullets
                     EnemyOverlay(
@@ -48,21 +59,21 @@ class OnPlayScreen extends StatelessWidget {
                       constraints: constraints,
                     ),
 
-                    //todo:fixed blust and animate
                     //player ship's bullet
-                    ...playerInfo.bullets.map((b) {
-                      return AnimatedPositioned(
-                        key: ValueKey(b),
-                        duration: GObjectSize.instatnce.animationDuration,
-                        top: b.position.dY,
-                        left: b.position.dX,
-                        child: BulletWidget(
-                          bulletHeight: b.size.height,
-                          color: b.color,
-                          downward: false,
-                        ),
-                      );
-                    }).toList(),
+                    ..._playerBullets(playerInfo),
+                    // ...playerInfo.bullets.map((b) {
+                    //   return AnimatedPositioned(
+                    //     key: ValueKey(b),
+                    //     duration: GObjectSize.instatnce.animationDuration,
+                    //     top: b.position.dY,
+                    //     left: b.position.dX,
+                    //     child: BulletWidget(
+                    //       bulletHeight: b.size.height,
+                    //       color: b.color,
+                    //       downward: false,
+                    //     ),
+                    //   );
+                    // }).toList(),
 
                     //player Health, ScoreBar
                     Positioned(
@@ -98,6 +109,32 @@ class OnPlayScreen extends StatelessWidget {
           },
         );
       },
+    );
+  }
+
+  List<Widget> _playerBullets(PlayerInfoNotifier playerInfoNotifier) {
+    return playerInfoNotifier.bullets.map((b) {
+      return AnimatedPositioned(
+        key: ValueKey(b),
+        duration: GObjectSize.instatnce.animationDuration,
+        top: b.position.dY,
+        left: b.position.dX,
+        child: BulletWidget(
+          bulletHeight: b.size.height,
+          color: b.color,
+          downward: false,
+        ),
+      );
+    }).toList();
+  }
+
+  AnimatedPositioned _playerShip(PlayerInfoNotifier playerInfo) {
+    return AnimatedPositioned(
+      key: const ValueKey("Player Ship Widget"),
+      duration: GObjectSize.instatnce.animationDuration,
+      top: playerInfo.player.position.dY,
+      left: playerInfo.player.position.dX,
+      child: const PlayerShip(),
     );
   }
 }

@@ -7,6 +7,9 @@ class ColorPallet {
   static const enemyA = Color(0xff001eff);
   static const enemyB = Color(0xff8900ff);
   static const enemyC = Color(0xffff008d);
+
+  static const background = Colors.black;
+  static const glassMorphism = Color(0xFF454A4D);
 }
 
 List<Color> get _enemyShipColors => [

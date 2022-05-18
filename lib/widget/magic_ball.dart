@@ -30,6 +30,7 @@ class MagicBall extends StatefulWidget {
     this.radius = 150,
     this.numberOfParticles = 10,
     this.blastDelay = const Duration(milliseconds: 400),
+    this.child,
   })  : repeated = true,
         showRing = true,
         super(key: key);
@@ -39,6 +40,7 @@ class MagicBall extends StatefulWidget {
     this.radius = 150,
     this.numberOfParticles = 10,
     this.blastDelay = const Duration(milliseconds: 0),
+    this.child,
   })  : repeated = false,
         showRing = false,
         super(key: key);
@@ -60,6 +62,8 @@ class MagicBall extends StatefulWidget {
   /// repeated blast will generate on every `blastDelay`
   /// default  [MagicBall.singleblast] `blastDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 miliSec.
   final Duration blastDelay;
+
+  final Widget? child;
 
   @override
   _MagicBallState createState() => _MagicBallState();
@@ -139,7 +143,10 @@ class _MagicBallState extends State<MagicBall> {
               )
             : null,
         child: Stack(
-          children: particles,
+          children: [
+            ...particles,
+            if (widget.child != null) widget.child!,
+          ],
         ),
       ),
     );

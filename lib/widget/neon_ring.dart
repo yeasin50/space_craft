@@ -18,7 +18,7 @@ import '../utils/utils.dart';
 ///```
 
 /// animated colorfull rign widget that will be `width=height=radius*2`. change colors based on [duration] you provide, default `Duration(milliseconds: 150),` with `Curves.ease`
-class NeonRignWidget extends StatefulWidget {
+class NeonRingWidget extends StatefulWidget {
   /// rign radius, use to draw circle[Container],
   final double radius;
 
@@ -41,7 +41,9 @@ class NeonRignWidget extends StatefulWidget {
   /// default [rotationIncrementRate] is 5 degree
   final double rotationIncrementRate;
 
-  const NeonRignWidget({
+  final Widget? child;
+
+  const NeonRingWidget({
     Key? key,
     required this.colorSet,
     this.duration = const Duration(milliseconds: 150),
@@ -50,13 +52,14 @@ class NeonRignWidget extends StatefulWidget {
     required this.radius,
     this.rotation = true,
     this.rotationIncrementRate = 5.0,
+    this.child,
   }) : super(key: key);
 
   @override
-  State<NeonRignWidget> createState() => _NeonRignWidgetState();
+  State<NeonRingWidget> createState() => _NeonRingWidgetState();
 }
 
-class _NeonRignWidgetState extends State<NeonRignWidget> {
+class _NeonRingWidgetState extends State<NeonRingWidget> {
   Timer? _timer;
 
   double rotateAngel = 0;
@@ -113,6 +116,7 @@ class _NeonRignWidgetState extends State<NeonRignWidget> {
           ),
           width: widget.radius * 2,
           height: widget.radius * 2,
+          child: widget.child,
         ),
       ),
     );

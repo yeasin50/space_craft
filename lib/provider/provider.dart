@@ -5,3 +5,4 @@ export 'game_manager.dart';
 export 'healing_object_provider.dart';
 export 'object_scalar.dart';
 export 'player_info_provider.dart';
+export 'user_setting.dart';

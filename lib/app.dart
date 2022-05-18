@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'screens/on_play/on_play.dart';
 
- 
+import 'screens/screens.dart';
+
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
@@ -9,8 +10,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      showPerformanceOverlay: kProfileMode,
       theme: Theme.of(context).copyWith(
-        scaffoldBackgroundColor: Colors.black,
+        scaffoldBackgroundColor: Color.fromARGB(255, 0, 0, 0),
+        textTheme: Theme.of(context).textTheme.copyWith(),
       ),
       // home: const TestCases(),
       home: const OnPlayScreen(),

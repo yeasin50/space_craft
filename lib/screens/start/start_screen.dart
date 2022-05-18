@@ -143,7 +143,7 @@ class _GlobeTransformState extends State<GlobeTransform> {
       children: [
         Align(
           alignment: Alignment.center,
-          child: NeonRignWidget(
+          child: NeonRingWidget(
             duration: Duration(milliseconds: 30),
             colorSet: colorSet0,
             radius: rignRadius,

@@ -14,13 +14,14 @@ class RorationalBlustRing extends StatefulWidget {
   /// default value is `blutSize: Size(22, 22 * 4)`
   final Size? blutSize;
 
+  final Widget? child;
   const RorationalBlustRing({
     Key? key,
     required this.radius,
-    Size? blutSize,
+    this.blutSize = const Size(22, 22 * 4),
     this.numberOfBlust = 7,
-  })  : blutSize = blutSize ?? const Size(22, 22 * 4),
-        super(key: key);
+    this.child,
+  }) : super(key: key);
 
   @override
   State<RorationalBlustRing> createState() => _RorationalBlustRingState();
@@ -58,6 +59,7 @@ class _RorationalBlustRingState extends State<RorationalBlustRing> {
               ),
             ),
           ),
+          if (widget.child != null) widget.child!,
         ],
       ),
     );

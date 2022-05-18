@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'provider.dart';
+
 abstract class _Elements {
   /// full screen/view size, that will cover by app
   Size get screen;
@@ -36,8 +38,9 @@ class GObjectSize implements _Elements {
 
   static Size? _screenSize;
 
-  ///it will decide the object scale, min(Screen.height, screen.width)
   static late double _minLenght;
+  ///it will decide the object scale, min(Screen.height, screen.width)
+  double get minLength => _minLenght;
 
   /// inital the screenSize, use to generate others elements size
   static void init({
@@ -86,7 +89,8 @@ class GObjectSize implements _Elements {
 
   ///todo: create Settings for sensivity
   ///player movement px on keyboard action: [keyboardMovementHandler]
-  double get movementRatio => screen.width * .02;
+  double get movementRatio =>
+      screen.width * .02 * UserSetting.instance.movementSensitivity;
 
   /// top part of player ship based on Paint, This fix expty space player enemy-collision
   Size get playerShipTopPart {

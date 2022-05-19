@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'model.dart';
+import 'entities.dart';
 
 /// base Object of this game
 abstract class GameObject {

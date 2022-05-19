@@ -3,9 +3,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 
-import '../extensions/extensions.dart';
-import '../model/model.dart';
-import '../screens/on_play/utils/utils.dart';
 import 'provider.dart';
 
 final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(

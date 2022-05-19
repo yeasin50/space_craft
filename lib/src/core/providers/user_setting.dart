@@ -1,5 +1,4 @@
-import '../../../model/model.dart';
-
+ 
 /// Singleton UserSetting
 class UserSetting extends Setting {
   UserSetting._privateConstructor() {

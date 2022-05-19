@@ -6,7 +6,7 @@ import 'utils.dart';
 
 /// used on [RotateWidget] to paint [RadialGradient] for falling hearth of[HealingObjectNotifier]
 ///
-/// two constructor [HeartPainter] and [HeartPainter.radial]  for Paint GradientHeart based on value[0.0-1.0]
+/// two constructor [HeartPainter] and [HeartPainter. radial]  for Paint GradientHeart based on value[0.0-1.0]
 class HeartPainter extends CustomPainter {
   /// progres value [0.0 - 1.0]
   final double value;

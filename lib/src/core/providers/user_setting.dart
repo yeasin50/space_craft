@@ -1,4 +1,4 @@
-import '../model/model.dart';
+import '../../../model/model.dart';
 
 /// Singleton UserSetting
 class UserSetting extends Setting {

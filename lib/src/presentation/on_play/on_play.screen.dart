@@ -6,6 +6,7 @@ import '../../widget/widget.dart';
 import 'on_play.dart';
 
 class OnPlayScreen extends StatelessWidget {
+  static const String routeName = "/on_play_screen";
   const OnPlayScreen({Key? key}) : super(key: key);
 
   void _onKeyEvent(playerInfo, event) {

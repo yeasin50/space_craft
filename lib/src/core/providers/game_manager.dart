@@ -1,5 +1,5 @@
-import '../constants/constants.dart';
-import 'provider.dart';
+import '../../../constants/constants.dart';
+import '../../../provider/provider.dart';
 
 final gameManagerProvider = StateNotifierProvider<GameManager, GameMode>(
   (ref) {

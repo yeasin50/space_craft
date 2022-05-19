@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../provider/provider.dart';
-import '../screens.dart';
+import '../../src/presentation/screens.dart';
 
 class ShipMovemntTest extends ConsumerWidget {
   ShipMovemntTest({Key? key}) : super(key: key);

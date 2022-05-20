@@ -1,4 +1,6 @@
  
+import '../../domain/entities/entities.dart';
+
 /// Singleton UserSetting
 class UserSetting extends Setting {
   UserSetting._privateConstructor() {

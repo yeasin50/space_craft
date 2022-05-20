@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../provider/provider.dart';
 import 'entities.dart';
-
-
 
 abstract class IBullet implements GameObject {
   int? get id;

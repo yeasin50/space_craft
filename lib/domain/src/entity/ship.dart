@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../provider/provider.dart';
 import '../screens/on_play/utils/enemy_hanlader.dart';
-import 'entities.dart';
+import 'entity.dart';
 
 // defines the ship color/image
 enum ShipName {

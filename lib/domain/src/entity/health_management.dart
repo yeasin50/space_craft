@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../provider/provider.dart';
-import 'entities.dart';
+import 'entity.dart';
 
 /// Damage delear:on bullet, ship
 abstract class IShipHealth {

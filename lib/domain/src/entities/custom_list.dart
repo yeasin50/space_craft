@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+//todo: recheck: can be remove this
 /// [List] with `removeAll` method
 class CustomList<T> extends ListBase<T> {
   late final List<T> _l;

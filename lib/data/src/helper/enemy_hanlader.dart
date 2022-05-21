@@ -2,8 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../../../constants/constants.dart';
-import '../../../model/model.dart';
+import '../../../domain/src/entities/ship.dart';
+import '../repository/ship.dart';
+import '../util/constants/constants.dart';
 
 final _random = Random();
 

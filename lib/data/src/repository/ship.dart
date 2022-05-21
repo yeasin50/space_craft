@@ -1,32 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:space_craft/domain/src/entities/game_object.dart';
+import 'package:space_craft/domain/src/entities/ship.dart';
+import 'package:space_craft/domain/src/entities/vector2.dart';
+import 'package:space_craft/presentation/src/core/providers/object_scalar.dart';
 
-import '../provider/provider.dart';
-import '../screens/on_play/utils/enemy_hanlader.dart';
-import 'entity.dart';
-
-// defines the ship color/image
-enum ShipName {
-  player,
-  enemyA,
-  enemyB,
-  enemyC,
-}
-
-/// currently we have two image per enemyShip
-enum ShipImageState { a, b }
-
-abstract class IShip implements GameObject {
-  ///ship Health per life
-  final IShipHealth health;
-
-  /// ship name will define color/image
-  final ShipName name;
-
-  IShip({
-    required this.health,
-    required this.name,
-  });
-}
+import '../../../domain/src/entities/health_management.dart';
+import '../../../presentation/src/feature/on_play/utils/utils.dart';
+import 'health_management.dart';
+import 'player_ship_body.dart';
+import 'vector2.dart';
 
 /// playerShip, default life= 3x100,
 ///  health is controlled by [PlayerHealthManager]

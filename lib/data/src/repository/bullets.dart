@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'entity.dart';
-
-abstract class IBullet implements GameObject {
-  int? get id;
-}
+import '../../../domain/src/entities/bullet.dart';
+ 
+import '../../../presentation/src/core/providers/object_scalar.dart';
+import 'vector2.dart';
 
 class PlayerShipBullet implements IBullet {
   late final Vector2 _position;

@@ -11,7 +11,6 @@ const double kbrustMovement = 5;
 const int kbrustDuration = 100; // frameBuilder
 const int kamountOfParticle = 8; // dont change it or edit frameBuilder
 
-
 class Particle {
   PVector position = PVector(0.0, 0.0);
   Color color;

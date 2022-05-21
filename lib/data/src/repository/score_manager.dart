@@ -1,6 +1,5 @@
-abstract class IPlayerScore {
-  int score();
-}
+
+import 'package:space_craft/domain/src/entities/score.dart';
 
 class EnemyShipDestroyScore implements IPlayerScore {
   IPlayerScore playerScore;

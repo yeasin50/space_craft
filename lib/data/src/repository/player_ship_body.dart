@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'entity.dart';
-
-/// base Object of this game
-abstract class GameObject {
-  Vector2 get position;
-  Size get size;
-  Color get color;
-}
-
+import '../../../domain/src/entities/game_object.dart';
+import 'vector2.dart';
 // hiding my sins
+
 class PlayerShipBodyPart implements GameObject {
   final Vector2 _position;
   final Size _size;

@@ -1,5 +1,4 @@
-
-import 'package:space_craft/domain/src/entities/score.dart';
+import '../entities/entities.dart';
 
 class EnemyShipDestroyScore implements IPlayerScore {
   IPlayerScore playerScore;

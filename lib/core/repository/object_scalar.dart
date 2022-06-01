@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'user_setting.dart';
 
-
 abstract class _Elements {
   /// full screen/view size, that will cover by app
   Size get screen;
@@ -27,7 +26,7 @@ abstract class _Elements {
 /// Singleton class
 class GObjectSize implements _Elements {
   static final GObjectSize _instance = GObjectSize._privateConstructor();
-  static GObjectSize get instatnce => _instance;
+  static GObjectSize get instance => _instance;
   GObjectSize._privateConstructor();
 
   _showErr() {
@@ -40,6 +39,7 @@ class GObjectSize implements _Elements {
   static Size? _screenSize;
 
   static late double _minLenght;
+
   ///it will decide the object scale, min(Screen.height, screen.width)
   double get minLength => _minLenght;
 

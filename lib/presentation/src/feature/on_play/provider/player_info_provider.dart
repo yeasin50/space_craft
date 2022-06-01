@@ -77,7 +77,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
         position: player.position.copyWith(
           dX: player.position.dX +
               player.size.width / 2 - //fire from top center
-              GObjectSize.instatnce.playerBullet.width /
+              GObjectSize.instance.playerBullet.width /
                   2, // position on middle
         ),
       ),

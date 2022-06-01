@@ -1,11 +1,8 @@
-
 // enemyShip Bullet Damage
 import 'package:flutter/material.dart';
-import 'package:space_craft/domain/src/entities/game_object.dart';
-import 'package:space_craft/domain/src/entities/health_management.dart';
-import 'package:space_craft/domain/src/entities/vector2.dart';
-import 'package:space_craft/presentation/src/core/providers/object_scalar.dart';
 
+import '../entities/entities.dart';
+import 'object_scalar.dart';
 import 'vector2.dart';
 
 class DamageOnEB implements IShipHealth {
@@ -37,7 +34,7 @@ class DamageOnPB implements IShipHealth {
   double health() => iShipHealth.health() - decreaseHealth;
 }
 
-/// decrease 10 when play ship collidewithEnemy ship
+/// decrease 10 when play ship collide withEnemy ship
 class DamageOnShipCollision implements IShipHealth {
   IShipHealth iShipHealth;
 
@@ -77,7 +74,7 @@ class NEnemyHealthManager implements IShipHealth {
 class GeneralHealingBox implements IShipHealth, GameObject {
   IShipHealth iShipHealth;
 
-  static Size boxSize = GObjectSize.instatnce.healthBox;
+  static Size boxSize = GObjectSize.instance.healthBox;
 
   final Vector2 _intiObjectPos;
 

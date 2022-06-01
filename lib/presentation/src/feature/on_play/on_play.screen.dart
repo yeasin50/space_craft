@@ -117,7 +117,7 @@ class OnPlayScreen extends StatelessWidget {
     return playerInfoNotifier.bullets.map((b) {
       return AnimatedPositioned(
         key: ValueKey(b),
-        duration: GObjectSize.instatnce.animationDuration,
+        duration: GObjectSize.instance.animationDuration,
         top: b.position.dY,
         left: b.position.dX,
         child: BulletWidget(
@@ -132,7 +132,7 @@ class OnPlayScreen extends StatelessWidget {
   AnimatedPositioned _playerShip(PlayerInfoNotifier playerInfo) {
     return AnimatedPositioned(
       key: const ValueKey("Player Ship Widget"),
-      duration: GObjectSize.instatnce.animationDuration,
+      duration: GObjectSize.instance.animationDuration,
       top: playerInfo.player.position.dY,
       left: playerInfo.player.position.dX,
       child: const PlayerShip(),

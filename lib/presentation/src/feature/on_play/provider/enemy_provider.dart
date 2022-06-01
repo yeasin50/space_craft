@@ -15,7 +15,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
 class EnemyChangeNotifier extends ChangeNotifier {
   final ChangeNotifierProviderRef ref;
   // screen size to control enemy movement
-  Size screenSize = GObjectSize.instatnce.screen;
+  Size screenSize = GObjectSize.instance.screen;
 
   EnemyChangeNotifier(this.ref) {
     // _enemyMovement();
@@ -164,7 +164,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
               position: ship.position.copyWith(
                 dX: ship.position.dX +
                     ship.size.width / 2 -
-                    GObjectSize.instatnce.enemyBullet.width /
+                    GObjectSize.instance.enemyBullet.width /
                         2, //precise position
               ),
             ),

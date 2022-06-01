@@ -7,8 +7,8 @@ import '../utils/utils.dart';
 
 Widget playerShip() {
   return Container(
-    height: GObjectSize.instatnce.playerShip.height,
-    width: GObjectSize.instatnce.playerShip.width,
+    height: GObjectSize.instance.playerShip.height,
+    width: GObjectSize.instance.playerShip.width,
     color: Colors.red,
   );
 }
@@ -20,23 +20,23 @@ class PlayerShip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: GObjectSize.instatnce.playerShip.width,
-      height: GObjectSize.instatnce.playerShip.height * 1.25,
+      width: GObjectSize.instance.playerShip.width,
+      height: GObjectSize.instance.playerShip.height * 1.25,
       child: Stack(
         children: [
           Align(
             alignment: Alignment.bottomCenter,
             child: ShipBlast(
               size: Size(
-                GObjectSize.instatnce.playerShip.width * .125,
-                GObjectSize.instatnce.playerShip.height * .5,
+                GObjectSize.instance.playerShip.width * .125,
+                GObjectSize.instance.playerShip.height * .5,
               ),
             ),
           ),
           CustomPaint(
             size: Size(
-              GObjectSize.instatnce.playerShip.width,
-              GObjectSize.instatnce.playerShip.height,
+              GObjectSize.instance.playerShip.width,
+              GObjectSize.instance.playerShip.height,
             ),
             painter: PlayerShipPaint(),
           ),
@@ -50,7 +50,7 @@ class PlayerShip extends StatelessWidget {
                 clipper: StarPathClipper(),
                 child: () {
                   final double startSize =
-                      GObjectSize.instatnce.playerShip.height * .45;
+                      GObjectSize.instance.playerShip.height * .45;
                   return Container(
                     height: startSize,
                     width: startSize,

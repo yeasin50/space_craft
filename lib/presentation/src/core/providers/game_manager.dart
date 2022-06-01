@@ -2,8 +2,9 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../utils/constants/constants.dart';
+import '../../../../core/constants/constants.dart';
 
+ 
 final gameManagerProvider = StateNotifierProvider<GameManager, GameMode>(
   (ref) {
     return GameManager(ref);

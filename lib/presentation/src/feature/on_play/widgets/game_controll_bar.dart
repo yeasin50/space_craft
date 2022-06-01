@@ -71,9 +71,9 @@ class _GameControllBarState extends State<GameControllBar>
         // backgrounds
         Positioned(
           key: const ValueKey("rorated-background-setting-logo"),
-          top: GObjectSize.instatnce.screen.height / 2 -
-              GObjectSize.instatnce.minLength * .3,
-          left: GObjectSize.instatnce.screen.width / 2,
+          top: GObjectSize.instance.screen.height / 2 -
+              GObjectSize.instance.minLength * .3,
+          left: GObjectSize.instance.screen.width / 2,
           child: AnimatedScale(
             duration: animationDuration,
             scale: _settingIsPressed ? 1 : 0,
@@ -83,7 +83,7 @@ class _GameControllBarState extends State<GameControllBar>
               rotateAxis: const [false, false, true],
               child: Icon(
                 Icons.settings,
-                size: GObjectSize.instatnce.minLength * .3,
+                size: GObjectSize.instance.minLength * .3,
                 color: Colors.white,
               ),
             ),

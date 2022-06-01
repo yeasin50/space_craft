@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/src/entities/bullet.dart';
- 
-import '../../../presentation/src/core/providers/object_scalar.dart';
+import '../entities/bullet.dart';
+import 'object_scalar.dart';
 import 'vector2.dart';
 
 class PlayerShipBullet implements IBullet {
@@ -24,7 +23,7 @@ class PlayerShipBullet implements IBullet {
   Vector2 get position => _position;
 
   @override
-  Size get size => GObjectSize.instatnce.playerBullet;
+  Size get size => GObjectSize.instance.playerBullet;
 }
 
 class EnemyShipBullet implements IBullet {
@@ -49,5 +48,5 @@ class EnemyShipBullet implements IBullet {
   Vector2 get position => _position;
 
   @override
-  Size get size => GObjectSize.instatnce.enemyBullet;
+  Size get size => GObjectSize.instance.enemyBullet;
 }

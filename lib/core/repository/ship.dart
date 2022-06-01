@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/domain/src/entities/game_object.dart';
-import 'package:space_craft/domain/src/entities/ship.dart';
-import 'package:space_craft/domain/src/entities/vector2.dart';
-import 'package:space_craft/presentation/src/core/providers/object_scalar.dart';
 
-import '../../../domain/src/entities/health_management.dart';
-import '../../../presentation/src/feature/on_play/utils/utils.dart';
+import '../../presentation/src/feature/on_play/utils/enemy_hanlader.dart';
+import '../entities/entities.dart';
 import 'health_management.dart';
+import 'object_scalar.dart';
 import 'player_ship_body.dart';
 import 'vector2.dart';
 
@@ -29,7 +26,7 @@ class Player implements IShip {
   Color get color => Colors.deepPurpleAccent;
 
   @override
-  Size get size => GObjectSize.instatnce.playerShip;
+  Size get size => GObjectSize.instance.playerShip;
 
   @override
   Vector2 get position => _position;
@@ -46,24 +43,24 @@ class Player implements IShip {
     Vector2 p = Vector2(
       dX: position.dX +
           (size.width *
-              (GObjectSize.instatnce.topWidthFactor /
+              (GObjectSize.instance.topWidthFactor /
                   2)), //top part moving half width
       dY: position.dY,
     );
 
     return PlayerShipBodyPart(
       position: p,
-      size: GObjectSize.instatnce.playerShipTopPart,
+      size: GObjectSize.instance.playerShipTopPart,
     );
   }
 
   GameObject get bottomPart {
     Vector2 p = Vector2(
       dX: position.dX,
-      dY: position.dY + size.height * GObjectSize.instatnce.topHeightFactor,
+      dY: position.dY + size.height * GObjectSize.instance.topHeightFactor,
     );
     Size s = Size(
-        size.width, size.height * (1 - GObjectSize.instatnce.topHeightFactor));
+        size.width, size.height * (1 - GObjectSize.instance.topHeightFactor));
     return PlayerShipBodyPart(
       position: p,
       size: s,
@@ -91,7 +88,7 @@ class EnemyShip implements IShip {
         _imageState = ShipImageState.a;
 
   @override
-  Size size = GObjectSize.instatnce.enemyShip;
+  Size size = GObjectSize.instance.enemyShip;
 
   @override
   Color get color => getShipColor(shipName: name);

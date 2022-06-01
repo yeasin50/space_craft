@@ -25,7 +25,7 @@ void updatePlayerPosition({
   // we are separating in two section, it'll help to move though another axis stuck
   // it'll make sure that even One axis will work even other axis stuc
   if (posY >=
-          GObjectSize.instatnce.screen.height -
+          GObjectSize.instance.screen.height -
               playerInfoNotifier.player.size.height / 2 ||
       posY <= playerInfoNotifier.player.size.height / 2) {
     ///`we cant move in Y axix` outScreen
@@ -35,7 +35,7 @@ void updatePlayerPosition({
         dY: posY - (playerInfoNotifier.player.size.height / 2));
   }
   if (posX >=
-          GObjectSize.instatnce.screen.width -
+          GObjectSize.instance.screen.width -
               playerInfoNotifier.player.size.width / 2 ||
       posX <= playerInfoNotifier.player.size.width / 2) {
     ///`we cant move in X axix` outScreen
@@ -70,7 +70,7 @@ void keyboardMovementHandler({
   //move left; moveable when dX>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {
-    final double x = moveTo.dX - GObjectSize.instatnce.movementRatio;
+    final double x = moveTo.dX - GObjectSize.instance.movementRatio;
 
     moveTo.update(dX: x < 0 ? 0 : x);
     // if (x >= 0) {
@@ -81,8 +81,8 @@ void keyboardMovementHandler({
   //move right; when dx< screenWidth-playerWidth
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowRight) ||
       event.isKeyPressed(LogicalKeyboardKey.keyD)) {
-    final x = moveTo.dX + GObjectSize.instatnce.movementRatio;
-    final maxPossibleX = GObjectSize.instatnce.screen.width -
+    final x = moveTo.dX + GObjectSize.instance.movementRatio;
+    final maxPossibleX = GObjectSize.instance.screen.width -
         playerInfoNotifier.player.size.width;
 
     moveTo.update(dX: x > maxPossibleX ? maxPossibleX : x);
@@ -93,7 +93,7 @@ void keyboardMovementHandler({
   // move up ; when dY>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowUp) ||
       event.isKeyPressed(LogicalKeyboardKey.keyW)) {
-    final double y = moveTo.dY - GObjectSize.instatnce.movementRatio;
+    final double y = moveTo.dY - GObjectSize.instance.movementRatio;
 
     moveTo.update(dY: y < 0 ? 0 : y);
     // if (y < 0) {
@@ -103,9 +103,9 @@ void keyboardMovementHandler({
   //move down ; dY< screenWidth-playerHeight
   else if (event.isKeyPressed(LogicalKeyboardKey.arrowDown) ||
       event.isKeyPressed(LogicalKeyboardKey.keyS)) {
-    final y = moveTo.dY + GObjectSize.instatnce.movementRatio;
-    final possibleHeight = GObjectSize.instatnce.screen.height -
-        GObjectSize.instatnce.playerShip.height;
+    final y = moveTo.dY + GObjectSize.instance.movementRatio;
+    final possibleHeight = GObjectSize.instance.screen.height -
+        GObjectSize.instance.playerShip.height;
 
     moveTo.update(dY: y > possibleHeight ? possibleHeight : y);
 

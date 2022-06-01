@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/src/entities/game_object.dart';
+ 
+import '../entities/entities.dart';
 import 'vector2.dart';
 // hiding my sins
 

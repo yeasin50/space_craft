@@ -24,7 +24,7 @@ class EnemyOverlay extends StatelessWidget {
         ...enemyNotifer.enemies.map(
           (EnemyShip e) => AnimatedPositioned(
             key: ValueKey(e),
-            duration: GObjectSize.instatnce.animationDuration,
+            duration: GObjectSize.instance.animationDuration,
             top: e.position.dY,
             left: e.position.dX,
             child: EnemyShipWidget(
@@ -70,7 +70,7 @@ class _EnemyBulletOverlay extends StatelessWidget {
         ...bullets.map(
           (b) => AnimatedPositioned(
             key: ValueKey(b),
-            duration: GObjectSize.instatnce.animationDuration,
+            duration: GObjectSize.instance.animationDuration,
             top: b.position.dY,
             left: b.position.dX,
             child: BulletWidget(

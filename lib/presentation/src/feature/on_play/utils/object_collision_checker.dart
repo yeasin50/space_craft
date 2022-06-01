@@ -36,12 +36,12 @@ List<BlockedSide> playerMoveable({
   }
 
   //bottom collision checker
-  if (posY >= GObjectSize.instatnce.screen.height - playerSize.height) {
+  if (posY >= GObjectSize.instance.screen.height - playerSize.height) {
     blocked.add(BlockedSide.bottom);
   }
 
   // right collision checker
-  if (posX >= GObjectSize.instatnce.screen.width - playerSize.width) {
+  if (posX >= GObjectSize.instance.screen.width - playerSize.width) {
     blocked.add(BlockedSide.right);
   }
 

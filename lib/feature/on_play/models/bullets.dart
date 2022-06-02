@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../entities/bullet.dart';
-import 'object_scalar.dart';
-import 'vector2.dart';
+import '../../../core/entities/bullet.dart';
+import '../../../core/repository/object_scalar.dart';
+import '../../../core/repository/vector2.dart';
 
 class PlayerShipBullet implements IBullet {
   late final Vector2 _position;

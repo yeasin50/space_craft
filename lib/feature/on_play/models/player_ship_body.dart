@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
  
-import '../entities/entities.dart';
-import 'vector2.dart';
+import '../../../core/entities/entities.dart';
+import '../../../core/repository/vector2.dart';
 // hiding my sins
 
 class PlayerShipBodyPart implements GameObject {

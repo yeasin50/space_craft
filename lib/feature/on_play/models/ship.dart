@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../presentation/src/feature/on_play/utils/enemy_hanlader.dart';
-import '../entities/entities.dart';
-import 'health_management.dart';
-import 'object_scalar.dart';
+import '../../../core/entities/entities.dart';
+import '../../../core/repository/health_management.dart';
+import '../../../core/repository/object_scalar.dart';
 import 'player_ship_body.dart';
-import 'vector2.dart';
+import '../../../core/repository/vector2.dart';
+import '../utils/enemy_hanlader.dart';
 
 /// playerShip, default life= 3x100,
 ///  health is controlled by [PlayerHealthManager]

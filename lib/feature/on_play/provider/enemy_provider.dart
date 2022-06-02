@@ -97,7 +97,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   }
 
   /// move downward and destroy while it is downSide:enemyShip
-  ///* check playerShip colision with enemyShip
+  ///* check playerShip collision with enemyShip
   /// > * remove enemyShip,
   /// > * decrease playerShip health
   void _enemyMovement() {

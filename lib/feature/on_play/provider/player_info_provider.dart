@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../model/model.dart';
-import '../extensions/extensions.dart';
-import '../screens/on_play/utils/utils.dart';
+import '../../../core/entities/entities.dart';
+import '../../../core/extensions/extensions.dart';
+import '../../setting/models/object_scalar.dart';
+import '../models/models.dart';
+import '../utils/utils.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
@@ -77,8 +80,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
         position: player.position.copyWith(
           dX: player.position.dX +
               player.size.width / 2 - //fire from top center
-              GObjectSize.instance.playerBullet.width /
-                  2, // position on middle
+              GObjectSize.instance.playerBullet.width / 2, // position on middle
         ),
       ),
     );

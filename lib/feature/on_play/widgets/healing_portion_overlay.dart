@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../provider/provider.dart';
-import '../../../utils/heart_painter.dart';
-import '../../../widget/rotate_widget.dart';
+import '../../../core/widget/widget.dart';
+import '../../setting/models/object_scalar.dart';
+import '../provider/provider.dart';
+import '../utils/paints/heart_painter.dart';
+
+ 
 
 /// provide player ship healing portion, increase player ship health
 class HealingPortionOverlay extends ConsumerWidget {

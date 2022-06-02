@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/utils/close_button_clipper_path.dart';
 
-import '../../../constants/constants.dart';
-import '../../../widget/widget.dart';
+import '../../../core/constants/constants.dart';
+import '../../../core/utils/utils.dart';
+import '../../../core/widget/widget.dart';
 import 'user_setting.dart';
 
 ///contains [SettingView] with animated close button

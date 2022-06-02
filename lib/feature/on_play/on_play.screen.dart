@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../constants/constants.dart';
-import '../../provider/provider.dart';
-import '../../widget/widget.dart';
+import '../../core/constants/enums.dart';
+import '../../core/providers/game_manager.dart';
+import '../setting/models/object_scalar.dart';
 import 'on_play.dart';
+import 'provider/provider.dart';
 
 class OnPlayScreen extends StatelessWidget {
   static const String routeName = "/on_play_screen";
@@ -56,7 +58,7 @@ class OnPlayScreen extends StatelessWidget {
                     // enemy ships and enemy's bullets
                     EnemyOverlay(
                       key: const ValueKey("EnemyOverlay key"),
-                      enemyNotifer: enemyNotifer,
+                      enemyNotifier: enemyNotifer,
                       constraints: constraints,
                     ),
 

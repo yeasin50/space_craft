@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../provider/provider.dart';
-import '../../../utils/utils.dart';
-import '../../../widget/widget.dart';
+import '../../../core/utils/clip_paths/particle_path.dart';
+import '../../../core/widget/rotate_widget.dart';
+import '../../setting/models/object_scalar.dart';
 import '../utils/utils.dart';
+import 'ship_blast.dart';
 
 Widget playerShip() {
   return Container(

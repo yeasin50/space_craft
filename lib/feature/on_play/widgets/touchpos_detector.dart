@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../constants/constants.dart';
-import '../../../provider/provider.dart';
+import '../../../core/constants/enums.dart';
+import '../../../core/providers/game_manager.dart';
+import '../provider/provider.dart';
 import '../utils/utils.dart';
 
 //this widget gonna handle UI Touch Position

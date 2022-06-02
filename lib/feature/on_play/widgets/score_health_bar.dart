@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../provider/provider.dart';
+import '../provider/player_info_provider.dart';
 import 'heart_progress.dart';
 
 class ScoreHealthBar extends StatelessWidget {

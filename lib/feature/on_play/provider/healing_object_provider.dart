@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../extensions/extensions.dart';
-import '../model/model.dart';
-import '../screens/on_play/on_play.dart';
+import '../../../core/entities/entities.dart';
+import '../../../core/extensions/extensions.dart';
+import '../models/models.dart';
+import '../utils/utils.dart';
 import 'provider.dart';
 
 final healingObjectProvider = ChangeNotifierProvider(

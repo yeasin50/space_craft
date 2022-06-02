@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../provider/provider.dart';
-import '../../src/presentation/screens.dart';
+import '../setting/models/object_scalar.dart';
+import 'on_play.screen.dart';
+import 'provider/player_info_provider.dart';
+import 'utils/helpers/player_movement_handler.dart';
+
 
 class ShipMovemntTest extends ConsumerWidget {
   ShipMovemntTest({Key? key}) : super(key: key);

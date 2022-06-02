@@ -1,4 +1,3 @@
-export '../../../../../data/src/helper/enemy_hanlader.dart';
-export 'object_collision_checker.dart';
-export 'player_movement_handler.dart';
-export 'player_ship_paint.dart';
+export 'helpers/helpers.dart';
+export 'paints/paints.dart';
+export 'clip_paths/clip_paths.dart';

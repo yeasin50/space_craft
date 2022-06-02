@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/model.dart';
-import '../../../provider/provider.dart';
-import '../../../widget/widget.dart';
+import '../../../core/entities/bullet.dart';
+import '../../../core/widget/magic_ball.dart';
+import '../../setting/models/object_scalar.dart';
+import '../models/ship.dart';
+import '../provider/enemy_provider.dart';
+import 'bullet.dart';
 import 'widgets.dart';
 
 /// enemy ships and enemy's bullets on  [_EnemyBulletOverlay] widget
@@ -10,18 +13,18 @@ class EnemyOverlay extends StatelessWidget {
   const EnemyOverlay({
     Key? key,
     required this.constraints,
-    required this.enemyNotifer,
+    required this.enemyNotifier,
   }) : super(key: key);
 
   final BoxConstraints constraints;
-  final EnemyChangeNotifier enemyNotifer;
+  final EnemyChangeNotifier enemyNotifier;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       key: const ValueKey("Enemies Stack"),
       children: [
-        ...enemyNotifer.enemies.map(
+        ...enemyNotifier.enemies.map(
           (EnemyShip e) => AnimatedPositioned(
             key: ValueKey(e),
             duration: GObjectSize.instance.animationDuration,
@@ -32,11 +35,11 @@ class EnemyOverlay extends StatelessWidget {
             ),
           ),
         ),
-        _EnemyBulletOverlay(bullets: enemyNotifer.bullets),
+        _EnemyBulletOverlay(bullets: enemyNotifier.bullets),
 
         /// bullets overlay
         /// todo: add controller
-        ...enemyNotifer.shipsblastLocation.map(
+        ...enemyNotifier.shipsblastLocation.map(
           (blastLoc) => Positioned(
             key: ValueKey(blastLoc),
             top: blastLoc.dY - 20, //minimize the blast size

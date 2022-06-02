@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../extensions/extensions.dart';
-import '../../../model/model.dart';
-import '../../../provider/provider.dart';
-import '../../../widget/widget.dart';
+import '../../../core/entities/entities.dart';
+import '../../../core/extensions/extensions.dart';
+import '../../../core/widget/widget.dart';
+import '../models/models.dart';
 import 'custom_button.dart';
 
 class SettingView extends StatefulWidget {

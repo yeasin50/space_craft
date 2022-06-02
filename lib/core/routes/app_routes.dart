@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../presentation/screens.dart';
+import '../../feature/on_play/on_play.dart';
+import '../../feature/start/start.dart';
+
 
 class AppRotue {
   static Route onGenerateRoutes(RouteSettings settings) {

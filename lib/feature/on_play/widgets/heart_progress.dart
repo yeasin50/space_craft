@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/utils.dart';
+import '../utils/paints/heart_painter.dart';
 
 class LiveBar extends StatelessWidget {
   /// resize heart. default size is 48px scale 0.16

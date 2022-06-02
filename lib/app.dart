@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'feature/on_play/on_play.dart';
+
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 

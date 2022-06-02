@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/widget/widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../provider/provider.dart';
+import '../../../core/providers/game_manager.dart';
+import '../../../core/widget/widget.dart';
+import '../../setting/models/object_scalar.dart';
 import '../../setting/setting.dart';
 
 class GameControllBar extends StatefulWidget {

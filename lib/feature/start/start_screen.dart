@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../constants/constants.dart';
-import '../../widget/widget.dart';
+import '../../core/constants/constants.dart';
+import '../../core/widget/widget.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({Key? key}) : super(key: key);

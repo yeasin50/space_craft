@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../provider/provider.dart';
-import '../widget/widget.dart';
 import 'utils.dart';
 
 /// used on [RotateWidget] to paint [RadialGradient] for falling hearth of[HealingObjectNotifier]

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../utils/utils.dart';
 
 class BulletWidget extends StatelessWidget {
   ///bullet `Size(bulletHeight,bulletHeight*4)`

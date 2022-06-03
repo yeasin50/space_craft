@@ -30,7 +30,7 @@ dependencies:
 
   change_app_package_name: ^1.0.0
   flutter_riverpod: ^1.0.2
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
   equatable: ^2.0.3
 
 dev_dependencies:

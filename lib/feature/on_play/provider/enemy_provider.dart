@@ -55,19 +55,19 @@ class EnemyChangeNotifier extends ChangeNotifier {
 
   final Duration _bulletGeneratorDelay = const Duration(seconds: 1);
 
-  /// move enemy down by  `bulletMoventPY` px
-  double bulletMoventPY = 10.0;
+  /// move enemy down by  `bulletMovementPY` px
+  double bulletMovementPY = 10.0;
 
   final Duration _bulletMovementRate = const Duration(milliseconds: 70);
 
   ///Enemy GeneratePer [enemyGenerateDuration]
-  final int _generateNxEmeny = 2;
+  final int _generateNxEnemy = 2;
 
   ///start Enemy creator,
   void _generateEnemies() {
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
       _enemies.addAll(
-        List.generate(_generateNxEmeny, (index) {
+        List.generate(_generateNxEnemy, (index) {
           return EnemyShip(
             position: _enemyInitPosition(),
           );
@@ -91,7 +91,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
     double randX = _random.nextDouble() * screenSize.width;
     // }
 
-    // to avoid boundary confliction
+    // to avoid boundary conflicting
     final dx = randX - 40 < 0
         ? randX + 40
         : randX + 40 > screenSize.width
@@ -107,7 +107,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// > * remove enemyShip,
   /// > * decrease playerShip health
   void _enemyMovement() {
-    List<EnemyShip> removeableShip = [];
+    List<EnemyShip> removableShip = [];
     List<Vector2> addableBlast = [];
 
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
@@ -120,16 +120,16 @@ class EnemyChangeNotifier extends ChangeNotifier {
         enemy.position.update(dY: enemy.position.dY + enemyMovementPY);
 
         if (enemy.position.dY > screenSize.height) {
-          removeableShip.add(enemy);
+          removableShip.add(enemy);
           continue;
         }
 
-        /// check playerShip colision with enemyShip
+        /// check playerShip collision with enemyShip
         /// remove enemyShip, decrease playerShip health
-        ///* improving enemy colission by dividing ship into two parts,  instead of directly using player size, we will use `GObjectSize.playerShipTopPart` and `GObjectSize.playerShipBottomPart`
+        ///* improving enemy colossian by dividing ship into two parts,  instead of directly using player size, we will use `GObjectSize.playerShipTopPart` and `GObjectSize.playerShipBottomPart`
         if (collisionChecker(a: enemy, b: player.bottomPart) ||
             collisionChecker(a: enemy, b: player.topPart)) {
-          removeableShip.add(enemy);
+          removableShip.add(enemy);
           playerNotifier.updateHeathStatus(DamageOnShipCollision);
           addableBlast.add(enemy.position.value);
         }
@@ -137,9 +137,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
       // debugPrint("total enemyShip: ${_enemies.length}");
 
       // update objects
-      if (removeableShip.isNotEmpty) {
-        _enemies.removeAll(removeableShip);
-        removeableShip.clear();
+      if (removableShip.isNotEmpty) {
+        _enemies.removeAll(removableShip);
+        removableShip.clear();
       }
       if (addableBlast.isNotEmpty) {
         addblasts(addableBlast);
@@ -189,23 +189,23 @@ class EnemyChangeNotifier extends ChangeNotifier {
       final playerNotifier = ref.read(playerInfoProvider);
 
       /// clear all bullet on Timer
-      List<IBullet> removeableBullets = [];
+      List<IBullet> removableBullets = [];
 
       for (final b in _bullets) {
-        b.position.update(dY: b.position.dY + bulletMoventPY);
+        b.position.update(dY: b.position.dY + bulletMovementPY);
 
         //check bullet collision with player collision or beyond screen
         final bool _c = collisionChecker(b: b, a: playerNotifier.player);
         if (_c || b.position.dY > screenSize.height) {
-          removeableBullets.add(b);
+          removableBullets.add(b);
           if (_c) {
             playerNotifier.updateHeathStatus(DamageOnEB);
           }
         }
       }
-      _bullets.removeAll(removeableBullets);
+      _bullets.removeAll(removableBullets);
       //todo: how can i dispose list to free memory
-      removeableBullets.clear(); //? not needed
+      removableBullets.clear(); //? not needed
       notifyListeners();
     });
   }
@@ -278,9 +278,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
   //*       Controllers         *
   //*---------------------------*
 
-  /// call while game is running and needed to genrate enemy
-  ///* preodicly enemy creation
-  ///* start EnemyMovemnt
+  /// call while game is running and needed to generate enemy
+  ///* periodically enemy creation
+  ///* start EnemyMovement
   ///* generate Enemies bullet and movement
   void playMode() {
     _generateEnemies();
@@ -289,7 +289,7 @@ class EnemyChangeNotifier extends ChangeNotifier {
     _bulletMovement();
   }
 
-  /// if true, stop enemymovement+ geration..+bullets
+  /// if true, stop enemy movement+ generation..+bullets
   void pauseMode({
     bool movement = true,
     bool generator = true,

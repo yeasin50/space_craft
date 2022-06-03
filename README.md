@@ -1,26 +1,28 @@
 # SpaceCraft
 
-A simple game, wanna impliment in flutter.
+A simple game, wanna implement in flutter.
 
-[Audio manager usung assets_audio_player](https://pub.dev/packages/assets_audio_player/example)
+## Over Engineered; This is my play ground 😅
+
+[Audio manager using assets_audio_player](https://pub.dev/packages/assets_audio_player/example)
 
 ## TODO
 - [ ] format constructor style based on flutter; Constructor then variables
 - [ ] Improve performance by testing on profile mode
 - [ ] keyboard movement works after tapping
 - [ ] score based on EnemyShip
-- [x] controll space on enemy generation
+- [x] controls space on enemy generation
 - [ ] create two shape for player collision
-- [ ] controll generationRate
+- [ ] control generationRate
 - [ ] bullet rotate effect
-- [ ] replace `Positioned` with `Aling` widget
+- [ ] replace `Positioned` with `Align` widget
 - [ ] rm unused assets
 
 ---
 
 ## ⚠ For game you should use [Flame package](https://pub.dev/packages/flame)
 
-<!-- ## ⚠ Debuging is Much laggy, avoid debug statements on forEach loop -->
+<!-- ## ⚠ Debugging is Much laggy, avoid debug statements on forEach loop -->
 
 Thought It might be because we are changing a lot, but sometimes it's just happen because of print/debug statements.  
 Now lets add Explosions Rives on it, Not sure about how it gonna perform.

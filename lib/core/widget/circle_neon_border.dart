@@ -19,7 +19,7 @@ class NeonCircle extends StatefulWidget {
   ///radius of widget
   final double radius;
 
-  ///The Space between child and outter Container/frame known as NeonCircleBackground
+  ///The Space between child and outer Container/frame known as NeonCircleBackground
   final double frameThickness;
 
   const NeonCircle(

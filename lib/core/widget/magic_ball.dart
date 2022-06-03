@@ -46,7 +46,7 @@ class MagicBall extends StatefulWidget {
         showRing = false,
         super(key: key);
 
-  /// `showRign` is used to show the outter circle/ring. Only needed when showing magicBall or start screen
+  /// `showRing` is used to show the outer circle/ring. Only needed when showing magicBall or start screen
   /// `false` disable `decoration` on and used on ship destroy Effect
   ///  true for [MagicBall], false for [MagicBall.singleblast]
   final bool showRing;
@@ -61,7 +61,7 @@ class MagicBall extends StatefulWidget {
   final bool repeated;
 
   /// repeated blast will generate on every `blastDelay`
-  /// default  [MagicBall.singleblast] `blastDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 miliSec.
+  /// default  [MagicBall.singleblast] `blastDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 millisecond.
   final Duration blastDelay;
 
   final Widget? child;
@@ -107,7 +107,7 @@ class _MagicBallState extends State<MagicBall> {
         ),
       );
 
-      //stop repeatation if `widget.repeated:false`
+      //stop repetition if `widget.repeated:false`
       if (!widget.repeated) {
         timer.cancel();
       }

@@ -7,6 +7,7 @@ A simple game, wanna implement in flutter.
 [Audio manager using assets_audio_player](https://pub.dev/packages/assets_audio_player/example)
 
 ## TODO
+- [ ] check [just_audio_windows](https://pub.dev/packages/just_audio_windows/)
 - [ ] format constructor style based on flutter; Constructor then variables
 - [ ] Improve performance by testing on profile mode
 - [ ] keyboard movement works after tapping

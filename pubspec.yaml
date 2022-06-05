@@ -33,6 +33,12 @@ dependencies:
   flutter_lints: ^2.0.1
   equatable: ^2.0.3
 
+  #audio handler 
+  just_audio: ^0.9.24
+  just_audio_windows: ^0.1.0
+  # just_audio_mpv: ^0.1.4
+  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

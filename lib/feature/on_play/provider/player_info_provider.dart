@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/feature/setting/models/models.dart';
+import 'package:space_craft/feature/sound/sound_manager.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
@@ -75,6 +77,10 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   void _addBullet() {
+    ///TODO: bullet sound
+    if (UserSetting.instance.sound) {
+      SoundManager.playSilencer();
+    }
     _bullets.add(
       PlayerShipBullet(
         position: player.position.copyWith(

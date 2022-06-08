@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/feature/setting/models/models.dart';
-import 'package:space_craft/feature/sound/sound_manager.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
+import '../../setting/models/models.dart';
 import '../../setting/models/object_scalar.dart';
+import '../../sound/sound_manager.dart';
 import '../models/models.dart';
 import '../utils/utils.dart';
 import 'provider.dart';
@@ -79,7 +79,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   void _addBullet() {
     ///TODO: bullet sound
     if (UserSetting.instance.sound) {
-      SoundManager.playSilencer();
+      SoundManager.instance.playPlayerBulletSound();
     }
     _bullets.add(
       PlayerShipBullet(
@@ -94,9 +94,9 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   ///*  player bullets will move up(-Y) on Every Frame(lie, on [bulletMovementRate])
-  /// removed removeable objects end of the timer loop.
+  /// removed removable objects end of the timer loop.
   /// ----
-  /// * remove enemy on bullet collision, removeable object on removeable list
+  /// * remove enemy on bullet collision, removable object on removeable list
   /// * destroy EnemyShip and player bullet on collision
   /// * increase score while bullet hit enemyShip
   /// * add blast while destroying ship

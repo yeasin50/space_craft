@@ -17,7 +17,7 @@ class App extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.copyWith(),
       ),
       // home: const TestCases(),
-      home: const AudioTestPage(),
+      home: const OnPlayScreen(),
       // home: const StartScreen(),
     );
   }

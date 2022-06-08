@@ -18,20 +18,20 @@ class _AudioTestPageState extends State<AudioTestPage> {
         children: [
           IconButton(
             onPressed: () async {
-              await SoundManager.playSilencer();
+                SoundManager.instance.playPlayerBulletSound();
             },
             icon: Text("just_audio"),
           ),
           IconButton(
             onPressed: () async {
-              await SoundManager.playLuger();
+              // await SoundManager.playLuger();
             },
             icon: Text("AssetsAudioPlayer"),
           ),
           IconButton(
             onPressed: () async {
-              await SoundManager.playSilencer();
-              await SoundManager.playLuger();
+              // await SoundManager.playSilencer();
+              // await SoundManager.playLuger();
             },
             icon: Text("playerAudioPlayer"),
           ),

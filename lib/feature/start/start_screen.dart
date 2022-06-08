@@ -14,15 +14,15 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
   bool showMagicBall = false;
-  bool showBlustRing = false;
+  bool showBlastRing = false;
   bool showNeonCircle = false;
 
-  bool defaultBlustSize = false;
+  bool defaultBlastSize = false;
 
-  double numberOfBlust = 5.0;
+  double numberOfBlast = 5.0;
 
   final magicBallKey = GlobalKey();
-  final blustKey = GlobalKey();
+  final blastKey = GlobalKey();
   final ringKey = GlobalKey();
 
   @override
@@ -48,14 +48,14 @@ class _StartScreenState extends State<StartScreen> {
                     radius: ringRadius * 1.2,
                   ),
 
-                if (showBlustRing)
-                  RorationalBlustRing(
-                    key: ValueKey("$blustKey $defaultBlustSize"),
+                if (showBlastRing)
+                  RotationalBlastRing(
+                    key: ValueKey("$blastKey $defaultBlastSize"),
                     radius: ringRadius * 1.1,
-                    blutSize: defaultBlustSize
+                    blastSize: defaultBlastSize
                         ? null
                         : Size(blastHeight * 4, blastHeight),
-                    numberOfBlust: numberOfBlust.toInt(),
+                    numberOfBlast: numberOfBlast.toInt(),
                   ),
 
                 if (showMagicBall)
@@ -72,9 +72,9 @@ class _StartScreenState extends State<StartScreen> {
                     child: Row(
                       children: [
                         Checkbox(
-                          value: showBlustRing,
+                          value: showBlastRing,
                           onChanged: (value) =>
-                              setState(() => showBlustRing = !showBlustRing),
+                              setState(() => showBlastRing = !showBlastRing),
                         ),
                         Checkbox(
                           value: showNeonCircle,
@@ -88,22 +88,17 @@ class _StartScreenState extends State<StartScreen> {
                         ),
                         Expanded(
                           child: Slider(
-                            value: numberOfBlust,
+                            value: numberOfBlast,
                             divisions: 20,
                             max: 20,
                             onChanged: (value) {
                               setState(() {
-                                numberOfBlust = value;
+                                numberOfBlast = value;
                               });
                             },
                           ),
                         ),
-                        Checkbox(
-                          key: ValueKey("bChanger $defaultBlustSize"),
-                          value: defaultBlustSize,
-                          onChanged: (value) => setState(
-                              () => defaultBlustSize = !defaultBlustSize),
-                        ),
+                       
                       ],
                     ),
                   ),
@@ -129,11 +124,11 @@ class GlobeTransform extends StatefulWidget {
 }
 
 class _GlobeTransformState extends State<GlobeTransform> {
-  late double rignRadius;
+  late double ringRadius;
 
   @override
   void initState() {
-    rignRadius = widget.radius;
+    ringRadius = widget.radius;
     super.initState();
   }
 
@@ -146,8 +141,8 @@ class _GlobeTransformState extends State<GlobeTransform> {
           child: NeonRingWidget(
             duration: Duration(milliseconds: 30),
             colorSet: colorSet0,
-            radius: rignRadius,
-            frameThickness: rignRadius * .5,
+            radius: ringRadius,
+            frameThickness: ringRadius * .5,
           ),
         ),
       ],

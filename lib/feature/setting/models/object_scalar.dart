@@ -38,12 +38,12 @@ class GObjectSize implements _Elements {
 
   static Size? _screenSize;
 
-  static late double _minLenght;
+  static late double _minLength;
 
   ///it will decide the object scale, min(Screen.height, screen.width)
-  double get minLength => _minLenght;
+  double get minLength => _minLength;
 
-  /// inital the screenSize, use to generate others elements size
+  /// initial the screenSize, use to generate others elements size
   static void init({
     required Size size,
   }) {
@@ -51,8 +51,8 @@ class GObjectSize implements _Elements {
 
     // can be use `math.min`
     size.height < size.width
-        ? _minLenght = size.height
-        : _minLenght = size.width;
+        ? _minLength = size.height
+        : _minLength = size.width;
   }
 
   @override
@@ -65,20 +65,20 @@ class GObjectSize implements _Elements {
     const double _scale = .001;
     // asset's image 48x32
     return Size(
-      48 * _minLenght * _scale,
-      32 * _minLenght * _scale,
+      48 * _minLength * _scale,
+      32 * _minLength * _scale,
     );
   }
 
-  /// ship size is depend on screen size [_minLenght * .075], min ship  Size(50, 50)
+  /// ship size is depend on screen size [_minLength * .075], min ship  Size(50, 50)
   @override
   Size get playerShip {
     // debugPrint("screen size: $screen");
     _showErr();
-    const double _scale = .10;
+    const double scale = .10;
     return Size(
-      _minLenght * _scale,
-      _minLenght * _scale,
+      _minLength * scale,
+      _minLength * scale,
     );
   }
 
@@ -88,12 +88,12 @@ class GObjectSize implements _Elements {
 
   final double topWidthFactor = .5;
 
-  ///todo: create Settings for sensivity
+  ///todo: create Settings for sensitivity
   ///player movement px on keyboard action: [keyboardMovementHandler]
   double get movementRatio =>
       screen.width * .02 * UserSetting.instance.movementSensitivity;
 
-  /// top part of player ship based on Paint, This fix expty space player enemy-collision
+  /// top part of player ship based on Paint, This fix empty space player enemy-collision
   Size get playerShipTopPart {
     return Size(
       playerShip.width * topWidthFactor,
@@ -113,30 +113,30 @@ class GObjectSize implements _Elements {
   Size get healthBox {
     // debugPrint("screen size: $screen");
     _showErr();
-    const double _scale = .06;
+    const double scale = .06;
     return Size(
-      _minLenght * _scale,
-      _minLenght * _scale,
+      _minLength * scale,
+      _minLength * scale,
     );
   }
 
   @override
   Size get enemyBullet {
     _showErr();
-    const double _scale = .01;
+    const double scale = .01;
     return Size(
-      _minLenght * _scale,
-      _minLenght * _scale,
+      _minLength * scale,
+      _minLength * scale,
     );
   }
 
   @override
   Size get playerBullet {
     _showErr();
-    const double _scale = .013;
+    const double scale = .013;
     return Size(
-      _minLenght * _scale,
-      _minLenght * _scale,
+      _minLength * scale,
+      _minLength * scale,
     );
   }
 

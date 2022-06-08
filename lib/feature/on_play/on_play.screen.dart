@@ -31,7 +31,7 @@ class OnPlayScreen extends StatelessWidget {
         return Consumer(
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
-            final enemyNotifer = ref.watch(enemyProvider);
+            final enemyNotifier = ref.watch(enemyProvider);
 
             final gameState = ref.watch(gameManagerProvider);
 
@@ -58,7 +58,7 @@ class OnPlayScreen extends StatelessWidget {
                     // enemy ships and enemy's bullets
                     EnemyOverlay(
                       key: const ValueKey("EnemyOverlay key"),
-                      enemyNotifier: enemyNotifer,
+                      enemyNotifier: enemyNotifier,
                       constraints: constraints,
                     ),
 
@@ -101,9 +101,9 @@ class OnPlayScreen extends StatelessWidget {
 
                     // game pause, restart, settings
                     const Align(
-                      key: ValueKey("controllBar"),
+                      key: ValueKey("controlBar"),
                       alignment: Alignment(-.95, -.95),
-                      child: GameControllBar(),
+                      child: GameControlBar(),
                     ),
                   ],
                 ),

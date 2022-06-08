@@ -22,7 +22,7 @@ class SettingPage extends StatelessWidget {
               rotateAxis: [true, true, true],
               repeat: true,
               reverseOnRepeat: false,
-              child: RorationalBlustRing(
+              child: RotationalBlastRing(
                 radius: 150,
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/enums.dart';
+import '../../core/constants/enums/enums.dart';
 import '../../core/providers/game_manager.dart';
 import '../setting/models/object_scalar.dart';
 import 'on_play.dart';

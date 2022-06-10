@@ -45,7 +45,7 @@ class EnemyOverlay extends StatelessWidget {
             top: blastLoc.dY - 20, //minimize the blast size
             left: blastLoc.dX - 20,
             child: const MagicBall.singleBlast(
-              radius: 40,
+              size: 40,
             ),
           ),
         )

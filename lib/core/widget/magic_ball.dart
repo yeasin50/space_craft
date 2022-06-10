@@ -1,34 +1,34 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
 import '../utils/clip_paths/particle_path.dart';
-import '../utils/helpers/random_offset_tween.dart';
 
 /// [MagicBall] animate particles from center, keep creation on every `blastDelay`
 
 /// default constructor for MagicBall
 /// ```
 /// const MagicBall(
-///     radius: 150,
+///     size: 150,
 ///     numberOfParticles: 10,
 ///     blastDelay: Duration(milliseconds: 400),
 ///   ),
 /// ```
 
-/// [MagicBall.singleblast] generate `numberOfParticles:10` only for single time
+/// [MagicBall.singleBlast] generate `numberOfParticles:10` only for single time
 ///
 ///```
-/// const MagicBall.singleblast(
+/// const MagicBall.singleBlast(
 ///    blastDelay: Duration(milliseconds: 0),
 ///    numberOfParticles: 10,
-///    radius: 150,
+///    size: 150,
 ///   ),
 ///```
 class MagicBall extends StatefulWidget {
   const MagicBall({
     Key? key,
-    this.radius = 150,
+    this.size = 150,
     this.numberOfParticles = 10,
     this.blastDelay = const Duration(milliseconds: 400),
     this.child,
@@ -38,7 +38,7 @@ class MagicBall extends StatefulWidget {
 
   const MagicBall.singleBlast({
     Key? key,
-    this.radius = 150,
+    this.size = 150,
     this.numberOfParticles = 10,
     this.blastDelay = const Duration(milliseconds: 0),
     this.child,
@@ -48,20 +48,20 @@ class MagicBall extends StatefulWidget {
 
   /// `showRing` is used to show the outer circle/ring. Only needed when showing magicBall or start screen
   /// `false` disable `decoration` on and used on ship destroy Effect
-  ///  true for [MagicBall], false for [MagicBall.singleblast]
+  ///  true for [MagicBall], false for [MagicBall.singleBlast]
   final bool showRing;
 
-  /// used to create magicBall `Size(radius*2,radius*2)`
-  final double radius;
+  /// used to create magicBall ``
+  final double size;
 
   /// generate `numberOfParticles`  on  every blast
   final int numberOfParticles;
 
-  /// Continuous particle creation on every `blastDelay`, default true for [MagicBall], false for [MagicBall.singleblast]
+  /// Continuous particle creation on every `blastDelay`, default true for [MagicBall], false for [MagicBall.singleBlast]
   final bool repeated;
 
   /// repeated blast will generate on every `blastDelay`
-  /// default  [MagicBall.singleblast] `blastDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 millisecond.
+  /// default  [MagicBall.singleBlast] `blastDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 millisecond.
   final Duration blastDelay;
 
   final Widget? child;
@@ -93,20 +93,18 @@ class _MagicBallState extends State<MagicBall> {
   void initState() {
     super.initState();
 
-    widgetSize = Size(widget.radius * 2, widget.radius * 2);
+    widgetSize = Size.square(widget.size);
     _timer = Timer.periodic(widget.blastDelay, (timer) {
-      particles.addAll(
-        List.generate(
-          widget.numberOfParticles,
-          (index) => ParticleWidget(
-            key: ValueKey("P $idC $index"),
-            id: idC++,
-            parentSize: widgetSize,
-            callback: _removeParticle,
-          ),
+      final newParticles = List.generate(
+        widget.numberOfParticles,
+        (index) => ParticleWidget(
+          key: ValueKey("ParticleWidget id$idC: index$index"),
+          id: idC++,
+          parentSize: widgetSize,
+          callback: _removeParticle,
         ),
       );
-
+      particles = [...particles, ...newParticles];
       //stop repetition if `widget.repeated:false`
       if (!widget.repeated) {
         timer.cancel();
@@ -128,7 +126,7 @@ class _MagicBallState extends State<MagicBall> {
     return ClipOval(
       child: Container(
         //todo: fixing explosion position
-        //* we can use `widget.showRing` or `widget.repeated` while both is false on [MagicBall.singleblast()]
+        //* we can use `widget.showRing` or `widget.repeated` while both is false on [MagicBall.singleBlast()]
         width: widgetSize.width,
         height: widgetSize.height,
         decoration: widget.showRing
@@ -184,6 +182,8 @@ class _ParticleWidgetState extends State<ParticleWidget>
   late AnimationController controller;
   late Animation<Offset> animation;
 
+  final math.Random _random = math.Random();
+
   late Size particleSize;
   late Size parentSize;
 
@@ -209,8 +209,8 @@ class _ParticleWidgetState extends State<ParticleWidget>
         }
       });
 
-    animation =
-        particleAnimation(controller: controller, size: widget.parentSize);
+    animation = createParticleAnimation(
+        controller: controller, size: widget.parentSize);
 
     // widget.debugMode ? controller.repeat() :
     controller.forward();
@@ -242,5 +242,29 @@ class _ParticleWidgetState extends State<ParticleWidget>
         ),
       ),
     );
+  }
+
+  /// define direction and end position of particle
+  Offset _endOffSet({
+    required Size size,
+    required AnimationController controller,
+  }) {
+    return Offset(
+      _random.nextDouble() * size.width,
+      _random.nextDouble() * size.height,
+    );
+  }
+
+  /// generate [Animation] of [Offset] EndOffset of [MagicBall] [Particle]
+  Animation<Offset> createParticleAnimation({
+    required Size size,
+    required AnimationController controller,
+  }) {
+    final of = _endOffSet(controller: controller, size: size);
+    // debugPrint(of.toString());
+    return Tween<Offset>(
+      begin: Offset(size.width / 2, size.height / 2),
+      end: of,
+    ).animate(controller);
   }
 }

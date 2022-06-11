@@ -51,7 +51,6 @@ class MagicBall extends StatefulWidget {
   ///  true for [MagicBall], false for [MagicBall.singleBlast]
   final bool showRing;
 
-  /// used to create magicBall ``
   final double size;
 
   /// generate `numberOfParticles`  on  every blast

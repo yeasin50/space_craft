@@ -7,7 +7,7 @@ import 'user_setting.dart';
 
 ///contains [SettingView] with animated close button
 class SettingDialogWidget extends StatelessWidget {
-  /// [ScaleTransition] duration, defaul 400 milisec
+  /// [ScaleTransition] duration, default 400 millisecond
   final Duration duration;
 
   final bool isOpen;
@@ -49,7 +49,7 @@ class SettingDialogWidget extends StatelessWidget {
                     colorSet: colorSet0,
                     duration: Duration(milliseconds: 100),
                     rotation: false,
-                    radius: 15,
+                    size: 15,
                     frameThickness: 4,
                   ),
                 ),

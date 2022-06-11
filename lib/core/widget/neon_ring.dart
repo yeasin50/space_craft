@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../utils/clip_paths/ring_path.dart';
@@ -19,15 +19,15 @@ import '../utils/helpers/hue_changer.dart';
 /// ...
 ///```
 
-/// animated colorfull rign widget that will be `width=height=radius*2`. change colors based on [duration] you provide, default `Duration(milliseconds: 150),` with `Curves.ease`
+/// animated colorful ring widget that will be `width=height=radius*2`. change colors based on [duration] you provide, default `Duration(milliseconds: 150),` with `Curves.ease`
 class NeonRingWidget extends StatefulWidget {
-  /// rign radius, use to draw circle[Container],
-  final double radius;
+  /// ring size, use to draw circle[Container],
+  final double size;
 
   /// ColorSet that will change over time using[changeColorHue]
   final List<Color> colorSet;
 
-  ///Duration of animation default=`Duration(milliseconds: 150),` pefer 50mili sec
+  ///Duration of animation default=`Duration(milliseconds: 150),` prefer 50 millisecond
   final Duration duration;
 
   /// default Curve= `Curves.ease`
@@ -45,16 +45,19 @@ class NeonRingWidget extends StatefulWidget {
 
   final Widget? child;
 
+  final bool randomize;
+
   const NeonRingWidget({
     Key? key,
     required this.colorSet,
     this.duration = const Duration(milliseconds: 150),
     this.curve = Curves.ease,
     this.frameThickness,
-    required this.radius,
+    required this.size,
     this.rotation = true,
     this.rotationIncrementRate = 5.0,
     this.child,
+    this.randomize = true,
   }) : super(key: key);
 
   @override
@@ -109,16 +112,36 @@ class _NeonRingWidgetState extends State<NeonRingWidget> {
       angle: rotateAngel,
       child: ClipPath(
         clipper: RingPath(),
-        child: Container(
-          //todo:add blur
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: colorSet,
-            ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            //todo:add blur, replace with shape decorator
+            decoration:
+
+                //  ShapeDecoration(
+                //   shape: CircleBorder(),
+                //   color: Colors.green,
+                // ),
+
+                BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: colorSet,
+                    ),
+                    boxShadow: colorSet
+                        .map(
+                          (c) => BoxShadow(
+                            color: c.withOpacity(.1),
+                            offset: Offset(3, -6),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                          ),
+                        )
+                        .toList()),
+            width: widget.size,
+            height: widget.size,
+            child: widget.child,
           ),
-          width: widget.radius * 2,
-          height: widget.radius * 2,
-          child: widget.child,
         ),
       ),
     );

@@ -45,7 +45,7 @@ class NeonRingWidget extends StatefulWidget {
 
   final Widget? child;
 
-  final bool randomize;
+  final bool colorBlink;
 
   const NeonRingWidget({
     Key? key,
@@ -57,7 +57,7 @@ class NeonRingWidget extends StatefulWidget {
     this.rotation = true,
     this.rotationIncrementRate = 5.0,
     this.child,
-    this.randomize = true,
+    this.colorBlink = true,
   }) : super(key: key);
 
   @override
@@ -100,6 +100,18 @@ class _NeonRingWidgetState extends State<NeonRingWidget> {
     );
   }
 
+  final math.Random random = math.Random();
+
+  List<Color> colorSetModification() {
+    if (!widget.colorBlink) return colorSet;
+    int transparentIndex = random.nextInt(colorSet.length);
+
+    List<Color> newList = colorSet.toList();
+    newList[transparentIndex] = Colors.transparent;
+
+    return newList;
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
@@ -126,13 +138,14 @@ class _NeonRingWidgetState extends State<NeonRingWidget> {
                 BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
-                      colors: colorSet,
+                      colors: colorSetModification(),
                     ),
-                    boxShadow: colorSet
+                    //create transparent effect on single color
+                    boxShadow: colorSetModification()
                         .map(
                           (c) => BoxShadow(
                             color: c.withOpacity(.1),
-                            offset: Offset(3, -6),
+                            offset: const Offset(3, -6),
                             spreadRadius: 1,
                             blurRadius: 1,
                           ),

@@ -24,7 +24,7 @@ class _NeonRingAnimationState extends State<NeonRingAnimation> {
     return Align(
       alignment: Alignment.center,
       child: NeonRingWidget(
-        randomize: true,
+        colorBlink: true,
         duration: const Duration(milliseconds: 30),
         colorSet: colorSet0,
         size: widget.size,

@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../core/package/neon_ring/neon_ring.dart';
+import 'widgets/animated_neon_ring.dart';
 import 'widgets/widgets.dart';
 
 class StartAnimation extends StatefulWidget {
@@ -54,9 +56,9 @@ class _StartAnimationState extends State<StartAnimation> {
             ),
             Align(
               child: NeonRingAnimation(
-                blinkColor: colorBlink,
+                  data: NeonCircleData(
                 size: neonRingSize,
-              ),
+              )),
             )
           ],
         );

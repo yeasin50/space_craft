@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/constants.dart';
+import '../../../core/package/neon_ring/neon_ring.dart';
 import '../../../core/utils/utils.dart';
 import '../../../core/widget/widget.dart';
 import 'user_setting.dart';
@@ -46,11 +46,12 @@ class SettingDialogWidget extends StatelessWidget {
                     thicknessRatio: .2,
                   ),
                   child: const NeonRingWidget(
-                    colorSet: colorSet0,
-                    duration: Duration(milliseconds: 100),
-                    rotation: false,
-                    size: 15,
-                    frameThickness: 4,
+                    data: NeonCircleData(
+                      size: 15,
+                      frameThickness: 4,
+                      duration: Duration(milliseconds: 100),
+                      rotatable: false,
+                    ),
                   ),
                 ),
               ),

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/color_palette.dart';
-import '../../../core/widget/widget.dart';
+import '../../../core/package/neon_ring/neon_ring.dart';
 
 class NeonRingAnimation extends StatefulWidget {
-  final bool blinkColor;
-  final double size;
+  final NeonCircleData data;
+
   const NeonRingAnimation({
     Key? key,
-    required this.size,
-    this.blinkColor = false,
+    required this.data,
   }) : super(key: key);
 
   @override
@@ -26,11 +24,12 @@ class _NeonRingAnimationState extends State<NeonRingAnimation> {
     return Align(
       alignment: Alignment.center,
       child: NeonRingWidget(
-        colorBlink: widget.blinkColor,
-        duration: const Duration(milliseconds: 30),
-        colorSet: colorSet0,
-        size: widget.size,
-        frameThickness: widget.size * .5,
+        data: NeonCircleData(
+          colorBlink: widget.data.colorBlink,
+          duration: const Duration(milliseconds: 30),
+          size: widget.data.size,
+          frameThickness: widget.data.size * .5,
+        ),
       ),
     );
   }

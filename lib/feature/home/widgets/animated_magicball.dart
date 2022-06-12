@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:space_craft/core/widget/magic_ball.dart';
+
+import '../../../core/widget/magic_ball.dart';
+
+// typedef ElementVisitor = void Function(Element element);
+typedef MagicBallController = void Function(AnimationController? controller);
 
 class AnimatedMagicBall extends StatefulWidget {
+  final MagicBallController? callback;
+
   final double maxSize;
 
   const AnimatedMagicBall({
     Key? key,
     required this.maxSize,
+    this.callback,
   }) : super(key: key);
 
   @override
@@ -24,8 +31,10 @@ class _AnimatedMagicBallState extends State<AnimatedMagicBall>
 
     radiusController =
         AnimationController(vsync: this, duration: const Duration(seconds: 3))
-          ..addListener(() => setState(() {}));
-
+          ..addListener(() {
+            widget.callback!(radiusController);
+            setState(() {});
+          });
     ringAnimation = Tween<double>(begin: 0, end: 1).animate(radiusController!);
     radiusController!.forward();
   }

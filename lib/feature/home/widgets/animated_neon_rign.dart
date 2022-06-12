@@ -4,10 +4,12 @@ import '../../../core/constants/color_palette.dart';
 import '../../../core/widget/widget.dart';
 
 class NeonRingAnimation extends StatefulWidget {
+  final bool blinkColor;
   final double size;
   const NeonRingAnimation({
     Key? key,
     required this.size,
+    this.blinkColor = false,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class _NeonRingAnimationState extends State<NeonRingAnimation> {
     return Align(
       alignment: Alignment.center,
       child: NeonRingWidget(
-        colorBlink: true,
+        colorBlink: widget.blinkColor,
         duration: const Duration(milliseconds: 30),
         colorSet: colorSet0,
         size: widget.size,

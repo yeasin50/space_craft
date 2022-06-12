@@ -24,6 +24,8 @@ class _StartAnimationState extends State<StartAnimation> {
   bool defaultBlastSize = false;
   double numberOfBlast = 5.0;
 
+  bool colorBlink = false;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -42,10 +44,17 @@ class _StartAnimationState extends State<StartAnimation> {
               child: AnimatedMagicBall(
                 key: const ValueKey("MagicBall-Scaler widget"),
                 maxSize: ringMaxSize,
+                callback: (AnimationController? controller) {
+                  if (controller == null) return;
+                  if (controller.isAnimating) colorBlink = true;
+                  if (controller.isCompleted) colorBlink = false;
+                  setState(() {});
+                },
               ),
             ),
             Align(
               child: NeonRingAnimation(
+                blinkColor: colorBlink,
                 size: neonRingSize,
               ),
             )

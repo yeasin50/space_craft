@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/widget/magic_ball.dart';
+import '../../../core/package/magic_ball/magic_ball.dart';
 
 // typedef ElementVisitor = void Function(Element element);
 typedef MagicBallController = void Function(AnimationController? controller);

@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/clip_paths/particle_path.dart';
+import '../../../core/package/magic_ball/utils/particle_path.dart';
 import '../../../core/widget/rotate_widget.dart';
 import '../../setting/models/object_scalar.dart';
 import '../utils/utils.dart';
 import 'ship_blast.dart';
-
-Widget playerShip() {
-  return Container(
-    height: GObjectSize.instance.playerShip.height,
-    width: GObjectSize.instance.playerShip.width,
-    color: Colors.red,
-  );
-}
 
 /// ship widget represent player
 class PlayerShip extends StatelessWidget {

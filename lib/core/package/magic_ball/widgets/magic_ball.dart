@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../utils/clip_paths/particle_path.dart';
+import '../utils/particle_path.dart';
 
 /// [MagicBall] animate particles from center, keep creation on every `blastDelay`
 

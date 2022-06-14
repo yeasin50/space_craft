@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../utils/helpers/angle_conversion.dart';
-import '../../feature/on_play/widgets/ship_blast.dart';
+import 'ship_blast.dart';
 
 class RotationalBlastRing extends StatefulWidget {
   /// define the ring radius that will be used to align the number of blast

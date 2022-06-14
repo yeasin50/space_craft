@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../feature/on_play/utils/utils.dart';
-import '../../feature/on_play/widgets/ship_blast.dart';
-import '../providers/object_scalar.dart';
+import 'ship_blast.dart';
 import '../package/magic_ball/utils/particle_path.dart';
+import '../providers/object_scalar.dart';
 import 'rotate_widget.dart';
 
 /// ship widget represent player

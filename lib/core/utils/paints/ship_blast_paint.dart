@@ -13,15 +13,15 @@ import 'package:flutter/material.dart';
 /// ship engine blast/fire used by [ShipBlast] widget, animating scale provide the view
 class ShipBlastPainter extends CustomPainter {
   /// fireShade/outside/ borderSide color, default ` Colors.lightBlueAccent.shade100`
-  final Color outterColor;
+  final Color outerColor;
 
   /// fireColor/ inside color, default `Colors.cyanAccent`
   final Color innerColor;
 
   ShipBlastPainter({
-    Color? outterColor,
+    Color? outerColor,
     Color? innerColor,
-  })  : outterColor = outterColor ?? Colors.lightBlueAccent.shade100,
+  })  : outerColor = outerColor ?? Colors.lightBlueAccent.shade100,
         innerColor = innerColor ?? Colors.cyanAccent;
 
   @override
@@ -29,7 +29,7 @@ class ShipBlastPainter extends CustomPainter {
     final Paint paint = Paint()
       ..shader = LinearGradient(
         colors: [
-          outterColor,
+          outerColor,
           Colors.transparent,
         ],
         begin: Alignment.topCenter,

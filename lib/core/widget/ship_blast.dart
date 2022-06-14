@@ -15,7 +15,7 @@ class ShipBlast extends StatefulWidget {
   ///size of engine fire size(x,4x) is perfect shape
   final Size size;
 
-  ///scale transation rate. default speed `Duration(milliseconds: 30)`
+  ///scale transition rate. default speed `Duration(milliseconds: 30)`
   final Duration animationDuration;
 
   /// scale tween
@@ -39,15 +39,15 @@ class _ShipBlastState extends State<ShipBlast>
 
   late Tween<double> scaleTween;
 
-  late final Duration _blustDuration;
+  late final Duration _blastDuration;
   @override
   void initState() {
-    _blustDuration = widget.animationDuration;
+    _blastDuration = widget.animationDuration;
     scaleTween = widget.scaleTween ?? Tween<double>(begin: .6, end: 1.0);
 
     _blastController = AnimationController(
       vsync: this,
-      duration: _blustDuration, // controll flow based on GameMode
+      duration: _blastDuration, // controls flow based on GameMode
     )..addListener(() => setState(() {}));
 
     _animationBlast = scaleTween.animate(_blastController);

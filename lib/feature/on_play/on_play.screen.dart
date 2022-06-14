@@ -6,6 +6,7 @@ import '../../core/providers/game_manager.dart';
 import '../setting/models/object_scalar.dart';
 import 'on_play.dart';
 import 'provider/provider.dart';
+import 'widgets/player_ship.dart';
 
 class OnPlayScreen extends StatelessWidget {
   static const String routeName = "/on_play_screen";

@@ -30,18 +30,25 @@ class GObjectSize implements _Elements {
   GObjectSize._privateConstructor();
 
   _showErr() {
-    assert(
-      _screenSize != null,
-      "You must call GObjectSize.init(size: x) first",
-    );
+    assert(() {
+      if (_screenSize == null) {
+        throw FlutterError.fromParts([
+          ErrorSummary("GObjectSize hasn't initialized"),
+          ErrorDescription("`screenSize` and `minLength` can not be null."),
+          ErrorHint(
+              "Call `GObjectSize.init(size: x)` before using $GObjectSize\n")
+        ]);
+      }
+      return true;
+    }());
   }
 
   static Size? _screenSize;
 
-  static late double _minLength;
+  static double? _minLength;
 
   ///it will decide the object scale, min(Screen.height, screen.width)
-  double get minLength => _minLength;
+  double get minLength => _minLength ?? _showErr();
 
   /// initial the screenSize, use to generate others elements size
   static void init({
@@ -61,24 +68,21 @@ class GObjectSize implements _Elements {
   //todo: make responsive size
   @override
   Size get enemyShip {
-    _showErr();
     const double _scale = .001;
     // asset's image 48x32
     return Size(
-      48 * _minLength * _scale,
-      32 * _minLength * _scale,
+      48 * minLength * _scale,
+      32 * minLength * _scale,
     );
   }
 
   /// ship size is depend on screen size [_minLength * .075], min ship  Size(50, 50)
   @override
   Size get playerShip {
-    // debugPrint("screen size: $screen");
-    _showErr();
     const double scale = .10;
     return Size(
-      _minLength * scale,
-      _minLength * scale,
+      minLength * scale,
+      minLength * scale,
     );
   }
 
@@ -111,32 +115,28 @@ class GObjectSize implements _Elements {
 
   @override
   Size get healthBox {
-    // debugPrint("screen size: $screen");
-    _showErr();
     const double scale = .06;
     return Size(
-      _minLength * scale,
-      _minLength * scale,
+      minLength * scale,
+      minLength * scale,
     );
   }
 
   @override
   Size get enemyBullet {
-    _showErr();
     const double scale = .01;
     return Size(
-      _minLength * scale,
-      _minLength * scale,
+      minLength * scale,
+      minLength * scale,
     );
   }
 
   @override
   Size get playerBullet {
-    _showErr();
     const double scale = .013;
     return Size(
-      _minLength * scale,
-      _minLength * scale,
+      minLength * scale,
+      minLength * scale,
     );
   }
 

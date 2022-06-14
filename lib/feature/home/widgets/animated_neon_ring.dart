@@ -23,14 +23,7 @@ class _NeonRingAnimationState extends State<NeonRingAnimation> {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.center,
-      child: NeonRingWidget(
-        data: NeonCircleData(
-          colorBlink: widget.data.colorBlink,
-          duration: const Duration(milliseconds: 30),
-          size: widget.data.size,
-          frameThickness: widget.data.size * .5,
-        ),
-      ),
+      child: NeonRingWidget(data: widget.data),
     );
   }
 }

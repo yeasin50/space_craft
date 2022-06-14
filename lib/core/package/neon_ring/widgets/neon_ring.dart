@@ -92,9 +92,11 @@ class _NeonRingWidgetState extends State<NeonRingWidget> {
     return Transform.rotate(
       angle: rotateAngel,
       child: ClipPath(
-        clipper: RingPath(),
+        clipper: RingPath(
+          borderThickness: data.frameThickness,
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: data.padding,
           child: Container(
             //todo:add blur, replace with shape decorator
             decoration:

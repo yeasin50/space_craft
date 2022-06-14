@@ -19,14 +19,9 @@ class StartAnimation extends StatefulWidget {
 }
 
 class _StartAnimationState extends State<StartAnimation> {
-  bool showMagicBall = true;
-  bool showBlastRing = false;
-  bool showNeonCircle = false;
-
   bool defaultBlastSize = false;
-  double numberOfBlast = 5.0;
 
-  bool colorBlink = false;
+  bool enableColorBlink = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,28 +32,26 @@ class _StartAnimationState extends State<StartAnimation> {
 
         ///* used on [NeonRingWidget]
         final double ringMaxSize = math.min(width, height) * .35;
-        final double neonRingSize = ringMaxSize * 1.3;
+        double neonRingSize = ringMaxSize * 1.3;
         final double blastHeight = math.min(width, height) * .05;
         return Stack(
           alignment: Alignment.center,
           children: [
             Align(
+              key: const ValueKey("MagicBall-Scaler widget"),
               child: AnimatedMagicBall(
-                key: const ValueKey("MagicBall-Scaler widget"),
                 maxSize: ringMaxSize,
-                callback: (AnimationController? controller) {
-                  if (controller == null) return;
-                  if (controller.isAnimating) colorBlink = true;
-                  if (controller.isCompleted) colorBlink = false;
-                  setState(() {});
-                },
+                callback: (AnimationController? controller) {},
               ),
             ),
             Align(
+              // colorBlink passed to work update ui properly, having issue on widget tree
+              key: const ValueKey("NeonRingAnimation widget"),
               child: NeonRingAnimation(
-                  data: NeonCircleData(
-                size: neonRingSize,
-              )),
+                data: NeonCircleData(
+                  size: neonRingSize,
+                ),
+              ),
             )
           ],
         );

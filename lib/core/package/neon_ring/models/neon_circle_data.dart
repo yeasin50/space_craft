@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 /// [NeonCircleData] data used to decorate [NeonRingWidget]
 /// ```
 /// child: NeonRingWidget(
@@ -11,7 +12,9 @@ class NeonCircleData {
 
   final bool colorBlink;
 
-  /// The Space between child and outer Container/frame known as NeonCircleBackground default is 9.0
+  final EdgeInsets padding;
+
+  /// The Space between child and outer Container/frame known as NeonCircleBackground default is 16.0
   final double frameThickness;
 
   final double size;
@@ -32,6 +35,7 @@ class NeonCircleData {
   const NeonCircleData({
     this.colorBlink = false,
     required this.size,
+    this.padding = const EdgeInsets.all(8.0),
     this.colors = const [
       Colors.purple,
       Colors.blue,
@@ -41,7 +45,7 @@ class NeonCircleData {
     this.rotatable = true,
     this.curve = Curves.ease,
     this.rotationIncrementRateByDegree = 5.0,
-    this.frameThickness = 9.0,
+    this.frameThickness = 16.0,
     this.duration = const Duration(milliseconds: 150),
     this.child,
   });
@@ -49,6 +53,7 @@ class NeonCircleData {
   NeonCircleData copyWith({
     Duration? duration,
     bool? colorBlink,
+    EdgeInsets? padding,
     double? frameThickness,
     double? size,
     List<Color>? colors,
@@ -60,6 +65,7 @@ class NeonCircleData {
     return NeonCircleData(
       duration: duration ?? this.duration,
       colorBlink: colorBlink ?? this.colorBlink,
+      padding: padding ?? this.padding,
       frameThickness: frameThickness ?? this.frameThickness,
       size: size ?? this.size,
       colors: colors ?? this.colors,
@@ -73,6 +79,6 @@ class NeonCircleData {
 
   @override
   String toString() {
-    return 'NeonCircleData(duration: $duration, colorBlink: $colorBlink, frameThickness: $frameThickness, size: $size, colors: $colors, curve: $curve, rotatable: $rotatable, rotationIncrementRateByDegree: $rotationIncrementRateByDegree, child: $child)';
+    return 'NeonCircleData(duration: $duration, colorBlink: $colorBlink, padding: $padding, frameThickness: $frameThickness, size: $size, colors: $colors, curve: $curve, rotatable: $rotatable, rotationIncrementRateByDegree: $rotationIncrementRateByDegree, child: $child)';
   }
 }

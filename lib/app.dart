@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'core/themes/app_theme.dart';
 import 'feature/home/home_page.dart';
-import 'feature/setting/models/object_scalar.dart';
+import 'core/providers/object_scalar.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);

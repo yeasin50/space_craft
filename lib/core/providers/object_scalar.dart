@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'user_setting.dart';
+import '../entities/user_setting.dart';
 
 abstract class _Elements {
   /// full screen/view size, that will cover by app
@@ -68,11 +68,11 @@ class GObjectSize implements _Elements {
   //todo: make responsive size
   @override
   Size get enemyShip {
-    const double _scale = .001;
+    const double scale = .001;
     // asset's image 48x32
     return Size(
-      48 * minLength * _scale,
-      32 * minLength * _scale,
+      48 * minLength * scale,
+      32 * minLength * scale,
     );
   }
 

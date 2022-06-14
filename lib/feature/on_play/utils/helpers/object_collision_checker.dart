@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import '../../../../core/entities/entities.dart';
-import '../../../setting/models/object_scalar.dart';
+import '../../../../core/providers/object_scalar.dart';
 
  
 

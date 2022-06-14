@@ -1,4 +1,4 @@
-import '../../../core/entities/entities.dart';
+import 'entities.dart';
 
 /// Singleton UserSetting
 class UserSetting extends Setting {
@@ -8,8 +8,8 @@ class UserSetting extends Setting {
   static final UserSetting _instance = UserSetting._privateConstructor();
   static UserSetting get instance => _instance;
 
-  double get maxSensivity => 2.0;
-  double get minSensivity => .5;
+  double get maxSensitivity => 2.0;
+  double get minSensitivity => .5;
 
   @override
   void defaultSetting() {
@@ -26,14 +26,14 @@ class UserSetting extends Setting {
     bool? music,
     bool? sound,
     bool? effect,
-    double? movementSensitvity,
+    double? movementSensitivity,
     PlayMode? playMode,
     ControlMode? controlMode,
   }) {
     this.music = music ?? this.music;
     this.sound = sound ?? this.sound;
     this.effect = effect ?? this.effect;
-    movementSensitivity = movementSensitvity ?? movementSensitivity;
+    movementSensitivity = movementSensitivity ?? movementSensitivity;
     playmode = playMode ?? playmode;
     this.controlMode = controlMode ?? this.controlMode;
   }

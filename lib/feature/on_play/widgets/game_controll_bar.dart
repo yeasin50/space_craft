@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers/game_manager.dart';
 import '../../../core/widget/widget.dart';
-import '../../setting/models/object_scalar.dart';
+import '../../../core/providers/object_scalar.dart';
 import '../../setting/setting.dart';
 
 class GameControlBar extends StatefulWidget {

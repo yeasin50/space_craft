@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/package/magic_ball/utils/particle_path.dart';
-import '../../../core/widget/rotate_widget.dart';
-import '../../setting/models/object_scalar.dart';
-import '../utils/utils.dart';
-import 'ship_blast.dart';
+import '../../feature/on_play/utils/utils.dart';
+import '../../feature/on_play/widgets/ship_blast.dart';
+import '../providers/object_scalar.dart';
+import '../package/magic_ball/utils/particle_path.dart';
+import 'rotate_widget.dart';
 
 /// ship widget represent player
 class PlayerShip extends StatelessWidget {

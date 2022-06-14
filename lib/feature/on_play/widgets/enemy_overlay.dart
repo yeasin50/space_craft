@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/entities/bullet.dart';
 import '../../../core/package/magic_ball/widgets/magic_ball.dart';
-import '../../setting/models/object_scalar.dart';
+import '../../../core/providers/object_scalar.dart';
 import '../models/ship.dart';
 import '../provider/enemy_provider.dart';
 import 'widgets.dart';

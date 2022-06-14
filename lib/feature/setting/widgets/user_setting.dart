@@ -210,11 +210,11 @@ class _SettingViewState extends State<SettingView> {
               style: textStyle,
             ),
             Slider(
-              min: settings.minSensivity,
-              max: settings.maxSensivity,
+              min: settings.minSensitivity,
+              max: settings.maxSensitivity,
               value: settings.movementSensitivity,
               onChanged: (value) {
-                settings.update(movementSensitvity: value);
+                settings.update(movementSensitivity: value);
                 setState(() {});
               },
             ),

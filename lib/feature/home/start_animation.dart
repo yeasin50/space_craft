@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/package/neon_ring/neon_ring.dart';
 import '../on_play/on_play.dart';
-import '../on_play/widgets/player_ship.dart';
-import '../setting/models/object_scalar.dart';
+import '../../core/widget/player_ship.dart';
+import '../../core/providers/object_scalar.dart';
 import 'widgets/animated_neon_ring.dart';
 import 'widgets/widgets.dart';
 

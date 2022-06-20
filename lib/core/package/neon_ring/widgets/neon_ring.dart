@@ -3,8 +3,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../utils/utils.dart';
 import '../models/neon_circle_data.dart';
+import '../utils/hue_changer.dart';
+import 'ring_path.dart';
 
 ///```
 ///This is an example with default value

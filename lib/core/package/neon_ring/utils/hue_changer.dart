@@ -1,7 +1,5 @@
 import 'package:flutter/painting.dart';
 
-///TODO: check and remove
-
 /// return new [color] hue change by [increaseBy]
 Color changeColorHue({
   required Color color,

@@ -11,7 +11,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return const StartAnimation();
+          return StartAnimation(
+            onAnimationEnd: () {
+              debugPrint("Animation end");
+            },
+          );
         },
       ),
     );

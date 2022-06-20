@@ -55,9 +55,7 @@ class _StartAnimationState extends State<StartAnimation> {
         ),
         AnimatedAlign(
           onEnd: () {
-            setState(() {
-              ringMaxSize *= 2;
-            });
+            if (widget.onAnimationEnd != null) widget.onAnimationEnd!();
           },
           alignment:
               isCircleAnimating ? const Alignment(0, 1.4) : Alignment.center,

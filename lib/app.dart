@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'core/package/glitch_effect/example/gitch_example.dart';
 import 'core/themes/app_theme.dart';
 import 'feature/home/home_page.dart';
 import 'core/providers/object_scalar.dart';
@@ -18,7 +19,7 @@ class App extends StatelessWidget {
         builder: (context, constraints) {
           GObjectSize.init(
               size: Size(constraints.maxWidth, constraints.maxHeight));
-          return const HomePage();
+          return GlitchExample();
         },
       ),
     );

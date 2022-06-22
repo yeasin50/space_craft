@@ -3,15 +3,53 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../utils/utils.dart';
 import 'glitch_controller.dart';
 
+/// A widget that provide glitch effect for its [child]
+///
+/// Provide `[GlitchController]` on  `controller` parameters for customization
+///
+///```
+///GlitchEffect(
+///  child: Text("single Glitch effect Text"),
+///  controller: GlitchController(),
+///),
+///```
+///
+/// To use periodic effect use [GlitchController] with providing `repeatDelay`
+///
+/// ```
+/// GlitchEffect(
+/// controller: GlitchController(
+///   repeatDelay: const Duration(seconds: 2),
+/// ),
+/// child: Container(
+///   height: 250,
+///   width: 250,
+///   color: Colors.green,
+///  ))
+/// ```
+///
+/// The main  glitch effect project is forked from kherel/flutter_fun and  can be found under https://github.com/yeasin50/flutter_fun
+///
+
 class GlitchEffect extends StatefulWidget {
+  /// TODO: make package on gitRepo
+
+  /// Create glitch effect for its [child]
+  ///
+  /// Provide `[GlitchController]` on  `controller` parameters for customization
+  ///
   const GlitchEffect({
     Key? key,
+    this.controller,
     required this.child,
   }) : super(key: key);
 
   final Widget child;
+
+  final GlitchController? controller;
 
   @override
   _GlitchEffectState createState() => _GlitchEffectState();
@@ -22,23 +60,26 @@ class _GlitchEffectState extends State<GlitchEffect>
   late GlitchController _controller;
   Timer? _timer;
 
+  final random = math.Random();
+
   @override
   void initState() {
     super.initState();
-    _controller = GlitchController(
-      duration: const Duration(
-        milliseconds: 400,
-      ),
-    );
 
-    _timer = Timer.periodic(
-      const Duration(seconds: 3),
-      (_) {
-        _controller
-          ..reset()
-          ..forward();
-      },
-    );
+    _controller = widget.controller ?? GlitchController();
+
+    if (_controller.repeatDelay != null) {
+      _timer = Timer.periodic(
+        _controller.repeatDelay!,
+        (_) {
+          _controller
+            ..reset()
+            ..forward();
+        },
+      );
+    } else {
+      _controller.forward();
+    }
   }
 
   @override
@@ -47,13 +88,6 @@ class _GlitchEffectState extends State<GlitchEffect>
     _controller.dispose();
     super.dispose();
   }
-
-  getRandomColor() => [
-        Colors.blueAccent,
-        Colors.redAccent,
-        Colors.greenAccent,
-        Colors.orange,
-      ][math.Random().nextInt(3)];
 
   @override
   Widget build(BuildContext context) {
@@ -95,41 +129,4 @@ class _GlitchEffectState extends State<GlitchEffect>
         clipper: GlitchClipper(),
         child: widget.child,
       );
-}
-
-var random = math.Random();
-
-class GlitchClipper extends CustomClipper<Path> {
-  final deltaMax = 15;
-  final min = 3;
-
-  @override
-  getClip(Size size) {
-    var path = Path();
-    var y = randomStep;
-    while (y < size.height) {
-      var yRandom = randomStep;
-      var x = randomStep;
-
-      while (x < size.width) {
-        var xRandom = randomStep;
-        path.addRect(
-          Rect.fromPoints(
-            Offset(x, y.toDouble()),
-            Offset(x + xRandom, y + yRandom),
-          ),
-        );
-        x += randomStep * 2;
-      }
-      y += yRandom;
-    }
-
-    path.close();
-    return path;
-  }
-
-  double get randomStep => min + random.nextInt(deltaMax).toDouble();
-
-  @override
-  bool shouldReclip(covariant CustomClipper oldClipper) => true;
 }

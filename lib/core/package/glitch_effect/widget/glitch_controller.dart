@@ -2,35 +2,58 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+///
+/// {@tool snippet}
+/// Create new GlitchController for [GlitchEffect] widget
+///
+/// * [duration] will be divided into tree part to show glitch effect.
+///
+/// * [repeatDelay] used to have periodic  glitch effect, default it is null and just provide single effect
+///
+///
+/// ```
+/// GlitchController({
+///  this.duration = const Duration(milliseconds: 400),
+///  this.repeatDelay,
+///  })
+/// ```
+/// {@end-tool}
+///
 class GlitchController extends Animation<int>
     with
         AnimationEagerListenerMixin,
         AnimationLocalListenersMixin,
         AnimationLocalStatusListenersMixin {
+  /// create a controller for single
   GlitchController({
-    required this.duration,
+    this.duration = const Duration(milliseconds: 400),
+    this.repeatDelay,
   });
 
   final Duration duration;
   List<Timer> _timers = [];
-  bool isAnimating = false;
 
-  forward() {
+  bool isAnimating = false;
+  final Duration? repeatDelay;
+ 
+
+  /// play glitch effect.
+  void forward() {
     isAnimating = true;
     var oneStep = (duration.inMicroseconds / 3).round();
     _status = AnimationStatus.forward;
     _timers = [
       Timer(
         Duration(microseconds: oneStep),
-        () => setValue(1),
+        () => _setValue(1),
       ),
       Timer(
         Duration(microseconds: oneStep * 2),
-        () => setValue(2),
+        () => _setValue(2),
       ),
       Timer(
         Duration(microseconds: oneStep * 3),
-        () => setValue(3),
+        () => _setValue(3),
       ),
       Timer(
         Duration(microseconds: oneStep * 4),
@@ -43,19 +66,21 @@ class GlitchController extends Animation<int>
     ];
   }
 
-  setValue(value) {
+  void _setValue(value) {
     _value = value;
     notifyListeners();
   }
 
-  reset() {
+  void reset() {
     _status = AnimationStatus.dismissed;
     _value = 0;
   }
 
   @override
   void dispose() {
-    _timers.forEach((timer) => timer.cancel());
+    for (var timer in _timers) {
+      timer.cancel();
+    }
     super.dispose();
   }
 

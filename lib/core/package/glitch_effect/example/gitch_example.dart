@@ -1,31 +1,55 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/glitch.dart';
+import '../glitch_effect.dart';
 
 class GlitchExample extends StatefulWidget {
-  GlitchExample({Key? key}) : super(key: key);
+  const GlitchExample({Key? key}) : super(key: key);
 
   @override
   State<GlitchExample> createState() => _GlitchExampleState();
 }
 
 class _GlitchExampleState extends State<GlitchExample> {
+  GlitchController glitchController = GlitchController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          GlitchEffect(
-            child: Container(
-              width: 200,
-              height: 200,
-              color: Colors.cyanAccent,
-              child: Text("This is e"),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GlitchEffect(
+              controller: glitchController,
+              child: const Text("single Glitch effect Text"),
             ),
-          )
-        ],
+            ElevatedButton(
+              onPressed: () {
+                glitchController.forward();
+              },
+              child: const Text("replay"),
+            ),
+            const SizedBox(height: 24),
+            GlitchEffect(
+              controller: GlitchController(
+                repeatDelay: const Duration(seconds: 2),
+              ),
+              child: Container(
+                height: 250,
+                width: 250,
+                alignment: Alignment.center,
+                color: Colors.green,
+                child: const Text(
+                  "GlitchContainer",
+                  style: TextStyle(
+                    fontSize: 33,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

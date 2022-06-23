@@ -19,7 +19,7 @@ class App extends StatelessWidget {
         builder: (context, constraints) {
           GObjectSize.init(
               size: Size(constraints.maxWidth, constraints.maxHeight));
-          return GlitchExample();
+          return const HomePage();
         },
       ),
     );

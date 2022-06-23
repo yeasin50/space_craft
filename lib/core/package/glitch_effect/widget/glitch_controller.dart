@@ -14,7 +14,8 @@ import 'package:flutter/material.dart';
 /// ```
 /// GlitchController({
 ///  this.duration = const Duration(milliseconds: 400),
-///  this.repeatDelay,
+///  this.repeatDelay = null,
+///  autoPlay = true,
 ///  })
 /// ```
 /// {@end-tool}
@@ -28,6 +29,7 @@ class GlitchController extends Animation<int>
   GlitchController({
     this.duration = const Duration(milliseconds: 400),
     this.repeatDelay,
+    this.autoPlay = false,
   });
 
   final Duration duration;
@@ -35,7 +37,7 @@ class GlitchController extends Animation<int>
 
   bool isAnimating = false;
   final Duration? repeatDelay;
- 
+  final bool autoPlay;
 
   /// play glitch effect.
   void forward() {

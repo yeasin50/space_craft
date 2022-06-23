@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../core/package/glitch_effect/glitch_effect.dart';
 import '../../core/package/neon_ring/neon_ring.dart';
-import '../on_play/on_play.dart';
-import '../../core/widget/player_ship.dart';
 import '../../core/providers/object_scalar.dart';
+import '../../core/widget/player_ship.dart';
 import 'widgets/animated_neon_ring.dart';
 import 'widgets/widgets.dart';
 
@@ -21,8 +21,8 @@ class StartAnimation extends StatefulWidget {
 
 class _StartAnimationState extends State<StartAnimation> {
   bool isCircleAnimating = true;
-
   static const Duration animationDuration = Duration(seconds: 1);
+
   @override
   Widget build(BuildContext context) {
     double ringMaxSize = GObjectSize.instance.minLength * .35;
@@ -47,9 +47,12 @@ class _StartAnimationState extends State<StartAnimation> {
         Align(
           // colorBlink passed to work update ui properly, having issue on widget tree
           key: const ValueKey("NeonRingAnimation widget"),
-          child: NeonRingAnimation(
-            data: NeonCircleData(
-              size: neonRingSize,
+          child: GlitchEffect(
+            controller: GlitchController(autoPlay: true),
+            child: NeonRingAnimation(
+              data: NeonCircleData(
+                size: neonRingSize,
+              ),
             ),
           ),
         ),

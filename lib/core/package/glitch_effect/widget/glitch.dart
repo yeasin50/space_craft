@@ -10,6 +10,7 @@ import 'glitch_controller.dart';
 ///
 /// Provide `[GlitchController]` on  `controller` parameters for customization
 ///
+/// This text widget auto-animate only once
 ///```
 ///GlitchEffect(
 ///  child: Text("single Glitch effect Text"),
@@ -72,13 +73,15 @@ class _GlitchEffectState extends State<GlitchEffect>
       _timer = Timer.periodic(
         _controller.repeatDelay!,
         (_) {
-          _controller
-            ..reset()
-            ..forward();
+          if (_controller.autoPlay) {
+            _controller
+              ..reset()
+              ..forward();
+          }
         },
       );
     } else {
-      _controller.forward();
+      if (_controller.autoPlay) _controller.forward();
     }
   }
 

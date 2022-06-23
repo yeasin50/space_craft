@@ -4,7 +4,6 @@ import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/widget/widget.dart';
 import '../models/models.dart';
-import 'custom_button.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({Key? key}) : super(key: key);
@@ -46,7 +45,7 @@ class _SettingViewState extends State<SettingView> {
             soundSetting(settings, _textStyle),
             effectSetting(settings, _textStyle),
             const SizedBox(height: 16),
-            movementSensivity(
+            movementSensitivity(
               settings,
               titleTextStyle: _textStyleTitle,
               textStyle: _textStyle,
@@ -190,7 +189,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Widget movementSensivity(
+  Widget movementSensitivity(
     UserSetting settings, {
     required TextStyle titleTextStyle,
     required TextStyle textStyle,

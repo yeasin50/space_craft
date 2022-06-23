@@ -64,13 +64,13 @@ class _StartPageAnimationState extends State<StartPageAnimation>
         AnimatedOpacity(
           duration: const Duration(milliseconds: 600),
           opacity: opacityOfStartAnimation,
-          child: StartAnimation(
+          child: CentralAnimation(
             onAnimationEnd: () => setState(() => endOfStartAnimation = true),
           ),
         ),
 
         Align(
-          alignment: Alignment(0, .7),
+          alignment: const Alignment(0, .75),
           child: AnimatedOpacity(
             key: const ValueKey("StartTextAnimation widget"),
             duration: const Duration(milliseconds: 600),

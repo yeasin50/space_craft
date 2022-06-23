@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../core/package/glitch_effect/glitch_effect.dart';
-import '../../core/package/neon_ring/neon_ring.dart';
-import '../../core/providers/object_scalar.dart';
-import '../../core/widget/player_ship.dart';
-import 'widgets/widgets.dart';
+import '../../../core/package/glitch_effect/glitch_effect.dart';
+import '../../../core/package/neon_ring/neon_ring.dart';
+import '../../../core/providers/object_scalar.dart';
+import '../../../core/widget/player_ship.dart';
+import 'widgets.dart';
 
-class StartAnimation extends StatefulWidget {
-  const StartAnimation({
+///
+/// This widget will handle the center animation which is responsible to handle
+///* [AnimatedMagicBall],
+///* [NeonRingAnimation]
+///* [PlayerShip]
+///
+class CentralAnimation extends StatefulWidget {
+  const CentralAnimation({
     Key? key,
     this.onAnimationEnd,
   }) : super(key: key);
@@ -15,10 +21,10 @@ class StartAnimation extends StatefulWidget {
   final VoidCallback? onAnimationEnd;
 
   @override
-  State<StartAnimation> createState() => _StartAnimationState();
+  State<CentralAnimation> createState() => _CentralAnimationState();
 }
 
-class _StartAnimationState extends State<StartAnimation> {
+class _CentralAnimationState extends State<CentralAnimation> {
   bool isCircleAnimating = true;
   static const Duration animationDuration = Duration(seconds: 1);
 

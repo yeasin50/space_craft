@@ -11,9 +11,6 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   dialogVibilityNotifier.value = !dialogVibilityNotifier.value;
-      // }),
       body: Stack(
         children: const [
           Align(

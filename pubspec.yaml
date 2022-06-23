@@ -32,6 +32,9 @@ dependencies:
   flutter_riverpod: ^1.0.2
   flutter_lints: ^2.0.1
   equatable: ^2.0.3
+  
+  # just used on home widget to show start game
+  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:

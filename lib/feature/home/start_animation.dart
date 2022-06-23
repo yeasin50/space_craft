@@ -4,7 +4,6 @@ import '../../core/package/glitch_effect/glitch_effect.dart';
 import '../../core/package/neon_ring/neon_ring.dart';
 import '../../core/providers/object_scalar.dart';
 import '../../core/widget/player_ship.dart';
-import 'widgets/animated_neon_ring.dart';
 import 'widgets/widgets.dart';
 
 class StartAnimation extends StatefulWidget {

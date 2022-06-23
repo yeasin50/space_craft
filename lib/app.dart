@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'core/package/glitch_effect/example/gitch_example.dart';
+import 'core/providers/object_scalar.dart';
+import 'core/routes/app_routes.dart';
 import 'core/themes/app_theme.dart';
 import 'feature/home/home_page.dart';
-import 'core/providers/object_scalar.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: kProfileMode,
       theme: AppTheme.light,
+      onGenerateRoute: AppRoute.onGenerateRoutes,
       home: LayoutBuilder(
         builder: (context, constraints) {
           GObjectSize.init(

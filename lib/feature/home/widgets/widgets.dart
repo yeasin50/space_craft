@@ -1,3 +1,4 @@
 export 'animated_magicball.dart';
-export 'start_button.dart';
-export 'title.dart';
+export 'animated_neon_ring.dart';
+export 'start_widget_animation.dart';
+export 'title_widget_animation.dart';

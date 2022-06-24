@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/enums.dart';
+import '../../core/constants/enums/enums.dart';
 import '../../core/providers/game_manager.dart';
-import '../setting/models/object_scalar.dart';
+import '../../core/widget/player_ship.dart';
+import '../../core/providers/object_scalar.dart';
 import 'on_play.dart';
 import 'provider/provider.dart';
 
@@ -31,7 +32,7 @@ class OnPlayScreen extends StatelessWidget {
         return Consumer(
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
-            final enemyNotifer = ref.watch(enemyProvider);
+            final enemyNotifier = ref.watch(enemyProvider);
 
             final gameState = ref.watch(gameManagerProvider);
 
@@ -58,7 +59,7 @@ class OnPlayScreen extends StatelessWidget {
                     // enemy ships and enemy's bullets
                     EnemyOverlay(
                       key: const ValueKey("EnemyOverlay key"),
-                      enemyNotifier: enemyNotifer,
+                      enemyNotifier: enemyNotifier,
                       constraints: constraints,
                     ),
 
@@ -101,9 +102,9 @@ class OnPlayScreen extends StatelessWidget {
 
                     // game pause, restart, settings
                     const Align(
-                      key: ValueKey("controllBar"),
+                      key: ValueKey("controlBar"),
                       alignment: Alignment(-.95, -.95),
-                      child: GameControllBar(),
+                      child: GameControlBar(),
                     ),
                   ],
                 ),

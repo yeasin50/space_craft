@@ -3,19 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers/game_manager.dart';
 import '../../../core/widget/widget.dart';
-import '../../setting/models/object_scalar.dart';
+import '../../../core/providers/object_scalar.dart';
 import '../../setting/setting.dart';
 
-class GameControllBar extends StatefulWidget {
-  const GameControllBar({
+class GameControlBar extends StatefulWidget {
+  const GameControlBar({
     Key? key,
   }) : super(key: key);
 
   @override
-  _GameControllBarState createState() => _GameControllBarState();
+  _GameControlBarState createState() => _GameControlBarState();
 }
 
-class _GameControllBarState extends State<GameControllBar>
+class _GameControlBarState extends State<GameControlBar>
     with SingleTickerProviderStateMixin {
   final Duration animationDuration = const Duration(milliseconds: 400);
   //status of pause/menu button, onExapnd show others options

@@ -12,7 +12,7 @@ abstract class Setting {
   /// will it render extra effect on UI
   late bool effect;
 
-  /// ship movement speed on keyboard controll mode
+  /// ship movement speed on keyboard controls mode
   late double movementSensitivity;
 
   /// user can select [PlayMode]; enemy movement and generation depend on it
@@ -29,13 +29,13 @@ abstract class Setting {
     bool? music,
     bool? sound,
     bool? effect,
-    double? movementSensitvity,
+    double? movementSensitivity,
     PlayMode? playMode,
     ControlMode? controlMode,
   });
 
   @override
   String toString() {
-    return 'Setting(_music: $music, _sound: $sound, movementSensivity: $movementSensitivity, _playmode: $playmode, _controlMode: $controlMode, _effect: $effect)';
+    return 'Setting(_music: $music, _sound: $sound, movementSensitivity: $movementSensitivity, _playmode: $playmode, _controlMode: $controlMode, _effect: $effect)';
   }
 }

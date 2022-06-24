@@ -11,12 +11,8 @@ A simple game, wanna implement in flutter.
 - [ ] Improve performance by testing on profile mode
 - [ ] keyboard movement works after tapping
 - [ ] score based on EnemyShip
-- [x] controls space on enemy generation
-- [ ] create two shape for player collision
 - [ ] control generationRate
 - [ ] bullet rotate effect
-- [ ] replace `Positioned` with `Align` widget
-- [ ] rm unused assets
 
 ---
 

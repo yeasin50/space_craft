@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'core/providers/object_scalar.dart';
 import 'core/routes/app_routes.dart';
 import 'core/themes/app_theme.dart';
+import 'feature/animation_test/parent_glitch_test.dart';
 import 'feature/home/home_page.dart';
 
 class App extends StatelessWidget {
@@ -20,7 +21,7 @@ class App extends StatelessWidget {
         builder: (context, constraints) {
           GObjectSize.init(
               size: Size(constraints.maxWidth, constraints.maxHeight));
-          return const HomePage();
+          return const ParentGlitchTest();
         },
       ),
     );

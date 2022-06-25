@@ -88,19 +88,19 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   ///*  player bullets will move up(-Y) on Every Frame(lie, on [bulletMovementRate])
-  /// removed removeable objects end of the timer loop.
+  /// removed removable objects end of the timer loop.
   /// ----
-  /// * remove enemy on bullet collision, removeable object on removeable list
+  /// * remove enemy on bullet collision, removable object on removable list
   /// * destroy EnemyShip and player bullet on collision
   /// * increase score while bullet hit enemyShip
   /// * add blast while destroying ship
   void _bulletsMovement() {
     //* variables to hold and perform operation all at once
     // remove theses from player `_bullets`
-    List<IBullet> removeableBullets = [];
+    List<IBullet> removableBullets = [];
 
     // call enemyProvider and remove theses ship
-    List<EnemyShip> removeableShip = [];
+    List<EnemyShip> removableShip = [];
 
     // include theses on blastProvider
     List<Vector2> addableblastPos = [];
@@ -117,31 +117,31 @@ class PlayerInfoNotifier extends ChangeNotifier {
         for (final b in _bullets) {
           b.position.update(dY: b.position.dY - _bulletSpeed);
           // remove bullet while it is beyond screen:at Top
-          if (b.position.dY < 0) removeableBullets.add(b);
+          if (b.position.dY < 0) removableBullets.add(b);
 
           for (final enemyShip in enemyNotifier.enemies) {
             // checking if ship within bullet  position
             if (collisionChecker(a: enemyShip, b: b)) {
-              removeableShip.add(enemyShip);
-              removeableBullets.add(b);
+              removableShip.add(enemyShip);
+              removableBullets.add(b);
               addableblastPos.add(enemyShip.position);
               scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
             }
           }
         }
         // removed removeable object
-        _bullets.removeAll(removeableBullets);
-        enemyNotifier.removeEnemies(ships: removeableShip);
-        enemyNotifier.addblasts(addableblastPos);
+        _bullets.removeAll(removableBullets);
+        enemyNotifier.removeEnemies(ships: removableShip);
+        enemyNotifier.addBlasts(addableblastPos);
         addableblastPos.clear();
-        removeableBullets.clear();
-        removeableShip.clear();
+        removableBullets.clear();
+        removableShip.clear();
         notifyListeners();
       },
     );
   }
 
-  /// realTime Collision between EmeyShip on PlayerShip movement.
+  /// realTime Collision between EnemyShip on PlayerShip movement.
   /// while it get touch with playerShip
   /// used on playerShip movement [updatePosition]
   /// * this method doesn't notify the update
@@ -158,20 +158,20 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   /// realTime Collision between HealthBox and Player movement
-  /// value will be notifiyed by inner or outine the method
+  /// value will be notify by inner or outline the method
   /// * this method doesn't notify the update
   void _healthBoxCollision() {
     final healthBoxNotifier = ref.read(healingObjectProvider);
 
-    List<GeneralHealingBox> removeableBox = [];
+    List<GeneralHealingBox> removableBox = [];
 
     for (final hb in healthBoxNotifier.healingBoxes) {
       if (collisionChecker(a: hb, b: player)) {
         player.health = GeneralHealingBox(iShipHealth: player.health);
-        removeableBox.add(hb);
+        removableBox.add(hb);
       }
     }
-    healthBoxNotifier.removeBox(healingBox: removeableBox);
+    healthBoxNotifier.removeBox(healingBox: removableBox);
   }
 
   /// realTime Collision between Enemy's bullets and Player movement
@@ -179,14 +179,14 @@ class PlayerInfoNotifier extends ChangeNotifier {
   void _enemyBulletCollision() {
     final enemyNotifier = ref.read(enemyProvider);
 
-    final List<IBullet> removeableBullet = [];
+    final List<IBullet> removableBullet = [];
 
     for (final bullet in enemyNotifier.bullets) {
       if (collisionChecker(a: bullet, b: player)) {
-        removeableBullet.add(bullet);
+        removableBullet.add(bullet);
       }
     }
-    enemyNotifier.removeBullets(bullets: removeableBullet);
+    enemyNotifier.removeBullets(bullets: removableBullet);
   }
 
   //*---------------------------*
@@ -213,7 +213,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   //*       Controllers         *
   //*---------------------------*
   /// stop player, bullet,generator
-  pauseMode() {
+  void pauseMode() {
     _timerBulletMovement?.cancel();
     stopShooting();
   }

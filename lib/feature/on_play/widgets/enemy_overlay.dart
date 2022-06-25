@@ -38,7 +38,7 @@ class EnemyOverlay extends StatelessWidget {
 
         /// bullets overlay
         /// todo: add controller
-        ...enemyNotifier.shipsblastLocation.map(
+        ...enemyNotifier.shipsBlastLocation.map(
           (blastLoc) => Positioned(
             key: ValueKey(blastLoc),
             top: blastLoc.dY - 20, //minimize the blast size

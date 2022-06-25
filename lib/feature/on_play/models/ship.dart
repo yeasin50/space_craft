@@ -18,7 +18,7 @@ class Player implements IShip {
   ///max number of time player can live
   final int maxLive = 3;
 
-  /// fire while player is alive and game is runnign
+  /// fire while player is alive and game is running
   bool shoot = false;
 
   @override

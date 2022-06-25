@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/providers/object_scalar.dart';
 
-
 class DamageOnEB implements IShipHealth {
   IShipHealth iShipHealth;
 
@@ -51,20 +50,20 @@ class DamageOnShipCollision implements IShipHealth {
 //*---------------------------*
 //*      Health Manager       *
 //*---------------------------*
-/// Player health manager, `initalHealth:300.0`
+/// Player health manager, `initialHealth:300.0`
 class PlayerHealthManager implements IShipHealth {
-  final double initalHealth = 300.0;
+  final double initialHealth = 300.0;
 
   @override
-  double health() => initalHealth;
+  double health() => initialHealth;
 }
 
-/// nomal EnemyShip health manager// not used
+/// normal EnemyShip health manager// not used
 class NEnemyHealthManager implements IShipHealth {
-  final double initalHealth = 5.0;
+  final double initialHealth = 5.0;
 
   @override
-  double health() => initalHealth;
+  double health() => initialHealth;
 }
 
 //*---------------------------*

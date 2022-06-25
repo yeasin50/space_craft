@@ -107,10 +107,10 @@ class EnemyChangeNotifier extends ChangeNotifier {
   /// > * remove enemyShip,
   /// > * decrease playerShip health
   void _enemyMovement() {
-    List<EnemyShip> removableShip = [];
-    List<Vector2> addableBlast = [];
-
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
+      List<EnemyShip> removableShip = [];
+      List<Vector2> addableBlast = [];
+
       if (_enemies.isEmpty) return;
 
       final playerNotifier = ref.read(playerInfoProvider);
@@ -139,11 +139,9 @@ class EnemyChangeNotifier extends ChangeNotifier {
       // update objects
       if (removableShip.isNotEmpty) {
         _enemies.removeAll(removableShip);
-        removableShip.clear();
       }
       if (addableBlast.isNotEmpty) {
         addBlasts(addableBlast);
-        addableBlast.clear();
       }
 
       notifyListeners();
@@ -195,7 +193,8 @@ class EnemyChangeNotifier extends ChangeNotifier {
         b.position.update(dY: b.position.dY + bulletMomentPY);
 
         //check bullet collision with player collision or beyond screen
-        final bool isCollided = collisionChecker(b: b, a: playerNotifier.player);
+        final bool isCollided =
+            collisionChecker(b: b, a: playerNotifier.player);
         if (isCollided || b.position.dY > screenSize.height) {
           removableBullets.add(b);
           if (isCollided) {

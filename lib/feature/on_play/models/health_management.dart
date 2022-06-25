@@ -9,7 +9,7 @@ class DamageOnEB implements IShipHealth {
 
   static String type = "abstract Iship";
 
-  double decreaseHealth = 1.0;
+  double decreaseHealth = 10.0;
 
   DamageOnEB({
     required this.iShipHealth,
@@ -37,7 +37,7 @@ class DamageOnPB implements IShipHealth {
 class DamageOnShipCollision implements IShipHealth {
   IShipHealth iShipHealth;
 
-  double decreaseHealth = 10.0;
+  double decreaseHealth = 30.0;
 
   DamageOnShipCollision({
     required this.iShipHealth,

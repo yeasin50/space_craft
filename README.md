@@ -18,7 +18,7 @@ A simple game, wanna implement in flutter.
 
 ## ⚠ For game you should use [Flame package](https://pub.dev/packages/flame)
 
-<!-- ## ⚠ Debugging is Much laggy, avoid debug statements on forEach loop -->
+<!-- ## ⚠ Debugging is Much leggy, avoid debug statements on forEach loop -->
 
 Thought It might be because we are changing a lot, but sometimes it's just happen because of print/debug statements.  
 Now lets add Explosions Rives on it, Not sure about how it gonna perform.

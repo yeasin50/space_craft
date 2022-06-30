@@ -11,9 +11,12 @@ class TouchPositionDetector extends StatelessWidget {
   const TouchPositionDetector({
     Key? key,
     required this.constraints,
+    this.child,
   }) : super(key: key);
 
   final BoxConstraints constraints;
+
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +25,10 @@ class TouchPositionDetector extends StatelessWidget {
         final playerInfo = ref.read(playerInfoProvider);
         final gameManager = ref.read(gameManagerProvider.notifier);
         return GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            debugPrint("on onPanUpdate");
+          },
           onPanDown: (details) {
             // debugPrint("$gameManager");
             if (gameManager.mode != GameMode.playing) return;
@@ -38,10 +45,11 @@ class TouchPositionDetector extends StatelessWidget {
             playerInfo.stopShooting();
           },
           onPanEnd: (details) {
-            //halde drag tapUp
+            //handle drag tapUp
             playerInfo.stopShooting();
           },
           onPanUpdate: (details) {
+            debugPrint("on onPanUpdate");
             if (gameManager.mode != GameMode.playing) return;
             updatePlayerPosition(
               offset: details.localPosition,
@@ -49,14 +57,7 @@ class TouchPositionDetector extends StatelessWidget {
               playerInfoNotifier: playerInfo,
             );
           },
-          // child: SizedBox(
-          //   height: constraints.maxHeight,
-          //   width: constraints.maxWidth,
-          //   //TODO: backGround Color
-          //   // color: Colors.blue.withOpacity(.3),
-
-          //   ///we can also choose overlay widget here, or BG Placement 🤓
-          // ),
+          child: child,
         );
       },
     );

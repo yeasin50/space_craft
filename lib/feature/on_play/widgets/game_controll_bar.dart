@@ -15,10 +15,11 @@ class GameControlBar extends StatefulWidget {
   _GameControlBarState createState() => _GameControlBarState();
 }
 
+//FIXME: drag issue happens because of gameController taking full screen
 class _GameControlBarState extends State<GameControlBar>
     with SingleTickerProviderStateMixin {
   final Duration animationDuration = const Duration(milliseconds: 400);
-  //status of pause/menu button, onExapnd show others options
+  //status of pause/menu button, on Expand show others options
   bool isExpanded = false;
   late AnimationController _playPauseButtonController;
 
@@ -44,7 +45,7 @@ class _GameControlBarState extends State<GameControlBar>
     super.dispose();
   }
 
-  //play-pause button changes, close remaing overLay
+  //play-pause button changes, close remaining  overLay
   void _onPlayPauseButtonChange(ref) {
     if (_settingIsPressed = true) {
       _settingIsPressed = false;
@@ -60,96 +61,102 @@ class _GameControlBarState extends State<GameControlBar>
       //* resume the game
       _playPauseButtonController.reverse();
       ref.read(gameManagerProvider.notifier).playing();
-      // debugPrint("onControllBar Resume: ${ref.read(gameManagerProvider)}");
+      // debugPrint("on ControlBar Resume: ${ref.read(gameManagerProvider)}");
     }
   }
 
   //todo: change icons color
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // backgrounds
-        Positioned(
-          key: const ValueKey("rorated-background-setting-logo"),
-          top: GObjectSize.instance.screen.height / 2 -
-              GObjectSize.instance.minLength * .3,
-          left: GObjectSize.instance.screen.width / 2,
-          child: AnimatedScale(
-            duration: animationDuration,
-            scale: _settingIsPressed ? 1 : 0,
-            alignment: Alignment.centerLeft,
-            child: RotateWidget(
-              reverseOnRepeat: false,
-              rotateAxis: const [false, false, true],
-              child: Icon(
-                Icons.settings,
-                size: GObjectSize.instance.minLength * .3,
-                color: Colors.white,
+    return Container(
+      color: Colors.cyanAccent.withOpacity(.3),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // backgrounds
+          Positioned(
+            key: const ValueKey("rorated-background-setting-logo"),
+            top: GObjectSize.instance.screen.height / 2 -
+                GObjectSize.instance.minLength * .3,
+            left: GObjectSize.instance.screen.width / 2,
+            child: AnimatedScale(
+              duration: animationDuration,
+              scale: _settingIsPressed ? 1 : 0,
+              alignment: Alignment.centerLeft,
+              child: RotateWidget(
+                reverseOnRepeat: false,
+                rotateAxis: const [false, false, true],
+                child: Icon(
+                  Icons.settings,
+                  size: GObjectSize.instance.minLength * .3,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-        ),
 
-        ///tapable widgets
-        Align(
-          alignment: const Alignment(.9, -.9),
-          child: Consumer(
-            builder: (context, ref, child) => Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AnimatedScale(
-                  alignment: Alignment.centerRight,
-                  duration: animationDuration,
-                  scale: isExpanded ? 1 : 0,
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      InkWell(
-                        splashColor: Colors.transparent,
-                        key: const ValueKey("user-setting-IconButton"),
-                        onTap: () {
-                          _settingIsPressed = !_settingIsPressed;
-                          setState(() {});
-                        },
-                        child: AnimatedScale(
-                          duration: animationDuration,
-                          alignment: Alignment.center,
-                          scale: _settingIsPressed ? 1.25 : 1,
-                          child: Icon(
-                            Icons.settings,
-                            color:
-                                _settingIsPressed ? Colors.blue : Colors.white,
+          ///tap-able widgets
+          Align(
+            alignment: const Alignment(.9, -.9),
+            child: Consumer(
+              builder: (context, ref, child) => Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AnimatedScale(
+                    alignment: Alignment.centerRight,
+                    duration: animationDuration,
+                    scale: isExpanded ? 1 : 0,
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          // splashColor: Colors.transparent,
+                          key: const ValueKey("user-setting-IconButton"),
+                          onTap: () {
+                            _settingIsPressed = !_settingIsPressed;
+                            setState(() {});
+                            debugPrint("setting icon is pressed");
+                          },
+                          child: AnimatedScale(
+                            duration: animationDuration,
+                            alignment: Alignment.center,
+                            scale: _settingIsPressed ? 1.25 : 1,
+                            child: Icon(
+                              Icons.settings,
+                              color: _settingIsPressed
+                                  ? Colors.blue
+                                  : Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () => _onPlayPauseButtonChange(ref),
-                  icon: AnimatedIcon(
-                    color: Colors.white,
-                    icon: AnimatedIcons.pause_play, // may changes later
-                    progress: _playPauseButtonController,
+                  GestureDetector(
+                    onTap: () => _onPlayPauseButtonChange(ref),
+                    child: AnimatedIcon(
+                      color: Colors.white,
+                      icon: AnimatedIcons.pause_play, // may changes later
+                      progress: _playPauseButtonController,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: SettingDialogWidget(
-            isOpen: _settingIsPressed,
-            onClose: () {
-              _settingIsPressed = !_settingIsPressed;
-              setState(() {});
-            },
+          Align(
+            alignment: Alignment.center,
+            child: SettingDialogWidget(
+              isOpen: _settingIsPressed,
+              onClose: () {
+                _settingIsPressed = !_settingIsPressed;
+                setState(() {});
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import '../../core/constants/enums/enums.dart';
 import '../../core/providers/game_manager.dart';
 import '../../core/widget/player_ship.dart';
 import '../../core/providers/object_scalar.dart';
+import '../setting/setting.dart';
 import 'on_play.dart';
 import 'provider/provider.dart';
 
@@ -46,11 +47,12 @@ class OnPlayScreen extends StatelessWidget {
               },
               child: Scaffold(
                 body: Stack(
+                  clipBehavior: Clip.none,
                   children: [
                     _playerShip(playerInfo),
                     // AnimatedPositioned(
                     //   key: const ValueKey("Player Ship Widget"),
-                    //   duration: GObjectSize.instatnce.animationDuration,
+                    //   duration: GObjectSize.instance.animationDuration,
                     //   top: playerInfo.player.position.dY,
                     //   left: playerInfo.player.position.dX,
                     //   child: const PlayerShip(),
@@ -68,7 +70,7 @@ class OnPlayScreen extends StatelessWidget {
                     // ...playerInfo.bullets.map((b) {
                     //   return AnimatedPositioned(
                     //     key: ValueKey(b),
-                    //     duration: GObjectSize.instatnce.animationDuration,
+                    //     duration: GObjectSize.instance.animationDuration,
                     //     top: b.position.dY,
                     //     left: b.position.dX,
                     //     child: BulletWidget(
@@ -94,18 +96,20 @@ class OnPlayScreen extends StatelessWidget {
 
                     /// special power player
 
-                    /// detect touch on bottom
+                    //* detect touch on bottom
                     TouchPositionDetector(
                       key: const ValueKey("TouchPositionDetector key"),
                       constraints: constraints,
                     ),
 
-                    // game pause, restart, settings
+                    //* game pause, restart, settings
                     const Align(
                       key: ValueKey("controlBar"),
-                      alignment: Alignment(-.95, -.95),
+                      alignment: Alignment(.95, -.95),
                       child: GameControlBar(),
                     ),
+
+                    
                   ],
                 ),
               ),
@@ -118,9 +122,9 @@ class OnPlayScreen extends StatelessWidget {
 
   List<Widget> _playerBullets(PlayerInfoNotifier playerInfoNotifier) {
     return playerInfoNotifier.bullets.map((b) {
-      return AnimatedPositioned(
+      return Positioned(
         key: ValueKey(b),
-        duration: GObjectSize.instance.animationDuration,
+        // duration: GObjectSize.instance.animationDuration,
         top: b.position.dY,
         left: b.position.dX,
         child: BulletWidget(

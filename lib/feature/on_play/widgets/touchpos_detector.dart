@@ -25,9 +25,9 @@ class TouchPositionDetector extends StatelessWidget {
         final playerInfo = ref.read(playerInfoProvider);
         final gameManager = ref.read(gameManagerProvider.notifier);
         return GestureDetector(
-          behavior: HitTestBehavior.translucent,
+          // behavior: HitTestBehavior.translucent,
           onTap: () {
-            debugPrint("on onPanUpdate");
+            // debugPrint("on onPanUpdate");
           },
           onPanDown: (details) {
             // debugPrint("$gameManager");
@@ -49,7 +49,6 @@ class TouchPositionDetector extends StatelessWidget {
             playerInfo.stopShooting();
           },
           onPanUpdate: (details) {
-            debugPrint("on onPanUpdate");
             if (gameManager.mode != GameMode.playing) return;
             updatePlayerPosition(
               offset: details.localPosition,

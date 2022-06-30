@@ -23,6 +23,7 @@ class OnPlayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final f = FocusNode();
+    //initial playing
 
     return LayoutBuilder(
       key: const ValueKey("PrLa"),
@@ -41,7 +42,7 @@ class OnPlayScreen extends StatelessWidget {
               autofocus: true,
               focusNode: f,
               onKey: (event) {
-                /// keyEvent will only work  on playmode, maybe we will move it on player provider
+                /// keyEvent will only work  on play-mode, maybe we will move it on player provider
                 if (gameState != GameMode.playing) return;
                 _onKeyEvent(playerInfo, event);
               },
@@ -105,11 +106,8 @@ class OnPlayScreen extends StatelessWidget {
                     //* game pause, restart, settings
                     const Align(
                       key: ValueKey("controlBar"),
-                      alignment: Alignment(.95, -.95),
                       child: GameControlBar(),
                     ),
-
-                    
                   ],
                 ),
               ),

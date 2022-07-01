@@ -17,7 +17,7 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 );
 
 ///this provide Player UI update info
-class PlayerInfoNotifier extends ChangeNotifier {
+class PlayerInfoNotifier extends ChangeNotifier with GameState {
   final ChangeNotifierProviderRef ref;
 
   IPlayerScore scoreManager = PlayerScoreManager();
@@ -212,18 +212,37 @@ class PlayerInfoNotifier extends ChangeNotifier {
   //*---------------------------*
   //*       Controllers         *
   //*---------------------------*
-  /// stop player, bullet,generator
-  void pauseMode() {
+
+  @override
+  void onPause() {
     _timerBulletMovement?.cancel();
     stopShooting();
   }
 
-  /// start player bullets movement
-  payingMode() {
+  @override
+  void onPlay() {
     _bulletsMovement();
     // todo: set controller for touch and keyboard mode; disable on touch mode
     startShooting();
-    // debugPrint("playerProvider: PlayingMode");
-    // debugPrint("BulletMovement Timer ${_timerBulletMovement == null}");
+  }
+
+  @override
+  void onReset() {
+    // TODO: implement onReset
+  }
+
+  @override
+  void onResume() {
+    // TODO: implement onResume
+  }
+
+  @override
+  void onStart() {
+    // TODO: implement onStart
+  }
+
+  @override
+  void onStop() {
+    // TODO: implement onStop
   }
 }

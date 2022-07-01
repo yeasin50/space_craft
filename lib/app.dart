@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:space_craft/feature/on_play/on_play.dart';
 
 import 'core/providers/object_scalar.dart';
 import 'core/routes/app_routes.dart';
@@ -20,8 +19,9 @@ class App extends StatelessWidget {
       home: LayoutBuilder(
         builder: (context, constraints) {
           GObjectSize.init(
-              size: Size(constraints.maxWidth, constraints.maxHeight));
-          return const OnPlayScreen();
+            size: Size(constraints.maxWidth, constraints.maxHeight),
+          );
+          return const HomePage();
         },
       ),
     );

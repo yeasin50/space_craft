@@ -18,7 +18,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
 );
 
 //todo: test with single refresh method: [notifier]
-class EnemyChangeNotifier extends ChangeNotifier {
+class EnemyChangeNotifier extends ChangeNotifier with GameState {
   final ChangeNotifierProviderRef ref;
   // screen size to control enemy movement
   Size screenSize = GObjectSize.instance.screen;
@@ -277,36 +277,61 @@ class EnemyChangeNotifier extends ChangeNotifier {
   //*       Controllers         *
   //*---------------------------*
 
-  /// call while game is running and needed to generate enemy
-  ///* periodic enemy creation
-  ///* start EnemyMovement
-  ///* generate Enemies bullet and movement
-  void playMode() {
+  // /// if true, stop enemyMovement+ generate..+bullets
+  // void pauseMode(
+  //     {bool movement = true,
+  //     bool generator = true,
+  //     bool bulletMovement = true,
+  //     bool bulletGenerator = true}) {
+  //   if (generator && _timerEnemyGeneration != null) {
+  //     _timerEnemyGeneration!.cancel();
+  //   }
+//
+  //   if (movement && _timerEnemyMovement != null) {
+  //     _timerEnemyMovement!.cancel();
+  //   }
+//
+  //   if (bulletGenerator && _timerBulletGenerator != null) {
+  //     _timerBulletGenerator!.cancel();
+  //   }
+  //   if (bulletMovement && _timerBulletMovement != null) {
+  //     _timerBulletMovement!.cancel();
+  //   }
+  // }
+
+  @override
+  void onPause() {
+    _timerEnemyGeneration?.cancel();
+    _timerEnemyMovement?.cancel();
+    _timerBulletGenerator?.cancel();
+    _timerBulletMovement?.cancel();
+  }
+
+  @override
+  void onPlay() {
     _generateEnemies();
     _enemyMovement();
     _generateBullet();
     _bulletMovement();
   }
 
-  /// if true, stop enemyMovement+ generate..+bullets
-  void pauseMode({
-    bool movement = true,
-    bool generator = true,
-    bool bulletMovement = true,
-    bool bulletGenerator = true,
-  }) {
-    if (generator && _timerEnemyGeneration != null) {
-      _timerEnemyGeneration!.cancel();
-    }
-    if (movement && _timerEnemyMovement != null) {
-      _timerEnemyMovement!.cancel();
-    }
+  @override
+  void onReset() {
+    // TODO: implement onReset
+  }
 
-    if (bulletGenerator && _timerBulletGenerator != null) {
-      _timerBulletGenerator!.cancel();
-    }
-    if (bulletMovement && _timerBulletMovement != null) {
-      _timerBulletMovement!.cancel();
-    }
+  @override
+  void onResume() {
+    // TODO: implement onResume
+  }
+
+  @override
+  void onStart() {
+    // TODO: implement onStart
+  }
+
+  @override
+  void onStop() {
+    // TODO: implement onStop
   }
 }

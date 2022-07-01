@@ -1,46 +1,62 @@
- 
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../feature/on_play/provider/provider.dart';
+import '../entities/entities.dart';
 
- 
 final gameManagerProvider = StateNotifierProvider<GameManager, GameMode>(
   (ref) {
     return GameManager(ref);
   },
 );
 
-class GameManager extends StateNotifier<GameMode> {
+class GameManager extends StateNotifier<GameMode> with GameState {
   final StateNotifierProviderRef ref;
 
-  GameManager(this.ref) : super(GameMode.idle);
-
-  void idle() => state = GameMode.idle;
-  void started() => state = GameMode.started;
-
-  void playing() {
-    state = GameMode.playing;
-    ref.read(playerInfoProvider).payingMode();
-    ref.read(healingObjectProvider).playingMode();
-    ref.read(enemyProvider).playMode();
-  }
-
-  void paused() {
-    state = GameMode.paused;
-    ref.read(playerInfoProvider).pauseMode();
-    ref.read(healingObjectProvider).pauseMode();
-    ref.read(enemyProvider).pauseMode();
-  }
-
-  void resumed() => state = GameMode.resumed;
-  void restart() => state = GameMode.restart;
+  GameManager(this.ref) : super(GameMode.start);
 
   GameMode get mode => state;
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void onPlay() {
+    if (state == GameMode.playing) return;
+    state = GameMode.playing;
+    ref.read(playerInfoProvider).onPlay();
+    ref.read(healingObjectProvider).onPlay();
+    ref.read(enemyProvider).onPlay();
+  }
+
+  @override
+  void onPause() {
+    if (state == GameMode.paused) return;
+    state = GameMode.paused;
+    ref.read(playerInfoProvider).onPause();
+    ref.read(healingObjectProvider).onPause();
+    ref.read(enemyProvider).onPause();
+  }
+
+  @override
+  void onReset() {
+    // TODO: implement onStart
+  }
+
+  @override
+  void onResume() {
+    // TODO: implement onStart
+  }
+
+  @override
+  void onStart() {
+    // TODO: implement onStart
+  }
+
+  @override
+  void onStop() {
+    // TODO: implement onStop
   }
 }

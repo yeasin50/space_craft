@@ -3,9 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/constants/enums/enums.dart';
 import '../../core/providers/game_manager.dart';
-import '../../core/widget/player_ship.dart';
 import '../../core/providers/object_scalar.dart';
-import '../setting/setting.dart';
+import '../../core/widget/player_ship.dart';
 import 'on_play.dart';
 import 'provider/provider.dart';
 
@@ -26,7 +25,7 @@ class OnPlayScreen extends StatelessWidget {
     //initial playing
 
     return LayoutBuilder(
-      key: const ValueKey("PrLa"),
+      key: const ValueKey("OnPlayScreen-root-widget"),
       builder: (context, constraints) {
         GObjectSize.init(
           size: Size(constraints.maxWidth, constraints.maxHeight),
@@ -35,7 +34,6 @@ class OnPlayScreen extends StatelessWidget {
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
             final enemyNotifier = ref.watch(enemyProvider);
-
             final gameState = ref.watch(gameManagerProvider);
 
             return RawKeyboardListener(

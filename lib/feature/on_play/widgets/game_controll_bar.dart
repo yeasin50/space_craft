@@ -15,7 +15,6 @@ class GameControlBar extends StatefulWidget {
   _GameControlBarState createState() => _GameControlBarState();
 }
 
-//FIXME: drag issue happens because of gameController taking full screen
 class _GameControlBarState extends State<GameControlBar>
     with SingleTickerProviderStateMixin {
   final Duration animationDuration = const Duration(milliseconds: 400);
@@ -56,11 +55,11 @@ class _GameControlBarState extends State<GameControlBar>
     if (isExpanded) {
       //* pause the game
       _playPauseButtonController.forward();
-      ref.read(gameManagerProvider.notifier).paused();
+      ref.read(gameManagerProvider.notifier).onPause();
     } else {
       //* resume the game
       _playPauseButtonController.reverse();
-      ref.read(gameManagerProvider.notifier).playing();
+      ref.read(gameManagerProvider.notifier).onPlay();
       // debugPrint("on ControlBar Resume: ${ref.read(gameManagerProvider)}");
     }
   }
@@ -73,7 +72,7 @@ class _GameControlBarState extends State<GameControlBar>
       children: [
         // backgrounds
         Positioned(
-          key: const ValueKey("rorated-background-setting-logo"),
+          key: const ValueKey("rotated-background-setting-logo"),
           top: GObjectSize.instance.screen.height / 2 -
               GObjectSize.instance.minLength * .3,
           left: GObjectSize.instance.screen.width / 2,

@@ -16,7 +16,7 @@ final healingObjectProvider = ChangeNotifierProvider(
   },
 );
 
-class Health extends ChangeNotifier {
+class Health extends ChangeNotifier implements GameState {
   final ChangeNotifierProviderRef ref;
 
   /// Healing Objects for [PlayerHealthManager], >> [IShipHealth]
@@ -30,7 +30,7 @@ class Health extends ChangeNotifier {
   ///box movement depends on it
   Timer? _timerBoxMovement;
 
-  //todo: change healt generation rate on release
+  //todo: change health generation rate on release
   final Duration healthGenerateRate = const Duration(seconds: 5);
   final Duration healthBoxMovementRate = const Duration(milliseconds: 200);
 
@@ -114,15 +114,35 @@ class Health extends ChangeNotifier {
   //*       Controllers         *
   //*---------------------------*
   ///freeze the UI including healthBox generation
-  void pauseMode() {
+  @override
+  void onPause() {
     _timerHealthBoxGeneration?.cancel();
     _timerBoxMovement?.cancel();
-    // _timerHealthBoxGeneration = null;
-    // _timerBoxMovement = null;
   }
 
-  void playingMode() {
+  @override
+  void onPlay() {
     _initGenerator();
     _boxMovement();
+  }
+
+  @override
+  void onReset() {
+    // TODO: implement onReset
+  }
+
+  @override
+  void onResume() {
+    // TODO: implement onResume
+  }
+
+  @override
+  void onStart() {
+    // TODO: implement onStart
+  }
+
+  @override
+  void onStop() {
+    // TODO: implement onStop
   }
 }

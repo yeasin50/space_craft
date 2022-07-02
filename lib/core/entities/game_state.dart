@@ -1,6 +1,7 @@
 abstract class GameState {
-  ///start of the app
-  void onStart();
+  /// before the start or end of the game
+  /// can be used as init and dispose state
+  void idle();
 
   /// while playing the game
   void onPlay();
@@ -14,6 +15,4 @@ abstract class GameState {
   /// restart the game
   void onReset();
 
-  /// exit the Game
-  void onStop();
 }

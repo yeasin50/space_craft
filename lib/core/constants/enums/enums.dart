@@ -1,7 +1,7 @@
 enum GameMode {
-  start,
-  playing,
+  idle,
+  play,
   paused,
   resumed,
-  end,
+  reset,
 }

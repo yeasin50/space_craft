@@ -137,7 +137,7 @@ class Health extends ChangeNotifier implements GameState {
   }
 
   @override
-  void onStart() {
+  void idle() {
     // TODO: implement onStart
   }
 

@@ -18,6 +18,23 @@ class TouchPositionDetector extends StatelessWidget {
 
   final Widget? child;
 
+  void _updatePlayerPos({
+    required GameMode mode,
+    required Offset localPosition,
+    required PlayerInfoNotifier playerInfoNotifier,
+  }) {
+    switch (mode) {
+      case GameMode.play:
+      case GameMode.resumed:
+        updatePlayerPosition(
+          offset: localPosition,
+          playerInfoNotifier: playerInfoNotifier,
+        );
+        return;
+      default:
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -30,15 +47,10 @@ class TouchPositionDetector extends StatelessWidget {
             // debugPrint("on onPanUpdate");
           },
           onPanDown: (details) {
-            // debugPrint("$gameManager");
-            if (gameManager.mode != GameMode.playing) return;
-
-            playerInfo.startShooting();
-            updatePlayerPosition(
-              offset: details.localPosition,
-              // constraints: constraints,
-              playerInfoNotifier: playerInfo,
-            );
+            _updatePlayerPos(
+                localPosition: details.localPosition,
+                mode: gameManager.mode,
+                playerInfoNotifier: playerInfo);
           },
           onTapUp: (details) {
             // handle quick tap up
@@ -49,12 +61,10 @@ class TouchPositionDetector extends StatelessWidget {
             playerInfo.stopShooting();
           },
           onPanUpdate: (details) {
-            if (gameManager.mode != GameMode.playing) return;
-            updatePlayerPosition(
-              offset: details.localPosition,
-              // constraints: constraints,
-              playerInfoNotifier: playerInfo,
-            );
+            _updatePlayerPos(
+                localPosition: details.localPosition,
+                mode: gameManager.mode,
+                playerInfoNotifier: playerInfo);
           },
           child: child,
         );

@@ -13,7 +13,7 @@ final gameManagerProvider = StateNotifierProvider<GameManager, GameMode>(
 class GameManager extends StateNotifier<GameMode> with GameState {
   final StateNotifierProviderRef ref;
 
-  GameManager(this.ref) : super(GameMode.start);
+  GameManager(this.ref) : super(GameMode.idle);
 
   GameMode get mode => state;
 
@@ -23,9 +23,18 @@ class GameManager extends StateNotifier<GameMode> with GameState {
   }
 
   @override
+  void idle() {
+    if (state == GameMode.idle) return;
+    state = GameMode.idle;
+    ref.read(playerInfoProvider).idle();
+    ref.read(healingObjectProvider).idle();
+    ref.read(enemyProvider).idle();
+  }
+
+  @override
   void onPlay() {
-    if (state == GameMode.playing) return;
-    state = GameMode.playing;
+    if (state == GameMode.play) return;
+    state = GameMode.play;
     ref.read(playerInfoProvider).onPlay();
     ref.read(healingObjectProvider).onPlay();
     ref.read(enemyProvider).onPlay();
@@ -42,21 +51,19 @@ class GameManager extends StateNotifier<GameMode> with GameState {
 
   @override
   void onReset() {
-    // TODO: implement onStart
+    if (state == GameMode.reset) return;
+    state = GameMode.reset;
+    ref.read(playerInfoProvider).onReset();
+    ref.read(healingObjectProvider).onReset();
+    ref.read(enemyProvider).onReset();
   }
 
   @override
   void onResume() {
-    // TODO: implement onStart
-  }
-
-  @override
-  void onStart() {
-    // TODO: implement onStart
-  }
-
-  @override
-  void onStop() {
-    // TODO: implement onStop
+    if (state == GameMode.resumed) return;
+    state = GameMode.resumed;
+    ref.read(playerInfoProvider).onResume();
+    ref.read(healingObjectProvider).onResume();
+    ref.read(enemyProvider).onResume();
   }
 }

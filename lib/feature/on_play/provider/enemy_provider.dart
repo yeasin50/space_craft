@@ -277,30 +277,15 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
   //*       Controllers         *
   //*---------------------------*
 
-  // /// if true, stop enemyMovement+ generate..+bullets
-  // void pauseMode(
-  //     {bool movement = true,
-  //     bool generator = true,
-  //     bool bulletMovement = true,
-  //     bool bulletGenerator = true}) {
-  //   if (generator && _timerEnemyGeneration != null) {
-  //     _timerEnemyGeneration!.cancel();
-  //   }
-//
-  //   if (movement && _timerEnemyMovement != null) {
-  //     _timerEnemyMovement!.cancel();
-  //   }
-//
-  //   if (bulletGenerator && _timerBulletGenerator != null) {
-  //     _timerBulletGenerator!.cancel();
-  //   }
-  //   if (bulletMovement && _timerBulletMovement != null) {
-  //     _timerBulletMovement!.cancel();
-  //   }
-  // }
+  void _startTimers() {
+    _generateEnemies();
+    _enemyMovement();
+    _generateBullet();
+    _bulletMovement();
+  }
 
-  @override
-  void onPause() {
+  /// Cancel all activity
+  void _cancelTimers() {
     _timerEnemyGeneration?.cancel();
     _timerEnemyMovement?.cancel();
     _timerBulletGenerator?.cancel();
@@ -308,11 +293,13 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
   }
 
   @override
+  void onPause() {
+    _cancelTimers();
+  }
+
+  @override
   void onPlay() {
-    _generateEnemies();
-    _enemyMovement();
-    _generateBullet();
-    _bulletMovement();
+    _startTimers();
   }
 
   @override
@@ -322,16 +309,11 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
 
   @override
   void onResume() {
-    // TODO: implement onResume
+    _startTimers();
   }
 
   @override
-  void onStart() {
+  void idle() {
     // TODO: implement onStart
-  }
-
-  @override
-  void onStop() {
-    // TODO: implement onStop
   }
 }

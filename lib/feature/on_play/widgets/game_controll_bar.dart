@@ -59,7 +59,7 @@ class _GameControlBarState extends State<GameControlBar>
     } else {
       //* resume the game
       _playPauseButtonController.reverse();
-      ref.read(gameManagerProvider.notifier).onPlay();
+      ref.read(gameManagerProvider.notifier).onResume();
       // debugPrint("on ControlBar Resume: ${ref.read(gameManagerProvider)}");
     }
   }

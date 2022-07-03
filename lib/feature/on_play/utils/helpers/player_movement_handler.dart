@@ -17,19 +17,19 @@ void updatePlayerPosition({
   // required Size constraints,
   required Offset offset,
 }) {
-  //skip keyboardMevemnt while controll mode is only keyboard
+  //skip keyboardMovement while control mode is only keyboard
   if (UserSetting.instance.controlMode == ControlMode.keyboard) return;
 
   final double posY = offset.dy;
   final double posX = offset.dx;
 
   // we are separating in two section, it'll help to move though another axis stuck
-  // it'll make sure that even One axis will work even other axis stuc
+  // it'll make sure that even One axis will work even other axis stuck
   if (posY >=
           GObjectSize.instance.screen.height -
               playerInfoNotifier.player.size.height / 2 ||
       posY <= playerInfoNotifier.player.size.height / 2) {
-    ///`we cant move in Y axix` outScreen
+    ///`we cant move in Y Axis` outScreen
     ///may Add some effect like wave
   } else {
     playerInfoNotifier.updatePosition(
@@ -39,7 +39,7 @@ void updatePlayerPosition({
           GObjectSize.instance.screen.width -
               playerInfoNotifier.player.size.width / 2 ||
       posX <= playerInfoNotifier.player.size.width / 2) {
-    ///`we cant move in X axix` outScreen
+    ///`we cant move in X axis` outScreen
   } else {
     playerInfoNotifier.updatePosition(
         dX: posX - (playerInfoNotifier.player.size.width / 2));
@@ -58,7 +58,7 @@ void keyboardMovementHandler({
 }) {
   // debugPrint("keyboardMovementHandler Key pressed ${event.data}");
 
-  //skip keyboardMevemnt while controll mode is only touch
+  //skip keyboardMovement while control mode is only touch
   if (UserSetting.instance.controlMode == ControlMode.touch) return;
 
   if (event is! RawKeyDownEvent) return;
@@ -117,8 +117,7 @@ void keyboardMovementHandler({
 
   if (playerInfoNotifier.player.position != moveTo) {
     playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
-    // debugPrint("update value");
   } else {
-    // debugPrint("isnot updating");
+    // debugPrint("is not updating");
   }
 }

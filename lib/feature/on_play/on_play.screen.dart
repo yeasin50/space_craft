@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/enums.dart';
+import '../../core/constants/enums/enums.dart';
 import '../../core/providers/game_manager.dart';
-import '../setting/models/object_scalar.dart';
+import '../../core/providers/object_scalar.dart';
+import '../../core/widget/player_ship.dart';
 import 'on_play.dart';
 import 'provider/provider.dart';
 
@@ -23,7 +24,7 @@ class OnPlayScreen extends StatelessWidget {
     final f = FocusNode();
 
     return LayoutBuilder(
-      key: const ValueKey("PrLa"),
+      key: const ValueKey("OnPlayScreen-root-widget"),
       builder: (context, constraints) {
         GObjectSize.init(
           size: Size(constraints.maxWidth, constraints.maxHeight),
@@ -31,25 +32,26 @@ class OnPlayScreen extends StatelessWidget {
         return Consumer(
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
-            final enemyNotifer = ref.watch(enemyProvider);
-
-            final gameState = ref.watch(gameManagerProvider);
+            final enemyNotifier = ref.watch(enemyProvider);
+            final gameState = ref.watch(gameManagerProvider.notifier);
+            gameState.initialOnPlay();
 
             return RawKeyboardListener(
               autofocus: true,
               focusNode: f,
               onKey: (event) {
-                /// keyEvent will only work  on playmode, maybe we will move it on player provider
-                if (gameState != GameMode.playing) return;
+                /// keyEvent will only work  on play-mode, maybe we will move it on player provider
+                if (gameState.mode != GameMode.play) return;
                 _onKeyEvent(playerInfo, event);
               },
               child: Scaffold(
                 body: Stack(
+                  clipBehavior: Clip.none,
                   children: [
                     _playerShip(playerInfo),
                     // AnimatedPositioned(
                     //   key: const ValueKey("Player Ship Widget"),
-                    //   duration: GObjectSize.instatnce.animationDuration,
+                    //   duration: GObjectSize.instance.animationDuration,
                     //   top: playerInfo.player.position.dY,
                     //   left: playerInfo.player.position.dX,
                     //   child: const PlayerShip(),
@@ -58,7 +60,7 @@ class OnPlayScreen extends StatelessWidget {
                     // enemy ships and enemy's bullets
                     EnemyOverlay(
                       key: const ValueKey("EnemyOverlay key"),
-                      enemyNotifier: enemyNotifer,
+                      enemyNotifier: enemyNotifier,
                       constraints: constraints,
                     ),
 
@@ -67,7 +69,7 @@ class OnPlayScreen extends StatelessWidget {
                     // ...playerInfo.bullets.map((b) {
                     //   return AnimatedPositioned(
                     //     key: ValueKey(b),
-                    //     duration: GObjectSize.instatnce.animationDuration,
+                    //     duration: GObjectSize.instance.animationDuration,
                     //     top: b.position.dY,
                     //     left: b.position.dX,
                     //     child: BulletWidget(
@@ -93,17 +95,16 @@ class OnPlayScreen extends StatelessWidget {
 
                     /// special power player
 
-                    /// detect touch on bottom
+                    //* detect touch on bottom
                     TouchPositionDetector(
                       key: const ValueKey("TouchPositionDetector key"),
                       constraints: constraints,
                     ),
 
-                    // game pause, restart, settings
+                    //* game pause, restart, settings
                     const Align(
-                      key: ValueKey("controllBar"),
-                      alignment: Alignment(-.95, -.95),
-                      child: GameControllBar(),
+                      key: ValueKey("controlBar"),
+                      child: GameControlBar(),
                     ),
                   ],
                 ),
@@ -117,9 +118,9 @@ class OnPlayScreen extends StatelessWidget {
 
   List<Widget> _playerBullets(PlayerInfoNotifier playerInfoNotifier) {
     return playerInfoNotifier.bullets.map((b) {
-      return AnimatedPositioned(
+      return Positioned(
         key: ValueKey(b),
-        duration: GObjectSize.instance.animationDuration,
+        // duration: GObjectSize.instance.animationDuration,
         top: b.position.dY,
         left: b.position.dX,
         child: BulletWidget(

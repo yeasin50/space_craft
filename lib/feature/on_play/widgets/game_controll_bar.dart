@@ -3,22 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers/game_manager.dart';
 import '../../../core/widget/widget.dart';
-import '../../setting/models/object_scalar.dart';
+import '../../../core/providers/object_scalar.dart';
 import '../../setting/setting.dart';
 
-class GameControllBar extends StatefulWidget {
-  const GameControllBar({
+class GameControlBar extends StatefulWidget {
+  const GameControlBar({
     Key? key,
   }) : super(key: key);
 
   @override
-  _GameControllBarState createState() => _GameControllBarState();
+  _GameControlBarState createState() => _GameControlBarState();
 }
 
-class _GameControllBarState extends State<GameControllBar>
+class _GameControlBarState extends State<GameControlBar>
     with SingleTickerProviderStateMixin {
   final Duration animationDuration = const Duration(milliseconds: 400);
-  //status of pause/menu button, onExapnd show others options
+  //status of pause/menu button, on Expand show others options
   bool isExpanded = false;
   late AnimationController _playPauseButtonController;
 
@@ -44,7 +44,7 @@ class _GameControllBarState extends State<GameControllBar>
     super.dispose();
   }
 
-  //play-pause button changes, close remaing overLay
+  //play-pause button changes, close remaining  overLay
   void _onPlayPauseButtonChange(ref) {
     if (_settingIsPressed = true) {
       _settingIsPressed = false;
@@ -55,12 +55,12 @@ class _GameControllBarState extends State<GameControllBar>
     if (isExpanded) {
       //* pause the game
       _playPauseButtonController.forward();
-      ref.read(gameManagerProvider.notifier).paused();
+      ref.read(gameManagerProvider.notifier).onPause();
     } else {
       //* resume the game
       _playPauseButtonController.reverse();
-      ref.read(gameManagerProvider.notifier).playing();
-      // debugPrint("onControllBar Resume: ${ref.read(gameManagerProvider)}");
+      ref.read(gameManagerProvider.notifier).onResume();
+      // debugPrint("on ControlBar Resume: ${ref.read(gameManagerProvider)}");
     }
   }
 
@@ -72,7 +72,7 @@ class _GameControllBarState extends State<GameControllBar>
       children: [
         // backgrounds
         Positioned(
-          key: const ValueKey("rorated-background-setting-logo"),
+          key: const ValueKey("rotated-background-setting-logo"),
           top: GObjectSize.instance.screen.height / 2 -
               GObjectSize.instance.minLength * .3,
           left: GObjectSize.instance.screen.width / 2,
@@ -92,7 +92,7 @@ class _GameControllBarState extends State<GameControllBar>
           ),
         ),
 
-        ///tapable widgets
+        ///tap-able widgets
         Align(
           alignment: const Alignment(.9, -.9),
           child: Consumer(
@@ -112,6 +112,7 @@ class _GameControllBarState extends State<GameControllBar>
                         onTap: () {
                           _settingIsPressed = !_settingIsPressed;
                           setState(() {});
+                          debugPrint("setting icon is pressed");
                         },
                         child: AnimatedScale(
                           duration: animationDuration,
@@ -128,6 +129,7 @@ class _GameControllBarState extends State<GameControllBar>
                   ),
                 ),
                 IconButton(
+                  // behavior: HitTestBehavior.translucent,
                   onPressed: () => _onPlayPauseButtonChange(ref),
                   icon: AnimatedIcon(
                     color: Colors.white,

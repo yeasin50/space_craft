@@ -11,9 +11,6 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   dialogVibilityNotifier.value = !dialogVibilityNotifier.value;
-      // }),
       body: Stack(
         children: const [
           Align(
@@ -22,7 +19,7 @@ class SettingPage extends StatelessWidget {
               rotateAxis: [true, true, true],
               repeat: true,
               reverseOnRepeat: false,
-              child: RorationalBlustRing(
+              child: RotationalBlastRing(
                 radius: 150,
               ),
             ),

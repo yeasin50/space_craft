@@ -1,2 +1,2 @@
 export 'color_palette.dart';
-export 'enums.dart';
+export 'enums/enums.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/entities/entities.dart';
-import '../../setting/models/object_scalar.dart';
+import '../../../core/providers/object_scalar.dart';
 import '../utils/helpers/enemy_hanlader.dart';
 import 'health_management.dart';
 import 'player_ship_body.dart';
@@ -18,7 +18,7 @@ class Player implements IShip {
   ///max number of time player can live
   final int maxLive = 3;
 
-  /// fire while player is alive and game is runnign
+  /// fire while player is alive and game is running
   bool shoot = false;
 
   @override

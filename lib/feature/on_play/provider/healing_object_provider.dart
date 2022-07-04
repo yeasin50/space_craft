@@ -12,11 +12,11 @@ import 'provider.dart';
 
 final healingObjectProvider = ChangeNotifierProvider(
   (ref) {
-    return HealingObjectNotifier(ref: ref);
+    return Health(ref: ref);
   },
 );
 
-class HealingObjectNotifier extends ChangeNotifier {
+class Health extends ChangeNotifier implements GameState {
   final ChangeNotifierProviderRef ref;
 
   /// Healing Objects for [PlayerHealthManager], >> [IShipHealth]
@@ -25,12 +25,12 @@ class HealingObjectNotifier extends ChangeNotifier {
   List<GeneralHealingBox> get healingBoxes => [..._healingBoxes];
 
   /// boxGenerationRate depends on it
-  Timer? _timerHealtBoxGeneration;
+  Timer? _timerHealthBoxGeneration;
 
   ///box movement depends on it
   Timer? _timerBoxMovement;
 
-  //todo: change healt generation rate on realease
+  //todo: change health generation rate on release
   final Duration healthGenerateRate = const Duration(seconds: 5);
   final Duration healthBoxMovementRate = const Duration(milliseconds: 200);
 
@@ -42,19 +42,19 @@ class HealingObjectNotifier extends ChangeNotifier {
 
   Size get screenSize => _screenSize ?? Size.zero;
 
-  HealingObjectNotifier({
+  Health({
     required this.ref,
   }) : _random = math.Random();
 
-  /// health box timer genertor
+  /// health box timer generator
   void _initGenerator() {
-    if (_timerHealtBoxGeneration != null &&
-        _timerHealtBoxGeneration!.isActive) {
+    if (_timerHealthBoxGeneration != null &&
+        _timerHealthBoxGeneration!.isActive) {
       return;
     }
 
     // * generate healthBox per `healthGenerateRate`
-    _timerHealtBoxGeneration = Timer.periodic(
+    _timerHealthBoxGeneration = Timer.periodic(
       healthGenerateRate,
       (timer) {
         _screenSize = ref.read(enemyProvider).screenSize;
@@ -71,7 +71,7 @@ class HealingObjectNotifier extends ChangeNotifier {
     );
   }
 
-  /// health boxes will move to Y asix
+  /// health boxes will move to Y axis
   void _boxMovement() {
     if (_timerBoxMovement != null && _timerBoxMovement!.isActive) return;
 
@@ -114,15 +114,35 @@ class HealingObjectNotifier extends ChangeNotifier {
   //*       Controllers         *
   //*---------------------------*
   ///freeze the UI including healthBox generation
-  void pauseMode() {
-    _timerHealtBoxGeneration?.cancel();
+  @override
+  void onPause() {
+    _timerHealthBoxGeneration?.cancel();
     _timerBoxMovement?.cancel();
-    // _timerHealtBoxGeneration = null;
-    // _timerBoxMovement = null;
   }
 
-  void playingMode() {
+  @override
+  void onPlay() {
     _initGenerator();
     _boxMovement();
+  }
+
+  @override
+  void onReset() {
+    // TODO: implement onReset
+  }
+
+  @override
+  void onResume() {
+    // TODO: implement onResume
+  }
+
+  @override
+  void idle() {
+    // TODO: implement onStart
+  }
+
+  @override
+  void onStop() {
+    // TODO: implement onStop
   }
 }

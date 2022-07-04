@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/entities/bullet.dart';
-import '../../setting/models/object_scalar.dart';
+import '../../../core/providers/object_scalar.dart';
 import '../../../core/entities/vector2.dart';
 
 class PlayerShipBullet implements IBullet {

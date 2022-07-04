@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/entities/bullet.dart';
-import '../../../core/widget/magic_ball.dart';
-import '../../setting/models/object_scalar.dart';
+import '../../../core/package/magic_ball/widgets/magic_ball.dart';
+import '../../../core/providers/object_scalar.dart';
 import '../models/ship.dart';
 import '../provider/enemy_provider.dart';
-import 'bullet.dart';
 import 'widgets.dart';
 
 /// enemy ships and enemy's bullets on  [_EnemyBulletOverlay] widget
@@ -39,13 +38,13 @@ class EnemyOverlay extends StatelessWidget {
 
         /// bullets overlay
         /// todo: add controller
-        ...enemyNotifier.shipsblastLocation.map(
+        ...enemyNotifier.shipsBlastLocation.map(
           (blastLoc) => Positioned(
             key: ValueKey(blastLoc),
             top: blastLoc.dY - 20, //minimize the blast size
             left: blastLoc.dX - 20,
             child: const MagicBall.singleBlast(
-              radius: 40,
+              size: 40,
             ),
           ),
         )

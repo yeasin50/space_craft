@@ -22,7 +22,6 @@ class OnPlayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final f = FocusNode();
-    //initial playing
 
     return LayoutBuilder(
       key: const ValueKey("OnPlayScreen-root-widget"),
@@ -34,14 +33,15 @@ class OnPlayScreen extends StatelessWidget {
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
             final enemyNotifier = ref.watch(enemyProvider);
-            final gameState = ref.watch(gameManagerProvider);
+            final gameState = ref.watch(gameManagerProvider.notifier);
+            gameState.initialOnPlay();
 
             return RawKeyboardListener(
               autofocus: true,
               focusNode: f,
               onKey: (event) {
                 /// keyEvent will only work  on play-mode, maybe we will move it on player provider
-                if (gameState != GameMode.play) return;
+                if (gameState.mode != GameMode.play) return;
                 _onKeyEvent(playerInfo, event);
               },
               child: Scaffold(

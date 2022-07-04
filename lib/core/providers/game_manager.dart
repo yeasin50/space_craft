@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -20,6 +21,17 @@ class GameManager extends StateNotifier<GameMode> with GameState {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void initialOnPlay() {
+    switch (state) {
+      case GameMode.idle:
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          onPlay();
+        });
+        return;
+      default:
+    }
   }
 
   @override

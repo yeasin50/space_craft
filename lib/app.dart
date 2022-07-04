@@ -22,7 +22,7 @@ class App extends StatelessWidget {
           GObjectSize.init(
             size: Size(constraints.maxWidth, constraints.maxHeight),
           );
-          return const OnPlayScreen();
+          return const HomePage();
         },
       ),
     );

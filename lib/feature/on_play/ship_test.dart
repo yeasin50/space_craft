@@ -31,7 +31,7 @@ class ShipMovemntTest extends ConsumerWidget {
             GObjectSize.init(
                 size: Size(constraints.maxWidth, constraints.maxHeight));
 
-            return OnPlayScreen();
+            return const OnPlayScreen();
           },
         ),
       ),

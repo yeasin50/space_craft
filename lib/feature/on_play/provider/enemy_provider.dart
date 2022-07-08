@@ -79,7 +79,11 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
 
   ///generate random position for enemy
   Vector2 _enemyInitPosition() {
-    return enemyInitialPosition();
+    return enemies.length > 3
+        ? enemyInitialPosition(
+            secureFrom: _enemies.sublist(_enemies.length - 3),
+          )
+        : enemyInitialPosition();
   }
 
   /// move downward and destroy while it is downSide:enemyShip

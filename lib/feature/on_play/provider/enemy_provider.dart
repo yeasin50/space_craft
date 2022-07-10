@@ -69,7 +69,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
       _enemies.addAll(
         List.generate(_generateNxEnemy, (index) {
           return EnemyShip(
-            position: _enemyInitPosition(),
+            position: _enemyInitPosition(index: index),
           );
         }),
       );
@@ -78,12 +78,10 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
   }
 
   ///generate random position for enemy
-  Vector2 _enemyInitPosition() {
-    return enemies.length > 3
-        ? enemyInitialPosition(
-            secureFrom: _enemies.sublist(_enemies.length - 3),
-          )
-        : enemyInitialPosition();
+  Vector2 _enemyInitPosition({int index = 0}) {
+    // return randomEnemyInitPosition();
+    return enemyInitPositionByTricker(
+        (_timerEnemyGeneration?.tick ?? 0) + index);
   }
 
   /// move downward and destroy while it is downSide:enemyShip

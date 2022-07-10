@@ -1,11 +1,7 @@
-import 'dart:math' show Random;
-
 import '../../../../core/entities/vector2.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../setting/models/models.dart';
 import '../../models/models.dart';
-
-final _random = Random();
 
 double get _randomScreenXPos {
   double min = GObjectSize.instance.enemyShip.width;
@@ -13,28 +9,27 @@ double get _randomScreenXPos {
   return next(min: min.toInt(), max: max.toInt()).toDouble();
 }
 
-///* Generates a positive random double `secureFrom` exclusive.
-///* generated enemy should have space [an enemy ship width] between them
+/// Generates a positive random double `secureFrom` exclusive.
+/// generated enemy should have space [an enemy ship width] between them
+///* This method is expensive based on the size of `secureForm`
 double _nextScreenX(List<double>? secureFrom) {
   if (secureFrom == null || secureFrom.isEmpty) {
     return _randomScreenXPos;
   } //
   else {
-    //TODO: impliment
-    bool isOverlapped = true;
     late double randomDx;
-    final double spaceFactor = GObjectSize.instance.enemyShip.width;
+    late bool isOverlapped;
+    final double spaceFactor = GObjectSize.instance.enemyShip.width * 2;
 
-    while (isOverlapped) {
-      randomDx = _randomScreenXPos;
+    do {
       isOverlapped = false;
+      randomDx = _randomScreenXPos;
       for (final x in secureFrom) {
-        if (randomDx < x + spaceFactor && randomDx > x - spaceFactor) {
+        if ((x - randomDx).abs() < spaceFactor) {
           isOverlapped = true;
         }
       }
-      if (!isOverlapped) break;
-    }
+    } while (isOverlapped);
 
     return randomDx;
   }
@@ -46,8 +41,8 @@ Vector2 enemyInitialPosition({List<EnemyShip>? secureFrom}) {
   final double xPos =
       _nextScreenX(secureFrom?.map((e) => e.position.dX).toList());
 
-  final double yPos =
-      -_random.nextDouble() * (GObjectSize.instance.screen.height * .15);
+  // final double yPos =
+  //     -_random.nextDouble() * (GObjectSize.instance.screen.height * .15);
 
-  return Vector2(dX: xPos, dY: yPos);
+  return Vector2(dX: xPos, dY: -60);
 }

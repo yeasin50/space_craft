@@ -70,7 +70,7 @@ class _StartPageAnimationState extends State<StartPageAnimation>
         ),
 
         Align(
-          alignment: const Alignment(0, .75),
+          alignment: const Alignment(0, .7),
           child: AnimatedOpacity(
             key: const ValueKey("StartTextAnimation widget"),
             duration: const Duration(milliseconds: 600),

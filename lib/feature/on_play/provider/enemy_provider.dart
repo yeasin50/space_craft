@@ -69,7 +69,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
       _enemies.addAll(
         List.generate(_generateNxEnemy, (index) {
           return EnemyShip(
-            position: _enemyInitPosition(),
+            position: _enemyInitPosition(index: index),
           );
         }),
       );
@@ -78,28 +78,10 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
   }
 
   ///generate random position for enemy
-  Vector2 _enemyInitPosition() {
-    // if (enemies.isNotEmpty) {
-    //spacing between last generated ship
-    //FIXME:  handle enemy generator spacing
-    //   do {
-    //     randX = _random.nextDouble() * screenSize.width;
-    //     debugPrint("inner $randX");
-    //   } while (
-    //       (randX - _enemies.last.position.dX).abs() < screenSize.width * .15);
-    // } else {
-    double randX = _random.nextDouble() * screenSize.width;
-    // }
-
-    // to avoid boundary conflicting
-    final dx = randX - 40 < 0
-        ? randX + 40
-        : randX + 40 > screenSize.width
-            ? randX - 40
-            : randX;
-
-    final dy = -_random.nextDouble() * (screenSize.height * .15);
-    return Vector2(dX: dx, dY: dy);
+  Vector2 _enemyInitPosition({int index = 0}) {
+    // return randomEnemyInitPosition();
+    return enemyInitPositionByTricker(
+        (_timerEnemyGeneration?.tick ?? 0) + index);
   }
 
   /// move downward and destroy while it is downSide:enemyShip

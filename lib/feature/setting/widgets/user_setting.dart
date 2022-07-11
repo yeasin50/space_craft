@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/widget/widget.dart';
-import '../models/models.dart';
 
 class SettingView extends StatefulWidget {
-  const SettingView({Key? key}) : super(key: key);
+  const SettingView({
+    Key? key,
+    this.onTapClose,
+  }) : super(key: key);
 
+  final VoidCallback? onTapClose;
   @override
   State<SettingView> createState() => _SettingViewState();
 }
@@ -55,18 +58,32 @@ class _SettingViewState extends State<SettingView> {
             const SizedBox(height: 16),
             controlMode(settings, _textStyleTitle),
             const SizedBox(height: 24),
-            SizedBox(
-              width: 124,
-              child: CustomButton(
-                value: false,
-                defaultColor: Colors.deepPurpleAccent,
-                text: "Reset",
-                callback: () {
-                  setState(() {
-                    settings.defaultSetting();
-                  });
-                },
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 124,
+                  child: CustomButton(
+                    value: false,
+                    defaultColor: Color.fromARGB(137, 30, 80, 95),
+                    text: "Reset",
+                    callback: () {
+                      setState(() {
+                        settings.defaultSetting();
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: 124,
+                  child: CustomButton(
+                    value: false,
+                    defaultColor: Color.fromARGB(106, 45, 55, 58),
+                    text: "Close",
+                    callback: widget.onTapClose,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -198,7 +215,7 @@ class _SettingViewState extends State<SettingView> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Sensivity",
+          "Sensitivity",
           style: titleTextStyle,
         ),
         Row(

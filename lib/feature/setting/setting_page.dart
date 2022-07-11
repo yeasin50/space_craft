@@ -26,7 +26,9 @@ class SettingPage extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.center,
-            child: SettingDialogWidget(),
+            child: SettingDialogWidget(
+              
+            ),
           ),
         ],
       ),

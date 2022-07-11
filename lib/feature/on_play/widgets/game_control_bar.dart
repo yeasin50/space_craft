@@ -50,18 +50,21 @@ class _GameControlBarState extends State<GameControlBar>
       _settingIsPressed = false;
     }
     isExpanded = !isExpanded;
-    setState(() {});
 
     if (isExpanded) {
+      _settingIsPressed = true;
       //* pause the game
       _playPauseButtonController.forward();
       ref.read(gameManagerProvider.notifier).onPause();
     } else {
       //* resume the game
+      _settingIsPressed = false;
       _playPauseButtonController.reverse();
       ref.read(gameManagerProvider.notifier).onResume();
       // debugPrint("on ControlBar Resume: ${ref.read(gameManagerProvider)}");
     }
+
+    setState(() {});
   }
 
   //todo: change icons color
@@ -110,18 +113,22 @@ class _GameControlBarState extends State<GameControlBar>
                         splashColor: Colors.transparent,
                         key: const ValueKey("user-setting-IconButton"),
                         onTap: () {
-                          _settingIsPressed = !_settingIsPressed;
-                          setState(() {});
-                          debugPrint("setting icon is pressed");
+                          // we just have single setting on UI,
+                          // on multi-icons separate the operation
+                          _onPlayPauseButtonChange(ref);
                         },
                         child: AnimatedScale(
                           duration: animationDuration,
                           alignment: Alignment.center,
                           scale: _settingIsPressed ? 1.25 : 1,
-                          child: Icon(
-                            Icons.settings,
-                            color:
-                                _settingIsPressed ? Colors.blue : Colors.white,
+                          child: RotateWidget(
+                            rotateAxis: const [true, true, true],
+                            child: Icon(
+                              Icons.settings,
+                              color: _settingIsPressed
+                                  ? Colors.blue
+                                  : Colors.white,
+                            ),
                           ),
                         ),
                       ),

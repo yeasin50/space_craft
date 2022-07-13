@@ -10,7 +10,7 @@ A simple game, wanna implement in flutter.
 - [ ] format constructor style based on flutter; Constructor then variables
 - [ ] Improve performance by testing on profile mode
 - [ ] keyboard movement works after tapping
-- [ ] score based on EnemyShip
+- [x] score based on EnemyShip
 - [ ] control generationRate
 - [ ] bullet rotate effect
 

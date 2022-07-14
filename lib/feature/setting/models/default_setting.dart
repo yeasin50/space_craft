@@ -1,4 +1,4 @@
-import 'entities.dart';
+import '../../../core/entities/entities.dart';
 
 /// Singleton UserSetting
 class DefaultUserSetting extends Setting {

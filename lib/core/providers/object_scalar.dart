@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../entities/user_setting.dart';
+import '../../feature/setting/models/default_setting.dart';
 
 abstract class _Elements {
   /// full screen/view size, that will cover by app

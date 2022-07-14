@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/providers/object_scalar.dart';
+import '../../setting/models/default_setting.dart';
 import '../models/models.dart';
 import '../on_play.dart';
 import 'provider.dart';

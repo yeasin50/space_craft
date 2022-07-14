@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/widget/widget.dart';
+import '../models/default_setting.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({

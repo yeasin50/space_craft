@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../core/entities/entities.dart';
 import '../../../../core/providers/object_scalar.dart';
+import '../../../setting/models/default_setting.dart';
 import '../../provider/provider.dart';
 
 /// update player position by maintaining border

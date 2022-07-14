@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../core/entities/entities.dart';
 import '../../../../core/providers/object_scalar.dart';
-import '../../../setting/models/default_setting.dart';
+import '../../../setting/providers/providers.dart';
 import '../../provider/provider.dart';
 
 /// update player position by maintaining border
@@ -19,7 +19,7 @@ void updatePlayerPosition({
   required Offset offset,
 }) {
   //skip keyboardMovement while control mode is only keyboard
-  if (DefaultUserSetting.instance.controlMode == ControlMode.keyboard) return;
+  if (UserSettingProvider.instance.controlMode == ControlMode.keyboard) return;
 
   final double posY = offset.dy;
   final double posX = offset.dx;
@@ -60,7 +60,7 @@ void keyboardMovementHandler({
   // debugPrint("keyboardMovementHandler Key pressed ${event.data}");
 
   //skip keyboardMovement while control mode is only touch
-  if (DefaultUserSetting.instance.controlMode == ControlMode.touch) return;
+  if (UserSettingProvider.instance.controlMode == ControlMode.touch) return;
 
   if (event is! RawKeyDownEvent) return;
 

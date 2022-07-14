@@ -53,6 +53,7 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState {
 
   /// Update player position
   void updatePosition({double? dX, double? dY}) {
+    debugPrint(player.position.toString());
     player.position.update(dX: dX, dY: dY);
 
     //todo: create setting for theses

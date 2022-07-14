@@ -12,11 +12,17 @@ class OnPlayScreen extends StatelessWidget {
   static const String routeName = "/on_play_screen";
   const OnPlayScreen({Key? key}) : super(key: key);
 
-  void _onKeyEvent(playerInfo, event) {
-    keyboardMovementHandler(
-      event: event,
-      playerInfoNotifier: playerInfo,
-    );
+  void _onKeyEvent(mode, playerInfo, event) {
+    switch (mode) {
+      case GamePlayState.play:
+      case GamePlayState.resumed:
+        keyboardMovementHandler(
+          event: event,
+          playerInfoNotifier: playerInfo,
+        );
+        return;
+      default:
+    }
   }
 
   @override
@@ -40,9 +46,7 @@ class OnPlayScreen extends StatelessWidget {
               autofocus: true,
               focusNode: f,
               onKey: (event) {
-                /// keyEvent will only work  on play-mode, maybe we will move it on player provider
-                if (gameState.mode != GamePlayState.play) return;
-                _onKeyEvent(playerInfo, event);
+                _onKeyEvent(gameState.mode, playerInfo, event);
               },
               child: Scaffold(
                 body: Stack(

@@ -2,7 +2,14 @@
 enum GamePlayMode { easy, medium, hard }
 
 ///whether player will be able to play with touch or keyboard or both
-enum ControlMode { touch, keyboard, both }
+enum ControlMode {
+  /// touch event on UI, or mouse drag
+  touch,
+
+  keyboard,
+
+  both,
+}
 
 /// abstract class of game setting
 abstract class Setting {
@@ -24,8 +31,23 @@ abstract class Setting {
   /// [ControlMode.touch]  used to on touch screen device[android,ios] and [ControlMode.keyboard] used for computer
   late ControlMode controlMode;
 
-  ///reset to default
-  void defaultSetting();
+  /// default setting with
+  /// ```
+  /// music = true;
+  /// sound = true;
+  /// effect = true;
+  /// movementSensitivity = 1.0;
+  /// gamePlayMode = GamePlayMode.easy;
+  /// controlMode = ControlMode.touch;
+  /// ```
+  void defaultSetting() {
+    music = true;
+    sound = true;
+    effect = true;
+    movementSensitivity = 1.0;
+    gamePlayMode = GamePlayMode.easy;
+    controlMode = ControlMode.touch;
+  }
 
   ///update  user setting, optional param, null will be replaced by default/init value
   void update({
@@ -35,8 +57,17 @@ abstract class Setting {
     double? movementSensitivity,
     GamePlayMode? playMode,
     ControlMode? controlMode,
-  });
+  }) {
+    this.music = music ?? this.music;
+    this.sound = sound ?? this.sound;
+    this.effect = effect ?? this.effect;
+    movementSensitivity = movementSensitivity ?? movementSensitivity;
+    gamePlayMode = playMode ?? gamePlayMode;
+    this.controlMode = controlMode ?? this.controlMode;
+  }
 
+  void reset();
+  
   @override
   String toString() {
     return 'Setting(_music: $music, _sound: $sound, movementSensitivity: $movementSensitivity, gamePlayMode: $gamePlayMode, _controlMode: $controlMode, _effect: $effect)';

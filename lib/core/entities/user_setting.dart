@@ -17,7 +17,7 @@ class UserSetting extends Setting {
     sound = true;
     effect = true;
     movementSensitivity = 1.0;
-    playmode = GamePlayMode.easy;
+    gamePlayMode = GamePlayMode.easy;
     controlMode = ControlMode.touch;
   }
 
@@ -34,7 +34,7 @@ class UserSetting extends Setting {
     this.sound = sound ?? this.sound;
     this.effect = effect ?? this.effect;
     movementSensitivity = movementSensitivity ?? movementSensitivity;
-    playmode = playMode ?? playmode;
+    gamePlayMode = playMode ?? gamePlayMode;
     this.controlMode = controlMode ?? this.controlMode;
   }
 }

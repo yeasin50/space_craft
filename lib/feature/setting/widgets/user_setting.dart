@@ -134,7 +134,7 @@ class _SettingViewState extends State<SettingView> {
             (mode) {
               return CustomButton(
                 text: mode.name.sentenceCase,
-                value: settings.playmode == mode,
+                value: settings.gamePlayMode == mode,
                 callback: () {
                   settings.update(playMode: mode);
                   setState(() {});

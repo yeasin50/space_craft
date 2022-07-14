@@ -4,6 +4,7 @@ enum GamePlayMode { easy, medium, hard }
 ///whether player will be able to play with touch or keyboard or both
 enum ControlMode { touch, keyboard, both }
 
+/// abstract class of game setting
 abstract class Setting {
   /// bullet and other effect sound
   late bool music;
@@ -18,7 +19,7 @@ abstract class Setting {
   late double movementSensitivity;
 
   /// user can select [GamePlayMode]; enemy movement and generation depend on it
-  late GamePlayMode playmode;
+  late GamePlayMode gamePlayMode;
 
   /// [ControlMode.touch]  used to on touch screen device[android,ios] and [ControlMode.keyboard] used for computer
   late ControlMode controlMode;
@@ -38,6 +39,6 @@ abstract class Setting {
 
   @override
   String toString() {
-    return 'Setting(_music: $music, _sound: $sound, movementSensitivity: $movementSensitivity, _playmode: $playmode, _controlMode: $controlMode, _effect: $effect)';
+    return 'Setting(_music: $music, _sound: $sound, movementSensitivity: $movementSensitivity, gamePlayMode: $gamePlayMode, _controlMode: $controlMode, _effect: $effect)';
   }
 }

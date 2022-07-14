@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/widget/widget.dart';
-import '../models/default_setting.dart';
+import '../providers/providers.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({
@@ -17,7 +17,7 @@ class SettingView extends StatefulWidget {
 }
 
 class _SettingViewState extends State<SettingView> {
-  final DefaultUserSetting settings = DefaultUserSetting.instance;
+  final Setting settings = UserSettingProvider.instance;
 
   static const TextStyle _textStyle = TextStyle(
     color: Color.fromARGB(255, 135, 152, 158),
@@ -66,7 +66,7 @@ class _SettingViewState extends State<SettingView> {
                   width: 124,
                   child: CustomButton(
                     value: false,
-                    defaultColor: Color.fromARGB(137, 30, 80, 95),
+                    defaultColor: const Color.fromARGB(137, 30, 80, 95),
                     text: "Reset",
                     callback: () {
                       setState(() {
@@ -79,7 +79,7 @@ class _SettingViewState extends State<SettingView> {
                   width: 124,
                   child: CustomButton(
                     value: false,
-                    defaultColor: Color.fromARGB(106, 45, 55, 58),
+                    defaultColor: const Color.fromARGB(106, 45, 55, 58),
                     text: "Close",
                     callback: widget.onTapClose,
                   ),
@@ -92,7 +92,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Widget controlMode(DefaultUserSetting settings, TextStyle textStyle) {
+  Widget controlMode(Setting settings, TextStyle textStyle) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -120,7 +120,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Widget playMode(DefaultUserSetting settings, TextStyle textStyle) {
+  Widget playMode(Setting settings, TextStyle textStyle) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -148,7 +148,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row effectSetting(DefaultUserSetting settings, TextStyle textStyle) {
+  Row effectSetting(Setting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -169,7 +169,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row soundSetting(DefaultUserSetting settings, TextStyle textStyle) {
+  Row soundSetting(Setting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -188,7 +188,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row musicSetting(DefaultUserSetting settings, TextStyle textStyle) {
+  Row musicSetting(Setting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -208,7 +208,7 @@ class _SettingViewState extends State<SettingView> {
   }
 
   Widget movementSensitivity(
-    DefaultUserSetting settings, {
+    Setting settings, {
     required TextStyle titleTextStyle,
     required TextStyle textStyle,
   }) {

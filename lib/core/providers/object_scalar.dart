@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../feature/setting/models/default_setting.dart';
+import '../../feature/setting/providers/providers.dart';
 
 abstract class _Elements {
   /// full screen/view size, that will cover by app
@@ -95,7 +95,7 @@ class GObjectSize implements _Elements {
   ///todo: create Settings for sensitivity
   ///player movement px on keyboard action: [keyboardMovementHandler]
   double get movementRatio =>
-      screen.width * .02 * DefaultUserSetting.instance.movementSensitivity;
+      screen.width * .02 * UserSettingProvider.instance.movementSensitivity;
 
   /// top part of player ship based on Paint, This fix empty space player enemy-collision
   Size get playerShipTopPart {

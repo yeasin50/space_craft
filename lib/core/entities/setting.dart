@@ -25,6 +25,12 @@ abstract class Setting {
   /// ship movement speed on keyboard controls mode
   late double movementSensitivity;
 
+  /// max ship movement speed on keyboard controls mode
+  double get maxSensitivity => 2.0;
+
+  /// min ship movement speed on keyboard controls mode
+  double get minSensitivity => .5;
+
   /// user can select [GamePlayMode]; enemy movement and generation depend on it
   late GamePlayMode gamePlayMode;
 
@@ -67,7 +73,7 @@ abstract class Setting {
   }
 
   void reset();
-  
+
   @override
   String toString() {
     return 'Setting(_music: $music, _sound: $sound, movementSensitivity: $movementSensitivity, gamePlayMode: $gamePlayMode, _controlMode: $controlMode, _effect: $effect)';

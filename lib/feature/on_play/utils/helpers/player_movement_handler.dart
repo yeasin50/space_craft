@@ -1,9 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/constants/constants.dart';
 import '../../../../core/entities/entities.dart';
-import '../../../setting/models/models.dart';
+import '../../../../core/providers/providers.dart';
+import '../../../setting/providers/providers.dart';
 import '../../provider/provider.dart';
+
+/// update player position based on touch position and keyboard movement
+///* To use keyboard control, pass [rawKeyEvent]
+///* To control user position by touch or mouse right click pass [offset], it is localOffset of tapped point
+///
+void updatePlayerPosition({
+  required WidgetRef widgetRef,
+  RawKeyEvent? rawKeyEvent,
+  Offset? offset,
+}) {
+  final gamePlayState = widgetRef.read(gameManagerProvider);
+
+  final PlayerInfoNotifier notifier = widgetRef.read(playerInfoProvider);
+
+  switch (gamePlayState) {
+    case GamePlayState.play:
+    case GamePlayState.resumed:
+      if (offset != null) {
+        _updatePlayerPosition(
+          offset: offset,
+          playerInfoNotifier: notifier,
+        );
+      }
+
+      if (rawKeyEvent != null) {
+        _keyboardMovementHandler(
+            event: rawKeyEvent, playerInfoNotifier: notifier);
+      }
+
+      return;
+    default:
+  }
+}
 
 /// update player position by maintaining border
 ///
@@ -12,13 +48,13 @@ import '../../provider/provider.dart';
 /// `constraints` current screen size
 ///
 /// `offset` current touch position
-void updatePlayerPosition({
+void _updatePlayerPosition({
   required PlayerInfoNotifier playerInfoNotifier,
   // required Size constraints,
   required Offset offset,
 }) {
   //skip keyboardMovement while control mode is only keyboard
-  if (UserSetting.instance.controlMode == ControlMode.keyboard) return;
+  if (UserSettingProvider.instance.controlMode == ControlMode.keyboard) return;
 
   final double posY = offset.dy;
   final double posX = offset.dx;
@@ -51,7 +87,7 @@ void updatePlayerPosition({
 /// `playerInfoNotifier` player provider instance, you can pass context too
 ///
 /// `constraints` current screen size
-void keyboardMovementHandler({
+void _keyboardMovementHandler({
   required PlayerInfoNotifier playerInfoNotifier,
   // required BoxConstraints constraints,
   required RawKeyEvent event,
@@ -59,7 +95,7 @@ void keyboardMovementHandler({
   // debugPrint("keyboardMovementHandler Key pressed ${event.data}");
 
   //skip keyboardMovement while control mode is only touch
-  if (UserSetting.instance.controlMode == ControlMode.touch) return;
+  if (UserSettingProvider.instance.controlMode == ControlMode.touch) return;
 
   if (event is! RawKeyDownEvent) return;
 

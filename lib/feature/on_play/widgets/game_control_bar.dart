@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/providers/game_manager.dart';
-import '../../../core/widget/widget.dart';
 import '../../../core/providers/object_scalar.dart';
-import '../../setting/setting.dart';
+import '../../../core/widget/widget.dart';
+import '../../setting/widgets/widgets.dart';
 
 class GameControlBar extends StatefulWidget {
   const GameControlBar({

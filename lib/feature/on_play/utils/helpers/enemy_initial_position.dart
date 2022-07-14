@@ -1,7 +1,7 @@
 import 'dart:math' show Random;
 
 import '../../../../core/entities/vector2.dart';
-import '../../../setting/models/models.dart';
+import '../../../../core/providers/object_scalar.dart';
 import '../../models/models.dart';
 
 final _random = Random();

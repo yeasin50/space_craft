@@ -8,10 +8,6 @@ class DesktopUserSetting extends Setting {
   @override
   ControlMode get controlMode => ControlMode.both;
 
-  double get maxSensitivity => 2.0;
-
-  double get minSensitivity => .5;
-
   @override
   void reset() {
     super.defaultSetting();

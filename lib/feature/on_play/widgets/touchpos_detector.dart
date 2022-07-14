@@ -19,13 +19,13 @@ class TouchPositionDetector extends StatelessWidget {
   final Widget? child;
 
   void _updatePlayerPos({
-    required GameMode mode,
+    required GamePlayState mode,
     required Offset localPosition,
     required PlayerInfoNotifier playerInfoNotifier,
   }) {
     switch (mode) {
-      case GameMode.play:
-      case GameMode.resumed:
+      case GamePlayState.play:
+      case GamePlayState.resumed:
         updatePlayerPosition(
           offset: localPosition,
           playerInfoNotifier: playerInfoNotifier,

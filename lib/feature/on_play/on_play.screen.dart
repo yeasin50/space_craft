@@ -41,7 +41,7 @@ class OnPlayScreen extends StatelessWidget {
               focusNode: f,
               onKey: (event) {
                 /// keyEvent will only work  on play-mode, maybe we will move it on player provider
-                if (gameState.mode != GameMode.play) return;
+                if (gameState.mode != GamePlayState.play) return;
                 _onKeyEvent(playerInfo, event);
               },
               child: Scaffold(

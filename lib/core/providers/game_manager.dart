@@ -5,18 +5,18 @@ import '../../../../core/constants/constants.dart';
 import '../../feature/on_play/provider/provider.dart';
 import '../entities/entities.dart';
 
-final gameManagerProvider = StateNotifierProvider<GameManager, GameMode>(
+final gameManagerProvider = StateNotifierProvider<GameManager, GamePlayState>(
   (ref) {
     return GameManager(ref);
   },
 );
 
-class GameManager extends StateNotifier<GameMode> with GameState {
+class GameManager extends StateNotifier<GamePlayState> with GameState {
   final StateNotifierProviderRef ref;
 
-  GameManager(this.ref) : super(GameMode.idle);
+  GameManager(this.ref) : super(GamePlayState.idle);
 
-  GameMode get mode => state;
+  GamePlayState get mode => state;
 
   @override
   void dispose() {
@@ -25,7 +25,7 @@ class GameManager extends StateNotifier<GameMode> with GameState {
 
   void initialOnPlay() {
     switch (state) {
-      case GameMode.idle:
+      case GamePlayState.idle:
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           onPlay();
         });
@@ -36,8 +36,8 @@ class GameManager extends StateNotifier<GameMode> with GameState {
 
   @override
   void idle() {
-    if (state == GameMode.idle) return;
-    state = GameMode.idle;
+    if (state == GamePlayState.idle) return;
+    state = GamePlayState.idle;
     ref.read(playerInfoProvider).idle();
     ref.read(healingObjectProvider).idle();
     ref.read(enemyProvider).idle();
@@ -45,8 +45,8 @@ class GameManager extends StateNotifier<GameMode> with GameState {
 
   @override
   void onPlay() {
-    if (state == GameMode.play) return;
-    state = GameMode.play;
+    if (state == GamePlayState.play) return;
+    state = GamePlayState.play;
     ref.read(playerInfoProvider).onPlay();
     ref.read(healingObjectProvider).onPlay();
     ref.read(enemyProvider).onPlay();
@@ -54,8 +54,8 @@ class GameManager extends StateNotifier<GameMode> with GameState {
 
   @override
   void onPause() {
-    if (state == GameMode.paused) return;
-    state = GameMode.paused;
+    if (state == GamePlayState.paused) return;
+    state = GamePlayState.paused;
     ref.read(playerInfoProvider).onPause();
     ref.read(healingObjectProvider).onPause();
     ref.read(enemyProvider).onPause();
@@ -63,8 +63,8 @@ class GameManager extends StateNotifier<GameMode> with GameState {
 
   @override
   void onReset() {
-    if (state == GameMode.reset) return;
-    state = GameMode.reset;
+    if (state == GamePlayState.reset) return;
+    state = GamePlayState.reset;
     ref.read(playerInfoProvider).onReset();
     ref.read(healingObjectProvider).onReset();
     ref.read(enemyProvider).onReset();
@@ -72,8 +72,8 @@ class GameManager extends StateNotifier<GameMode> with GameState {
 
   @override
   void onResume() {
-    if (state == GameMode.resumed) return;
-    state = GameMode.resumed;
+    if (state == GamePlayState.resumed) return;
+    state = GamePlayState.resumed;
     ref.read(playerInfoProvider).onResume();
     ref.read(healingObjectProvider).onResume();
     ref.read(enemyProvider).onResume();

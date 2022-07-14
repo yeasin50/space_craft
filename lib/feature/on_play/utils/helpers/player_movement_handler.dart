@@ -1,10 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/constants/constants.dart';
 import '../../../../core/entities/entities.dart';
-import '../../../../core/providers/object_scalar.dart';
+import '../../../../core/providers/providers.dart';
 import '../../../setting/providers/providers.dart';
 import '../../provider/provider.dart';
+
+/// update player position based on touch position and keyboard movement
+///* To use keyboard control, pass [rawKeyEvent]
+///* To control user position by touch or mouse right click pass [offset], it is localOffset of tapped point
+///
+void updatePlayerPosition({
+  required WidgetRef widgetRef,
+  RawKeyEvent? rawKeyEvent,
+  Offset? offset,
+}) {
+  final gamePlayState = widgetRef.read(gameManagerProvider);
+
+  final PlayerInfoNotifier notifier = widgetRef.read(playerInfoProvider);
+
+  switch (gamePlayState) {
+    case GamePlayState.play:
+    case GamePlayState.resumed:
+      if (offset != null) {
+        _updatePlayerPosition(
+          offset: offset,
+          playerInfoNotifier: notifier,
+        );
+      }
+
+      if (rawKeyEvent != null) {
+        _keyboardMovementHandler(
+            event: rawKeyEvent, playerInfoNotifier: notifier);
+      }
+
+      return;
+    default:
+  }
+}
 
 /// update player position by maintaining border
 ///
@@ -13,7 +48,7 @@ import '../../provider/provider.dart';
 /// `constraints` current screen size
 ///
 /// `offset` current touch position
-void updatePlayerPosition({
+void _updatePlayerPosition({
   required PlayerInfoNotifier playerInfoNotifier,
   // required Size constraints,
   required Offset offset,
@@ -52,7 +87,7 @@ void updatePlayerPosition({
 /// `playerInfoNotifier` player provider instance, you can pass context too
 ///
 /// `constraints` current screen size
-void keyboardMovementHandler({
+void _keyboardMovementHandler({
   required PlayerInfoNotifier playerInfoNotifier,
   // required BoxConstraints constraints,
   required RawKeyEvent event,

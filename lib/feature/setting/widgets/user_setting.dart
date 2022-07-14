@@ -16,7 +16,7 @@ class SettingView extends StatefulWidget {
 }
 
 class _SettingViewState extends State<SettingView> {
-  final UserSetting settings = UserSetting.instance;
+  final DefaultUserSetting settings = DefaultUserSetting.instance;
 
   static const TextStyle _textStyle = TextStyle(
     color: Color.fromARGB(255, 135, 152, 158),
@@ -91,7 +91,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Widget controlMode(UserSetting settings, TextStyle textStyle) {
+  Widget controlMode(DefaultUserSetting settings, TextStyle textStyle) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -119,7 +119,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Widget playMode(UserSetting settings, TextStyle textStyle) {
+  Widget playMode(DefaultUserSetting settings, TextStyle textStyle) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -147,7 +147,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row effectSetting(UserSetting settings, TextStyle textStyle) {
+  Row effectSetting(DefaultUserSetting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -168,7 +168,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row soundSetting(UserSetting settings, TextStyle textStyle) {
+  Row soundSetting(DefaultUserSetting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -187,7 +187,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row musicSetting(UserSetting settings, TextStyle textStyle) {
+  Row musicSetting(DefaultUserSetting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -207,7 +207,7 @@ class _SettingViewState extends State<SettingView> {
   }
 
   Widget movementSensitivity(
-    UserSetting settings, {
+    DefaultUserSetting settings, {
     required TextStyle titleTextStyle,
     required TextStyle textStyle,
   }) {

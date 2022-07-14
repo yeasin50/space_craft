@@ -130,7 +130,7 @@ class _SettingViewState extends State<SettingView> {
         const SizedBox(height: 8),
         Row(
           mainAxisSize: MainAxisSize.min,
-          children: PlayMode.values.map(
+          children: GamePlayMode.values.map(
             (mode) {
               return CustomButton(
                 text: mode.name.sentenceCase,

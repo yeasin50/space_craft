@@ -1,5 +1,7 @@
-enum PlayMode { easy, medium, hard }
+/// play game on different mode, easy, medium and  hard
+enum GamePlayMode { easy, medium, hard }
 
+///whether player will be able to play with touch or keyboard or both
 enum ControlMode { touch, keyboard, both }
 
 abstract class Setting {
@@ -15,8 +17,8 @@ abstract class Setting {
   /// ship movement speed on keyboard controls mode
   late double movementSensitivity;
 
-  /// user can select [PlayMode]; enemy movement and generation depend on it
-  late PlayMode playmode;
+  /// user can select [GamePlayMode]; enemy movement and generation depend on it
+  late GamePlayMode playmode;
 
   /// [ControlMode.touch]  used to on touch screen device[android,ios] and [ControlMode.keyboard] used for computer
   late ControlMode controlMode;
@@ -30,7 +32,7 @@ abstract class Setting {
     bool? sound,
     bool? effect,
     double? movementSensitivity,
-    PlayMode? playMode,
+    GamePlayMode? playMode,
     ControlMode? controlMode,
   });
 

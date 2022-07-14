@@ -1,7 +1,17 @@
-enum PlayMode { easy, medium, hard }
+/// play game on different mode, easy, medium and  hard
+enum GamePlayMode { easy, medium, hard }
 
-enum ControlMode { touch, keyboard, both }
+///whether player will be able to play with touch or keyboard or both
+enum ControlMode {
+  /// touch event on UI, or mouse drag
+  touch,
 
+  keyboard,
+
+  both,
+}
+
+/// abstract class of game setting
 abstract class Setting {
   /// bullet and other effect sound
   late bool music;
@@ -15,14 +25,35 @@ abstract class Setting {
   /// ship movement speed on keyboard controls mode
   late double movementSensitivity;
 
-  /// user can select [PlayMode]; enemy movement and generation depend on it
-  late PlayMode playmode;
+  /// max ship movement speed on keyboard controls mode
+  double get maxSensitivity => 2.0;
+
+  /// min ship movement speed on keyboard controls mode
+  double get minSensitivity => .5;
+
+  /// user can select [GamePlayMode]; enemy movement and generation depend on it
+  late GamePlayMode gamePlayMode;
 
   /// [ControlMode.touch]  used to on touch screen device[android,ios] and [ControlMode.keyboard] used for computer
   late ControlMode controlMode;
 
-  ///reset to default
-  void defaultSetting();
+  /// default setting with
+  /// ```
+  /// music = true;
+  /// sound = true;
+  /// effect = true;
+  /// movementSensitivity = 1.0;
+  /// gamePlayMode = GamePlayMode.easy;
+  /// controlMode = ControlMode.touch;
+  /// ```
+  void defaultSetting() {
+    music = true;
+    sound = true;
+    effect = true;
+    movementSensitivity = 1.0;
+    gamePlayMode = GamePlayMode.easy;
+    controlMode = ControlMode.touch;
+  }
 
   ///update  user setting, optional param, null will be replaced by default/init value
   void update({
@@ -30,12 +61,21 @@ abstract class Setting {
     bool? sound,
     bool? effect,
     double? movementSensitivity,
-    PlayMode? playMode,
+    GamePlayMode? playMode,
     ControlMode? controlMode,
-  });
+  }) {
+    this.music = music ?? this.music;
+    this.sound = sound ?? this.sound;
+    this.effect = effect ?? this.effect;
+    movementSensitivity = movementSensitivity ?? movementSensitivity;
+    gamePlayMode = playMode ?? gamePlayMode;
+    this.controlMode = controlMode ?? this.controlMode;
+  }
+
+  void reset();
 
   @override
   String toString() {
-    return 'Setting(_music: $music, _sound: $sound, movementSensitivity: $movementSensitivity, _playmode: $playmode, _controlMode: $controlMode, _effect: $effect)';
+    return 'Setting(_music: $music, _sound: $sound, movementSensitivity: $movementSensitivity, gamePlayMode: $gamePlayMode, _controlMode: $controlMode, _effect: $effect)';
   }
 }

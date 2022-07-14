@@ -3,17 +3,21 @@ import 'package:flutter/material.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/widget/widget.dart';
-import '../models/models.dart';
+import '../providers/providers.dart';
 
 class SettingView extends StatefulWidget {
-  const SettingView({Key? key}) : super(key: key);
+  const SettingView({
+    Key? key,
+    this.onTapClose,
+  }) : super(key: key);
 
+  final VoidCallback? onTapClose;
   @override
   State<SettingView> createState() => _SettingViewState();
 }
 
 class _SettingViewState extends State<SettingView> {
-  final UserSetting settings = UserSetting.instance;
+  final Setting settings = UserSettingProvider.instance;
 
   static const TextStyle _textStyle = TextStyle(
     color: Color.fromARGB(255, 135, 152, 158),
@@ -55,18 +59,32 @@ class _SettingViewState extends State<SettingView> {
             const SizedBox(height: 16),
             controlMode(settings, _textStyleTitle),
             const SizedBox(height: 24),
-            SizedBox(
-              width: 124,
-              child: CustomButton(
-                value: false,
-                defaultColor: Colors.deepPurpleAccent,
-                text: "Reset",
-                callback: () {
-                  setState(() {
-                    settings.defaultSetting();
-                  });
-                },
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 124,
+                  child: CustomButton(
+                    value: false,
+                    defaultColor: const Color.fromARGB(137, 30, 80, 95),
+                    text: "Reset",
+                    callback: () {
+                      setState(() {
+                        settings.defaultSetting();
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: 124,
+                  child: CustomButton(
+                    value: false,
+                    defaultColor: const Color.fromARGB(106, 45, 55, 58),
+                    text: "Close",
+                    callback: widget.onTapClose,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -74,7 +92,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Widget controlMode(UserSetting settings, TextStyle textStyle) {
+  Widget controlMode(Setting settings, TextStyle textStyle) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -102,7 +120,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Widget playMode(UserSetting settings, TextStyle textStyle) {
+  Widget playMode(Setting settings, TextStyle textStyle) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -113,11 +131,11 @@ class _SettingViewState extends State<SettingView> {
         const SizedBox(height: 8),
         Row(
           mainAxisSize: MainAxisSize.min,
-          children: PlayMode.values.map(
+          children: GamePlayMode.values.map(
             (mode) {
               return CustomButton(
                 text: mode.name.sentenceCase,
-                value: settings.playmode == mode,
+                value: settings.gamePlayMode == mode,
                 callback: () {
                   settings.update(playMode: mode);
                   setState(() {});
@@ -130,7 +148,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row effectSetting(UserSetting settings, TextStyle textStyle) {
+  Row effectSetting(Setting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -151,7 +169,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row soundSetting(UserSetting settings, TextStyle textStyle) {
+  Row soundSetting(Setting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -170,7 +188,7 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 
-  Row musicSetting(UserSetting settings, TextStyle textStyle) {
+  Row musicSetting(Setting settings, TextStyle textStyle) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -190,7 +208,7 @@ class _SettingViewState extends State<SettingView> {
   }
 
   Widget movementSensitivity(
-    UserSetting settings, {
+    Setting settings, {
     required TextStyle titleTextStyle,
     required TextStyle textStyle,
   }) {
@@ -198,7 +216,7 @@ class _SettingViewState extends State<SettingView> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Sensivity",
+          "Sensitivity",
           style: titleTextStyle,
         ),
         Row(

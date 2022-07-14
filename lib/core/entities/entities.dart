@@ -7,5 +7,4 @@ export 'particle.dart';
 export 'score.dart';
 export 'setting.dart';
 export 'ship.dart';
-export 'user_setting.dart';
 export 'vector2.dart';

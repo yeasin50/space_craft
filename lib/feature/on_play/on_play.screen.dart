@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants/enums/enums.dart';
-import '../../core/providers/game_manager.dart';
-import '../../core/providers/object_scalar.dart';
+import '../../core/providers/providers.dart';
 import '../../core/widget/player_ship.dart';
 import 'on_play.dart';
 import 'provider/provider.dart';
@@ -11,13 +9,6 @@ import 'provider/provider.dart';
 class OnPlayScreen extends StatelessWidget {
   static const String routeName = "/on_play_screen";
   const OnPlayScreen({Key? key}) : super(key: key);
-
-  void _onKeyEvent(playerInfo, event) {
-    keyboardMovementHandler(
-      event: event,
-      playerInfoNotifier: playerInfo,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +31,8 @@ class OnPlayScreen extends StatelessWidget {
               autofocus: true,
               focusNode: f,
               onKey: (event) {
-                /// keyEvent will only work  on play-mode, maybe we will move it on player provider
-                if (gameState.mode != GameMode.play) return;
-                _onKeyEvent(playerInfo, event);
+                updatePlayerPosition(widgetRef: ref, rawKeyEvent: event);
+                // _onKeyEvent(gameState.mode, playerInfo, event);
               },
               child: Scaffold(
                 body: Stack(

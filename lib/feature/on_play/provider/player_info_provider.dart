@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/feature/setting/providers/providers.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/providers/object_scalar.dart' as game_object;
 import '../../../core/utils/utils.dart';
 import '../models/models.dart';
-import '../utils/utils.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
@@ -18,7 +18,7 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 );
 
 ///this provide Player UI update info
-class PlayerInfoNotifier extends ChangeNotifier with GameState {
+class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
   final ChangeNotifierProviderRef ref;
 
   IPlayerScore scoreManager = PlayerScoreManager();
@@ -66,6 +66,7 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState {
   }
 
   ///start player bullet generation and movement
+  @override
   void startShooting() {
     //can include a bullet just on tap,
     player.shoot = true;
@@ -78,6 +79,7 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState {
     notifyListeners();
   }
 
+  @override
   void stopShooting() {
     player.shoot = false;
     _timer?.cancel();
@@ -231,9 +233,9 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState {
   void onPlay() {
     // `_player` notified by next methods
     // player = _initPlayer;
-    _bulletsMovement();
+
     // todo: set controller for touch and keyboard mode; disable on touch mode
-    startShooting();
+    if (SpaceInvaderSettingProvider.instance.freeFire) startShooting();
   }
 
   @override
@@ -245,8 +247,7 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState {
   void onResume() {
     debugPrint(" playerInfoProvider: resumed");
     _bulletsMovement();
-    // todo: set controller for touch and keyboard mode; disable on touch mode
-    startShooting();
+    if (SpaceInvaderSettingProvider.instance.freeFire) startShooting();
   }
 
   @override

@@ -5,12 +5,12 @@ class SpaceInvaderSettingProvider extends Setting {
     super.defaultSetting();
   }
 
-  static final Setting _instance =
+  static final SpaceInvaderSettingProvider _instance =
       SpaceInvaderSettingProvider._privateConstructor();
 
-  static Setting get instance => _instance;
+  static SpaceInvaderSettingProvider get instance => _instance;
 
-  /// whether fire is only depend on tap/click 
+  /// whether fire is only depend on tap/click
   bool freeFire = false;
 
   @override

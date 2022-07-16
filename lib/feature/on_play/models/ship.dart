@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/providers/object_scalar.dart';
-import '../utils/helpers/enemy_hanlader.dart';
+import '../utils/helpers/enemy_handler.dart';
 import 'health_management.dart';
 import 'player_ship_body.dart';
 

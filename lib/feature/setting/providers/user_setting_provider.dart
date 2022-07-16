@@ -1,13 +1,17 @@
 import '../../../core/entities/entities.dart';
 
-class UserSettingProvider extends Setting {
-  UserSettingProvider._privateConstructor() {
+class SpaceInvaderSettingProvider extends Setting {
+  SpaceInvaderSettingProvider._privateConstructor() {
     super.defaultSetting();
   }
 
-  static final Setting _instance = UserSettingProvider._privateConstructor();
+  static final Setting _instance =
+      SpaceInvaderSettingProvider._privateConstructor();
 
   static Setting get instance => _instance;
+
+  /// whether fire is only depend on tap/click 
+  bool freeFire = false;
 
   @override
   double get maxSensitivity => 2.0;

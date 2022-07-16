@@ -61,7 +61,7 @@ String enemyShipImagePath({required EnemyShip enemy}) {
       break;
 
     default:
-      assert(true, "Enemy shipName is not reconized");
+      assert(true, "Enemy shipName is not recognized");
       break;
   }
 

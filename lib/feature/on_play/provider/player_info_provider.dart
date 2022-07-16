@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/providers/object_scalar.dart' as game_object;
+import '../../../core/utils/utils.dart';
 import '../models/models.dart';
 import '../utils/utils.dart';
 import 'provider.dart';

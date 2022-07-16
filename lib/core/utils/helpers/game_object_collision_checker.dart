@@ -1,9 +1,7 @@
 import 'dart:ui';
 
-import '../../../../core/entities/entities.dart';
-import '../../../../core/providers/object_scalar.dart';
-
- 
+import '../../entities/entities.dart';
+import '../../providers/object_scalar.dart';
 
 /// check collision between [GameObject]
 bool collisionChecker({
@@ -19,7 +17,7 @@ bool collisionChecker({
   return false;
 }
 
-//todo: use to show effect, we may just return Offset instead of enmus
+//todo: use to show effect, we may just return Offset instead of enums
 enum BlockedSide { top, left, right, bottom }
 
 ///playerShip border collision
@@ -47,7 +45,7 @@ List<BlockedSide> playerMoveable({
     blocked.add(BlockedSide.right);
   }
 
-  //left collision cheker
+  //left collision checker
   if (posX <= 0) {
     blocked.add(BlockedSide.left);
   }

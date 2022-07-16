@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/providers/object_scalar.dart';
+import '../../../core/utils/utils.dart';
 import '../../setting/providers/providers.dart';
 import '../models/models.dart';
 import '../on_play.dart';
@@ -227,10 +228,10 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
 
   /// ships positions on (player bullet) destroy, used to show blast
   ///
-  /// [UserSettingProvider.instance.effect] must be true to show blast effect
+  /// [SpaceInvaderSettingProvider.instance.effect] must be true to show blast effect
   // we can also bypass adding blast
   List<Vector2> get shipsBlastLocation =>
-      UserSettingProvider.instance.effect ? _shipsBlastLocation : [];
+      SpaceInvaderSettingProvider.instance.effect ? _shipsBlastLocation : [];
 
   /// number of blast can shown on ui, used to reduce the object
   final int _maxBlastNumber = 10;

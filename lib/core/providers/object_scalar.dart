@@ -95,7 +95,9 @@ class GObjectSize implements _Elements {
   ///todo: create Settings for sensitivity
   ///player movement px on keyboard action: [keyboardMovementHandler]
   double get movementRatio =>
-      screen.width * .02 * UserSettingProvider.instance.movementSensitivity;
+      screen.width *
+      .02 *
+      SpaceInvaderSettingProvider.instance.movementSensitivity;
 
   /// top part of player ship based on Paint, This fix empty space player enemy-collision
   Size get playerShipTopPart {

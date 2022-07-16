@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/feature/setting/providers/providers.dart';
 
 import '../provider/provider.dart';
 import '../utils/utils.dart';
@@ -24,19 +25,26 @@ class TouchPositionDetector extends StatelessWidget {
 
         return GestureDetector(
           // behavior: HitTestBehavior.translucent,
-          onTap: () {
-            // debugPrint("on onPanUpdate");
-          },
+          // onTap: () {
+          //   // debugPrint("on onPanUpdate");
+          // },
           onPanDown: (details) {
             updatePlayerPosition(widgetRef: ref, offset: details.localPosition);
+            if (!SpaceInvaderSettingProvider.instance.freeFire) {
+              playerInfo.startShooting();
+            }
           },
-          onTapUp: (details) {
+          onTapUp: (_) {
             // handle quick tap up
-            playerInfo.stopShooting();
+            if (!SpaceInvaderSettingProvider.instance.freeFire) {
+              playerInfo.stopShooting();
+            }
           },
-          onPanEnd: (details) {
+          onPanEnd: (_) {
             //handle drag tapUp
-            playerInfo.stopShooting();
+            if (!SpaceInvaderSettingProvider.instance.freeFire) {
+              playerInfo.stopShooting();
+            }
           },
           onPanUpdate: (details) {
             updatePlayerPosition(widgetRef: ref, offset: details.localPosition);

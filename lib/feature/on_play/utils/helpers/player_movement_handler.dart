@@ -54,7 +54,8 @@ void _updatePlayerPosition({
   required Offset offset,
 }) {
   //skip keyboardMovement while control mode is only keyboard
-  if (UserSettingProvider.instance.controlMode == ControlMode.keyboard) return;
+  if (SpaceInvaderSettingProvider.instance.controlMode == ControlMode.keyboard)
+    return;
 
   final double posY = offset.dy;
   final double posX = offset.dx;
@@ -95,7 +96,8 @@ void _keyboardMovementHandler({
   // debugPrint("keyboardMovementHandler Key pressed ${event.data}");
 
   //skip keyboardMovement while control mode is only touch
-  if (UserSettingProvider.instance.controlMode == ControlMode.touch) return;
+  if (SpaceInvaderSettingProvider.instance.controlMode == ControlMode.touch)
+    return;
 
   if (event is! RawKeyDownEvent) return;
 

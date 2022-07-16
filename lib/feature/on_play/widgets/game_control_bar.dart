@@ -45,7 +45,7 @@ class _GameControlBarState extends State<GameControlBar>
   }
 
   //play-pause button changes, close remaining  overLay
-  void _onPlayPauseButtonChange(ref) {
+  void _onPlayPauseButtonChange(WidgetRef ref) {
     isExpanded = !isExpanded;
 
     if (isExpanded) {

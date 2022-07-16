@@ -48,6 +48,7 @@ class OnPlayScreen extends StatelessWidget {
                     // ),
 
                     // enemy ships and enemy's bullets
+                    //FIXME: duplicate key
                     EnemyOverlay(
                       key: const ValueKey("EnemyOverlay key"),
                       enemyNotifier: enemyNotifier,

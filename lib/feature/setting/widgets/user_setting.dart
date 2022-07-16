@@ -17,7 +17,7 @@ class SettingView extends StatefulWidget {
 }
 
 class _SettingViewState extends State<SettingView> {
-  final Setting settings = UserSettingProvider.instance;
+  final Setting settings = SpaceInvaderSettingProvider.instance;
 
   static const TextStyle _textStyle = TextStyle(
     color: Color.fromARGB(255, 135, 152, 158),

@@ -57,7 +57,8 @@ class PlayerBCollideEffect with ChangeNotifier {
       _blockedSides.add(BoundarySide.right);
     }
 
-    if (point.dY < -observablePX && !_blockedSides.contains(BoundarySide.top)) {
+    if (point.dY < -observablePX && 
+        !_blockedSides.contains(BoundarySide.top)) {
       _blockedSides.add(BoundarySide.top);
     }
     if (point.dY > GObjectSize.instance.screen.height + observablePX &&

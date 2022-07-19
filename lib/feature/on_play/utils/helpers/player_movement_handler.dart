@@ -68,14 +68,16 @@ void _updatePlayerPosition({
   // we are separating in two section, it'll help to move though another axis stuck
   // it'll make sure that even One axis will work even other axis stuck
   if (posY >=
-          GObjectSize.instance.screen.height -
-              playerInfoNotifier.player.size.height / 2 ||
-      posY <= playerInfoNotifier.player.size.height / 2) {
-    ///`we cant move in Y Axis` outScreen
-
+      GObjectSize.instance.screen.height -
+          playerInfoNotifier.player.size.height / 2) {
+    // not moveable
+    collideEffect.setCollidePoint(point: Vector2(dX: posX, dY: posY));
+  } else if (posY <= playerInfoNotifier.player.size.height / 2) {
+    // not moveable
     collideEffect.setCollidePoint(point: Vector2(dX: posX, dY: posY));
     //
   } else {
+    //moveable
     collideEffect.clearCollidePoint();
     playerInfoNotifier.updatePosition(
         dY: posY - (playerInfoNotifier.player.size.height / 2));
@@ -84,10 +86,10 @@ void _updatePlayerPosition({
           GObjectSize.instance.screen.width -
               playerInfoNotifier.player.size.width / 2 ||
       posX <= playerInfoNotifier.player.size.width / 2) {
-    ///`we cant move in X axis` outScreen
+    // not moveable
     collideEffect.setCollidePoint(point: Vector2(dX: posX, dY: posY));
-    //
   } else {
+    //  moveable
     collideEffect.clearCollidePoint();
     playerInfoNotifier.updatePosition(
         dX: posX - (playerInfoNotifier.player.size.width / 2));

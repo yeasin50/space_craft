@@ -16,16 +16,24 @@ class BoundaryGlowEffect extends StatelessWidget {
         return Stack(
           children: [
             if (collideInfo.collideSides.contains(BoundarySide.left))
-              const GlowEffect(side: BoundarySide.left),
+              const GlowEffect(
+                  key: ValueKey("left-boundary-GlowEffect"),
+                  side: BoundarySide.left),
 
             if (collideInfo.collideSides.contains(BoundarySide.top))
-              const GlowEffect(side: BoundarySide.top),
+              const GlowEffect(
+                  key: ValueKey("top-boundary-GlowEffect"),
+                  side: BoundarySide.top),
 
             if (collideInfo.collideSides.contains(BoundarySide.right))
-              const GlowEffect(side: BoundarySide.right),
+              const GlowEffect(
+                  key: ValueKey("right-boundary-GlowEffect"),
+                  side: BoundarySide.right),
 
             if (collideInfo.collideSides.contains(BoundarySide.bottom))
-              const GlowEffect(side: BoundarySide.bottom),
+              const GlowEffect(
+                  key: ValueKey("bottom-boundary-GlowEffect"),
+                  side: BoundarySide.bottom),
 
             //point
             if (collideInfo.collidePoint != null)

@@ -32,20 +32,11 @@ class BoundaryGlowEffect extends StatelessWidget {
 
             if (collideInfo.collideSides.contains(BoundarySide.bottom))
               const GlowEffect(
-                  key: ValueKey("bottom-boundary-GlowEffect"),
-                  side: BoundarySide.bottom),
+                key: ValueKey("bottom-boundary-GlowEffect"),
+                side: BoundarySide.bottom,
+              ),
 
-            //point
-            if (collideInfo.collidePoint != null)
-              Positioned(
-                top: collideInfo.collidePoint!.dY,
-                left: collideInfo.collidePoint!.dX,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.red,
-                ),
-              )
+            //TODO:: glow ship on border touch
           ],
         );
       },

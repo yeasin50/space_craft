@@ -39,7 +39,9 @@ class OnPlayScreen extends StatelessWidget {
                 body: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    const BoundaryGlowEffect(),
+                    const BoundaryGlowEffect(
+                      key: ValueKey("BoundaryGlowEffect widget:OnPlayScreen"),
+                    ),
                     _playerShip(playerInfo),
                     // AnimatedPositioned(
                     //   key: const ValueKey("Player Ship Widget"),

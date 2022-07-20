@@ -65,34 +65,39 @@ void _updatePlayerPosition({
   final PlayerInfoNotifier playerInfoNotifier = ref.read(playerInfoProvider);
   final PlayerBCollideEffect collideEffect =
       ref.read(playerBoundaryCollisionProvider);
-  // we are separating in two section, it'll help to move though another axis stuck
-  // it'll make sure that even One axis will work even other axis stuck
-  if (posY >=
-      GObjectSize.instance.screen.height -
-          playerInfoNotifier.player.size.height / 2) {
-    // not moveable
-    collideEffect.setCollidePoint(point: Vector2(dX: posX, dY: posY));
-  } else if (posY <= playerInfoNotifier.player.size.height / 2) {
-    // not moveable
-    collideEffect.setCollidePoint(point: Vector2(dX: posX, dY: posY));
-    //
-  } else {
-    //moveable
-    collideEffect.clearCollidePoint();
+  //* we are separating in two section, it'll help to move though another axis stuck
+  //* it'll make sure that even One axis will work even other axis stuck
+
+  final List<BoundarySide> blockedSides = [
+    if (posY >=
+        GObjectSize.instance.screen.height -
+            playerInfoNotifier.player.size.height / 2)
+      BoundarySide.top,
+    if (posY <= playerInfoNotifier.player.size.height / 2) BoundarySide.bottom,
+    if (posX >=
+        GObjectSize.instance.screen.width -
+            playerInfoNotifier.player.size.width / 2)
+      BoundarySide.right,
+    if (posX <= playerInfoNotifier.player.size.width / 2) BoundarySide.left,
+  ];
+
+  collideEffect.setPointAndBoundarySide(
+      point: Vector2(dX: posX, dY: posY), sides: blockedSides);
+
+  if (!blockedSides.contains(BoundarySide.left) &&
+      !blockedSides.contains(BoundarySide.right)) {
     playerInfoNotifier.updatePosition(
-        dY: posY - (playerInfoNotifier.player.size.height / 2));
+      dX: posX - (playerInfoNotifier.player.size.width / 2),
+      // dY: posY - (playerInfoNotifier.player.size.height / 2),
+    );
   }
-  if (posX >=
-          GObjectSize.instance.screen.width -
-              playerInfoNotifier.player.size.width / 2 ||
-      posX <= playerInfoNotifier.player.size.width / 2) {
-    // not moveable
-    collideEffect.setCollidePoint(point: Vector2(dX: posX, dY: posY));
-  } else {
-    //  moveable
-    collideEffect.clearCollidePoint();
+
+  if (!blockedSides.contains(BoundarySide.top) &&
+      !blockedSides.contains(BoundarySide.bottom)) {
     playerInfoNotifier.updatePosition(
-        dX: posX - (playerInfoNotifier.player.size.width / 2));
+      // dX: posX - (playerInfoNotifier.player.size.width / 2),
+      dY: posY - (playerInfoNotifier.player.size.height / 2),
+    );
   }
 }
 

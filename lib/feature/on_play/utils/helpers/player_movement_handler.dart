@@ -72,8 +72,8 @@ void _updatePlayerPosition({
     if (posY >=
         GObjectSize.instance.screen.height -
             playerInfoNotifier.player.size.height / 2)
-      BoundarySide.top,
-    if (posY <= playerInfoNotifier.player.size.height / 2) BoundarySide.bottom,
+      BoundarySide.bottom,
+    if (posY <= playerInfoNotifier.player.size.height / 2) BoundarySide.top,
     if (posX >=
         GObjectSize.instance.screen.width -
             playerInfoNotifier.player.size.width / 2)
@@ -86,6 +86,7 @@ void _updatePlayerPosition({
 
   if (!blockedSides.contains(BoundarySide.left) &&
       !blockedSides.contains(BoundarySide.right)) {
+    collideEffect.onMovement(sides: [BoundarySide.left, BoundarySide.right]);
     playerInfoNotifier.updatePosition(
       dX: posX - (playerInfoNotifier.player.size.width / 2),
       // dY: posY - (playerInfoNotifier.player.size.height / 2),
@@ -94,6 +95,7 @@ void _updatePlayerPosition({
 
   if (!blockedSides.contains(BoundarySide.top) &&
       !blockedSides.contains(BoundarySide.bottom)) {
+    collideEffect.onMovement(sides: [BoundarySide.top, BoundarySide.bottom]);
     playerInfoNotifier.updatePosition(
       // dX: posX - (playerInfoNotifier.player.size.width / 2),
       dY: posY - (playerInfoNotifier.player.size.height / 2),

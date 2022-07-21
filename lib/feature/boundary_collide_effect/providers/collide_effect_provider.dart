@@ -90,38 +90,3 @@ class PlayerBCollideEffect with ChangeNotifier {
                 : point.dY);
   }
 }
-
-// //todo: use to show effect, we may just return Offset instead of enums
-
-// ///playerShip border collision
-// List<BoundarySide> playerMoveable({
-//   required Size playerSize,
-//   required Vector2 touchPosition,
-// }) {
-//   final double posY = touchPosition.dY;
-//   final double posX = touchPosition.dX;
-
-//   List<BoundarySide> blocked = [];
-
-//   //top collision checker
-//   if (posY <= 0) {
-//     blocked.add(BoundarySide.top);
-//   }
-
-//   //bottom collision checker
-//   if (posY >= GObjectSize.instance.screen.height - playerSize.height) {
-//     blocked.add(BoundarySide.bottom);
-//   }
-
-//   // right collision checker
-//   if (posX >= GObjectSize.instance.screen.width - playerSize.width) {
-//     blocked.add(BoundarySide.right);
-//   }
-
-//   //left collision checker
-//   if (posX <= 0) {
-//     blocked.add(BoundarySide.left);
-//   }
-
-//   return blocked;
-// }

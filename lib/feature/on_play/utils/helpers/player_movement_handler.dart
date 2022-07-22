@@ -82,7 +82,9 @@ void _updatePlayerPosition({
   ];
 
   collideEffect.setPointAndBoundarySide(
-      point: Vector2(dX: posX, dY: posY), sides: blockedSides);
+    point: playerInfoNotifier.player.position,
+    sides: blockedSides,
+  );
 
   if (!blockedSides.contains(BoundarySide.left) &&
       !blockedSides.contains(BoundarySide.right)) {

@@ -27,7 +27,7 @@ class PlayerBCollideEffect with ChangeNotifier {
   ///
   final double observablePX = 20;
 
-  List<BoundarySide> _blockedSides = [];
+  final List<BoundarySide> _blockedSides = [];
   List<BoundarySide> get collideSides => _blockedSides;
 
   void onMovement({
@@ -49,7 +49,9 @@ class PlayerBCollideEffect with ChangeNotifier {
     for (final side in sides) {
       if (!collideSides.contains(side)) _blockedSides.add(side);
     }
-    _collidePoint = _refinePoint(point);
+    //todo: check if need for player
+    // _collidePoint = point;
+    // _refinePoint(point);
 
     notifyListeners();
   }
@@ -77,6 +79,7 @@ class PlayerBCollideEffect with ChangeNotifier {
   }
 
   Vector2 _refinePoint(Vector2 point) {
+    debugPrint(point.toString());
     return Vector2(
         dX: point.dX < 0
             ? 0

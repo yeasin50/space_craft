@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
- 
-import 'providers/collide_effect_provider.dart';
+
+import '../../core/entities/entities.dart';
+import 'providers/providers.dart';
 import 'widgets/widgets.dart';
 
 class BoundaryGlowEffect extends StatelessWidget {
@@ -12,29 +13,29 @@ class BoundaryGlowEffect extends StatelessWidget {
     return Consumer(
       builder: (context, ref, child) {
         final collideInfo = ref.watch(playerBoundaryCollisionProvider);
+        final playerPosition = collideInfo.collidePoint ?? Vector2();
 
-        debugPrint(collideInfo.collideSides.toString());
         return Stack(
           children: [
             if (collideInfo.collideSides.contains(BoundarySide.left))
               GlowEffect(
                   key: const ValueKey("left-boundary-GlowEffect"),
-                  effectNotifier: collideInfo,
+                  playerPosition: playerPosition,
                   side: BoundarySide.left),
             if (collideInfo.collideSides.contains(BoundarySide.top))
               GlowEffect(
                   key: const ValueKey("top-boundary-GlowEffect"),
-                  effectNotifier: collideInfo,
+                  playerPosition: playerPosition,
                   side: BoundarySide.top),
             if (collideInfo.collideSides.contains(BoundarySide.right))
               GlowEffect(
                   key: const ValueKey("right-boundary-GlowEffect"),
-                  effectNotifier: collideInfo,
+                  playerPosition: playerPosition,
                   side: BoundarySide.right),
             if (collideInfo.collideSides.contains(BoundarySide.bottom))
               GlowEffect(
                 key: const ValueKey("bottom-boundary-GlowEffect"),
-                effectNotifier: collideInfo,
+                playerPosition: playerPosition,
                 side: BoundarySide.bottom,
               ),
           ],

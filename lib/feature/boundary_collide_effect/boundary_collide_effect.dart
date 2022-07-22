@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+ 
 import 'providers/collide_effect_provider.dart';
-import 'widgets/glow_effect.dart';
+import 'widgets/widgets.dart';
 
 class BoundaryGlowEffect extends StatelessWidget {
   const BoundaryGlowEffect({Key? key}) : super(key: key);
@@ -13,30 +13,30 @@ class BoundaryGlowEffect extends StatelessWidget {
       builder: (context, ref, child) {
         final collideInfo = ref.watch(playerBoundaryCollisionProvider);
 
+        debugPrint(collideInfo.collideSides.toString());
         return Stack(
           children: [
             if (collideInfo.collideSides.contains(BoundarySide.left))
-              const GlowEffect(
-                  key: ValueKey("left-boundary-GlowEffect"),
+              GlowEffect(
+                  key: const ValueKey("left-boundary-GlowEffect"),
+                  effectNotifier: collideInfo,
                   side: BoundarySide.left),
-
             if (collideInfo.collideSides.contains(BoundarySide.top))
-              const GlowEffect(
-                  key: ValueKey("top-boundary-GlowEffect"),
+              GlowEffect(
+                  key: const ValueKey("top-boundary-GlowEffect"),
+                  effectNotifier: collideInfo,
                   side: BoundarySide.top),
-
             if (collideInfo.collideSides.contains(BoundarySide.right))
-              const GlowEffect(
-                  key: ValueKey("right-boundary-GlowEffect"),
+              GlowEffect(
+                  key: const ValueKey("right-boundary-GlowEffect"),
+                  effectNotifier: collideInfo,
                   side: BoundarySide.right),
-
             if (collideInfo.collideSides.contains(BoundarySide.bottom))
-              const GlowEffect(
-                key: ValueKey("bottom-boundary-GlowEffect"),
+              GlowEffect(
+                key: const ValueKey("bottom-boundary-GlowEffect"),
+                effectNotifier: collideInfo,
                 side: BoundarySide.bottom,
               ),
-
-            //TODO:: glow ship on border touch
           ],
         );
       },

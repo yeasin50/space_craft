@@ -114,7 +114,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
         if (collisionChecker(a: enemy, b: player.bottomPart) ||
             collisionChecker(a: enemy, b: player.topPart)) {
           removableShip.add(enemy);
-          playerNotifier.updateHeathStatus(DamageOnShipCollision);
+          playerNotifier.onShipHit();
           addableBlast.add(enemy.position.value);
         }
       }
@@ -182,7 +182,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
         if (isCollided || b.position.dY > screenSize.height) {
           removableBullets.add(b);
           if (isCollided) {
-            playerNotifier.updateHeathStatus(DamageOnEB);
+            playerNotifier.onBulletHit();
           }
         }
       }

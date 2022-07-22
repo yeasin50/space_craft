@@ -18,7 +18,8 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 );
 
 ///this provide Player UI update info
-class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
+class PlayerInfoNotifier extends ChangeNotifier
+    with GameState, PlayerAction, OnObstacleHit {
   final ChangeNotifierProviderRef ref;
 
   IPlayerScore scoreManager = PlayerScoreManager();
@@ -161,9 +162,14 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
     for (final enemy in enemyNotifier.enemies) {
       ///todo: we can also use
       /// collisionChecker(a: enemy, b: player.bottomPart) || collisionChecker(a: enemy, b: player.topPart))
-      if (collisionChecker(a: enemy, b: player)) removableEnemy.add(enemy);
+      if (collisionChecker(a: enemy, b: player)) {
+        removableEnemy.add(enemy);
+        onShipHit();
+      }
     }
+
     enemyNotifier.removeEnemies(ships: removableEnemy);
+
     // no need to notify, `removeEnemies` handle this;
   }
 
@@ -177,7 +183,7 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
 
     for (final hb in healthBoxNotifier.healingBoxes) {
       if (collisionChecker(a: hb, b: player)) {
-        player.health = GeneralHealingBox(iShipHealth: player.health);
+        onEnergyHit();
         removableBox.add(hb);
       }
     }
@@ -197,26 +203,6 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
       }
     }
     enemyNotifier.removeBullets(bullets: removableBullet);
-  }
-
-  //*---------------------------*
-  //*  Score Health Management  *
-  //*---------------------------*
-  /// increment score of player by destroying enemies
-
-  /// decrease player health
-  void updateHeathStatus(Type type) {
-    if (type == DamageOnEB) {
-      player.health = DamageOnEB(iShipHealth: player.health);
-    }
-    if (type == DamageOnShipCollision) {
-      player.health = DamageOnShipCollision(iShipHealth: player.health);
-    }
-    if (type == GeneralHealingBox) {
-      player.health = GeneralHealingBox(iShipHealth: player.health);
-    }
-    //todo: GameOver while 0 score
-    notifyListeners();
   }
 
   //*---------------------------*
@@ -253,8 +239,31 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
   @override
   void idle() {}
 
+  //*---------------------------*
+  //*  Score Health Management  *
+  //*---------------------------*
+  /// increment score of player by destroying enemies
+
   @override
-  void onStop() {
-    // TODO: implement onStop
+  void onBorderHit() {
+    // TODO: implement onBorderHit
+  }
+
+  @override
+  void onBulletHit() {
+    player.health = DamageOnEB(iShipHealth: player.health);
+    notifyListeners();
+  }
+
+  @override
+  void onEnergyHit() {
+    player.health = GeneralHealingBox(iShipHealth: player.health);
+    notifyListeners();
+  }
+
+  @override
+  void onShipHit() {
+    player.health = DamageOnShipCollision(iShipHealth: player.health);
+    notifyListeners();
   }
 }

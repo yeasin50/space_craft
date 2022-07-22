@@ -8,7 +8,6 @@ import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/utils/utils.dart';
 import '../models/models.dart';
-import '../utils/utils.dart';
 import 'provider.dart';
 
 final healingObjectProvider = ChangeNotifierProvider(

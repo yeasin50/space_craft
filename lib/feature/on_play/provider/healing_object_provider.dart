@@ -88,7 +88,7 @@ class Health extends ChangeNotifier implements GameState {
           //hit with PlayerShip, increase player health and remove box
           if (collisionChecker(a: playerRef.player, b: box)) {
             _healingBoxes.remove(box);
-            playerRef.updateHeathStatus(GeneralHealingBox);
+            playerRef.onEnergyHit();
           }
 
           // debugPrint(
@@ -134,7 +134,8 @@ class Health extends ChangeNotifier implements GameState {
 
   @override
   void onResume() {
-    // TODO: implement onResume
+    _initGenerator();
+    _boxMovement();
   }
 
   @override

@@ -250,19 +250,19 @@ class PlayerInfoNotifier extends ChangeNotifier
   }
 
   @override
-  void onBulletHit() {
+  void onBulletHit({GameObject? gameObject}) {
     player.health = DamageOnEB(iShipHealth: player.health);
     notifyListeners();
   }
 
   @override
-  void onEnergyHit() {
+  void onEnergyHit({GameObject? gameObject}) {
     player.health = GeneralHealingBox(iShipHealth: player.health);
     notifyListeners();
   }
 
   @override
-  void onShipHit() {
+  void onShipHit({GameObject? gameObject}) {
     player.health = DamageOnShipCollision(iShipHealth: player.health);
     notifyListeners();
   }

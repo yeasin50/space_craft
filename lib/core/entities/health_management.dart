@@ -7,8 +7,8 @@ abstract class IShipHealth {
 }
 
 abstract class OnObstacleHit {
-  void onBulletHit();
-  void onEnergyHit();
-  void onShipHit();
+  void onBulletHit({GameObject? gameObject});
+  void onEnergyHit({GameObject? gameObject});
+  void onShipHit({GameObject? gameObject});
   void onBorderHit({GameObject? gameObject});
 }

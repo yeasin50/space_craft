@@ -10,5 +10,5 @@ abstract class OnObstacleHit {
   void onBulletHit();
   void onEnergyHit();
   void onShipHit();
-  void onBorderHit({GameObject? ship});
+  void onBorderHit({GameObject? gameObject});
 }

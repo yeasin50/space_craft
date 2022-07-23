@@ -245,7 +245,7 @@ class PlayerInfoNotifier extends ChangeNotifier
   /// increment score of player by destroying enemies
 
   @override
-  void onBorderHit({GameObject? ship}) {
+  void onBorderHit({GameObject? gameObject}) {
     // TODO: implement onBorderHit
   }
 

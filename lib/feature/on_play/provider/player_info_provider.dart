@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/feature/setting/providers/providers.dart';
+import 'package:space_craft/core/constants/enums/enums.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/providers/object_scalar.dart' as game_object;
 import '../../../core/utils/utils.dart';
+import '../../setting/providers/providers.dart';
 import '../models/models.dart';
 import 'provider.dart';
 
@@ -251,19 +252,40 @@ class PlayerInfoNotifier extends ChangeNotifier
 
   @override
   void onBulletHit({GameObject? gameObject}) {
+    // debugPrint("Player onBulletHit");
     player.health = DamageOnEB(iShipHealth: player.health);
     notifyListeners();
   }
 
   @override
   void onEnergyHit({GameObject? gameObject}) {
+    // debugPrint("Player onEnergyHit");
     player.health = GeneralHealingBox(iShipHealth: player.health);
     notifyListeners();
   }
 
+  bool? isGlitchRunning;
   @override
-  void onShipHit({GameObject? gameObject}) {
+  void onShipHit({GameObject? gameObject}) async {
+    debugPrint("Player onShipHit");
     player.health = DamageOnShipCollision(iShipHealth: player.health);
+    if (player.state == ShipState.glitch) {
+      notifyListeners();
+      return;
+    }
+    player.state = ShipState.glitch;
+
     notifyListeners();
+
+    if (isGlitchRunning == true) return;
+    isGlitchRunning = true;
+    Future.delayed(ShipState.glitch.duration).then(
+      (value) {
+        player.state = ShipState.idle;
+        isGlitchRunning = false;
+        debugPrint("after delay State ${player.state}");
+        notifyListeners();
+      },
+    );
   }
 }

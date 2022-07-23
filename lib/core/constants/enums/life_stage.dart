@@ -1,10 +1,19 @@
-enum LifeStage {
-  baby(Duration(seconds: 1)),
-  young(Duration(seconds: 2)),
-  old(Duration(seconds: 1)),
-  deathBed(Duration(seconds: 1)),
+enum ShipState {
+  ///* idle after hit or healed
+  initial(Duration()),
+
+  ///* idle after hit or healed
+  idle(Duration()),
+
+  ///* initial
+  glitch(Duration(seconds: 1)),
+
+  ///* healed => increase health
+  healed(Duration(seconds: 2)),
+
+  ///* Dead => on haven
   dead(Duration());
 
   final Duration duration;
-  const LifeStage(this.duration);
+  const ShipState(this.duration);
 }

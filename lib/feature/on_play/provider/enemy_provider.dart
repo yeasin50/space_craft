@@ -20,7 +20,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
 );
 
 //todo: test with single refresh method: [notifier]
-class EnemyChangeNotifier extends ChangeNotifier with GameState {
+class EnemyChangeNotifier extends ChangeNotifier with GameState  , OnObstacleHit{
   final ChangeNotifierProviderRef ref;
   // screen size to control enemy movement
   Size screenSize = GObjectSize.instance.screen;
@@ -299,5 +299,25 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState {
   @override
   void idle() {
     // TODO: implement onStart
+  }
+  
+  @override
+  void onBorderHit({GameObject? gameObject}) {
+    // TODO: implement onBorderHit
+  }
+  
+  @override
+  void onBulletHit({GameObject? gameObject}) {
+    // TODO: implement onBulletHit
+  }
+  
+  @override
+  void onEnergyHit({GameObject? gameObject}) {
+    // TODO: implement onEnergyHit
+  }
+  
+  @override
+  void onShipHit({GameObject? gameObject}) {
+    // TODO: implement onShipHit
   }
 }

@@ -169,7 +169,7 @@ class PlayerInfoNotifier extends ChangeNotifier
       /// collisionChecker(a: enemy, b: player.bottomPart) || collisionChecker(a: enemy, b: player.topPart))
       if (collisionChecker(a: enemy, b: player)) {
         removableEnemy.add(enemy);
-        onShipHit();
+        onShipHit(gameObject: enemy);
       }
     }
 
@@ -188,7 +188,7 @@ class PlayerInfoNotifier extends ChangeNotifier
 
     for (final hb in healthBoxNotifier.healingBoxes) {
       if (collisionChecker(a: hb, b: player)) {
-        onEnergyHit();
+        onEnergyHit(gameObject: hb);
         removableBox.add(hb);
       }
     }
@@ -271,25 +271,27 @@ class PlayerInfoNotifier extends ChangeNotifier
   bool? isGlitchRunning;
   @override
   void onShipHit({GameObject? gameObject}) async {
-    debugPrint("Player onShipHit");
-    player.health = DamageOnShipCollision(iShipHealth: player.health);
-    if (player.state == ShipState.glitch) {
-      notifyListeners();
-      return;
-    }
-    player.state = ShipState.glitch;
 
-    notifyListeners();
-
-    if (isGlitchRunning == true) return;
-    isGlitchRunning = true;
-    Future.delayed(ShipState.glitch.duration).then(
-      (value) {
-        player.state = ShipState.idle;
-        isGlitchRunning = false;
-        debugPrint("after delay State ${player.state}");
+    if (gameObject is EnemyShip) {
+      player.health = DamageOnShipCollision(iShipHealth: player.health);
+      if (player.state == ShipState.glitch) {
         notifyListeners();
-      },
-    );
+        return;
+      }
+      player.state = ShipState.glitch;
+
+      notifyListeners();
+
+      if (isGlitchRunning == true) return;
+      isGlitchRunning = true;
+      Future.delayed(ShipState.glitch.duration).then(
+        (value) {
+          player.state = ShipState.idle;
+          isGlitchRunning = false;
+          debugPrint("after delay State ${player.state}");
+          notifyListeners();
+        },
+      );
+    }
   }
 }

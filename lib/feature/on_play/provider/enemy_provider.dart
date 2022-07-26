@@ -94,7 +94,6 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
   void _enemyMovement() {
     _timerEnemyMovement = Timer.periodic(enemyMovementRate, (timer) {
       List<EnemyShip> removableShip = [];
-      List<Vector2> addableBlast = [];
 
       if (_enemies.isEmpty) return;
 
@@ -119,7 +118,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
             collisionChecker(a: enemy, b: player.topPart)) {
           removableShip.add(enemy);
           playerNotifier.onShipHit();
-          addableBlast.add(enemy.position.value);
+          onShipHit(gameObject: enemy);
         }
       }
       // debugPrint("total enemyShip: ${_enemies.length}");
@@ -127,9 +126,6 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
       // update objects
       if (removableShip.isNotEmpty) {
         _enemies.removeAll(removableShip);
-      }
-      if (addableBlast.isNotEmpty) {
-        addBlasts(addableBlast);
       }
 
       notifyListeners();
@@ -192,24 +188,8 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
         }
       }
       _bullets.removeAll(removableBullets);
-      //todo: how can i dispose list to free memory
-      removableBullets.clear(); //? not needed
       notifyListeners();
     });
-  }
-
-  ///* remove enemy-ships from current: OutSider
-  void removeEnemies({
-    required List<EnemyShip> ships,
-  }) {
-    if (ships.isEmpty) return;
-    // show glitch on death
-    //TODO: breaking Changes
-    ships.forEach((element) {
-      element.state = ShipState.dead;
-    });
-    // _enemies.removeAll(ships);
-    notifyListeners();
   }
 
   void removeBullets({
@@ -246,12 +226,12 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
   /// number of blast can shown on ui, used to reduce the object
   final int _maxBlastNumber = 10;
 
-  //todo: add setter
+  //todo: add setter, make singular
 
   /// * add blastPosition from outSide
   /// add [Vector2] to show blast , used this method on [_enemyShipCollision]
   /// method for future purpose:audio;
-  void addBlasts(List<Vector2> v2) {
+  void _addBlasts(List<Vector2> v2) {
     if (v2.isEmpty) return;
     // debugPrint("add blast");
     _shipsBlastLocation.insertAll(0, v2);
@@ -317,8 +297,16 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
   }
 
   @override
-  void onBulletHit({GameObject? gameObject}) {
-    // TODO: implement onBulletHit
+  void onBulletHit({GameObject? gameObject}) async {
+    if (gameObject is EnemyShip) {
+      gameObject.state = ShipState.glitch;
+      notifyListeners();
+      Future.delayed(gameObject.state.duration).then((_) {
+        gameObject.state = ShipState.dead;
+        _enemies.remove(gameObject);
+        notifyListeners();
+      });
+    }
   }
 
   @override
@@ -328,6 +316,11 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
 
   @override
   void onShipHit({GameObject? gameObject}) {
-    // TODO: implement onShipHit
+    if (gameObject is EnemyShip) {
+      // add blast effect and remove
+      _addBlasts([gameObject.position]);
+      _enemies.remove(gameObject);
+      notifyListeners();
+    }
   }
 }

@@ -123,9 +123,6 @@ class PlayerInfoNotifier extends ChangeNotifier
         // call enemyProvider and remove theses ship
         List<EnemyShip> removableShip = [];
 
-        // include theses on blastProvider
-        List<Vector2> addableBlastPos = [];
-
         if (_bullets.isEmpty) return;
 
         final enemyNotifier = ref.read(enemyProvider);
@@ -140,16 +137,19 @@ class PlayerInfoNotifier extends ChangeNotifier
             // checking if ship within bullet  position
             if (collisionChecker(a: enemyShip, b: b)) {
               removableShip.add(enemyShip);
+              // todo: use interface
               removableBullets.add(b);
-              addableBlastPos.add(enemyShip.position);
+              // addableBlastPos.add(enemyShip.position);
               scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
             }
           }
         }
         // removed removable object
         _bullets.removeAll(removableBullets);
-        enemyNotifier.removeEnemies(ships: removableShip);
-        enemyNotifier.addBlasts(addableBlastPos);
+        for (final enemy in removableShip) {
+          enemyNotifier.onBulletHit(gameObject: enemy);
+        }
+
         notifyListeners();
       },
     );
@@ -173,7 +173,11 @@ class PlayerInfoNotifier extends ChangeNotifier
       }
     }
 
-    enemyNotifier.removeEnemies(ships: removableEnemy);
+    
+     for (final enemy in removableEnemy) {
+          enemyNotifier.onShipHit(gameObject: enemy);
+        }
+
 
     // no need to notify, `removeEnemies` handle this;
   }
@@ -271,7 +275,6 @@ class PlayerInfoNotifier extends ChangeNotifier
   bool? isGlitchRunning;
   @override
   void onShipHit({GameObject? gameObject}) async {
-
     if (gameObject is EnemyShip) {
       player.health = DamageOnShipCollision(iShipHealth: player.health);
       if (player.state == ShipState.glitch) {

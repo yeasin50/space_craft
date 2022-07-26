@@ -73,6 +73,7 @@ class Player implements IShip {
 
 class EnemyShip implements IShip {
   final Vector2 _position;
+  ShipState state;
 
   ///image State, helps to animate currently we have two image per ship
   // ShipImageState state;
@@ -85,6 +86,7 @@ class EnemyShip implements IShip {
 
   EnemyShip({
     required Vector2 position,
+    this.state = ShipState.initial,
     ShipName? name,
   })  : _position = position,
         _name = name ?? randomEnemyName,

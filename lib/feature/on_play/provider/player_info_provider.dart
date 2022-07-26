@@ -10,6 +10,7 @@ import '../../../core/providers/object_scalar.dart' as game_object;
 import '../../../core/utils/utils.dart';
 import '../../setting/providers/providers.dart';
 import '../models/models.dart';
+import '../utils/utils.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
@@ -135,6 +136,7 @@ class PlayerInfoNotifier extends ChangeNotifier
           if (b.position.dY < 0) removableBullets.add(b);
 
           for (final enemyShip in enemyNotifier.enemies) {
+            if (!isWorkable(enemyShip)) continue;
             // checking if ship within bullet  position
             if (collisionChecker(a: enemyShip, b: b)) {
               removableShip.add(enemyShip);
@@ -161,6 +163,8 @@ class PlayerInfoNotifier extends ChangeNotifier
     final enemyNotifier = ref.read(enemyProvider);
     List<EnemyShip> removableEnemy = [];
     for (final enemy in enemyNotifier.enemies) {
+      if (!isWorkable(enemy)) continue;
+
       ///todo: we can also use
       /// collisionChecker(a: enemy, b: player.bottomPart) || collisionChecker(a: enemy, b: player.topPart))
       if (collisionChecker(a: enemy, b: player)) {

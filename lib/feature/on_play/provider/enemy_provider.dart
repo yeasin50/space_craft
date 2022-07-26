@@ -103,7 +103,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
 
       /// check if enemy is OK
       for (final enemy in _enemies) {
-        if (isWorkable(enemy)) continue;
+        if (!isWorkable(enemy)) continue;
 
         enemy.position.update(dY: enemy.position.dY + enemyMovementPY);
 
@@ -145,7 +145,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
       if (_enemies.isEmpty) return;
 
       for (EnemyShip ship in _enemies) {
-        if (isWorkable(ship)) continue;
+        if (!isWorkable(ship)) continue;
         //fire only when ship is visible on ui
         if (ship.position.dY < ship.size.height) continue;
 
@@ -203,7 +203,12 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
     required List<EnemyShip> ships,
   }) {
     if (ships.isEmpty) return;
-    _enemies.removeAll(ships);
+    // show glitch on death
+    //TODO: breaking Changes
+    ships.forEach((element) {
+      element.state = ShipState.dead;
+    });
+    // _enemies.removeAll(ships);
     notifyListeners();
   }
 

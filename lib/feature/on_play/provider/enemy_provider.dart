@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/core/constants/constants.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
@@ -20,7 +21,7 @@ final enemyProvider = ChangeNotifierProvider<EnemyChangeNotifier>(
 );
 
 //todo: test with single refresh method: [notifier]
-class EnemyChangeNotifier extends ChangeNotifier with GameState  , OnObstacleHit{
+class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
   final ChangeNotifierProviderRef ref;
   // screen size to control enemy movement
   Size screenSize = GObjectSize.instance.screen;
@@ -100,7 +101,10 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState  , OnObstacleHit
       final playerNotifier = ref.read(playerInfoProvider);
       final player = playerNotifier.player;
 
+      /// check if enemy is OK
       for (final enemy in _enemies) {
+        if (isWorkable(enemy)) continue;
+
         enemy.position.update(dY: enemy.position.dY + enemyMovementPY);
 
         if (enemy.position.dY > screenSize.height) {
@@ -141,6 +145,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState  , OnObstacleHit
       if (_enemies.isEmpty) return;
 
       for (EnemyShip ship in _enemies) {
+        if (isWorkable(ship)) continue;
         //fire only when ship is visible on ui
         if (ship.position.dY < ship.size.height) continue;
 
@@ -300,22 +305,22 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState  , OnObstacleHit
   void idle() {
     // TODO: implement onStart
   }
-  
+
   @override
   void onBorderHit({GameObject? gameObject}) {
     // TODO: implement onBorderHit
   }
-  
+
   @override
   void onBulletHit({GameObject? gameObject}) {
     // TODO: implement onBulletHit
   }
-  
+
   @override
   void onEnergyHit({GameObject? gameObject}) {
     // TODO: implement onEnergyHit
   }
-  
+
   @override
   void onShipHit({GameObject? gameObject}) {
     // TODO: implement onShipHit

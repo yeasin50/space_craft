@@ -9,8 +9,16 @@ import 'ship_paint_model.dart';
 class EnemyAPainter extends CustomPainter {
   final ShipPaintSetting _shipPaintSetting;
 
-  EnemyAPainter({ShipPaintSetting? shipPaintSetting})
-      : _shipPaintSetting =
+  /// enemy tail will shift left and right
+  bool tickTheBool;
+
+  double fireFromMouth;
+
+  EnemyAPainter({
+    ShipPaintSetting? shipPaintSetting,
+    this.tickTheBool = true,
+    this.fireFromMouth = 1,
+  }) : _shipPaintSetting =
             shipPaintSetting ?? ShipPaintSetting.defaultSetting();
 
   //todo: separate and provide diff color and animation
@@ -81,7 +89,8 @@ class EnemyAPainter extends CustomPainter {
 
     for (double i = mouthStartPoint; i < mouthEndPoint; i += (mouthSize * .4)) {
       mouthPath.addPath(
-        ParticlePathClipper().getClip(Size.fromRadius(mouthSize)),
+        ParticlePathClipper()
+            .getClip(Size.fromRadius(mouthSize * fireFromMouth)),
         Offset(i, height * .44),
       );
     }
@@ -109,17 +118,25 @@ class EnemyAPainter extends CustomPainter {
     final tailPath = Path()
       ..addPath(
         EnemyTailClipPath(
-          isShifted: false,
+          isShifted: tickTheBool,
         ).getClip(tailSize),
         Offset(0, headHeight + beltHeight),
       );
 
     canvas.drawPath(
       tailPath,
-      Paint()..color = Colors.green,
+      Paint()
+        ..shader = LinearGradient(
+          colors: _shipPaintSetting.tailColor,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          tileMode: TileMode.mirror,
+        ).createShader(
+          Rect.fromLTWH(0, headHeight + beltHeight, width, tailSize.height),
+        ),
     );
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant EnemyAPainter oldDelegate) => true;
 }

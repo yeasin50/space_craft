@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 
 import '../../../package/magic_ball/utils/utils.dart';
+import 'enemy_a_tail_paint.dart';
 import 'ship_paint_model.dart';
 
 class EnemyAPainter extends CustomPainter {
@@ -91,7 +92,6 @@ class EnemyAPainter extends CustomPainter {
       Path.combine(PathOperation.union, eyesPath, mouthPath),
     );
 
-    
     final headPaint = Paint()
       ..shader = LinearGradient(
         colors: [
@@ -103,6 +103,21 @@ class EnemyAPainter extends CustomPainter {
       ).createShader(rect);
 
     canvas.drawPath(p, headPaint);
+
+    final tailSize = Size(width, height - headHeight - beltHeight);
+
+    final tailPath = Path()
+      ..addPath(
+        EnemyTailClipPath(
+          isShifted: false,
+        ).getClip(tailSize),
+        Offset(0, headHeight + beltHeight),
+      );
+
+    canvas.drawPath(
+      tailPath,
+      Paint()..color = Colors.green,
+    );
   }
 
   @override

@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'app.dart';
-import 'core/utils/paints/paints.dart';
+import 'feature/on_play/utils/paints/enemy_ships_paint/enemy_ships_paint.dart';
 
 void main() {
   runApp(

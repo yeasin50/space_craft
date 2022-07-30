@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/color_palette.dart';
+import '../../../../../core/constants/constants.dart';
+ 
 
 class ShipPaintSetting {
   final Color bodyColor;

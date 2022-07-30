@@ -31,27 +31,19 @@ class _testPaintState extends State<_testPaint>
 
   int counter = 0;
 
-  late AnimationController controller =
-      AnimationController(vsync: this, duration: Duration(milliseconds: 200))
-        ..addListener(() {
-          setState(() {});
-        });
+  late AnimationController controller = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 100))
+    ..addListener(() {
+      setState(() {});
+    })
+    ..repeat(reverse: true);
 
   late Animation<double> animation =
-      Tween<double>(begin: .4, end: 1).animate(controller);
+      Tween<double>(begin: 0, end: 1).animate(controller);
 
   @override
   void initState() {
     super.initState();
-
-    timer = Timer.periodic(
-      Duration(milliseconds: 70),
-      (timer) {
-        counter++;
-
-        setState(() {});
-      },
-    );
   }
 
   @override

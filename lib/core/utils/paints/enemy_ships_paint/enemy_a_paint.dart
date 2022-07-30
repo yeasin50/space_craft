@@ -10,14 +10,11 @@ class EnemyAPainter extends CustomPainter {
   final ShipPaintSetting _shipPaintSetting;
 
   /// enemy tail will shift left and right
-  bool tickTheBool;
-
-  double fireFromMouth;
+  Animation? tailAnimation;
 
   EnemyAPainter({
     ShipPaintSetting? shipPaintSetting,
-    this.tickTheBool = true,
-    this.fireFromMouth = 1,
+    this.tailAnimation,
   }) : _shipPaintSetting =
             shipPaintSetting ?? ShipPaintSetting.defaultSetting();
 
@@ -89,8 +86,7 @@ class EnemyAPainter extends CustomPainter {
 
     for (double i = mouthStartPoint; i < mouthEndPoint; i += (mouthSize * .4)) {
       mouthPath.addPath(
-        ParticlePathClipper()
-            .getClip(Size.fromRadius(mouthSize * fireFromMouth)),
+        ParticlePathClipper().getClip(Size.fromRadius(mouthSize)),
         Offset(i, height * .44),
       );
     }
@@ -118,7 +114,7 @@ class EnemyAPainter extends CustomPainter {
     final tailPath = Path()
       ..addPath(
         EnemyTailClipPath(
-          isShifted: tickTheBool,
+          shiftValue: tailAnimation?.value,
         ).getClip(tailSize),
         Offset(0, headHeight + beltHeight),
       );

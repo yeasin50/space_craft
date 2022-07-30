@@ -78,8 +78,7 @@ class _testPaintState extends State<_testPaint>
               child: CustomPaint(
                 size: Size(size, size),
                 painter: EnemyAPainter(
-                  tickTheBool: counter.isEven,
-                  fireFromMouth: animation.value,
+                  tailAnimation: animation,
                 ),
               ),
             ),

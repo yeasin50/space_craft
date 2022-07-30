@@ -12,16 +12,16 @@ class EnemyTailClipPath extends CustomClipper<Path> {
     Path path = Path();
 
     final blocWidth = size.width * .07;
-    const radius = Radius.elliptical(13, 50);
+    const double wadeableTailHeight = 75;
 
     for (double x = size.width * .2; x < size.width * .8; x += blocWidth) {
       path.addRRect(
         RRect.fromRectAndCorners(
           Rect.fromLTWH(x, 0, blocWidth * .8, size.height),
-
-          //FIXME: fix the logic
-          bottomLeft: Radius.elliptical(shiftValue ?? 1 * 30, 50),
-          bottomRight: Radius.elliptical(30 * (1 - (shiftValue ?? 0)), 50),
+          bottomLeft:
+              Radius.elliptical(30 * (shiftValue ?? .5), wadeableTailHeight),
+          bottomRight: Radius.elliptical(
+              30 * (1 - (shiftValue ?? .5)), wadeableTailHeight),
         ),
       );
     }
@@ -30,5 +30,6 @@ class EnemyTailClipPath extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => true;
+  bool shouldReclip(EnemyTailClipPath oldClipper) =>
+      oldClipper.shiftValue != shiftValue;
 }

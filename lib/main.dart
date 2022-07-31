@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'app.dart';
+import 'core/entities/entities.dart';
 import 'feature/on_play/utils/paints/enemy_ships_paint/enemy_ships_paint.dart';
 
 void main() {
@@ -24,7 +26,7 @@ class _testPaint extends StatefulWidget {
 
 class _testPaintState extends State<_testPaint>
     with SingleTickerProviderStateMixin {
-  final double size = 240;
+  final double size = 340;
 
   Timer? timer;
 
@@ -39,11 +41,6 @@ class _testPaintState extends State<_testPaint>
 
   late Animation<double> animation =
       Tween<double>(begin: 0, end: 1).animate(controller);
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +65,7 @@ class _testPaintState extends State<_testPaint>
               height: size,
               child: CustomPaint(
                 size: Size(size, size),
-                painter: EnemyAPainter(
-                  tailAnimation: animation,
-                ),
+                painter: InvaderPaintA(data: InvaderDataModel()),
               ),
             ),
           ],

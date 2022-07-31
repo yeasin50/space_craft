@@ -20,8 +20,9 @@ class InvaderPaintA extends CustomPainter {
           Rect.fromLTWH(
             i * blocSize.width,
             j * blocSize.height,
-            blocSize.width + .4,
-            blocSize.height + .4,
+            //issue https://stackoverflow.com/q/73184281/10157127
+            blocSize.width + 1,
+            blocSize.height + 1,
           ),
           Paint()..color = InvaderDataModel.blocColor(data.bloc[i][j]),
         );

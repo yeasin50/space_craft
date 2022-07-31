@@ -28,7 +28,7 @@ class InvaderDataModel {
         return Colors.white;
 
       default:
-        return Colors.black;
+        return Colors.red;
     }
   }
 }

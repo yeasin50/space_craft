@@ -19,7 +19,9 @@ class InvaderDataModel {
       data: data ?? bloc,
     );
   }
+}
 
+class InvaderData extends InvaderDataModel {
   static Color blocColor(int cellDigit) {
     switch (cellDigit) {
       case 0:

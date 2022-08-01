@@ -24,7 +24,7 @@ class InvaderPaintA extends CustomPainter {
             blocSize.width + 1,
             blocSize.height + 1,
           ),
-          Paint()..color = InvaderDataModel.blocColor(data.bloc[i][j]),
+          Paint()..color = InvaderData.blocColor(data.bloc[i][j]),
         );
       }
     }

@@ -33,4 +33,8 @@ class InvaderData extends InvaderDataModel {
         return Colors.red;
     }
   }
+
+  factory InvaderData.invaderAA() {
+    
+  }
 }

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class InvaderDataModel {
   final List<List<int>> bloc;
 
+  /// bloc will be 12x8
   InvaderDataModel({
     List<List<int>>? data,
   }) : bloc = data ?? List.filled(12, List.generate(8, (index) => 3));
@@ -34,7 +35,17 @@ class InvaderData extends InvaderDataModel {
     }
   }
 
-  factory InvaderData.invaderAA() {
-    
-  }
+  InvaderData.invaderAA()
+      : super(
+          data: [
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+          ],
+        );
 }

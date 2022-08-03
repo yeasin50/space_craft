@@ -65,7 +65,7 @@ class _testPaintState extends State<_testPaint>
               height: size,
               child: CustomPaint(
                 size: Size(size, size),
-                painter: InvaderPaintA(data: InvaderDataModel()),
+                painter: InvaderPaintA(invaderMatrix: InvaderMatrix.zero()),
               ),
             ),
           ],

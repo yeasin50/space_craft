@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 /// store 2D array  12x8 blocs to paint the Invader ships
@@ -5,24 +7,22 @@ import 'package:flutter/material.dart';
 ///* 0 = transparent
 ///* 1 = white
 ///* unknown =  red
-class InvaderDataModel {
-  final List<List<int>> bloc;
+class InvaderMatrix {
+  static const int _row = 8;
+  static const int _col = 12;
+
+  final List<Int64List> data;
 
   /// bloc will be 12x8
-  InvaderDataModel({
-    List<List<int>>? data,
-  }) : bloc = data ?? List.filled(12, List.generate(8, (index) => 3));
+  InvaderMatrix({required this.data});
 
-  InvaderDataModel copyWith({
-    List<List<int>>? data,
-  }) {
-    return InvaderDataModel(
-      data: data ?? bloc,
-    );
-  }
-}
+  /// 12x8 filled by zero
+  InvaderMatrix.zero() : data = List.generate(8, (index) => Int64List(12));
 
-class InvaderData extends InvaderDataModel {
+  InvaderMatrix copyWith({required List<Int64List> data}) =>
+      InvaderMatrix(data: data);
+
+  /// Get color of the cell
   static Color blocColor(int cellDigit) {
     switch (cellDigit) {
       case 0:
@@ -35,17 +35,13 @@ class InvaderData extends InvaderDataModel {
     }
   }
 
-  InvaderData.invaderAA()
-      : super(
-          data: [
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-            [],
-          ],
-        );
+  // update specific cell
+  void setEntry(int row, int col, int v) {
+    assert((row >= 0) && (row < _row));
+    assert((col >= 0) && (col < _col));
+
+    data[row][col] = v;
+  }
+
+  
 }

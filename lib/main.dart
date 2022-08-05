@@ -26,7 +26,7 @@ class _testPaint extends StatefulWidget {
 
 class _testPaintState extends State<_testPaint>
     with SingleTickerProviderStateMixin {
-  final double size = 340;
+  final double size = 25;
 
   Timer? timer;
 
@@ -61,8 +61,8 @@ class _testPaintState extends State<_testPaint>
                 child: Text("reverse")),
             Container(
               color: Colors.cyanAccent.withOpacity(.3),
-              width: size,
-              height: size,
+              width: InvaderMatrix.col * size,
+              height: InvaderMatrix.row * size,
               child: CustomPaint(
                 size: Size(size, size),
                 painter: InvaderPaintA(invaderMatrix: InvaderMatrix.aX),

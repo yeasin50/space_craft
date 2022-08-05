@@ -12,17 +12,21 @@ class InvaderPaintA extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Size blocSize = Size(size.width / 12, size.height / 8);
+    // InvaderMatrix.printData(invaderMatrix);
 
-    for (int i = 0; i < invaderMatrix.data.length; i++) {
-      for (int j = 0; j < invaderMatrix.data[i].length; j++) {
+    Size blocSize = Size(
+      size.width / InvaderMatrix.col,
+      size.height / InvaderMatrix.row,
+    );
+    for (int i = 0; i < InvaderMatrix.row; i++) {
+      for (int j = 0; j < InvaderMatrix.col; j++) {
         canvas.drawRect(
           Rect.fromLTWH(
-            i * blocSize.width,
-            j * blocSize.height,
+            j * blocSize.width,
+            i * blocSize.height,
             //issue https://stackoverflow.com/q/73184281/10157127
-            blocSize.width + 1,
-            blocSize.height + 1,
+            blocSize.width - 2,
+            blocSize.height - 2,
           ),
           Paint()..color = InvaderMatrix.blocColor(invaderMatrix.data[i][j]),
         );

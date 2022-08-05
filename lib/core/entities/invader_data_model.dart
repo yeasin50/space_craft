@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -8,8 +9,8 @@ import 'package:flutter/material.dart';
 ///* 1 = white
 ///* unknown =  red
 class InvaderMatrix {
-  static const int _row = 8;
-  static const int _col = 12;
+  static const int row = 8;
+  static const int col = 12;
 
   final List<List<int>> data;
 
@@ -18,20 +19,17 @@ class InvaderMatrix {
 
   /// 12x8 filled by zero
   InvaderMatrix.zero()
-      : data = List.generate(8, (index) => List.generate(12, (index) => 0));
+      : data = List.generate(row, (index) => List.generate(col, (index) => 0));
 
   /// 12x8 filled by one
   InvaderMatrix.one()
-      : data = List.generate(8, (index) => List.generate(12, (index) => 1));
-
-  InvaderMatrix copyWith({required List<Int64List> data}) =>
-      InvaderMatrix(data: data);
+      : data = List.generate(row, (index) => List.generate(col, (index) => 1));
 
   /// Get color of the cell
   static Color blocColor(int cellDigit) {
     switch (cellDigit) {
       case 0:
-        return Colors.transparent;
+        return Colors.cyanAccent;
       case 1:
         return Colors.white;
 
@@ -41,44 +39,53 @@ class InvaderMatrix {
   }
 
   // update specific cell
-  void setEntry(int row, int col, int v) {
-    assert((row >= 0) && (row < _row));
-    assert((col >= 0) && (col < _col));
-
+  void setEntry({required int col, required int row, required int v}) {
+    assert((row >= 0) && (row < InvaderMatrix.row));
+    assert((col >= 0) && (col < InvaderMatrix.col));
     data[row][col] = v;
   }
 
   void fillRow({
     required int rowIndex,
     required int startCellIndex,
-    int endCellIndex = _col - 1,
+    int endCellIndex = col,
     int value = 1,
   }) {
+    // for (int i = startCellIndex; i < endCellIndex; i++) {
+    //   setEntry(col: i, row: rowIndex, v: value);
+    // }
+
     data[rowIndex].replaceRange(startCellIndex, endCellIndex,
-        List.filled(endCellIndex - startCellIndex, value));
+        List.filled(endCellIndex - startCellIndex + 1, 1));
   }
 
+  //todo: little fix needed
   static InvaderMatrix get aX => InvaderMatrix.zero()
-        ..fillRow(rowIndex: 0, startCellIndex: 4, endCellIndex: 7)
-      // ..fillRow(rowIndex: 1, startCellIndex: 1, endCellIndex: 10)
-      // ..fillRow(rowIndex: 2, startCellIndex: 0)
-      // ..fillRow(rowIndex: 3, startCellIndex: 0, endCellIndex: 2)
-      // ..fillRow(rowIndex: 3, startCellIndex: 5, endCellIndex: 6)
-      // ..fillRow(rowIndex: 3, startCellIndex: 9)
-      // ..fillRow(rowIndex: 4, startCellIndex: 0)
-      // ..fillRow(rowIndex: 5, startCellIndex: 2, endCellIndex: 3)
-      // ..fillRow(rowIndex: 5, startCellIndex: 5, endCellIndex: 6)
-      // ..fillRow(rowIndex: 5, startCellIndex: 2, endCellIndex: 3)
-      // ..fillRow(rowIndex: 6, startCellIndex: 2, endCellIndex: 3)
-      // ..fillRow(rowIndex: 6, startCellIndex: 5, endCellIndex: 6)
-      // ..fillRow(rowIndex: 6, startCellIndex: 8, endCellIndex: 9)
-      // ..fillRow(rowIndex: 7, startCellIndex: 0, endCellIndex: 1)
-      // ..fillRow(rowIndex: 7, startCellIndex: 10, endCellIndex: 11)
+    ..fillRow(rowIndex: 0, startCellIndex: 4, endCellIndex: 7)
+    ..fillRow(rowIndex: 1, startCellIndex: 1, endCellIndex: 10)
+    ..fillRow(rowIndex: 2, startCellIndex: 0)
+    ..fillRow(rowIndex: 3, startCellIndex: 0, endCellIndex: 2)
+    ..fillRow(rowIndex: 3, startCellIndex: 5, endCellIndex: 6)
+    ..fillRow(rowIndex: 3, startCellIndex: 9)
+    ..fillRow(rowIndex: 4, startCellIndex: 0)
+    ..fillRow(rowIndex: 5, startCellIndex: 3, endCellIndex: 3)
+    ..fillRow(rowIndex: 5, startCellIndex: 5, endCellIndex: 6)
+    ..fillRow(rowIndex: 5, startCellIndex: 3, endCellIndex: 3)
+    ..fillRow(rowIndex: 6, startCellIndex: 2, endCellIndex: 3)
+    ..fillRow(rowIndex: 6, startCellIndex: 5, endCellIndex: 6)
+    ..fillRow(rowIndex: 6, startCellIndex: 8, endCellIndex: 9)
+    ..fillRow(rowIndex: 7, startCellIndex: 0, endCellIndex: 1)
+    ..fillRow(rowIndex: 7, startCellIndex: 10, endCellIndex: 11);
 
-      ;
+  static void printData(InvaderMatrix invaderMatrix) {
+    for (int i = 0; i < invaderMatrix.data.length; i++) {
+      for (int j = 0; j < invaderMatrix.data[i].length; j++) {
+        stdout.write(
+          " ${invaderMatrix.data[i][j]} ",
+        );
+      }
 
-  @override
-  String toString() {
-    return super.toString();
+      print("End");
+    }
   }
 }

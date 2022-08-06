@@ -72,30 +72,34 @@ class InvaderMatrix {
   }
 
   /// Invader A ship on X state
-  static InvaderMatrix get aX => InvaderMatrix.zero()
-    ..fillRow(rowIndex: 0, startCellIndex: 4, endCellIndex: 7)
-    ..fillRow(rowIndex: 1, startCellIndex: 1, endCellIndex: 10)
-    ..fillRow(rowIndex: 2, startCellIndex: 0)
-    ..fillRow(rowIndex: 3, startCellIndex: 0, endCellIndex: 2)
-    ..fillRow(rowIndex: 3, startCellIndex: 5, endCellIndex: 6)
-    ..fillRow(rowIndex: 3, startCellIndex: 9)
-    ..fillRow(rowIndex: 4, startCellIndex: 0)
-    ..fillRow(rowIndex: 5, startCellIndex: 3, endCellIndex: 3)
-    ..fillRow(rowIndex: 5, startCellIndex: 6, endCellIndex: 7)
-    ..fillRow(rowIndex: 5, startCellIndex: 3, endCellIndex: 3)
-    ..fillRow(rowIndex: 6, startCellIndex: 2, endCellIndex: 3)
-    ..fillRow(rowIndex: 6, startCellIndex: 5, endCellIndex: 6)
-    ..fillRow(rowIndex: 6, startCellIndex: 8, endCellIndex: 9)
-    ..fillRow(rowIndex: 7, startCellIndex: 0, endCellIndex: 1)
-    ..fillRow(rowIndex: 7, startCellIndex: 10, endCellIndex: 11);
+  static InvaderMatrix get aX {
+    return InvaderMatrix.zero()
+      ..fillRow(rowIndex: 0, startCellIndex: 4, endCellIndex: 7)
+      ..fillRow(rowIndex: 1, startCellIndex: 1, endCellIndex: 10)
+      ..fillRow(rowIndex: 2, startCellIndex: 0)
+      ..fillRow(rowIndex: 3, startCellIndex: 0, endCellIndex: 2)
+      ..fillRow(rowIndex: 3, startCellIndex: 5, endCellIndex: 6)
+      ..fillRow(rowIndex: 3, startCellIndex: 9)
+      ..fillRow(rowIndex: 4, startCellIndex: 0)
+      ..fillRow(rowIndex: 5, startCellIndex: 3, endCellIndex: 3)
+      ..fillRow(rowIndex: 5, startCellIndex: 6, endCellIndex: 7)
+      ..fillRow(rowIndex: 5, startCellIndex: 3, endCellIndex: 3)
+      ..fillRow(rowIndex: 6, startCellIndex: 2, endCellIndex: 3)
+      ..fillRow(rowIndex: 6, startCellIndex: 5, endCellIndex: 6)
+      ..fillRow(rowIndex: 6, startCellIndex: 8, endCellIndex: 9)
+      ..fillRow(rowIndex: 7, startCellIndex: 0, endCellIndex: 1)
+      ..fillRow(rowIndex: 7, startCellIndex: 10, endCellIndex: 11);
+  }
 
   /// Invader A ship on Y state
-  static InvaderMatrix get aY => aX
-    .._clearRowAndSetCells(
-        rowNumber: 5, cellIndexes: [2, 3, 4, 7, 8, 9], value: 1)
-    .._clearRowAndSetCells(
-        rowNumber: 6, cellIndexes: [1, 2, 5, 6, 9, 10], value: 1)
-    .._clearRowAndSetCells(rowNumber: 7, cellIndexes: [2, 3, 8, 9], value: 1);
+  static InvaderMatrix get aY {
+    return aX
+      .._clearRowAndSetCells(
+          rowNumber: 5, cellIndexes: [2, 3, 4, 7, 8, 9], value: 1)
+      .._clearRowAndSetCells(
+          rowNumber: 6, cellIndexes: [1, 2, 5, 6, 9, 10], value: 1)
+      .._clearRowAndSetCells(rowNumber: 7, cellIndexes: [2, 3, 8, 9], value: 1);
+  }
 
   static void printData(InvaderMatrix invaderMatrix) {
     for (int i = 0; i < invaderMatrix.data.length; i++) {

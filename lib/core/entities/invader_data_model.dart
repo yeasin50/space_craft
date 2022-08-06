@@ -58,7 +58,6 @@ class InvaderMatrix {
         List.filled(endCellIndex - startCellIndex + 1, 1));
   }
 
-  //todo: little fix needed
   static InvaderMatrix get aX => InvaderMatrix.zero()
     ..fillRow(rowIndex: 0, startCellIndex: 4, endCellIndex: 7)
     ..fillRow(rowIndex: 1, startCellIndex: 1, endCellIndex: 10)

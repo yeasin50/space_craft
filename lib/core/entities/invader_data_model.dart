@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -69,7 +68,7 @@ class InvaderMatrix {
     ..fillRow(rowIndex: 3, startCellIndex: 9)
     ..fillRow(rowIndex: 4, startCellIndex: 0)
     ..fillRow(rowIndex: 5, startCellIndex: 3, endCellIndex: 3)
-    ..fillRow(rowIndex: 5, startCellIndex: 5, endCellIndex: 6)
+    ..fillRow(rowIndex: 5, startCellIndex: 6, endCellIndex: 7)
     ..fillRow(rowIndex: 5, startCellIndex: 3, endCellIndex: 3)
     ..fillRow(rowIndex: 6, startCellIndex: 2, endCellIndex: 3)
     ..fillRow(rowIndex: 6, startCellIndex: 5, endCellIndex: 6)

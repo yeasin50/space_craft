@@ -60,12 +60,13 @@ class _testPaintState extends State<_testPaint>
                 },
                 child: Text("reverse")),
             Container(
-              color: Colors.cyanAccent.withOpacity(.3),
+              // color: Colors.cyanAccent.withOpacity(.3),
+              decoration: BoxDecoration(border: Border.all(color: Colors.red)),
               width: InvaderMatrix.col * size,
               height: InvaderMatrix.row * size,
               child: CustomPaint(
                 size: Size(size, size),
-                painter: InvaderPaintA(invaderMatrix: InvaderMatrix.aX),
+                painter: InvaderPaintA(invaderMatrix: InvaderMatrix.aY),
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class InvaderMatrix {
   static Color blocColor(int cellDigit) {
     switch (cellDigit) {
       case 0:
-        return Colors.cyanAccent;
+        return Colors.cyanAccent.withOpacity(.2);
       case 1:
         return Colors.white;
 
@@ -38,7 +39,7 @@ class InvaderMatrix {
   }
 
   // update specific cell
-  void setEntry({required int col, required int row, required int v}) {
+  void setEntry({required int row, required int col, required int v}) {
     assert((row >= 0) && (row < InvaderMatrix.row));
     assert((col >= 0) && (col < InvaderMatrix.col));
     data[row][col] = v;
@@ -58,6 +59,19 @@ class InvaderMatrix {
         List.filled(endCellIndex - startCellIndex + 1, 1));
   }
 
+  /// clear [rowNumber] and fill [cellIndexes] with [value]
+  void _clearRowAndSetCells(
+      {required int rowNumber,
+      required List<int> cellIndexes,
+      required int value}) {
+    data[rowNumber] = Int64List(col);
+
+    for (final cell in cellIndexes) {
+      data[rowNumber][cell] = value;
+    }
+  }
+
+  /// Invader A ship on X state
   static InvaderMatrix get aX => InvaderMatrix.zero()
     ..fillRow(rowIndex: 0, startCellIndex: 4, endCellIndex: 7)
     ..fillRow(rowIndex: 1, startCellIndex: 1, endCellIndex: 10)
@@ -74,6 +88,14 @@ class InvaderMatrix {
     ..fillRow(rowIndex: 6, startCellIndex: 8, endCellIndex: 9)
     ..fillRow(rowIndex: 7, startCellIndex: 0, endCellIndex: 1)
     ..fillRow(rowIndex: 7, startCellIndex: 10, endCellIndex: 11);
+
+  /// Invader A ship on Y state
+  static InvaderMatrix get aY => aX
+    .._clearRowAndSetCells(
+        rowNumber: 5, cellIndexes: [2, 3, 4, 7, 8, 9], value: 1)
+    .._clearRowAndSetCells(
+        rowNumber: 6, cellIndexes: [1, 2, 5, 6, 9, 10], value: 1)
+    .._clearRowAndSetCells(rowNumber: 7, cellIndexes: [2, 3, 8, 9], value: 1);
 
   static void printData(InvaderMatrix invaderMatrix) {
     for (int i = 0; i < invaderMatrix.data.length; i++) {

@@ -24,6 +24,16 @@ class Matrix8x12 {
   Matrix8x12.one()
       : data = List.generate(row, (index) => List.generate(col, (index) => 1));
 
+  /// common data part
+  factory Matrix8x12.head() => Matrix8x12()
+    ..fillRow(rowIndex: 0, startCellIndex: 4, endCellIndex: 7)
+    ..fillRow(rowIndex: 1, startCellIndex: 1, endCellIndex: 10)
+    ..fillRow(rowIndex: 2, startCellIndex: 0)
+    ..fillRow(rowIndex: 3, startCellIndex: 0, endCellIndex: 2)
+    ..fillRow(rowIndex: 3, startCellIndex: 5, endCellIndex: 6)
+    ..fillRow(rowIndex: 3, startCellIndex: 9)
+    ..fillRow(rowIndex: 4, startCellIndex: 0);
+
   /// Get color of the cell
   static Color blocColor(int cellDigit) {
     switch (cellDigit) {
@@ -50,12 +60,8 @@ class Matrix8x12 {
     int endCellIndex = col,
     int value = 1,
   }) {
-    // for (int i = startCellIndex; i < endCellIndex; i++) {
-    //   setEntry(col: i, row: rowIndex, v: value);
-    // }
-
     data[rowIndex].replaceRange(startCellIndex, endCellIndex,
-        List.filled(endCellIndex - startCellIndex + 1, 1));
+        List.filled(endCellIndex - startCellIndex + 1, value));
   }
 
   /// clear [rowNumber] and fill [cellIndexes] with [value]

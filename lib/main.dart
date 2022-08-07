@@ -42,7 +42,7 @@ class _testPaintState extends State<_testPaint>
   late Animation<double> animation =
       Tween<double>(begin: 0, end: 1).animate(controller);
 
-  bool isXState = true;
+  bool isXState = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,8 +74,9 @@ class _testPaintState extends State<_testPaint>
               child: CustomPaint(
                 size: Size(size, size),
                 painter: InvaderPaintA(
-                  invaderMatrix:
-                      isXState ? InvaderMatrixA.x() : InvaderMatrixA.y(),
+                  invaderMatrix: isXState
+                      ? InvaderMatrixB().xState()
+                      : InvaderMatrixB().yState(),
                 ),
               ),
             ),

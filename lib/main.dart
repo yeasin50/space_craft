@@ -75,8 +75,8 @@ class _testPaintState extends State<_testPaint>
                 size: Size(size, size),
                 painter: InvaderPaintA(
                   invaderMatrix: isXState
-                      ? InvaderMatrixB().xState()
-                      : InvaderMatrixB().yState(),
+                      ? InvaderMatrixC().xState
+                      : InvaderMatrixC().yState,
                 ),
               ),
             ),

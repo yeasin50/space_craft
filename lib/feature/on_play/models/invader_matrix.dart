@@ -2,6 +2,22 @@ import 'dart:io';
 
 import '../../../core/entities/matrix8x12.dart';
 
+abstract class _InvaderMatrixState {
+  get xState;
+  get yState;
+}
+
+///
+void printData(Matrix8x12 invaderMatrix) {
+  for (int i = 0; i < invaderMatrix.data.length; i++) {
+    for (int j = 0; j < invaderMatrix.data[i].length; j++) {
+      stdout.write(
+        " ${invaderMatrix.data[i][j]} ",
+      );
+    }
+  }
+}
+
 /// Enemy ship A with two State
 class InvaderMatrixA extends Matrix8x12 implements _InvaderMatrixState {
   /// Invader A ship on X state
@@ -28,15 +44,15 @@ class InvaderMatrixA extends Matrix8x12 implements _InvaderMatrixState {
   }
 
   @override
-  xState() => _x;
+  get xState => _x;
 
   @override
-  yState() => _y;
+  get yState => _y;
 }
 
 /// Enemy ship B with two State
 class InvaderMatrixB extends Matrix8x12 implements _InvaderMatrixState {
-  /// Invader A ship on X state
+  /// Invader B ship on X state
   static Matrix8x12 get _x {
     final model = Matrix8x12.head()
       ..clearRowAndSetCells(
@@ -52,7 +68,7 @@ class InvaderMatrixB extends Matrix8x12 implements _InvaderMatrixState {
     return model;
   }
 
-  /// Invader A ship on Y state
+  /// Invader B ship on Y state
   static Matrix8x12 get _y {
     return _x
       ..clearRowAndSetCells(rowIndex: 0, cellIndexes: [2, 9], value: 1)
@@ -64,24 +80,44 @@ class InvaderMatrixB extends Matrix8x12 implements _InvaderMatrixState {
   }
 
   @override
-  yState() => _y;
+  get yState => _y;
 
   @override
-  xState() => _x;
+  get xState => _x;
 }
 
-abstract class _InvaderMatrixState {
-  xState();
-  yState();
-}
+///Enemy ship C with two State
+class InvaderMatrixC extends Matrix8x12 implements _InvaderMatrixState {
+  /// Invader B ship on X state
+  static Matrix8x12 get _x {
+    final model = Matrix8x12.head()
+      ..clearRowAndSetCells(
+          rowIndex: 0, cellIndexes: [3, 4, 5, 6, 7, 8], value: 1)
+      ..setEntry(row: 3, col: 4, v: 1)
+      ..setEntry(row: 3, col: 7, v: 1)
+      ..clearRowAndSetCells(
+          rowIndex: 5, cellIndexes: [1, 2, 4, 5, 6, 7, 9, 10], value: 1)
+      ..clearRowAndSetCells(rowIndex: 6, cellIndexes: [1, 2, 10, 11], value: 1)
+      ..clearRowAndSetCells(rowIndex: 6, cellIndexes: [0, 1, 10, 11], value: 1)
+      ..clearRowAndSetCells(rowIndex: 7, cellIndexes: [2, 3, 8, 9], value: 1);
 
-///
-void printData(Matrix8x12 invaderMatrix) {
-  for (int i = 0; i < invaderMatrix.data.length; i++) {
-    for (int j = 0; j < invaderMatrix.data[i].length; j++) {
-      stdout.write(
-        " ${invaderMatrix.data[i][j]} ",
-      );
-    }
+    return model;
   }
+
+  /// Invader B ship on Y state
+  static Matrix8x12 get _y {
+    return _x
+      ..clearRowAndSetCells(rowIndex: 0, cellIndexes: [2, 9], value: 1)
+      ..clearRowAndSetCells(rowIndex: 1, cellIndexes: [0, 3, 8, 11], value: 1)
+      ..fillRow(rowIndex: 5, value: 0)
+      ..fillRow(rowIndex: 5, startCellIndex: 1, endCellIndex: 10, value: 1)
+      ..clearRowAndSetCells(rowIndex: 6, cellIndexes: [2, 9], value: 1)
+      ..clearRowAndSetCells(rowIndex: 7, cellIndexes: [1, 10], value: 1);
+  }
+
+  @override
+  get yState => _y;
+
+  @override
+  get xState => _x;
 }

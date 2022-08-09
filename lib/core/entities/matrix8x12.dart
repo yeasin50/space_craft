@@ -56,23 +56,24 @@ class Matrix8x12 {
 
   void fillRow({
     required int rowIndex,
-    required int startCellIndex,
-    int endCellIndex = col,
+    int? startCellIndex,
+    int? endCellIndex,
     int value = 1,
   }) {
+    startCellIndex ??= 0;
+    endCellIndex ??= col;
     data[rowIndex].replaceRange(startCellIndex, endCellIndex,
         List.filled(endCellIndex - startCellIndex + 1, value));
   }
 
-  /// clear [rowNumber] and fill [cellIndexes] with [value]
+  /// clear [rowIndex] and fill [cellIndexes] with [value]
   void clearRowAndSetCells(
-      {required int rowNumber,
+      {required int rowIndex,
       required List<int> cellIndexes,
       required int value}) {
-    data[rowNumber] = Int64List(col);
-
+    fillRow(rowIndex: rowIndex, value: 0);
     for (final cell in cellIndexes) {
-      data[rowNumber][cell] = value;
+      data[rowIndex][cell] = value;
     }
   }
 }

@@ -21,10 +21,10 @@ class InvaderMatrixA extends Matrix8x12 implements _InvaderMatrixState {
   static Matrix8x12 get _y {
     return _x
       ..clearRowAndSetCells(
-          rowNumber: 5, cellIndexes: [2, 3, 4, 7, 8, 9], value: 1)
+          rowIndex: 5, cellIndexes: [2, 3, 4, 7, 8, 9], value: 1)
       ..clearRowAndSetCells(
-          rowNumber: 6, cellIndexes: [1, 2, 5, 6, 9, 10], value: 1)
-      ..clearRowAndSetCells(rowNumber: 7, cellIndexes: [2, 3, 8, 9], value: 1);
+          rowIndex: 6, cellIndexes: [1, 2, 5, 6, 9, 10], value: 1)
+      ..clearRowAndSetCells(rowIndex: 7, cellIndexes: [2, 3, 8, 9], value: 1);
   }
 
   @override
@@ -39,16 +39,15 @@ class InvaderMatrixB extends Matrix8x12 implements _InvaderMatrixState {
   /// Invader A ship on X state
   static Matrix8x12 get _x {
     final model = Matrix8x12.head()
-          ..clearRowAndSetCells(
-              rowNumber: 0, cellIndexes: [3, 4, 5, 6, 7, 8], value: 1)
-          ..fillRow(rowIndex: 4, startCellIndex: 4, endCellIndex: 7)
-          ..clearRowAndSetCells(
-              rowNumber: 5, cellIndexes: [1, 2, 4, 5, 6, 7, 9, 10], value: 1)
-        // ..clearRowAndSetCells(rowNumber: 6, cellIndexes: [1, 2, 10, 11], value: 1)
-        // ..clearRowAndSetCells(rowNumber: 6, cellIndexes: [0, 1, 10, 11], value: 1)
-        // ..clearRowAndSetCells(rowNumber: 7, cellIndexes: [2, 3, 8, 9], value: 1)
-
-        ;
+      ..clearRowAndSetCells(
+          rowIndex: 0, cellIndexes: [3, 4, 5, 6, 7, 8], value: 1)
+      ..setEntry(row: 3, col: 4, v: 1)
+      ..setEntry(row: 3, col: 7, v: 1)
+      ..clearRowAndSetCells(
+          rowIndex: 5, cellIndexes: [1, 2, 4, 5, 6, 7, 9, 10], value: 1)
+      ..clearRowAndSetCells(rowIndex: 6, cellIndexes: [1, 2, 10, 11], value: 1)
+      ..clearRowAndSetCells(rowIndex: 6, cellIndexes: [0, 1, 10, 11], value: 1)
+      ..clearRowAndSetCells(rowIndex: 7, cellIndexes: [2, 3, 8, 9], value: 1);
 
     return model;
   }
@@ -56,16 +55,12 @@ class InvaderMatrixB extends Matrix8x12 implements _InvaderMatrixState {
   /// Invader A ship on Y state
   static Matrix8x12 get _y {
     return _x
-          ..clearRowAndSetCells(rowNumber: 0, cellIndexes: [2, 9], value: 1)
-          ..clearRowAndSetCells(
-              rowNumber: 1, cellIndexes: [0, 3, 8, 11], value: 1)
-        // ..clearRowAndSetCells(
-        //     rowNumber: 5, cellIndexes: [2, 3, 4, 7, 8, 9], value: 1)
-        // ..clearRowAndSetCells(
-        //     rowNumber: 6, cellIndexes: [1, 2, 5, 6, 9, 10], value: 1)
-        // ..clearRowAndSetCells(rowNumber: 7, cellIndexes: [2, 3, 8, 9], value: 1)
-
-        ;
+      ..clearRowAndSetCells(rowIndex: 0, cellIndexes: [2, 9], value: 1)
+      ..clearRowAndSetCells(rowIndex: 1, cellIndexes: [0, 3, 8, 11], value: 1)
+      ..fillRow(rowIndex: 5, value: 0)
+      ..fillRow(rowIndex: 5, startCellIndex: 1, endCellIndex: 10, value: 1)
+      ..clearRowAndSetCells(rowIndex: 6, cellIndexes: [2, 9], value: 1)
+      ..clearRowAndSetCells(rowIndex: 7, cellIndexes: [1, 10], value: 1);
   }
 
   @override

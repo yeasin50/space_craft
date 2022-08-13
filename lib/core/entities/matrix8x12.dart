@@ -66,6 +66,16 @@ class Matrix8x12 {
         List.filled(endCellIndex - startCellIndex + 1, value));
   }
 
+  void fillCells({
+    required int rowIndex,
+    required List<int> cellIndexes,
+    int value = 1,
+  }) {
+    for (final cIndex in cellIndexes) {
+      setEntry(row: rowIndex, col: cIndex, v: value);
+    }
+  }
+
   /// clear [rowIndex] and fill [cellIndexes] with [value]
   void clearRowAndSetCells(
       {required int rowIndex,

@@ -116,12 +116,11 @@ class InvaderMatrixC extends Matrix8x12 implements _InvaderMatrixState {
   /// Invader B ship on Y state
   static Matrix8x12 get _y {
     return _x
-      ..clearRowAndSetCells(rowIndex: 0, cellIndexes: [2, 9], value: 1)
-      ..clearRowAndSetCells(rowIndex: 1, cellIndexes: [0, 3, 8, 11], value: 1)
-      ..fillRow(rowIndex: 5, value: 0)
-      ..fillRow(rowIndex: 5, startCellIndex: 1, endCellIndex: 10, value: 1)
-      ..clearRowAndSetCells(rowIndex: 6, cellIndexes: [2, 9], value: 1)
-      ..clearRowAndSetCells(rowIndex: 7, cellIndexes: [1, 10], value: 1);
+      ..clearRowAndSetCells(rowIndex: 5, cellIndexes: [3, 8], value: 1)
+      ..fillRow(rowIndex: 6)
+      ..fillCells(rowIndex: 6, cellIndexes: [0, 3, 8, 11], value: 0)
+      ..clearRowAndSetCells(
+          rowIndex: 7, cellIndexes: [0, 1, 3, 4, 7, 8, 10, 11], value: 1);
   }
 
   @override

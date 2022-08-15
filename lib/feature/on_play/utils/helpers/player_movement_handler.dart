@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/entities/entities.dart';
 import '../../../../core/providers/providers.dart';
+import '../../../boundary_collide_effect/providers/collide_effect_provider.dart';
 import '../../../setting/providers/providers.dart';
 import '../../provider/provider.dart';
 
@@ -27,7 +28,7 @@ void updatePlayerPosition({
       if (offset != null) {
         _updatePlayerPosition(
           offset: offset,
-          playerInfoNotifier: notifier,
+          ref: widgetRef,
         );
       }
 
@@ -49,37 +50,58 @@ void updatePlayerPosition({
 ///
 /// `offset` current touch position
 void _updatePlayerPosition({
-  required PlayerInfoNotifier playerInfoNotifier,
+  required WidgetRef ref,
   // required Size constraints,
   required Offset offset,
 }) {
   //skip keyboardMovement while control mode is only keyboard
-  if (SpaceInvaderSettingProvider.instance.controlMode == ControlMode.keyboard)
-    return;
+  if (SpaceInvaderSettingProvider.instance.controlMode ==
+          ControlMode.keyboard //
+      ) return;
 
   final double posY = offset.dy;
   final double posX = offset.dx;
 
-  // we are separating in two section, it'll help to move though another axis stuck
-  // it'll make sure that even One axis will work even other axis stuck
-  if (posY >=
-          GObjectSize.instance.screen.height -
-              playerInfoNotifier.player.size.height / 2 ||
-      posY <= playerInfoNotifier.player.size.height / 2) {
-    ///`we cant move in Y Axis` outScreen
-    ///may Add some effect like wave
-  } else {
+  final PlayerInfoNotifier playerInfoNotifier = ref.read(playerInfoProvider);
+  final PlayerBCollideEffect collideEffect =
+      ref.read(playerBoundaryCollisionProvider);
+  //* we are separating in two section, it'll help to move though another axis stuck
+  //* it'll make sure that even One axis will work even other axis stuck
+
+  final List<BoundarySide> blockedSides = [
+    if (posY >=
+        GObjectSize.instance.screen.height -
+            playerInfoNotifier.player.size.height / 2)
+      BoundarySide.bottom,
+    if (posY <= playerInfoNotifier.player.size.height / 2) BoundarySide.top,
+    if (posX >=
+        GObjectSize.instance.screen.width -
+            playerInfoNotifier.player.size.width / 2)
+      BoundarySide.right,
+    if (posX <= playerInfoNotifier.player.size.width / 2) BoundarySide.left,
+  ];
+
+  collideEffect.setPointAndBoundarySide(
+    point: playerInfoNotifier.player.position,
+    sides: blockedSides,
+  );
+
+  if (!blockedSides.contains(BoundarySide.left) &&
+      !blockedSides.contains(BoundarySide.right)) {
+    collideEffect.onMovement(sides: [BoundarySide.left, BoundarySide.right]);
     playerInfoNotifier.updatePosition(
-        dY: posY - (playerInfoNotifier.player.size.height / 2));
+      dX: posX - (playerInfoNotifier.player.size.width / 2),
+      // dY: posY - (playerInfoNotifier.player.size.height / 2),
+    );
   }
-  if (posX >=
-          GObjectSize.instance.screen.width -
-              playerInfoNotifier.player.size.width / 2 ||
-      posX <= playerInfoNotifier.player.size.width / 2) {
-    ///`we cant move in X axis` outScreen
-  } else {
+
+  if (!blockedSides.contains(BoundarySide.top) &&
+      !blockedSides.contains(BoundarySide.bottom)) {
+    collideEffect.onMovement(sides: [BoundarySide.top, BoundarySide.bottom]);
     playerInfoNotifier.updatePosition(
-        dX: posX - (playerInfoNotifier.player.size.width / 2));
+      // dX: posX - (playerInfoNotifier.player.size.width / 2),
+      dY: posY - (playerInfoNotifier.player.size.height / 2),
+    );
   }
 }
 
@@ -105,7 +127,7 @@ void _keyboardMovementHandler({
 
   //FIXME: 1st keyStrock isnto working on [A,S,D,E]:
   //hint; maybe fixed by changing longPressed delayed
-
+  //TODO: collide effect
   //move left; moveable when dX>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {

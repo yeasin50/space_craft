@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/core/constants/enums/enums.dart';
+import 'package:space_craft/core/package/glitch_effect/glitch_effect.dart';
+import 'package:space_craft/feature/on_play/provider/player_info_provider.dart';
+import 'package:space_craft/feature/setting/providers/providers.dart';
 
 import '../../feature/on_play/utils/utils.dart';
 import 'ship_blast.dart';
@@ -7,8 +12,29 @@ import '../providers/object_scalar.dart';
 import 'rotate_widget.dart';
 
 /// ship widget represent player
-class PlayerShip extends StatelessWidget {
+
+class PlayerShip extends ConsumerWidget {
   const PlayerShip({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final playerState = ref.watch(playerInfoProvider).player.state;
+
+    final playGlitch =
+        playerState == ShipState.initial || playerState == ShipState.glitch;
+    return GlitchEffect(
+      //dirty trick to rebuild the UI 😂
+      key: ValueKey("Glitch effect on PlayerShip $playGlitch"),
+      controller: GlitchController(autoPlay: playGlitch),
+      child: const _PlayerShipStructure(),
+    );
+  }
+}
+
+class _PlayerShipStructure extends StatelessWidget {
+  const _PlayerShipStructure({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

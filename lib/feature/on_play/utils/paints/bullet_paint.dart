@@ -100,7 +100,7 @@ class BulletPaint extends CustomPainter {
       sidePaint,
     );
 
-    /// midle circle like health form
+    /// middle circle like health form
     final circleMidPoint = size.height * .75;
     Paint circlePaint = Paint()
       ..shader = RadialGradient(colors: [

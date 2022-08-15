@@ -2,13 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/feature/setting/providers/providers.dart';
+import 'package:space_craft/core/constants/enums/enums.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/providers/object_scalar.dart' as game_object;
 import '../../../core/utils/utils.dart';
+import '../../setting/providers/providers.dart';
 import '../models/models.dart';
+import '../utils/utils.dart';
 import 'provider.dart';
 
 final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
@@ -18,7 +20,8 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 );
 
 ///this provide Player UI update info
-class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
+class PlayerInfoNotifier extends ChangeNotifier
+    with GameState, PlayerAction, OnObstacleHit {
   final ChangeNotifierProviderRef ref;
 
   IPlayerScore scoreManager = PlayerScoreManager();
@@ -120,9 +123,6 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
         // call enemyProvider and remove theses ship
         List<EnemyShip> removableShip = [];
 
-        // include theses on blastProvider
-        List<Vector2> addableBlastPos = [];
-
         if (_bullets.isEmpty) return;
 
         final enemyNotifier = ref.read(enemyProvider);
@@ -133,19 +133,23 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
           if (b.position.dY < 0) removableBullets.add(b);
 
           for (final enemyShip in enemyNotifier.enemies) {
+            if (!isWorkable(enemyShip)) continue;
             // checking if ship within bullet  position
             if (collisionChecker(a: enemyShip, b: b)) {
               removableShip.add(enemyShip);
+              // todo: use interface
               removableBullets.add(b);
-              addableBlastPos.add(enemyShip.position);
+              // addableBlastPos.add(enemyShip.position);
               scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
             }
           }
         }
         // removed removable object
         _bullets.removeAll(removableBullets);
-        enemyNotifier.removeEnemies(ships: removableShip);
-        enemyNotifier.addBlasts(addableBlastPos);
+        for (final enemy in removableShip) {
+          enemyNotifier.onBulletHit(gameObject: enemy);
+        }
+
         notifyListeners();
       },
     );
@@ -159,11 +163,22 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
     final enemyNotifier = ref.read(enemyProvider);
     List<EnemyShip> removableEnemy = [];
     for (final enemy in enemyNotifier.enemies) {
+      if (!isWorkable(enemy)) continue;
+
       ///todo: we can also use
       /// collisionChecker(a: enemy, b: player.bottomPart) || collisionChecker(a: enemy, b: player.topPart))
-      if (collisionChecker(a: enemy, b: player)) removableEnemy.add(enemy);
+      if (collisionChecker(a: enemy, b: player)) {
+        removableEnemy.add(enemy);
+        onShipHit(gameObject: enemy);
+      }
     }
-    enemyNotifier.removeEnemies(ships: removableEnemy);
+
+    
+     for (final enemy in removableEnemy) {
+          enemyNotifier.onShipHit(gameObject: enemy);
+        }
+
+
     // no need to notify, `removeEnemies` handle this;
   }
 
@@ -177,7 +192,7 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
 
     for (final hb in healthBoxNotifier.healingBoxes) {
       if (collisionChecker(a: hb, b: player)) {
-        player.health = GeneralHealingBox(iShipHealth: player.health);
+        onEnergyHit(gameObject: hb);
         removableBox.add(hb);
       }
     }
@@ -197,26 +212,6 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
       }
     }
     enemyNotifier.removeBullets(bullets: removableBullet);
-  }
-
-  //*---------------------------*
-  //*  Score Health Management  *
-  //*---------------------------*
-  /// increment score of player by destroying enemies
-
-  /// decrease player health
-  void updateHeathStatus(Type type) {
-    if (type == DamageOnEB) {
-      player.health = DamageOnEB(iShipHealth: player.health);
-    }
-    if (type == DamageOnShipCollision) {
-      player.health = DamageOnShipCollision(iShipHealth: player.health);
-    }
-    if (type == GeneralHealingBox) {
-      player.health = GeneralHealingBox(iShipHealth: player.health);
-    }
-    //todo: GameOver while 0 score
-    notifyListeners();
   }
 
   //*---------------------------*
@@ -253,8 +248,53 @@ class PlayerInfoNotifier extends ChangeNotifier with GameState, PlayerAction {
   @override
   void idle() {}
 
+  //*---------------------------*
+  //*  Score Health Management  *
+  //*---------------------------*
+  /// increment score of player by destroying enemies
+
   @override
-  void onStop() {
-    // TODO: implement onStop
+  void onBorderHit({GameObject? gameObject}) {
+    // TODO: implement onBorderHit
+  }
+
+  @override
+  void onBulletHit({GameObject? gameObject}) {
+    // debugPrint("Player onBulletHit");
+    player.health = DamageOnEB(iShipHealth: player.health);
+    notifyListeners();
+  }
+
+  @override
+  void onEnergyHit({GameObject? gameObject}) {
+    // debugPrint("Player onEnergyHit");
+    player.health = GeneralHealingBox(iShipHealth: player.health);
+    notifyListeners();
+  }
+
+  bool? isGlitchRunning;
+  @override
+  void onShipHit({GameObject? gameObject}) async {
+    if (gameObject is EnemyShip) {
+      player.health = DamageOnShipCollision(iShipHealth: player.health);
+      if (player.state == ShipState.glitch) {
+        notifyListeners();
+        return;
+      }
+      player.state = ShipState.glitch;
+
+      notifyListeners();
+
+      if (isGlitchRunning == true) return;
+      isGlitchRunning = true;
+      Future.delayed(ShipState.glitch.duration).then(
+        (value) {
+          player.state = ShipState.idle;
+          isGlitchRunning = false;
+          debugPrint("after delay State ${player.state}");
+          notifyListeners();
+        },
+      );
+    }
   }
 }

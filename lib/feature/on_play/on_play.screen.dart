@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers/providers.dart';
 import '../../core/widget/player_ship.dart';
+import '../boundary_collide_effect/boundary_collide_effect.dart';
 import 'on_play.dart';
 import 'provider/provider.dart';
 
@@ -38,6 +39,9 @@ class OnPlayScreen extends StatelessWidget {
                 body: Stack(
                   clipBehavior: Clip.none,
                   children: [
+                    const BoundaryGlowEffect(
+                      key: ValueKey("BoundaryGlowEffect widget:OnPlayScreen"),
+                    ),
                     _playerShip(playerInfo),
                     // AnimatedPositioned(
                     //   key: const ValueKey("Player Ship Widget"),

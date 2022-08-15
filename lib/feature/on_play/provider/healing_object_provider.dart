@@ -8,7 +8,6 @@ import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/utils/utils.dart';
 import '../models/models.dart';
-import '../utils/utils.dart';
 import 'provider.dart';
 
 final healingObjectProvider = ChangeNotifierProvider(
@@ -88,7 +87,7 @@ class Health extends ChangeNotifier implements GameState {
           //hit with PlayerShip, increase player health and remove box
           if (collisionChecker(a: playerRef.player, b: box)) {
             _healingBoxes.remove(box);
-            playerRef.updateHeathStatus(GeneralHealingBox);
+            playerRef.onEnergyHit();
           }
 
           // debugPrint(
@@ -134,7 +133,8 @@ class Health extends ChangeNotifier implements GameState {
 
   @override
   void onResume() {
-    // TODO: implement onResume
+    _initGenerator();
+    _boxMovement();
   }
 
   @override

@@ -1,8 +1,2 @@
-/// enum that indicate the game state
-enum GamePlayState {
-  idle,
-  play,
-  paused,
-  resumed,
-  reset,
-}
+export 'game_play_state.dart';
+export 'life_stage.dart';

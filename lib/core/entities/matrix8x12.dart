@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 
 /// store 2D array  12x8 blocs to paint the Invader ships

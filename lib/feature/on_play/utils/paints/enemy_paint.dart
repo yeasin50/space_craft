@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ///TODO: remove on finish if !necessay 
 class EnemyPainter1 extends CustomPainter {
   /// animation value [0..1] of this paint
-  /// *hands and legs movement (done know how to descrive this)🤣
+  /// *hands and legs movement (done know how can I describe this)🤣
   final double value;
 
   EnemyPainter1({

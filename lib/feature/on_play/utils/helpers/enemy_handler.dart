@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:space_craft/core/entities/matrix8x12.dart';
+import 'package:space_craft/feature/on_play/models/invader_matrix.dart';
 
 import '../../../../core/constants/color_palette.dart';
 import '../../../../core/entities/ship.dart';
@@ -30,12 +32,19 @@ Color getShipColor({required ShipName shipName}) {
     case ShipName.enemyC:
       return ColorPallet.enemyC;
 
+    case ShipName.enemyD:
+      return Colors.cyanAccent;
+
     default:
       return Colors.grey;
   }
 }
 
 /// enemy image paths file assets
+@Deprecated(
+  'Use [getShipMatrix] instead.'
+  'Breaking changes: assets has been replaced with [Matrix8x12]',
+)
 String enemyShipImagePath({required EnemyShip enemy}) {
   const String _baseImagePath = "assets/images/";
 
@@ -66,4 +75,27 @@ String enemyShipImagePath({required EnemyShip enemy}) {
   }
 
   return _baseImagePath + imageName;
+}
+
+Matrix8x12 getShipMatrix(EnemyShip enemy) {
+  switch (enemy.name) {
+    case ShipName.enemyA:
+      return enemy.imageState == ShipImageState.a
+          ? InvaderMatrixA().xState
+          : InvaderMatrixA().yState;
+
+    case ShipName.enemyB:
+      return enemy.imageState == ShipImageState.a
+          ? InvaderMatrixB().xState
+          : InvaderMatrixB().yState;
+
+    case ShipName.enemyC:
+      return enemy.imageState == ShipImageState.a
+          ? InvaderMatrixC().xState
+          : InvaderMatrixC().yState;
+
+    default:
+      assert(true, "Enemy shipName is not recognized");
+  }
+  return InvaderMatrixA().xState;
 }

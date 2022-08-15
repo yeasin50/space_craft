@@ -25,8 +25,8 @@ class InvaderPaintA extends CustomPainter {
             j * blocSize.width,
             i * blocSize.height,
             //issue https://stackoverflow.com/q/73184281/10157127
-            blocSize.width - 2,
-            blocSize.height - 2,
+            blocSize.width + .4,
+            blocSize.height + .4,
           ),
           Paint()..color = Matrix8x12.blocColor(invaderMatrix.data[i][j]),
         );

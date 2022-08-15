@@ -1,11 +1,13 @@
+// ignore_for_file: camel_case_types
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 
 import '../core/entities/entities.dart';
 import '../feature/on_play/models/models.dart';
-import '../feature/on_play/utils/paints/enemy_ships_paint/enemy_ships_paint.dart';
-
+import '../feature/on_play/utils/utils.dart';
+ 
 class _testPaint extends StatefulWidget {
   const _testPaint({Key? key}) : super(key: key);
 
@@ -44,17 +46,17 @@ class _testPaintState extends State<_testPaint>
                   isXState = !isXState;
                   setState(() {});
                 },
-                child: Text("Change State")),
+                child: const Text("Change State")),
             ElevatedButton(
                 onPressed: () {
                   controller.forward();
                 },
-                child: Text("start")),
+                child: const Text("start")),
             ElevatedButton(
                 onPressed: () {
                   controller.reverse();
                 },
-                child: Text("reverse")),
+                child: const Text("reverse")),
             Container(
               // color: Colors.cyanAccent.withOpacity(.3),
               decoration: BoxDecoration(border: Border.all(color: Colors.red)),

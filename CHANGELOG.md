@@ -9,7 +9,7 @@
 ## [v0.4](https://github.com/yeasin50/space_craft/tree/v0.4) - Aug16, 2022
 
 - remove assets image
-- closed #39 & #37
+- closed issue [#39](https://github.com/yeasin50/space_craft/issues/39) & [#37](https://github.com/yeasin50/space_craft/issues/37)
 - improved UI
 
 ## [v0.3](https://github.com/yeasin50/space_craft/tree/v0.3) - Jun03, 2022

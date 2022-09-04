@@ -6,6 +6,7 @@ import 'package:space_craft/core/constants/enums/enums.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
+
 import '../../../core/providers/object_scalar.dart' as game_object;
 import '../../../core/utils/utils.dart';
 import '../../setting/providers/providers.dart';
@@ -90,6 +91,10 @@ class PlayerInfoNotifier extends ChangeNotifier
   }
 
   void _addBullet() {
+    ///TODO: bullet sound
+    if (UserSetting.instance.sound) {
+      SoundManager.instance.playPlayerBulletSound();
+    }
     _bullets.add(
       PlayerShipBullet(
         position: player.position.copyWith(

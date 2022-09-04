@@ -58,6 +58,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
 
   final Duration _bulletGeneratorDelay = const Duration(seconds: 1);
 
+
   /// move enemy down by  `bulletMomentPY` px
   double bulletMomentPY = 10.0;
 
@@ -290,7 +291,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
   void idle() {
     // TODO: implement onStart
   }
-
+  
   @override
   void onBorderHit({GameObject? gameObject}) {
     // TODO: implement onBorderHit

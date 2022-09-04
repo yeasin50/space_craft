@@ -16,8 +16,8 @@ class App extends StatelessWidget {
         scaffoldBackgroundColor: Color.fromARGB(255, 0, 0, 0),
         textTheme: Theme.of(context).textTheme.copyWith(),
       ),
-      // home: const TestCases(),
-      home: const OnPlayScreen(),
+      home: const AudioTestPage(),
+      // home: const OnPlayScreen(),
       // home: const StartScreen(),
     );
   }

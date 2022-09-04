@@ -20,7 +20,7 @@ class _AudioTestPageState extends State<AudioTestPage> {
             onPressed: () async {
                 SoundManager.instance.playPlayerBulletSound();
             },
-            icon: Text("just_audio"),
+            icon: Text("mp3 "),
           ),
           IconButton(
             onPressed: () async {

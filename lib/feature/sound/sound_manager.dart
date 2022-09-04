@@ -1,6 +1,5 @@
-import 'package:just_audio/just_audio.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-///FIXME:  add sound later
 abstract class OnPlaySound {
   void playPlayerBulletSound();
   void stopPlayerBulletSound();
@@ -14,8 +13,10 @@ abstract class OnPlaySound {
 }
 
 class SoundManager extends OnPlaySound {
-  static const _fileSilencer = "assets/sound/Gun_Silencer.mp3";
-  static const _fileLuger = "assets/sound/Gun_Luger.mp3";
+  static const _fileSilencer = "sound/gun_silencer.mp3";
+  static const _fileLuger = "sound/gun_luger.mp3";
+  static const _fileSilencer1 = "sound/gun_silencer.wav";
+  static const _fileLuger1 = "sound/gun_luger.mp3";
 
   static final SoundManager instance = SoundManager._privateConstructor();
   SoundManager._privateConstructor();
@@ -33,8 +34,7 @@ class SoundManager extends OnPlaySound {
   @override
   void playPlayerBulletSound() async {
     final player = AudioPlayer();
-    await player.setAsset(_fileSilencer);
-    player.play();
+    await player.play(AssetSource(_fileSilencer1));
   }
 
   @override

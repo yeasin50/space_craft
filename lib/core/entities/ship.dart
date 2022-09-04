@@ -7,6 +7,7 @@ enum ShipName {
   enemyA,
   enemyB,
   enemyC,
+  enemyD,
 }
 
 /// currently we have two image per enemyShip

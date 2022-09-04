@@ -8,6 +8,8 @@ class ColorPallet {
   static const enemyB = Color(0xff8900ff);
   static const enemyC = Color(0xffff008d);
 
+  static get enemies => [enemyA, enemyB, enemyC];
+
   static const background = Colors.black;
   static const glassMorphism = Color(0xFF454A4D);
 }
@@ -18,8 +20,8 @@ List<Color> get _enemyShipColors => [
       ColorPallet.enemyC,
     ];
 
-Color get getRandomColor =>
-    _enemyShipColors[math.Random().nextInt(_enemyShipColors.length)];
+// Color get getRandomColor =>
+//     _enemyShipColors[math.Random().nextInt(_enemyShipColors.length)];
 
 /// Color [purple,blue,yellow,red]
 const List<Color> colorSet0 = [

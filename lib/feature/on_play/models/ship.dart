@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/enums/enums.dart';
 import '../../../core/entities/entities.dart';
-import '../../setting/models/object_scalar.dart';
-import '../utils/helpers/enemy_hanlader.dart';
+import '../../../core/providers/object_scalar.dart';
+import '../utils/helpers/enemy_handler.dart';
 import 'health_management.dart';
 import 'player_ship_body.dart';
 
@@ -11,14 +12,17 @@ import 'player_ship_body.dart';
 class Player implements IShip {
   late final Vector2 _position;
 
+  ShipState state;
+
   Player({
     required Vector2 position,
-  }) : _position = position;
+  })  : _position = position,
+        state = ShipState.initial;
 
   ///max number of time player can live
   final int maxLive = 3;
 
-  /// fire while player is alive and game is runnign
+  /// fire while player is alive and game is running
   bool shoot = false;
 
   @override
@@ -69,6 +73,7 @@ class Player implements IShip {
 
 class EnemyShip implements IShip {
   final Vector2 _position;
+  ShipState state;
 
   ///image State, helps to animate currently we have two image per ship
   // ShipImageState state;
@@ -81,6 +86,7 @@ class EnemyShip implements IShip {
 
   EnemyShip({
     required Vector2 position,
+    this.state = ShipState.initial,
     ShipName? name,
   })  : _position = position,
         _name = name ?? randomEnemyName,

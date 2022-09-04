@@ -18,8 +18,16 @@
         },
         {
             "name": "space_craft",
+
             "request": "launch",
             "type": "dart",
+            "deviceId": "c"
+        },
+        {
+            "name": "windows space_craft",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "w"
         },
         {
             "name": "space_craft (profile mode)",

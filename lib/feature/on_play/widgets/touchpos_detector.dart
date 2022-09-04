@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/feature/setting/providers/providers.dart';
 
-import '../../../core/constants/enums.dart';
-import '../../../core/providers/game_manager.dart';
 import '../provider/provider.dart';
 import '../utils/utils.dart';
 
@@ -11,52 +10,46 @@ class TouchPositionDetector extends StatelessWidget {
   const TouchPositionDetector({
     Key? key,
     required this.constraints,
+    this.child,
   }) : super(key: key);
 
   final BoxConstraints constraints;
+
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
         final playerInfo = ref.read(playerInfoProvider);
-        final gameManager = ref.read(gameManagerProvider.notifier);
-        return GestureDetector(
-          onPanDown: (details) {
-            // debugPrint("$gameManager");
-            if (gameManager.mode != GameMode.playing) return;
 
-            playerInfo.startShooting();
-            updatePlayerPosition(
-              offset: details.localPosition,
-              // constraints: constraints,
-              playerInfoNotifier: playerInfo,
-            );
+        return GestureDetector(
+          // behavior: HitTestBehavior.translucent,
+          // onTap: () {
+          //   // debugPrint("on onPanUpdate");
+          // },
+          onPanDown: (details) {
+            updatePlayerPosition(widgetRef: ref, offset: details.localPosition);
+            if (!SpaceInvaderSettingProvider.instance.freeFire) {
+              playerInfo.startShooting();
+            }
           },
-          onTapUp: (details) {
+          onTapUp: (_) {
             // handle quick tap up
-            playerInfo.stopShooting();
+            if (!SpaceInvaderSettingProvider.instance.freeFire) {
+              playerInfo.stopShooting();
+            }
           },
-          onPanEnd: (details) {
-            //halde drag tapUp
-            playerInfo.stopShooting();
+          onPanEnd: (_) {
+            //handle drag tapUp
+            if (!SpaceInvaderSettingProvider.instance.freeFire) {
+              playerInfo.stopShooting();
+            }
           },
           onPanUpdate: (details) {
-            if (gameManager.mode != GameMode.playing) return;
-            updatePlayerPosition(
-              offset: details.localPosition,
-              // constraints: constraints,
-              playerInfoNotifier: playerInfo,
-            );
+            updatePlayerPosition(widgetRef: ref, offset: details.localPosition);
           },
-          // child: SizedBox(
-          //   height: constraints.maxHeight,
-          //   width: constraints.maxWidth,
-          //   //TODO: backGround Color
-          //   // color: Colors.blue.withOpacity(.3),
-
-          //   ///we can also choose overlay widget here, or BG Placement 🤓
-          // ),
+          child: child,
         );
       },
     );

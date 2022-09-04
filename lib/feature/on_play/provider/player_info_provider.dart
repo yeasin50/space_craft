@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/core/constants/enums/enums.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
-import '../../setting/models/models.dart';
-import '../../setting/models/object_scalar.dart';
-import '../../sound/sound_manager.dart';
+
+import '../../../core/providers/object_scalar.dart' as game_object;
+import '../../../core/utils/utils.dart';
+import '../../setting/providers/providers.dart';
 import '../models/models.dart';
 import '../utils/utils.dart';
 import 'provider.dart';
@@ -19,14 +21,22 @@ final playerInfoProvider = ChangeNotifierProvider<PlayerInfoNotifier>(
 );
 
 ///this provide Player UI update info
-class PlayerInfoNotifier extends ChangeNotifier {
+class PlayerInfoNotifier extends ChangeNotifier
+    with GameState, PlayerAction, OnObstacleHit {
   final ChangeNotifierProviderRef ref;
 
   IPlayerScore scoreManager = PlayerScoreManager();
   IShipHealth shipHealthManager = PlayerHealthManager();
 
-  /// create player instance //todo: pass initPoss
-  final Player player = Player(position: Vector2(dX: 100, dY: 100));
+  final Player _initPlayer = Player(
+    position: Vector2(
+      dX: game_object.GObjectSize.instance.screen.width / 2,
+      dY: game_object.GObjectSize.instance.screen.height * .75,
+    ),
+  );
+
+  /// create player instance
+  late Player player = _initPlayer;
 
   final Duration bulletGenerateRate = const Duration(milliseconds: 400);
   final Duration bulletMovementRate = const Duration(milliseconds: 50);
@@ -48,6 +58,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
 
   /// Update player position
   void updatePosition({double? dX, double? dY}) {
+    // debugPrint(player.position.toString());
     player.position.update(dX: dX, dY: dY);
 
     //todo: create setting for theses
@@ -59,6 +70,7 @@ class PlayerInfoNotifier extends ChangeNotifier {
   }
 
   ///start player bullet generation and movement
+  @override
   void startShooting() {
     //can include a bullet just on tap,
     player.shoot = true;
@@ -68,8 +80,10 @@ class PlayerInfoNotifier extends ChangeNotifier {
       _addBullet();
     });
     _bulletsMovement();
+    notifyListeners();
   }
 
+  @override
   void stopShooting() {
     player.shoot = false;
     _timer?.cancel();
@@ -86,7 +100,8 @@ class PlayerInfoNotifier extends ChangeNotifier {
         position: player.position.copyWith(
           dX: player.position.dX +
               player.size.width / 2 - //fire from top center
-              GObjectSize.instance.playerBullet.width / 2, // position on middle
+              game_object.GObjectSize.instance.playerBullet.width /
+                  2, // position on middle
         ),
       ),
     );
@@ -96,26 +111,23 @@ class PlayerInfoNotifier extends ChangeNotifier {
   ///*  player bullets will move up(-Y) on Every Frame(lie, on [bulletMovementRate])
   /// removed removable objects end of the timer loop.
   /// ----
-  /// * remove enemy on bullet collision, removable object on removeable list
+  /// * remove enemy on bullet collision, removable object on removable list
   /// * destroy EnemyShip and player bullet on collision
   /// * increase score while bullet hit enemyShip
   /// * add blast while destroying ship
   void _bulletsMovement() {
-    //* variables to hold and perform operation all at once
-    // remove theses from player `_bullets`
-    List<IBullet> removeableBullets = [];
-
-    // call enemyProvider and remove theses ship
-    List<EnemyShip> removeableShip = [];
-
-    // include theses on blastProvider
-    List<Vector2> addableblastPos = [];
-
     // this timer is active on playing mode
     if (_timerBulletMovement != null && _timerBulletMovement!.isActive) return;
     _timerBulletMovement = Timer.periodic(
       bulletMovementRate,
       (timer) {
+        //* variables to hold and perform operation all at once
+        // remove theses from player `_bullets`
+        List<IBullet> removableBullets = [];
+
+        // call enemyProvider and remove theses ship
+        List<EnemyShip> removableShip = [];
+
         if (_bullets.isEmpty) return;
 
         final enemyNotifier = ref.read(enemyProvider);
@@ -123,61 +135,73 @@ class PlayerInfoNotifier extends ChangeNotifier {
         for (final b in _bullets) {
           b.position.update(dY: b.position.dY - _bulletSpeed);
           // remove bullet while it is beyond screen:at Top
-          if (b.position.dY < 0) removeableBullets.add(b);
+          if (b.position.dY < 0) removableBullets.add(b);
 
           for (final enemyShip in enemyNotifier.enemies) {
+            if (!isWorkable(enemyShip)) continue;
             // checking if ship within bullet  position
             if (collisionChecker(a: enemyShip, b: b)) {
-              removeableShip.add(enemyShip);
-              removeableBullets.add(b);
-              addableblastPos.add(enemyShip.position);
+              removableShip.add(enemyShip);
+              // todo: use interface
+              removableBullets.add(b);
+              // addableBlastPos.add(enemyShip.position);
               scoreManager = EnemyShipDestroyScore(playerScore: scoreManager);
             }
           }
         }
-        // removed removeable object
-        _bullets.removeAll(removeableBullets);
-        enemyNotifier.removeEnemies(ships: removeableShip);
-        enemyNotifier.addblasts(addableblastPos);
-        addableblastPos.clear();
-        removeableBullets.clear();
-        removeableShip.clear();
+        // removed removable object
+        _bullets.removeAll(removableBullets);
+        for (final enemy in removableShip) {
+          enemyNotifier.onBulletHit(gameObject: enemy);
+        }
+
         notifyListeners();
       },
     );
   }
 
-  /// realTime Collision between EmeyShip on PlayerShip movement.
+  /// realTime Collision between EnemyShip on PlayerShip movement.
   /// while it get touch with playerShip
   /// used on playerShip movement [updatePosition]
   /// * this method doesn't notify the update
   void _enemyCollisionChecker() {
     final enemyNotifier = ref.read(enemyProvider);
-    List<EnemyShip> removeableEnemy = [];
+    List<EnemyShip> removableEnemy = [];
     for (final enemy in enemyNotifier.enemies) {
-      /// we can also use
+      if (!isWorkable(enemy)) continue;
+
+      ///todo: we can also use
       /// collisionChecker(a: enemy, b: player.bottomPart) || collisionChecker(a: enemy, b: player.topPart))
-      if (collisionChecker(a: enemy, b: player)) removeableEnemy.add(enemy);
+      if (collisionChecker(a: enemy, b: player)) {
+        removableEnemy.add(enemy);
+        onShipHit(gameObject: enemy);
+      }
     }
-    enemyNotifier.removeEnemies(ships: removeableEnemy);
+
+    
+     for (final enemy in removableEnemy) {
+          enemyNotifier.onShipHit(gameObject: enemy);
+        }
+
+
     // no need to notify, `removeEnemies` handle this;
   }
 
   /// realTime Collision between HealthBox and Player movement
-  /// value will be notifiyed by inner or outine the method
+  /// value will be notify by inner or outline the method
   /// * this method doesn't notify the update
   void _healthBoxCollision() {
     final healthBoxNotifier = ref.read(healingObjectProvider);
 
-    List<GeneralHealingBox> removeableBox = [];
+    List<GeneralHealingBox> removableBox = [];
 
     for (final hb in healthBoxNotifier.healingBoxes) {
       if (collisionChecker(a: hb, b: player)) {
-        player.health = GeneralHealingBox(iShipHealth: player.health);
-        removeableBox.add(hb);
+        onEnergyHit(gameObject: hb);
+        removableBox.add(hb);
       }
     }
-    healthBoxNotifier.removeBox(healingBox: removeableBox);
+    healthBoxNotifier.removeBox(healingBox: removableBox);
   }
 
   /// realTime Collision between Enemy's bullets and Player movement
@@ -185,51 +209,97 @@ class PlayerInfoNotifier extends ChangeNotifier {
   void _enemyBulletCollision() {
     final enemyNotifier = ref.read(enemyProvider);
 
-    final List<IBullet> removeableBullet = [];
+    final List<IBullet> removableBullet = [];
 
     for (final bullet in enemyNotifier.bullets) {
       if (collisionChecker(a: bullet, b: player)) {
-        removeableBullet.add(bullet);
+        removableBullet.add(bullet);
       }
     }
-    enemyNotifier.removeBullets(bullets: removeableBullet);
+    enemyNotifier.removeBullets(bullets: removableBullet);
   }
+
+  //*---------------------------*
+  //*       Controllers         *
+  //*---------------------------*
+
+  @override
+  void onPause() {
+    _timerBulletMovement?.cancel();
+    stopShooting();
+  }
+
+  @override
+  void onPlay() {
+    // `_player` notified by next methods
+    // player = _initPlayer;
+
+    // todo: set controller for touch and keyboard mode; disable on touch mode
+    if (SpaceInvaderSettingProvider.instance.freeFire) startShooting();
+  }
+
+  @override
+  void onReset() {
+    // TODO: implement onReset
+  }
+
+  @override
+  void onResume() {
+    debugPrint(" playerInfoProvider: resumed");
+    _bulletsMovement();
+    if (SpaceInvaderSettingProvider.instance.freeFire) startShooting();
+  }
+
+  @override
+  void idle() {}
 
   //*---------------------------*
   //*  Score Health Management  *
   //*---------------------------*
   /// increment score of player by destroying enemies
 
-  /// decrease player health
-  void updateHeathStatus(Type type) {
-    if (type == DamageOnEB) {
-      player.health = DamageOnEB(iShipHealth: player.health);
-    }
-    if (type == DamageOnShipCollision) {
-      player.health = DamageOnShipCollision(iShipHealth: player.health);
-    }
-    if (type == GeneralHealingBox) {
-      player.health = GeneralHealingBox(iShipHealth: player.health);
-    }
-    //todo: GameOver while 0 score
+  @override
+  void onBorderHit({GameObject? gameObject}) {
+    // TODO: implement onBorderHit
+  }
+
+  @override
+  void onBulletHit({GameObject? gameObject}) {
+    // debugPrint("Player onBulletHit");
+    player.health = DamageOnEB(iShipHealth: player.health);
     notifyListeners();
   }
 
-  //*---------------------------*
-  //*       Controllers         *
-  //*---------------------------*
-  /// stop player, bullet,generator
-  pauseMode() {
-    _timerBulletMovement?.cancel();
-    stopShooting();
+  @override
+  void onEnergyHit({GameObject? gameObject}) {
+    // debugPrint("Player onEnergyHit");
+    player.health = GeneralHealingBox(iShipHealth: player.health);
+    notifyListeners();
   }
 
-  /// start player bullets movement
-  payingMode() {
-    _bulletsMovement();
-    // todo: set controller for touch and keyboard mode; disable on touch mode
-    startShooting();
-    // debugPrint("playerProvider: PlayingMode");
-    // debugPrint("BulletMovement Timer ${_timerBulletMovement == null}");
+  bool? isGlitchRunning;
+  @override
+  void onShipHit({GameObject? gameObject}) async {
+    if (gameObject is EnemyShip) {
+      player.health = DamageOnShipCollision(iShipHealth: player.health);
+      if (player.state == ShipState.glitch) {
+        notifyListeners();
+        return;
+      }
+      player.state = ShipState.glitch;
+
+      notifyListeners();
+
+      if (isGlitchRunning == true) return;
+      isGlitchRunning = true;
+      Future.delayed(ShipState.glitch.duration).then(
+        (value) {
+          player.state = ShipState.idle;
+          isGlitchRunning = false;
+          debugPrint("after delay State ${player.state}");
+          notifyListeners();
+        },
+      );
+    }
   }
 }

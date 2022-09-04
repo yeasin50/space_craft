@@ -1,10 +1,9 @@
-// entity package contains all the data classes that are used by the entire application.
-// We can encounter the usage of these entities in any module
-
 export 'bullet.dart';
 export 'custom_list.dart';
 export 'game_object.dart';
+export 'game_state.dart';
 export 'health_management.dart';
+export 'matrix8x12.dart';
 export 'particle.dart';
 export 'score.dart';
 export 'setting.dart';

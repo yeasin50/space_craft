@@ -1,9 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/constants/constants.dart';
 import '../../../../core/entities/entities.dart';
-import '../../../setting/models/models.dart';
+import '../../../../core/providers/providers.dart';
+import '../../../boundary_collide_effect/providers/collide_effect_provider.dart';
+import '../../../setting/providers/providers.dart';
 import '../../provider/provider.dart';
+
+/// update player position based on touch position and keyboard movement
+///* To use keyboard control, pass [rawKeyEvent]
+///* To control user position by touch or mouse right click pass [offset], it is localOffset of tapped point
+///
+void updatePlayerPosition({
+  required WidgetRef widgetRef,
+  RawKeyEvent? rawKeyEvent,
+  Offset? offset,
+}) {
+  final gamePlayState = widgetRef.read(gameManagerProvider);
+
+  final PlayerInfoNotifier notifier = widgetRef.read(playerInfoProvider);
+
+  switch (gamePlayState) {
+    case GamePlayState.play:
+    case GamePlayState.resumed:
+      if (offset != null) {
+        _updatePlayerPosition(
+          offset: offset,
+          ref: widgetRef,
+        );
+      }
+
+      if (rawKeyEvent != null) {
+        _keyboardMovementHandler(
+            event: rawKeyEvent, playerInfoNotifier: notifier);
+      }
+
+      return;
+    default:
+  }
+}
 
 /// update player position by maintaining border
 ///
@@ -12,37 +49,59 @@ import '../../provider/provider.dart';
 /// `constraints` current screen size
 ///
 /// `offset` current touch position
-void updatePlayerPosition({
-  required PlayerInfoNotifier playerInfoNotifier,
+void _updatePlayerPosition({
+  required WidgetRef ref,
   // required Size constraints,
   required Offset offset,
 }) {
-  //skip keyboardMevemnt while controll mode is only keyboard
-  if (UserSetting.instance.controlMode == ControlMode.keyboard) return;
+  //skip keyboardMovement while control mode is only keyboard
+  if (SpaceInvaderSettingProvider.instance.controlMode ==
+          ControlMode.keyboard //
+      ) return;
 
   final double posY = offset.dy;
   final double posX = offset.dx;
 
-  // we are separating in two section, it'll help to move though another axis stuck
-  // it'll make sure that even One axis will work even other axis stuc
-  if (posY >=
-          GObjectSize.instance.screen.height -
-              playerInfoNotifier.player.size.height / 2 ||
-      posY <= playerInfoNotifier.player.size.height / 2) {
-    ///`we cant move in Y axix` outScreen
-    ///may Add some effect like wave
-  } else {
+  final PlayerInfoNotifier playerInfoNotifier = ref.read(playerInfoProvider);
+  final PlayerBCollideEffect collideEffect =
+      ref.read(playerBoundaryCollisionProvider);
+  //* we are separating in two section, it'll help to move though another axis stuck
+  //* it'll make sure that even One axis will work even other axis stuck
+
+  final List<BoundarySide> blockedSides = [
+    if (posY >=
+        GObjectSize.instance.screen.height -
+            playerInfoNotifier.player.size.height / 2)
+      BoundarySide.bottom,
+    if (posY <= playerInfoNotifier.player.size.height / 2) BoundarySide.top,
+    if (posX >=
+        GObjectSize.instance.screen.width -
+            playerInfoNotifier.player.size.width / 2)
+      BoundarySide.right,
+    if (posX <= playerInfoNotifier.player.size.width / 2) BoundarySide.left,
+  ];
+
+  collideEffect.setPointAndBoundarySide(
+    point: playerInfoNotifier.player.position,
+    sides: blockedSides,
+  );
+
+  if (!blockedSides.contains(BoundarySide.left) &&
+      !blockedSides.contains(BoundarySide.right)) {
+    collideEffect.onMovement(sides: [BoundarySide.left, BoundarySide.right]);
     playerInfoNotifier.updatePosition(
-        dY: posY - (playerInfoNotifier.player.size.height / 2));
+      dX: posX - (playerInfoNotifier.player.size.width / 2),
+      // dY: posY - (playerInfoNotifier.player.size.height / 2),
+    );
   }
-  if (posX >=
-          GObjectSize.instance.screen.width -
-              playerInfoNotifier.player.size.width / 2 ||
-      posX <= playerInfoNotifier.player.size.width / 2) {
-    ///`we cant move in X axix` outScreen
-  } else {
+
+  if (!blockedSides.contains(BoundarySide.top) &&
+      !blockedSides.contains(BoundarySide.bottom)) {
+    collideEffect.onMovement(sides: [BoundarySide.top, BoundarySide.bottom]);
     playerInfoNotifier.updatePosition(
-        dX: posX - (playerInfoNotifier.player.size.width / 2));
+      // dX: posX - (playerInfoNotifier.player.size.width / 2),
+      dY: posY - (playerInfoNotifier.player.size.height / 2),
+    );
   }
 }
 
@@ -51,15 +110,16 @@ void updatePlayerPosition({
 /// `playerInfoNotifier` player provider instance, you can pass context too
 ///
 /// `constraints` current screen size
-void keyboardMovementHandler({
+void _keyboardMovementHandler({
   required PlayerInfoNotifier playerInfoNotifier,
   // required BoxConstraints constraints,
   required RawKeyEvent event,
 }) {
   // debugPrint("keyboardMovementHandler Key pressed ${event.data}");
 
-  //skip keyboardMevemnt while controll mode is only touch
-  if (UserSetting.instance.controlMode == ControlMode.touch) return;
+  //skip keyboardMovement while control mode is only touch
+  if (SpaceInvaderSettingProvider.instance.controlMode == ControlMode.touch)
+    return;
 
   if (event is! RawKeyDownEvent) return;
 
@@ -67,7 +127,7 @@ void keyboardMovementHandler({
 
   //FIXME: 1st keyStrock isnto working on [A,S,D,E]:
   //hint; maybe fixed by changing longPressed delayed
-
+  //TODO: collide effect
   //move left; moveable when dX>0
   if (event.isKeyPressed(LogicalKeyboardKey.arrowLeft) ||
       event.isKeyPressed(LogicalKeyboardKey.keyA)) {
@@ -117,8 +177,7 @@ void keyboardMovementHandler({
 
   if (playerInfoNotifier.player.position != moveTo) {
     playerInfoNotifier.updatePosition(dX: moveTo.dX, dY: moveTo.dY);
-    // debugPrint("update value");
   } else {
-    // debugPrint("isnot updating");
+    // debugPrint("is not updating");
   }
 }

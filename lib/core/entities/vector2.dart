@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/painting.dart';
 
 /// Helper class TO hold position in 2D,
 ///`dX = Left to Right` ,,
@@ -25,6 +26,10 @@ class Vector2 extends Equatable {
   }) {
     this.dX = dX ?? this.dX;
     this.dY = dY ?? this.dY;
+  }
+
+  factory Vector2.fromOffset(Offset offset) {
+    return Vector2(dX: offset.dx, dY: offset.dy);
   }
 
   //to avoid value by reference

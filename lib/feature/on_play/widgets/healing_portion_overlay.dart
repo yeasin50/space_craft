@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/widget/widget.dart';
-import '../../setting/models/object_scalar.dart';
+import '../../../core/providers/object_scalar.dart';
 import '../provider/provider.dart';
 import '../utils/paints/heart_painter.dart';
 

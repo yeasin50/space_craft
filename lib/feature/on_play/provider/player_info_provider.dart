@@ -10,6 +10,7 @@ import '../../../core/extensions/extensions.dart';
 import '../../../core/providers/object_scalar.dart' as game_object;
 import '../../../core/utils/utils.dart';
 import '../../setting/providers/providers.dart';
+import '../../sound/sound_manager.dart';
 import '../models/models.dart';
 import '../utils/utils.dart';
 import 'provider.dart';
@@ -91,8 +92,7 @@ class PlayerInfoNotifier extends ChangeNotifier
   }
 
   void _addBullet() {
-    ///TODO: bullet sound
-    if (UserSetting.instance.sound) {
+    if (SpaceInvaderSettingProvider.instance.sound) {
       SoundManager.instance.playPlayerBulletSound();
     }
     _bullets.add(
@@ -178,11 +178,9 @@ class PlayerInfoNotifier extends ChangeNotifier
       }
     }
 
-    
-     for (final enemy in removableEnemy) {
-          enemyNotifier.onShipHit(gameObject: enemy);
-        }
-
+    for (final enemy in removableEnemy) {
+      enemyNotifier.onShipHit(gameObject: enemy);
+    }
 
     // no need to notify, `removeEnemies` handle this;
   }

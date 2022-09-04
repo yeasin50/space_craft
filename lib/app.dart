@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-
 import 'core/providers/object_scalar.dart';
 import 'core/routes/app_routes.dart';
 import 'core/themes/app_theme.dart';
@@ -26,7 +25,7 @@ class App extends StatelessWidget {
         },
       ),
 
-      home: const AudioTestPage(),
+      // home: const AudioTestPage(),
       // home: const OnPlayScreen(),
       // home: const StartScreen(),
     );

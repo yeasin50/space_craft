@@ -20,6 +20,7 @@ class SoundManager extends OnPlaySound {
 
   static final SoundManager instance = SoundManager._privateConstructor();
   SoundManager._privateConstructor();
+  final player = AudioPlayer(playerId: "a1");
 
   @override
   void playHealingSound() {
@@ -33,7 +34,6 @@ class SoundManager extends OnPlaySound {
 
   @override
   void playPlayerBulletSound() async {
-    final player = AudioPlayer();
     await player.play(AssetSource(_fileSilencer1));
   }
 

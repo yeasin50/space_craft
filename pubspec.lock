@@ -364,8 +364,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.12"
-<<<<<<< HEAD
-=======
   typed_data:
     dependency: transitive
     description:
@@ -373,7 +371,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.1"
->>>>>>> ccd932cffe8372f645706505e8666591070d6c69
   url_launcher:
     dependency: transitive
     description:

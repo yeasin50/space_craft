@@ -17,9 +17,9 @@
             "deviceId": "c"
         },
         {
-            "name": "space_craft",
-
+            "name": "perfomace-test",
             "request": "launch",
+            "flutterMode": "release",
             "type": "dart",
             "deviceId": "c"
         },

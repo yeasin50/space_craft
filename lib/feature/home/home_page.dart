@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:space_craft/core/widget/player_ship.dart';
 
 import '../../core/package/glitch_effect/glitch_effect.dart';
 import '../on_play/on_play.screen.dart';
 import 'home.dart';
+import 'present_mode_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,7 +14,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: StartPageAnimation(),
+      body: PresentModePage(),
     );
   }
 }

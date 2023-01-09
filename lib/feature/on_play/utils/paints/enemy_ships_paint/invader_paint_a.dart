@@ -35,5 +35,5 @@ class InvaderPaintA extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant InvaderPaintA oldDelegate) => false;
+  bool shouldRepaint(covariant InvaderPaintA oldDelegate) => true;
 }

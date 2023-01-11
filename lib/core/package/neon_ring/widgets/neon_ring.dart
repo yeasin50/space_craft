@@ -4,7 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../models/neon_circle_data.dart';
-import '../utils/hue_changer.dart';
+import '../../../../../package/color_helper/lib/src/hue_changer.dart';
 import 'ring_path.dart';
 
 ///```

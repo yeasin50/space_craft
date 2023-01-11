@@ -1,9 +1,10 @@
-import 'dart:developer';
-
 import 'package:boundary_effect/boundary_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
+/// Example of  BoundaryEffect, 
+/// Make sure to use [ProviderScope] on parent widget
 class BoundaryEffectExample1 extends ConsumerWidget {
   const BoundaryEffectExample1({super.key});
 

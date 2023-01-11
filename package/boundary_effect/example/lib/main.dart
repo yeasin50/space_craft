@@ -17,7 +17,7 @@ void main() {
                 PointerDeviceKind.mouse,
               },
             ),
-            child: BoundaryEffectExample1(),
+            child: const BoundaryEffectExample1(),
           ),
         ),
       ),

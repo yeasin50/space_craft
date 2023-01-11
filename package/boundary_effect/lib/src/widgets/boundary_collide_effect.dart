@@ -8,8 +8,9 @@ class BoundaryGlowEffect extends StatelessWidget {
     return LayoutBuilder(
       builder: (_, constraints) => Consumer(
         builder: (context, ref, child) {
-          final collideInfo =
-              ref.watch(playerBoundaryCollisionProvider(constraints.biggest));
+          final collideInfo = ref.watch(playerBoundaryCollisionProvider);
+          collideInfo.init(
+              size: Size(constraints.maxWidth, constraints.maxHeight));
           final playerPosition = collideInfo.collidePoint ?? Vector2();
 
           return Stack(

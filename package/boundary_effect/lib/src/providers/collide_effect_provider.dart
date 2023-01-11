@@ -10,15 +10,24 @@ enum BoundarySide {
 
 /// player[PlayerBCollideEffect] boundary collide effect provider
 final playerBoundaryCollisionProvider =
-    ChangeNotifierProvider.family<PlayerBCollideEffect, Size>((ref, size) {
-  return PlayerBCollideEffect(size: size);
+    ChangeNotifierProvider<PlayerBCollideEffect>((ref) {
+  return PlayerBCollideEffect();
 });
 
 /// PlayerBoundaryCollidePosition effect
 /// effect only show when it reaches the max strength
 class PlayerBCollideEffect with ChangeNotifier {
-  final Size size;
-  PlayerBCollideEffect({required this.size});
+  ///window size
+  Size? size;
+
+  PlayerBCollideEffect();
+
+  /// initialize the provider
+  void init({required Size size}) {
+    size = size;
+  }
+
+  /// ship collide on specific point
   Vector2? _collidePoint;
   Vector2? get collidePoint => _collidePoint;
 
@@ -58,11 +67,15 @@ class PlayerBCollideEffect with ChangeNotifier {
     'Use setPointAndBoundarySide instead. player_movement_handler updated with [BoundarySide]',
   )
   void _setCollideSides(Vector2 point) {
+    if (size == null) {
+      log("Size is needed to be initlize\n use `init` ");
+      throw NullThrownError();
+    }
     if (point.dX < -observablePX &&
         !_blockedSides.contains(BoundarySide.left)) {
       _blockedSides.add(BoundarySide.left);
     }
-    if (point.dX > size.width + observablePX &&
+    if (point.dX > size!.width + observablePX &&
         !_blockedSides.contains(BoundarySide.right)) {
       _blockedSides.add(BoundarySide.right);
     }
@@ -70,24 +83,27 @@ class PlayerBCollideEffect with ChangeNotifier {
     if (point.dY < 0 && !_blockedSides.contains(BoundarySide.top)) {
       _blockedSides.add(BoundarySide.top);
     }
-    if (point.dY > size.height + observablePX &&
+    if (point.dY > size!.height + observablePX &&
         !_blockedSides.contains(BoundarySide.bottom)) {
       _blockedSides.add(BoundarySide.bottom);
     }
   }
 
   Vector2 _refinePoint(Vector2 point) {
-    debugPrint(point.toString());
+    if (size == null) {
+      log("Size is needed to be initialize");
+      throw NullThrownError();
+    }
     return Vector2(
         dX: point.dX < 0
             ? 0
-            : point.dX > size.width
-                ? size.width
+            : point.dX > size!.width
+                ? size!.width
                 : point.dX,
         dY: point.dY < 0
             ? 0
-            : point.dY > size.height
-                ? size.height
+            : point.dY > size!.height
+                ? size!.height
                 : point.dY);
   }
 }

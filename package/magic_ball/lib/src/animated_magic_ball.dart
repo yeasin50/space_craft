@@ -1,6 +1,6 @@
 part of magic_ball;
 
-/// [AnimatedMagicBall] controller 
+/// [AnimatedMagicBall] controller
 typedef MagicBallController = void Function(AnimationController? controller);
 
 
@@ -32,7 +32,7 @@ class _AnimatedMagicBallState extends State<AnimatedMagicBall>
     radiusController =
         AnimationController(vsync: this, duration: const Duration(seconds: 3))
           ..addListener(() {
-            widget.onEnd!(radiusController);
+            if (widget.onEnd != null) widget.onEnd!(radiusController);
             setState(() {});
           });
     ringAnimation = Tween<double>(begin: 0, end: 1).animate(radiusController!);

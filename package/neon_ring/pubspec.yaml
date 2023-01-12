@@ -11,6 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  color_helper:
+    path: ../color_helper
 
 dev_dependencies:
   flutter_test:

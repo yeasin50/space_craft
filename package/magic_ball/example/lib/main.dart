@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:magic_ball/magic_ball.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,10 +24,8 @@ class MagicBallExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          
-        ],
+      body: ListView(
+        children: [const MagicBall()],
       ),
     );
   }

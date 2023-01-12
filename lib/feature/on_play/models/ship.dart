@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vector2/vector2.dart';
 
 import '../../../core/constants/enums/enums.dart';
 import '../../../core/entities/entities.dart';
@@ -76,11 +77,12 @@ class EnemyShip implements IShip {
   ShipState state;
 
   ///image State, helps to animate currently we have two image per ship
-  // ShipImageState state;
-  ShipImageState _imageState;
-
+  /// ShipImageState state;
+  ///
   /// enemy ship look, it is the same ship with little movement
-  ShipImageState get imageState => _imageState;
+  ShipImageState imageState;
+
+  // ShipImageState get imageState => _imageState;
 
   final ShipName _name;
 
@@ -88,9 +90,9 @@ class EnemyShip implements IShip {
     required Vector2 position,
     this.state = ShipState.initial,
     ShipName? name,
+    this.imageState = ShipImageState.a,
   })  : _position = position,
-        _name = name ?? randomEnemyName,
-        _imageState = ShipImageState.a;
+        _name = name ?? randomEnemyName;
 
   @override
   Size size = GObjectSize.instance.enemyShip;
@@ -107,12 +109,12 @@ class EnemyShip implements IShip {
   @override
   ShipName get name => _name;
 
-  /// switch image state between A-B while [state] is null. else update [_imageState] based on params
+  /// switch image state between A-B while [state] is null. else update [imageState] based on params
   void switchImageState({ShipImageState? state}) {
     state == null
-        ? _imageState == ShipImageState.a
-            ? _imageState = ShipImageState.b
-            : _imageState = ShipImageState.a
-        : _imageState = state;
+        ? imageState == ShipImageState.a
+            ? imageState = ShipImageState.b
+            : imageState = ShipImageState.a
+        : imageState = state;
   }
 }

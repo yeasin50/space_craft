@@ -5,7 +5,11 @@ import '../utils/paints/paints.dart';
 
 /// Animating enemy Tail, But it is not event noticeable 😐
 class AnimatedEnemyShipA extends StatefulWidget {
-  const AnimatedEnemyShipA({Key? key}) : super(key: key);
+  final Size? size;
+  const AnimatedEnemyShipA({
+    Key? key,
+    this.size,
+  }) : super(key: key);
 
   @override
   State<AnimatedEnemyShipA> createState() => _AnimatedEnemyShipAState();
@@ -42,7 +46,7 @@ class _AnimatedEnemyShipAState extends State<AnimatedEnemyShipA>
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: GObjectSize.instance.enemyShip,
+      size: widget.size ?? GObjectSize.instance.enemyShip,
       painter: EnemyAPainter(
         tailAnimation: animation,
       ),

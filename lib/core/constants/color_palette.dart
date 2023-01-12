@@ -39,7 +39,21 @@ const List<Color> colorSet1 = [
   Color.fromRGBO(166, 253, 41, 1),
 ];
 
-const List<List<Color>> _colorSets = [colorSet0, colorSet1];
+/// 4Colors
+const List<Color> colorSet2 = [
+  Color.fromARGB(255, 61, 255, 97),
+  Color.fromARGB(255, 139, 85, 255),
+  Color.fromARGB(255, 232, 255, 59),
+  Color.fromARGB(255, 253, 41, 41),
+];
+
+List<List<Color>> _colorSets = [
+  colorSet0,
+  // colorSet0.reversed.toList(),
+  colorSet1,
+  // colorSet1.reversed.toList(),
+  colorSet2
+];
 
 List<Color> get getRandomColorSet =>
     _colorSets[math.Random().nextInt(_colorSets.length - 1)];

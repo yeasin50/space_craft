@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:glitch_effect/glitch_effect.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../../core/entities/ship.dart';
-import '../../../core/package/glitch_effect/glitch_effect.dart';
 import '../models/ship.dart';
 import '../utils/utils.dart';
 import 'esp_enemy_ship1.dart';

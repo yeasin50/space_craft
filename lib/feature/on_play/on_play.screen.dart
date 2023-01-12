@@ -1,9 +1,9 @@
+import 'package:boundary_effect/boundary_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/providers/providers.dart';
 import '../../core/widget/player_ship.dart';
-import '../boundary_collide_effect/boundary_collide_effect.dart';
 import 'on_play.dart';
 import 'provider/provider.dart';
 

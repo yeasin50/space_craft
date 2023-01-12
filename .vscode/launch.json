@@ -8,7 +8,7 @@
             "name": "chrome space_craft",
             "request": "launch",
             "type": "dart",
-            "deviceId": "c"
+            // "deviceId": "c"
         },
         {
             "name": "windows space_craft",

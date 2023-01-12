@@ -1,6 +1,7 @@
 import 'dart:math' show Random;
 
-import '../../../../core/entities/vector2.dart';
+import 'package:vector2/vector2.dart';
+
 import '../../../../core/providers/object_scalar.dart';
 import '../../models/models.dart';
 

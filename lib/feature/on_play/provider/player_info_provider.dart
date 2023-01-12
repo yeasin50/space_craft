@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/core/constants/enums/enums.dart';
+import '../../../core/constants/enums/enums.dart';
+import 'package:vector2/vector2.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';

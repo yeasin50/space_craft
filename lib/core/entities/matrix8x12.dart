@@ -36,7 +36,7 @@ class Matrix8x12 {
   static Color blocColor(int cellDigit) {
     switch (cellDigit) {
       case 0:
-        return Colors.cyanAccent.withOpacity(.2);
+        return Colors.transparent;
       case 1:
         return Colors.white;
 

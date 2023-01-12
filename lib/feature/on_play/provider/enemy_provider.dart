@@ -3,8 +3,9 @@ import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/core/constants/constants.dart';
+import 'package:vector2/vector2.dart';
 
+import '../../../core/constants/constants.dart';
 import '../../../core/entities/entities.dart';
 import '../../../core/extensions/extensions.dart';
 import '../../../core/providers/object_scalar.dart';

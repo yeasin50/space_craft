@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/core/constants/enums/enums.dart';
-import 'package:space_craft/core/package/glitch_effect/glitch_effect.dart';
-import 'package:space_craft/feature/on_play/provider/player_info_provider.dart';
-import 'package:space_craft/feature/setting/providers/providers.dart';
+import 'package:glitch_effect/glitch_effect.dart';
+import 'package:magic_ball/magic_ball.dart';
+import '../constants/enums/enums.dart';
+import '../../feature/on_play/provider/player_info_provider.dart';
 
 import '../../feature/on_play/utils/utils.dart';
 import 'ship_blast.dart';
-import '../package/magic_ball/utils/particle_path.dart';
 import '../providers/object_scalar.dart';
 import 'rotate_widget.dart';
 
 /// ship widget represent player
 
 class PlayerShip extends ConsumerWidget {
-  const PlayerShip({Key? key}) : super(key: key);
+  final Size? size;
+  const PlayerShip({Key? key, this.size}) : super(key: key);
 
   @override
   Widget build(BuildContext context, ref) {
@@ -26,36 +26,44 @@ class PlayerShip extends ConsumerWidget {
       //dirty trick to rebuild the UI 😂
       key: ValueKey("Glitch effect on PlayerShip $playGlitch"),
       controller: GlitchController(autoPlay: playGlitch),
-      child: const _PlayerShipStructure(),
+      child: _PlayerShipStructure(
+        size: size ??
+            Size(
+              GObjectSize.instance.playerShip.width,
+              GObjectSize.instance.playerShip.height,
+            ),
+      ),
     );
   }
 }
 
 class _PlayerShipStructure extends StatelessWidget {
+  final Size size;
   const _PlayerShipStructure({
     Key? key,
+    required this.size,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: GObjectSize.instance.playerShip.width,
-      height: GObjectSize.instance.playerShip.height * 1.25,
+      width: size.width,
+      height: size.height * 1.25,
       child: Stack(
         children: [
           Align(
             alignment: Alignment.bottomCenter,
             child: ShipBlast(
               size: Size(
-                GObjectSize.instance.playerShip.width * .125,
-                GObjectSize.instance.playerShip.height * .5,
+                size.width * .125,
+                size.height * .5,
               ),
             ),
           ),
           CustomPaint(
             size: Size(
-              GObjectSize.instance.playerShip.width,
-              GObjectSize.instance.playerShip.height,
+              size.width,
+              size.height,
             ),
             painter: PlayerShipPaint(),
           ),
@@ -68,8 +76,7 @@ class _PlayerShipStructure extends StatelessWidget {
               child: ClipPath(
                 clipper: StarPathClipper(),
                 child: () {
-                  final double startSize =
-                      GObjectSize.instance.playerShip.height * .45;
+                  final double startSize = size.height * .45;
                   return Container(
                     height: startSize,
                     width: startSize,

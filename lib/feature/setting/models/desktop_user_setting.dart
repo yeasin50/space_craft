@@ -1,4 +1,4 @@
-import 'package:space_craft/core/entities/entities.dart';
+import '../../../core/entities/entities.dart';
 
 class DesktopUserSetting extends Setting {
   DesktopUserSetting() {

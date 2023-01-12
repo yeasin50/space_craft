@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:boundary_effect/boundary_effect.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vector2/vector2.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/entities/entities.dart';
 import '../../../../core/providers/providers.dart';
-import '../../../boundary_collide_effect/providers/collide_effect_provider.dart';
 import '../../../setting/providers/providers.dart';
 import '../../provider/provider.dart';
 
@@ -63,8 +63,8 @@ void _updatePlayerPosition({
   final double posX = offset.dx;
 
   final PlayerInfoNotifier playerInfoNotifier = ref.read(playerInfoProvider);
-  final PlayerBCollideEffect collideEffect =
-      ref.read(playerBoundaryCollisionProvider);
+  final BoundaryCollideEffect collideEffect =
+      ref.read(boundaryCollisionProvider);
   //* we are separating in two section, it'll help to move though another axis stuck
   //* it'll make sure that even One axis will work even other axis stuck
 
@@ -81,14 +81,13 @@ void _updatePlayerPosition({
     if (posX <= playerInfoNotifier.player.size.width / 2) BoundarySide.left,
   ];
 
-  collideEffect.setPointAndBoundarySide(
-    point: playerInfoNotifier.player.position,
-    sides: blockedSides,
-  );
+  // collideEffect.setPointAndBoundarySide(
+  //   point: playerInfoNotifier.player.position,
+  //   sides: blockedSides,
+  // );
 
   if (!blockedSides.contains(BoundarySide.left) &&
       !blockedSides.contains(BoundarySide.right)) {
-    collideEffect.onMovement(sides: [BoundarySide.left, BoundarySide.right]);
     playerInfoNotifier.updatePosition(
       dX: posX - (playerInfoNotifier.player.size.width / 2),
       // dY: posY - (playerInfoNotifier.player.size.height / 2),
@@ -97,12 +96,17 @@ void _updatePlayerPosition({
 
   if (!blockedSides.contains(BoundarySide.top) &&
       !blockedSides.contains(BoundarySide.bottom)) {
-    collideEffect.onMovement(sides: [BoundarySide.top, BoundarySide.bottom]);
     playerInfoNotifier.updatePosition(
       // dX: posX - (playerInfoNotifier.player.size.width / 2),
       dY: posY - (playerInfoNotifier.player.size.height / 2),
     );
   }
+
+  ///TODO: recheck if collide is working or not
+  collideEffect.onMovement(
+    boxSize: playerInfoNotifier.player.size,
+    boxPosition: offset,
+  );
 }
 
 ///*keyboardMovement update player position by maintaining border

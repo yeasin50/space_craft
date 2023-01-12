@@ -1,8 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:space_craft/core/widget/player_ship.dart';
+import 'package:glitch_effect/glitch_effect.dart';
 
-import '../../core/package/glitch_effect/glitch_effect.dart';
 import '../on_play/on_play.screen.dart';
 import 'home.dart';
 import 'present_mode_page.dart';

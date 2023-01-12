@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:vector2/vector2.dart';
 
 import '../../core/entities/entities.dart';
 import '../../core/providers/providers.dart';

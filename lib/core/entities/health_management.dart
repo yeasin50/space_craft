@@ -1,4 +1,4 @@
-import 'package:space_craft/core/entities/entities.dart';
+import 'entities.dart';
 
 /// Damage dealer:on bullet, ship
 ///

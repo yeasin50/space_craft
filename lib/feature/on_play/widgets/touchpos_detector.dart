@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/feature/setting/providers/providers.dart';
+import '../../setting/providers/providers.dart';
 
 import '../provider/provider.dart';
 import '../utils/utils.dart';

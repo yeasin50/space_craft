@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/core/constants/enums/enums.dart';
-import 'package:space_craft/core/package/glitch_effect/glitch_effect.dart';
-import 'package:space_craft/feature/on_play/provider/player_info_provider.dart';
+import 'package:glitch_effect/glitch_effect.dart';
+import 'package:magic_ball/magic_ball.dart';
+import '../constants/enums/enums.dart';
+import '../../feature/on_play/provider/player_info_provider.dart';
 
 import '../../feature/on_play/utils/utils.dart';
 import 'ship_blast.dart';
-import '../package/magic_ball/utils/particle_path.dart';
 import '../providers/object_scalar.dart';
 import 'rotate_widget.dart';
 

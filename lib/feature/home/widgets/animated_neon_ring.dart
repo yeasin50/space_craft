@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:neon_ring/neon_ring.dart';
 
-import '../../../core/package/neon_ring/neon_ring.dart';
 
 class NeonRingAnimation extends StatefulWidget {
   final NeonCircleData data;

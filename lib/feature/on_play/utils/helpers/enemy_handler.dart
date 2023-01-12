@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:space_craft/core/entities/matrix8x12.dart';
-import 'package:space_craft/feature/on_play/models/invader_matrix.dart';
+import '../../../../core/entities/matrix8x12.dart';
+import '../../models/invader_matrix.dart';
 
 import '../../../../core/constants/color_palette.dart';
 import '../../../../core/entities/ship.dart';

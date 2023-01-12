@@ -1,8 +1,8 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:magic_ball/magic_ball.dart';
 
-import '../../../../../core/package/magic_ball/magic_ball.dart';
 import 'enemy_a_tail_paint.dart';
 import 'ship_paint_model.dart';
 

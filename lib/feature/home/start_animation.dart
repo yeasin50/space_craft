@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:glitch_effect/glitch_effect.dart';
+import 'package:magic_ball/magic_ball.dart';
+import 'package:neon_ring/neon_ring.dart';
 
-import '../../core/package/glitch_effect/glitch_effect.dart';
-import '../../core/package/neon_ring/neon_ring.dart';
 import '../../core/providers/object_scalar.dart';
 import '../../core/widget/player_ship.dart';
 import 'widgets/widgets.dart';

@@ -1,5 +1,6 @@
 // enemyShip Bullet Damage
 import 'package:flutter/material.dart';
+import 'package:vector2/vector2.dart';
 
 import '../../../core/entities/entities.dart';
 import '../../../core/providers/object_scalar.dart';

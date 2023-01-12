@@ -3,7 +3,6 @@ part of magic_ball;
 /// [AnimatedMagicBall] controller
 typedef MagicBallController = void Function(AnimationController? controller);
 
-
 /// use [AnimatedMagicBall] to show magic ball instead of [MagicBall]
 class AnimatedMagicBall extends StatefulWidget {
   final MagicBallController? onEnd;

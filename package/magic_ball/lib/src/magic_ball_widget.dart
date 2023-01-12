@@ -1,4 +1,3 @@
-
 part of magic_ball;
 
 /// [MagicBall] animate particles from center, keep creation on every `blastDelay`
@@ -59,6 +58,7 @@ class MagicBall extends StatefulWidget {
   /// default  [MagicBall.singleBlast] `blastDelay` is `Duration(milliseconds: 0),` and [MagicBall] is 400 millisecond.
   final Duration blastDelay;
 
+ /// you can pass any widget that will placed on bottom stack
   final Widget? child;
 
   @override

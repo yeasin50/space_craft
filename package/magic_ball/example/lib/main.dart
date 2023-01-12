@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:magic_ball/magic_ball.dart';
 
@@ -24,8 +26,33 @@ class MagicBallExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [const MagicBall()],
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const MagicBall(),
+            AnimatedMagicBall(
+              maxSize: 200,
+              onEnd: (controller) {
+                log("animation ended");
+              },
+            ),
+            const MagicBall.singleBlast(),
+            const MagicBall(
+              blastDelay: Duration(seconds: 1),
+              numberOfParticles: 33,
+              child: Align(
+                child: Text(
+                  "Custom",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

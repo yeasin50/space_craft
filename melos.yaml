@@ -1,0 +1,5 @@
+name: space_craft_melos
+
+packages:
+  - package/**
+  - "*"

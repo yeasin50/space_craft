@@ -1,5 +1,5 @@
 name: space_craft
-description: A new Flutter project to create 2D game.
+description: An Over Engineered Flutter project to create 2D game.
 
 publish_to: "none"
 
@@ -22,6 +22,20 @@ dependencies:
   equatable: ^2.0.3
 
   animated_text_kit: ^4.2.2
+
+  boundary_effect:
+    path: package/boundary_effect
+  color_helper:
+    path: package/color_helper
+  glitch_effect:
+    path: package/glitch_effect
+  magic_ball:
+    path: package/magic_ball
+  neon_ring:
+    path: package/neon_ring
+  vector2:
+    path: package/vector2
+  
 
 dev_dependencies:
   flutter_test:

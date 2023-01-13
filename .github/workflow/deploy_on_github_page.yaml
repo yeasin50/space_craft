@@ -2,7 +2,7 @@ name: deploy web on To Test UI
 on:
   push:
     branches:
-      - start-screen
+      - master
 jobs:
   build:
     name: Build Web

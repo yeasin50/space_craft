@@ -1,6 +1,7 @@
 name: deploy web on To Test UI
 on:
   push:
+  pull:
     branches:
       - master
 jobs:

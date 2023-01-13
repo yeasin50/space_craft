@@ -1,9 +1,9 @@
 name: deploy web on To Test UI
 on:
   push:
-  pull:
     branches:
-      - master
+      - deploy
+
 jobs:
   build:
     name: Build github page

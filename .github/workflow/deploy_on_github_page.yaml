@@ -25,7 +25,7 @@ jobs:
           git config --global user.name yeasin50
           git status
           git remote add origin https://${{secrets.commit_secret}}@github.com/yeasin50/space_craft.git
-          git checkout -b gh-page-start-screen
+          git checkout -b gh-page
           git add --all
-          git commit -m "start-screen-deploy-test"
+          git commit -m "web-build"
           git push origin gh-page -f

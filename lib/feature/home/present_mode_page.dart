@@ -11,12 +11,45 @@ import '../../core/widget/widget.dart';
 import '../on_play/models/models.dart';
 import '../on_play/on_play.dart';
 import 'home_page.dart';
+import 'widgets/aniamted_navigation_arrow.dart';
 
 class PresentModePage extends StatelessWidget {
   const PresentModePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    ValueNotifier<bool> showArrowAnimation = ValueNotifier(false);
+
+    // better to use constraints here
+    final labels = [
+      "",
+      "Player Ship",
+      "Bullet",
+      for (int i = 0; i < ShipName.values.length - 1; i++)
+        ShipName.values.elementAt(i + 1).name,
+      ""
+    ];
+    final List<Widget> items = [
+      StartPageAnimation(
+        onShipAnimationEnd: () {
+          showArrowAnimation.value = true;
+        },
+      ),
+      const _PresentModeShip(),
+      const BulletWidget(
+        bulletHeight: 50,
+        color: Colors.cyanAccent,
+        downward: false,
+      ),
+      ...[
+        for (int i = 0; i < ShipName.values.length - 2; i++)
+          _EnemyShipOnPresentation(enemyName: ShipName.values.elementAt(i + 1))
+      ],
+      const AnimatedEnemyShipA(size: Size.square(225)),
+    ];
+
+    final PageController pageController = PageController();
+
     return ScrollConfiguration(
       behavior: ScrollConfiguration.of(context).copyWith(
         dragDevices: {
@@ -27,40 +60,31 @@ class PresentModePage extends StatelessWidget {
       child: Scaffold(
         body: LayoutBuilder(
           builder: (_, constraints) {
-            // better to use constraints here
-            final labels = [
-              "",
-              "Player Ship",
-              "Bullet",
-              for (int i = 0; i < ShipName.values.length - 1; i++)
-                ShipName.values.elementAt(i + 1).name,
-              ""
-            ];
-            final List<Widget> items = [
-              const StartPageAnimation(),
-              const _PresentModeShip(),
-              const BulletWidget(
-                bulletHeight: 50,
-                color: Colors.cyanAccent,
-                downward: false,
-              ),
-              ...[
-                for (int i = 0; i < ShipName.values.length - 2; i++)
-                  _EnemyShipOnPresentation(
-                      enemyName: ShipName.values.elementAt(i + 1))
-              ],
-              const AnimatedEnemyShipA(size: Size.square(225)),
-            ];
-
             return PageView(
+              controller: pageController,
               children: List.generate(
                 items.length,
                 (index) => Stack(
                   children: [
                     Center(child: items[index]),
                     Align(
-                        alignment: Alignment(0, .65),
-                        child: _buildName(labels[index])),
+                      alignment: const Alignment(0, .65),
+                      child: _buildName(labels[index]),
+                    ),
+                    Align(
+                      alignment: const Alignment(1, 0),
+                      child: ValueListenableBuilder<bool>(
+                        valueListenable: showArrowAnimation,
+                        builder: (context, value, child) =>
+                            AnimatedNavigateWidget(
+                          showAnimation: value,
+                          onTap: () => pageController.nextPage(
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.bounceIn,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -83,7 +107,7 @@ Widget _buildName(String text) {
     padding: const EdgeInsets.only(top: 8.0),
     child: Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.white,
         fontSize: 22,
       ),

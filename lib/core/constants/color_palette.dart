@@ -57,3 +57,6 @@ List<List<Color>> _colorSets = [
 
 List<Color> get getRandomColorSet =>
     _colorSets[math.Random().nextInt(_colorSets.length - 1)];
+
+Color get getRandomColor =>
+    Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);

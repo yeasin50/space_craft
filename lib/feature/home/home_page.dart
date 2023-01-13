@@ -6,9 +6,12 @@ import 'home.dart';
 import 'present_mode_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   static const routeName = "/";
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -18,7 +21,13 @@ class HomePage extends StatelessWidget {
 }
 
 class StartPageAnimation extends StatefulWidget {
-  const StartPageAnimation({Key? key}) : super(key: key);
+  const StartPageAnimation({
+    Key? key,
+    this.onShipAnimationEnd,
+  }) : super(key: key);
+
+  /// when the player successfully land on middle :)
+  final VoidCallback? onShipAnimationEnd;
 
   @override
   State<StartPageAnimation> createState() => _StartPageAnimationState();
@@ -66,7 +75,12 @@ class _StartPageAnimationState extends State<StartPageAnimation>
           duration: const Duration(milliseconds: 600),
           opacity: opacityOfStartAnimation,
           child: StartAnimation(
-            onAnimationEnd: () => setState(() => endOfStartAnimation = true),
+            onAnimationEnd: () {
+              setState(() => endOfStartAnimation = true);
+              if (widget.onShipAnimationEnd != null) {
+                widget.onShipAnimationEnd!();
+              }
+            },
           ),
         ),
 
@@ -78,7 +92,7 @@ class _StartPageAnimationState extends State<StartPageAnimation>
             opacity: endOfStartAnimation ? 1 : 0,
             child: StartTextAnimation(onTap: navToOnPlayScreen),
           ),
-        )
+        ),
       ],
     );
   }

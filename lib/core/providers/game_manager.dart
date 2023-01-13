@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/core/providers/providers.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../feature/on_play/provider/provider.dart';
@@ -14,7 +15,16 @@ final gameManagerProvider = StateNotifierProvider<GameManager, GamePlayState>(
 class GameManager extends StateNotifier<GamePlayState> with GameState {
   final StateNotifierProviderRef ref;
 
-  GameManager(this.ref) : super(GamePlayState.idle);
+  GameManager(this.ref) : super(GamePlayState.idle) {
+    ref.listen<PlayerInfoNotifier>(playerInfoProvider, (pref, next) {
+      final playerHealth = next.player.health.health();
+
+      if (playerHealth <= 0) {
+        onPause();
+        state = GamePlayState.over;
+      }
+    });
+  }
 
   GamePlayState get mode => state;
 

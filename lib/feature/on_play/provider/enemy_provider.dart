@@ -102,7 +102,7 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
       final player = playerNotifier.player;
 
       /// check if enemy is OK
-      for (final enemy in _enemies) {
+      for (final enemy in _enemies.toList()) {
         if (!isWorkable(enemy)) continue;
 
         enemy.position.update(dY: enemy.position.dY + enemyMovementPY);

@@ -6,7 +6,7 @@ on:
       - master
 jobs:
   build:
-    name: Build Web
+    name: Build github page
     env:
       my_secret: ${{secrets.commit_secret}}
     runs-on: ubuntu-latest

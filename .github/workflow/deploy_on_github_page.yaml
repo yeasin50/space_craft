@@ -17,7 +17,7 @@ jobs:
       - run: flutter config --enable-web
       - run: flutter clean
       - run: flutter pub get
-      - run: flutter build web --release 
+      - run: flutter build web --release --web-renderer html
       - run: |
           cd build/web
           git init
@@ -28,4 +28,4 @@ jobs:
           git checkout -b gh-page-start-screen
           git add --all
           git commit -m "start-screen-deploy-test"
-          git push origin gh-page-start-screen -f
+          git push origin gh-page -f

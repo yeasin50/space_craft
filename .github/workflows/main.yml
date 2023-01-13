@@ -1,0 +1,32 @@
+name: deploy web on To Test UI
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  build:
+    name: Build github page
+    env:
+      my_secret: ${{secrets.commit_secret}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1.5.3
+        with:
+          channel: "stable"
+      - run: flutter config --enable-web
+      - run: flutter clean
+      - run: flutter pub get
+      - run: flutter build web --release --web-renderer html
+      - run: |
+          cd build/web
+          git init
+          git config --global user.email yeasinsheikh50@gmail.com
+          git config --global user.name yeasin50
+          git status
+          git remote add origin https://${{secrets.commit_secret}}@github.com/yeasin50/space_craft.git
+          git checkout -b gh-page
+          git add --all
+          git commit -m "web-build"
+          git push origin gh-page -f

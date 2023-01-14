@@ -53,7 +53,8 @@ class _StartPageAnimationState extends State<StartPageAnimation>
     await Future.delayed(overlayGlitchController.duration * 1.4);
 
     if (!mounted) return;
-    Navigator.of(context).pushNamed(OnPlayScreen.routeName);
+   await Navigator.of(context).pushReplacementNamed(OnPlayScreen.routeName);
+   
   }
 
   @override

@@ -5,4 +5,6 @@ enum GamePlayState {
   paused,
   resumed,
   reset,
+  over,
+  exit,
 }

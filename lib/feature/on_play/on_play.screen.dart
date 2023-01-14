@@ -1,6 +1,7 @@
 import 'package:boundary_effect/boundary_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:space_craft/feature/on_play/widgets/game_over_overlay.dart';
 
 import '../../core/providers/providers.dart';
 import '../../core/widget/player_ship.dart';
@@ -14,7 +15,7 @@ class OnPlayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final f = FocusNode();
-
+    bool onPlayHasBeenTriggered = false;
     return LayoutBuilder(
       key: const ValueKey("OnPlayScreen-root-widget"),
       builder: (context, constraints) {
@@ -25,15 +26,17 @@ class OnPlayScreen extends StatelessWidget {
           builder: (context, ref, child) {
             final playerInfo = ref.watch(playerInfoProvider);
             final enemyNotifier = ref.watch(enemyProvider);
-            final gameState = ref.watch(gameManagerProvider.notifier);
-            gameState.initialOnPlay();
+
+            if (onPlayHasBeenTriggered == false) {
+              ref.watch(gameManagerProvider.notifier).onPlay();
+              onPlayHasBeenTriggered = true;
+            }
 
             return RawKeyboardListener(
               autofocus: true,
               focusNode: f,
               onKey: (event) {
                 updatePlayerPosition(widgetRef: ref, rawKeyEvent: event);
-                // _onKeyEvent(gameState.mode, playerInfo, event);
               },
               child: Scaffold(
                 body: Stack(
@@ -43,13 +46,6 @@ class OnPlayScreen extends StatelessWidget {
                       key: ValueKey("BoundaryGlowEffect widget:OnPlayScreen"),
                     ),
                     _playerShip(playerInfo),
-                    // AnimatedPositioned(
-                    //   key: const ValueKey("Player Ship Widget"),
-                    //   duration: GObjectSize.instance.animationDuration,
-                    //   top: playerInfo.player.position.dY,
-                    //   left: playerInfo.player.position.dX,
-                    //   child: const PlayerShip(),
-                    // ),
 
                     // enemy ships and enemy's bullets
                     //FIXME: duplicate key
@@ -61,19 +57,6 @@ class OnPlayScreen extends StatelessWidget {
 
                     //player ship's bullet
                     ..._playerBullets(playerInfo),
-                    // ...playerInfo.bullets.map((b) {
-                    //   return AnimatedPositioned(
-                    //     key: ValueKey(b),
-                    //     duration: GObjectSize.instance.animationDuration,
-                    //     top: b.position.dY,
-                    //     left: b.position.dX,
-                    //     child: BulletWidget(
-                    //       bulletHeight: b.size.height,
-                    //       color: b.color,
-                    //       downward: false,
-                    //     ),
-                    //   );
-                    // }).toList(),
 
                     //player Health, ScoreBar
                     Positioned(
@@ -101,6 +84,10 @@ class OnPlayScreen extends StatelessWidget {
                       key: ValueKey("controlBar"),
                       child: GameControlBar(),
                     ),
+
+                    const Align(
+                      child: GameOverOverlay(),
+                    )
                   ],
                 ),
               ),

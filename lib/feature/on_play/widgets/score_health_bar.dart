@@ -15,7 +15,9 @@ class ScoreHealthBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double playerHealth = playerInfoNotifier.player.health.health();
-    playerHealth < 0 ? 0 : playerHealth;
+    if (playerHealth < 0) playerHealth = 0;
+    int score = playerInfoNotifier.scoreManager.score();
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -30,7 +32,7 @@ class ScoreHealthBar extends StatelessWidget {
         ),
         const SizedBox(width: 10),
         Text(
-          "Score: ${playerInfoNotifier.scoreManager.score()}",
+          "Score: $score",
           style: const TextStyle(color: Colors.white),
         ),
       ],

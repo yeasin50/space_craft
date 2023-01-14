@@ -35,70 +35,63 @@ class OnPlayScreen extends StatelessWidget {
               onPlayHasBeenTriggered = true;
             }
 
-            return MousePositionWrapper(
-              onHover: (event) {
-                updatePlayerPosition(
-                    widgetRef: ref, offset: event.localPosition);
+            return RawKeyboardListener(
+              autofocus: true,
+              focusNode: f,
+              onKey: (event) {
+                updatePlayerPosition(widgetRef: ref, rawKeyEvent: event);
               },
-              child: RawKeyboardListener(
-                autofocus: true,
-                focusNode: f,
-                onKey: (event) {
-                  //FIXME: duplicate player position update while using mouse region
-                  updatePlayerPosition(widgetRef: ref, rawKeyEvent: event);
-                },
-                child: Scaffold(
-                  body: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      const BoundaryGlowEffect(
-                        key: ValueKey("BoundaryGlowEffect widget:OnPlayScreen"),
+              child: Scaffold(
+                body: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    const BoundaryGlowEffect(
+                      key: ValueKey("BoundaryGlowEffect widget:OnPlayScreen"),
+                    ),
+                    _playerShip(playerInfo),
+
+                    // enemy ships and enemy's bullets
+
+                    EnemyOverlay(
+                      key: const ValueKey("EnemyOverlay key"),
+                      enemyNotifier: enemyNotifier,
+                      constraints: constraints,
+                    ),
+
+                    //player ship's bullet
+                    ..._playerBullets(playerInfo),
+
+                    //player Health, ScoreBar
+                    Positioned(
+                      top: 16,
+                      left: 16,
+                      child: ScoreHealthBar(
+                        heartHeight: 30,
+                        playerInfoNotifier: playerInfo,
                       ),
-                      _playerShip(playerInfo),
+                    ),
 
-                      // enemy ships and enemy's bullets
+                    // healing Objects
+                    const HealingPortionOverlay(),
 
-                      EnemyOverlay(
-                        key: const ValueKey("EnemyOverlay key"),
-                        enemyNotifier: enemyNotifier,
-                        constraints: constraints,
-                      ),
+                    /// special power player
 
-                      //player ship's bullet
-                      ..._playerBullets(playerInfo),
+                    //* detect touch on bottom
+                    TouchPositionDetector(
+                      key: const ValueKey("TouchPositionDetector key"),
+                      constraints: constraints,
+                    ),
 
-                      //player Health, ScoreBar
-                      Positioned(
-                        top: 16,
-                        left: 16,
-                        child: ScoreHealthBar(
-                          heartHeight: 30,
-                          playerInfoNotifier: playerInfo,
-                        ),
-                      ),
+                    //* game pause, restart, settings
+                    const Align(
+                      key: ValueKey("controlBar"),
+                      child: GameControlBar(),
+                    ),
 
-                      // healing Objects
-                      const HealingPortionOverlay(),
-
-                      /// special power player
-
-                      //* detect touch on bottom
-                      TouchPositionDetector(
-                        key: const ValueKey("TouchPositionDetector key"),
-                        constraints: constraints,
-                      ),
-
-                      //* game pause, restart, settings
-                      const Align(
-                        key: ValueKey("controlBar"),
-                        child: GameControlBar(),
-                      ),
-
-                      const Align(
-                        child: GameOverOverlay(),
-                      )
-                    ],
-                  ),
+                    const Align(
+                      child: GameOverOverlay(),
+                    )
+                  ],
                 ),
               ),
             );

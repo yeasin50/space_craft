@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:boundary_effect/boundary_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:space_craft/feature/on_play/widgets/game_over_overlay.dart';
+import 'package:space_craft/feature/on_play/widgets/mouse_position_tracker.dart';
 
 import '../../core/providers/providers.dart';
 import '../../core/widget/player_ship.dart';
@@ -32,63 +35,70 @@ class OnPlayScreen extends StatelessWidget {
               onPlayHasBeenTriggered = true;
             }
 
-            return RawKeyboardListener(
-              autofocus: true,
-              focusNode: f,
-              onKey: (event) {
-                updatePlayerPosition(widgetRef: ref, rawKeyEvent: event);
+            return MousePositionWrapper(
+              onHover: (event) {
+                updatePlayerPosition(
+                    widgetRef: ref, offset: event.localPosition);
               },
-              child: Scaffold(
-                body: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    const BoundaryGlowEffect(
-                      key: ValueKey("BoundaryGlowEffect widget:OnPlayScreen"),
-                    ),
-                    _playerShip(playerInfo),
-
-                    // enemy ships and enemy's bullets
-                    //FIXME: duplicate key
-                    EnemyOverlay(
-                      key: const ValueKey("EnemyOverlay key"),
-                      enemyNotifier: enemyNotifier,
-                      constraints: constraints,
-                    ),
-
-                    //player ship's bullet
-                    ..._playerBullets(playerInfo),
-
-                    //player Health, ScoreBar
-                    Positioned(
-                      top: 16,
-                      left: 16,
-                      child: ScoreHealthBar(
-                        heartHeight: 30,
-                        playerInfoNotifier: playerInfo,
+              child: RawKeyboardListener(
+                autofocus: true,
+                focusNode: f,
+                onKey: (event) {
+                  //FIXME: duplicate player position update while using mouse region
+                  updatePlayerPosition(widgetRef: ref, rawKeyEvent: event);
+                },
+                child: Scaffold(
+                  body: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      const BoundaryGlowEffect(
+                        key: ValueKey("BoundaryGlowEffect widget:OnPlayScreen"),
                       ),
-                    ),
+                      _playerShip(playerInfo),
 
-                    // healing Objects
-                    const HealingPortionOverlay(),
+                      // enemy ships and enemy's bullets
 
-                    /// special power player
+                      EnemyOverlay(
+                        key: const ValueKey("EnemyOverlay key"),
+                        enemyNotifier: enemyNotifier,
+                        constraints: constraints,
+                      ),
 
-                    //* detect touch on bottom
-                    TouchPositionDetector(
-                      key: const ValueKey("TouchPositionDetector key"),
-                      constraints: constraints,
-                    ),
+                      //player ship's bullet
+                      ..._playerBullets(playerInfo),
 
-                    //* game pause, restart, settings
-                    const Align(
-                      key: ValueKey("controlBar"),
-                      child: GameControlBar(),
-                    ),
+                      //player Health, ScoreBar
+                      Positioned(
+                        top: 16,
+                        left: 16,
+                        child: ScoreHealthBar(
+                          heartHeight: 30,
+                          playerInfoNotifier: playerInfo,
+                        ),
+                      ),
 
-                    const Align(
-                      child: GameOverOverlay(),
-                    )
-                  ],
+                      // healing Objects
+                      const HealingPortionOverlay(),
+
+                      /// special power player
+
+                      //* detect touch on bottom
+                      TouchPositionDetector(
+                        key: const ValueKey("TouchPositionDetector key"),
+                        constraints: constraints,
+                      ),
+
+                      //* game pause, restart, settings
+                      const Align(
+                        key: ValueKey("controlBar"),
+                        child: GameControlBar(),
+                      ),
+
+                      const Align(
+                        child: GameOverOverlay(),
+                      )
+                    ],
+                  ),
                 ),
               ),
             );

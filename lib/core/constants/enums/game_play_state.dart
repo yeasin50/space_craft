@@ -6,4 +6,5 @@ enum GamePlayState {
   resumed,
   reset,
   over,
+  exit,
 }

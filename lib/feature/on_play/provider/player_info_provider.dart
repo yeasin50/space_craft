@@ -26,7 +26,6 @@ class PlayerInfoNotifier extends ChangeNotifier
   final ChangeNotifierProviderRef ref;
 
   IPlayerScore scoreManager = PlayerScoreManager();
-  IShipHealth shipHealthManager = PlayerHealthManager();
 
   final Player _initPlayer = Player(
     position: Vector2(
@@ -174,11 +173,9 @@ class PlayerInfoNotifier extends ChangeNotifier
       }
     }
 
-    
-     for (final enemy in removableEnemy) {
-          enemyNotifier.onShipHit(gameObject: enemy);
-        }
-
+    for (final enemy in removableEnemy) {
+      enemyNotifier.onShipHit(gameObject: enemy);
+    }
 
     // no need to notify, `removeEnemies` handle this;
   }
@@ -235,8 +232,16 @@ class PlayerInfoNotifier extends ChangeNotifier
   }
 
   @override
-  void onReset() {
-    // TODO: implement onReset
+  void onRestart() {
+    scoreManager = PlayerScoreManager();
+    player = Player(
+        position: Vector2(
+      dX: game_object.GObjectSize.instance.screen.width / 2,
+      dY: game_object.GObjectSize.instance.screen.height * .75,
+    ));
+
+    _bullets.clear();
+    notifyListeners();
   }
 
   @override
@@ -297,5 +302,11 @@ class PlayerInfoNotifier extends ChangeNotifier
         },
       );
     }
+  }
+
+  @override
+  void onExit() {
+    // TODO: implement onExit
+    onRestart();
   }
 }

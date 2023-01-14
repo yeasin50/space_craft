@@ -69,6 +69,8 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
 
   ///start Enemy creator,
   void _generateEnemies() {
+    if (_timerEnemyGeneration != null && _timerEnemyGeneration!.isActive)
+      return;
     _timerEnemyGeneration = Timer.periodic(enemyGenerateDuration, (t) {
       _enemies.addAll(
         List.generate(_generateNxEnemy, (index) {
@@ -262,9 +264,13 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
   /// Cancel all activity
   void _cancelTimers() {
     _timerEnemyGeneration?.cancel();
+    _timerEnemyGeneration = null;
     _timerEnemyMovement?.cancel();
+    _timerEnemyMovement = null;
     _timerBulletGenerator?.cancel();
+    _timerBulletGenerator = null;
     _timerBulletMovement?.cancel();
+    _timerBulletMovement = null;
   }
 
   @override
@@ -278,8 +284,20 @@ class EnemyChangeNotifier extends ChangeNotifier with GameState, OnObstacleHit {
   }
 
   @override
-  void onReset() {
+  void onRestart() {
     // TODO: implement onReset
+    _enemies.clear();
+    _bullets.clear();
+    _shipsBlastLocation.clear();
+    _cancelTimers();
+    notifyListeners();
+  }
+
+  @override
+  void onExit() {
+    onRestart();
+
+    // FIXME
   }
 
   @override

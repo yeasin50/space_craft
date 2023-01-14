@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
+import 'package:boundary_effect/boundary_effect.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:space_craft/core/providers/providers.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../feature/on_play/provider/provider.dart';
@@ -34,12 +35,12 @@ class GameManager extends StateNotifier<GamePlayState> with GameState {
   }
 
   void initialOnPlay() {
+    print(state);
     switch (state) {
       case GamePlayState.idle:
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          onPlay();
-        });
+        onPlay();
         return;
+
       default:
     }
   }
@@ -56,10 +57,12 @@ class GameManager extends StateNotifier<GamePlayState> with GameState {
   @override
   void onPlay() {
     if (state == GamePlayState.play) return;
-    state = GamePlayState.play;
-    ref.read(playerInfoProvider).onPlay();
-    ref.read(healingObjectProvider).onPlay();
-    ref.read(enemyProvider).onPlay();
+    scheduleMicrotask(() {
+      state = GamePlayState.play;
+      ref.read(playerInfoProvider).onPlay();
+      ref.read(healingObjectProvider).onPlay();
+      ref.read(enemyProvider).onPlay();
+    });
   }
 
   @override
@@ -72,12 +75,14 @@ class GameManager extends StateNotifier<GamePlayState> with GameState {
   }
 
   @override
-  void onReset() {
+  void onRestart() {
     if (state == GamePlayState.reset) return;
     state = GamePlayState.reset;
-    ref.read(playerInfoProvider).onReset();
-    ref.read(healingObjectProvider).onReset();
-    ref.read(enemyProvider).onReset();
+    ref.read(playerInfoProvider).onRestart();
+    ref.read(healingObjectProvider).onRestart();
+    ref.read(enemyProvider).onRestart();
+    ref.read(boundaryCollisionProvider).clear();
+    onPlay();
   }
 
   @override
@@ -87,5 +92,14 @@ class GameManager extends StateNotifier<GamePlayState> with GameState {
     ref.read(playerInfoProvider).onResume();
     ref.read(healingObjectProvider).onResume();
     ref.read(enemyProvider).onResume();
+  }
+
+  @override
+  void onExit() {
+    ref.read(playerInfoProvider).onExit();
+    ref.read(healingObjectProvider).onExit();
+    ref.read(enemyProvider).onExit();
+    ref.read(boundaryCollisionProvider).clear();
+    state = GamePlayState.exit;
   }
 }

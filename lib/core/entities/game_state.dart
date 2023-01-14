@@ -13,6 +13,7 @@ abstract class GameState {
   void onResume();
 
   /// restart the game
-  void onReset();
+  void onRestart();
 
+  void onExit();
 }

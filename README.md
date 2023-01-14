@@ -1,13 +1,15 @@
 # SpaceCraft
 
-A simple game, wanna implement in flutter.
+A simple game, wanna implemented in flutter.
 
 ## Over Engineered; This is my play ground 😅
 
-[Audio manager using assets_audio_player](https://pub.dev/packages/assets_audio_player/example)
+This is project stated before null-safety, you will find different pattern and anti-pattern on this project, like a messed up lab.
+#### Discipline of the project
+ -  shouldn't use any assets like image/audio.
+> Feel free to make pr,
 
 ## TODO
-- [ ] format constructor style based on flutter; Constructor then variables
 - [ ] Improve performance by testing on profile mode
 - [ ] keyboard movement works after tapping
 - [x] score based on EnemyShip
@@ -18,13 +20,6 @@ A simple game, wanna implement in flutter.
 
 ## ⚠ For game you should use [Flame package](https://pub.dev/packages/flame)
 
+better GameEngine like Unity3d.
 <!-- ## ⚠ Debugging is Much leggy, avoid debug statements on forEach loop -->
-
-Thought It might be because we are changing a lot, but sometimes it's just happen because of print/debug statements.  
-Now lets add Explosions Rives on it, Not sure about how it gonna perform.
-
----
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ 

@@ -61,7 +61,7 @@ class Health extends ChangeNotifier implements GameState {
         _screenSize = ref.read(enemyProvider).screenSize;
         _healingBoxes.add(
           GeneralHealingBox(
-            iShipHealth: ref.read(playerInfoProvider).shipHealthManager,
+            iShipHealth: ref.read(playerInfoProvider).player.health,
             initPos: Vector2(dX: _random.nextDouble() * screenSize.width),
           ),
         );
@@ -128,8 +128,14 @@ class Health extends ChangeNotifier implements GameState {
   }
 
   @override
-  void onReset() {
+  void onRestart() {
     // TODO: implement onReset
+    _healingBoxes.clear();
+    _timerHealthBoxGeneration?.cancel();
+    _timerHealthBoxGeneration = null;
+    _timerBoxMovement?.cancel();
+    _timerBoxMovement = null;
+    notifyListeners();
   }
 
   @override
@@ -146,5 +152,11 @@ class Health extends ChangeNotifier implements GameState {
   @override
   void onStop() {
     // TODO: implement onStop
+  }
+
+  @override
+  void onExit() {
+    // TODO: implement onExit
+    onRestart();
   }
 }

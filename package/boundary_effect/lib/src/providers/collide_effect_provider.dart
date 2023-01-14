@@ -55,6 +55,11 @@ class BoundaryCollideEffect with ChangeNotifier {
     notifyListeners();
   }
 
+  void clear() {
+    _blockedSides.clear();
+    notifyListeners();
+  }
+
   @Deprecated(
     'Use setPointAndBoundarySide instead. player_movement_handler updated with [BoundarySide]',
   )
